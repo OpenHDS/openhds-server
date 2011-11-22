@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/lang
+        http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+	    <property name="location">
+	        <value>classpath:site-config.properties</value>
+	    </property>
+	</bean> 
+							
+	 <!--
+            Site Properties configuration.
+            Set the date format to be used.
+            Toggle autocomplete.
+            Set custom codes.
+           
+            Valid date formats are:
+			"dd/MM/yyyy"
+			"MM/dd/yyyy"
+			"yyyy/MM/dd"
+			"yyyy/dd/MM"
+			"dd-MM-yyyy"
+			"MM-dd-yyyy"
+			"yyyy-MM-dd"
+			"yyyy-dd-MM"
+    -->
+    <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
+    	<property name="locale"><value>${openhds.locale}</value></property>     
+        <property name="dateFormat"><value>${openhds.dateformat}</value></property>
+        <property name="autocomplete"><value>${openhds.autocomplete}</value></property>
+        <property name="unknownIdentifier"><value>${openhds.unknownIdentifier}</value></property>
+        <property name="inmigrationCode"><value>${openhds.inmigrationCode}</value></property>
+        <property name="outmigrationCode"><value>${openhds.outmigrationCode}</value></property>
+        <property name="birthCode"><value>${openhds.birthCode}</value></property>
+        <property name="deathCode"><value>${openhds.deathCode}</value></property>
+        <property name="enumerationCode"><value>${openhds.enumerationCode}</value></property>
+        <property name="marriageCode"><value>${openhds.marriageCode}</value></property>
+        <property name="notApplicableCode"><value>${openhds.notApplicableCode}</value></property>
+        <property name="liveBirthCode"><value>${openhds.liveBirthCode}</value></property>
+        <property name="stillBirthCode"><value>${openhds.stillBirthCode}</value></property>
+        <property name="miscarriageCode"><value>${openhds.miscarriageCode}</value></property>
+        <property name="abortionCode"><value>${openhds.abortionCode}</value></property>
+        <property name="maleCode"><value>${openhds.maleCode}</value></property>
+        <property name="femaleCode"><value>${openhds.femaleCode}</value></property>
+        <property name="dataStatusWarningCode"><value>${openhds.dataStatusWarningCode}</value></property>
+        <property name="dataStatusValidCode"><value>${openhds.dataStatusValidCode}</value></property>
+        <property name="dataStatusFatalCode"><value>${openhds.dataStatusFatalCode}</value></property>
+        <property name="dataStatusVoidCode"><value>${openhds.dataStatusVoidCode}</value></property>
+        <property name="dataStatusPendingCode"><value>${openhds.dataStatusPendingCode}</value></property>
+        <property name="dataStatusClosedCode"><value>${openhds.dataStatusClosedCode}</value></property>
+        <property name="minimumAgeOfParents"><value>${openhds.minimumAgeOfParents}</value></property>
+        <property name="minimumAgeOfHouseholdHead"><value>${openhds.minimumAgeOfHouseholdHead}</value></property>
+        <property name="minimumAgeOfMarriage"><value>${openhds.minimumAgeOfMarriage}</value></property>
+        <property name="yesResponse"><value>${openhds.yesResponse}</value></property>
+        <property name="noResponse"><value>${openhds.noResponse}</value></property>
+		<property name="earliestEnumerationDate"><value>${openhds.earliestEnumerationDate}</value></property>
+        <property name="valueExtensionsForMembershipCodesEnabled"><value>${openhds.valueExtensionsForMembershipCodesEnabled}</value></property>
+        <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
+        <!-- valid values are baseline, baseline_flow -->
+        <property name="baselineForm"><value>${openhds.webFormBaseline}</value></property>
+    </bean> 
+    
+    <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" /> 
+    <bean id="valueConstraintService" class="org.openhds.domain.value.extension.ValueConstraintService" />
+    	
+</beans>

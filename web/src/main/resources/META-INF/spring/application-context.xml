@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/lang
+        http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+        
+    <!-- pulls values from the database.properties file and used in the hibernate configuration -->
+    <bean id="databaseConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="location">
+            <value>classpath:database.properties</value>
+        </property>
+    </bean>	
+        
+    <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
+                
+    <bean id="authSuccessHandler" parent="baseTransactionBean">
+    	<property name="target">
+			<bean class="org.openhds.web.security.AuthenticationSuccessHandler">
+				<constructor-arg ref="userDao" />
+			</bean>
+   		</property>
+	 </bean>
+
+    <bean id="logoutSuccessHandler" parent="baseTransactionBean">
+    	<property name="target">
+			<bean class="org.openhds.web.security.LogoutSuccessHandler">
+				<constructor-arg ref="userDao" />
+			</bean>
+   		</property>
+	</bean>
+	
+	<bean id="prefLocale" class="org.openhds.web.util.Locale" >
+        <property name="locale" value="English" />
+    </bean>
+				
+	<!-- Configure Spring Security -->
+    <security:http auto-config="true">
+        <security:form-login authentication-success-handler-ref="authSuccessHandler" login-page="/login.faces" login-processing-url="/loginProcess" authentication-failure-url="/login.faces?login_error=1" />
+        <security:intercept-url pattern="/login.faces" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/resources/images/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/resources/css/main.css" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/resources/css/login.css" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/logout.faces" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/api/rest/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/openFacesResources/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/primefaces_resource/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/module/dsl/binding-def/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/module/dsl/validation" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/**" access="ROLE_AUTHENTICATED" />
+        <security:intercept-url pattern="/webservice/ddiGenerator" access="ROLE_AUTHENTICATED"/>
+        <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
+    </security:http>
+	
+	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="fieldWorkerDao" />
+        <constructor-arg value="org.openhds.domain.model.FieldWorker" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="userConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="userDao" />
+        <constructor-arg value="org.openhds.domain.model.User" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" />
+    <bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl" />
+    <bean id="webFlowService" class="org.openhds.web.service.impl.WebFlowServiceImpl" />
+    
+    <bean id="userService" parent="baseServiceBean">
+    	<property name="target">    
+		    <bean class="org.openhds.web.service.impl.UserServiceImpl">
+		    	<constructor-arg name="genericDao" ref="genericDao" />
+		    </bean>
+	    </property>
+    </bean>
+    
+    <bean id="baseCrud" class="org.openhds.web.crud.EntityCrudImpl" scope="session" abstract="true">
+        <property name="jsfService" ref="jsfService" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="entityService" ref="entityService" />
+        <property name="genericDao" ref="genericDao" />
+        <property name="navMenuBean" ref="navController" />
+        <property name="properties" ref="siteProperties" />
+    </bean>
+    
+    <bean id="fieldWorkerCrud" parent="baseCrud" class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.FieldWorker" />
+        <property name="dao" ref="fieldWorkerDao" />
+        <property name="converter" ref="fieldWorkerConverter" />
+        <property name="service" ref="fieldWorkerService" />
+    </bean>
+    
+    <bean id="userCrud" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
+        <constructor-arg value="org.openhds.model.User" />
+        <property name="dao" ref="userDao" />
+        <property name="converter" ref="userConverter" />
+        <property name="service" ref="userService" />
+    </bean>
+    
+    <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
+	 	<property name="dbDriver" value="${dbDriver}"/>
+		<property name="dbUrl" value="${dbUrl}"/>
+		<property name="dbUsername" value="${dbUser}"/>
+		<property name="dbPassword" value="${dbPass}"/>
+		<property name="dbDialect" value="${hibernateDialect}"/>
+		<property name="jsfService" ref="jsfService" />
+	 </bean>
+   
+</beans>

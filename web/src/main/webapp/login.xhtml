@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+    <head>
+    	<link rel="stylesheet" type="text/css" href="/openhds/resources/css/login.css"/>
+    </head>
+    
+   	<body> 	
+  		<div class="loginField" align="center">
+  	  		<div><img alt="" src="/openhds/resources/images/logo-login.png"></img></div>
+  			<div style="margin-top:2%">
+			<form name="loginForm" action="${request.contextPath}/loginProcess" method="post">
+				<table>
+					<tr>
+						<td><h:outputText value="Username:" /></td>
+						<td>	
+							<c:if test="${login_error}">
+								<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
+							</c:if>
+							<input type="text" name="j_username" value="#{username}"/>
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Password:" /></td>
+						<td><input type="password" name="j_password" /></td>
+					</tr>
+					<tr>
+						<td><input name="submit" type="submit" value="Login" /></td>
+					</tr>
+				</table>
+			</form>
+			</div>
+		  	<c:if test="#{demoLoginString != ''}">
+				<div style="text-align:center;font-weight:bold;background-color:#FFcc00">
+			  		#{demoLoginString}
+			  	</div>
+		  	</c:if>
+	  </div>	
+	</body>
+</html>

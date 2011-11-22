@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>Database Configuration</h1>
+                <h:messages id="successInfo" globalOnly="true" />
+                <h:form>
+                                
+                    <h:panelGrid columns="3">
+                       
+                        <h:outputText value="Database Type:"/>
+                 		<h:selectOneRadio id="type" value="#{databaseConfig.dbType}" onchange="submit()" immediate="true" valueChangeListener="#{databaseConfig.updateType}">
+   							<f:selectItem itemValue="HSQL" itemLabel="HSQL" />
+						   	<f:selectItem itemValue="MYSQL" itemLabel="MYSQL" />
+						   	<f:selectItem itemValue="POSTGRES" itemLabel="POSTGRES" />
+						</h:selectOneRadio>
+						<h:message for="type" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    
+                    	<h:outputText value="Username:"/>
+                        <h:inputText id="user" value="#{databaseConfig.dbUsername}" converter="#{defaultConverter}" />
+                        <h:message for="user" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    
+                    	<h:outputText value="Password:"/>
+                        <h:inputText id="password" value="#{databaseConfig.dbPassword}" converter="#{defaultConverter}" />
+                        <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="Url:"/>
+                        <h:inputText id="url" value="#{databaseConfig.dbUrl}" converter="#{defaultConverter}" size="50" />
+                        <h:message for="url" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    
+                    	<h:outputText value="Generated Driver:"/>
+                        <h:inputText id="driver" value="#{databaseConfig.dbDriver}" converter="#{defaultConverter}" disabled="true" size="50" />
+                        <h:message for="driver" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="Generated Dialect:"/>
+                        <h:inputText id="dialect" value="#{databaseConfig.dbDialect}" converter="#{defaultConverter}" disabled="true" size="50" />
+                        <h:message for="dialect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton action="#{databaseConfig.create}" value="#{msg.lblCreate}" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

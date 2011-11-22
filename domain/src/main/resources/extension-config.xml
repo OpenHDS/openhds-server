@@ -1,0 +1,20 @@
+<config>
+	<entity name="Location">
+	</entity>
+	<entity name="SocialGroup">
+	</entity>
+	<entity name="Visit">
+	</entity>
+	<entity name="Individual">
+	</entity>
+	<entity name="Death">
+	</entity>
+	<entity name="PregnancyObservation">
+	</entity>
+	<entity name="PregnancyOutcome">
+	</entity>
+	<entity name="OutMigration">
+	</entity>
+	<entity name="InMigration">
+	</entity>
+</config>

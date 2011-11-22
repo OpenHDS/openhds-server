@@ -1,0 +1,156 @@
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.1.0" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.1.0
+                                   http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.1.0.xsd">
+
+	
+	<url-mapping id="locationDetail" >
+		<pattern value="/amendment/location/details/#{itemId}" />
+		<view-id>/location/detail.xhtml</view-id> 
+		<action onPostback="false">#{locationCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="individualDetail" >
+		<pattern value="/amendment/individual/details/#{itemId}" />
+		<view-id>/individual/detail.xhtml</view-id> 
+		<action onPostback="false">#{individualCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="deathDetail" >
+		<pattern value="/amendment/death/details/#{itemId}" />
+		<view-id>/death/detail.xhtml</view-id> 
+		<action onPostback="false">#{deathCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="membershipDetail" >
+		<pattern value="/amendment/membership/details/#{itemId}" />
+		<view-id>/membership/detail.xhtml</view-id> 
+		<action onPostback="false">#{membershipCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="outmigrationDetail" >
+		<pattern value="/amendment/outmigration/details/#{itemId}" />
+		<view-id>/outmigration/detail.xhtml</view-id> 
+		<action onPostback="false">#{outMigrationCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="pregnancyobservationDetail" >
+		<pattern value="/amendment/pregnancyobservation/details/#{itemId}" />
+		<view-id>/pregnancyobservation/detail.xhtml</view-id> 
+		<action onPostback="false">#{pregnancyObservationCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="pregnancyoutcomeDetail" >
+		<pattern value="/amendment/pregnancyoutcome/details/#{itemId}" />
+		<view-id>/pregnancy-outcome/detail.xhtml</view-id> 
+		<action onPostback="false">#{pregnancyOutcomeCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="relationshipDetail" >
+		<pattern value="/amendment/relationship/details/#{itemId}" />
+		<view-id>/relationship/detail.xhtml</view-id> 
+		<action onPostback="false">#{relationshipCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="socialgroupDetail" >
+		<pattern value="/amendment/socialgroup/details/#{itemId}" />
+		<view-id>/socialgroup/detail.xhtml</view-id> 
+		<action onPostback="false">#{socialGroupCrud.detailSetup}</action>
+	</url-mapping>
+			
+	<url-mapping id="visitDetail" >
+		<pattern value="/amendment/visit/details/#{itemId}" />
+		<view-id>/visit/detail.xhtml</view-id> 
+		<action onPostback="false">#{visitCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="residencyDetail" >
+		<pattern value="/amendment/residency/details/#{itemId}" />
+		<view-id>/residency/detail.xhtml</view-id> 
+		<action onPostback="false">#{residencyCrud.detailSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="inmigrationDetail" >
+		<pattern value="/amendment/inmigration/details/#{itemId}" />
+		<view-id>/migration/detail.xhtml</view-id> 
+		<action onPostback="false">#{inMigrationCrud.detailSetup}</action>
+	</url-mapping>
+		
+	<url-mapping id="inMigrationEdit" >
+		<pattern value="/amendment/inmigration/edit/#{itemId}" />
+		<view-id>/migration/edit.xhtml</view-id> 
+		<action onPostback="false">#{inMigrationCrud.editSetup}</action>
+	</url-mapping>
+	
+	<url-mapping id="validationRoutine" >
+		<pattern value="/validationRoutine" />
+		<view-id>/validation/validate.xhtml</view-id> 
+		<action onPostback="false">#{validationRoutineBean.setup}</action>
+	</url-mapping>
+		
+	<!-- These URL mappings only serve the purpose of redirecting back to a URL mappings above -->
+	<!-- This is a workaround so that when an entity that is being edited is saved, it gets properly -->
+	<!-- redirected back to the details page. At the time of writing, there didn't appear to be any -->
+	<!-- other way around this problem -->
+			
+	<url-mapping id="deathEdit" >
+		<pattern value="/amendment/death/details/#{itemId: deathCrud.item.uuid}" />
+		<view-id>/death/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="individualEdit" >
+		<pattern value="/amendment/individual/details/#{itemId: individualCrud.item.uuid}" />
+		<view-id>/individual/detail.xhtml</view-id> 
+	</url-mapping>
+
+	<url-mapping id="locationEdit" >
+		<pattern value="/amendment/location/details/#{itemId: locationCrud.item.uuid}" />
+		<view-id>/location/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="membershipEdit" >
+		<pattern value="/amendment/membership/details/#{itemId : membershipCrud.item.uuid}" />
+		<view-id>/membership/detail.xhtml</view-id> 
+	</url-mapping>
+		
+	<url-mapping id="pregnancyoutcomeEdit" >
+		<pattern value="/amendment/pregnancyoutcome/details/#{itemId: pregnancyOutcomeCrud.item.uuid}" />
+		<view-id>/pregnancy-outcome/detail.xhtml</view-id> 
+	</url-mapping>
+		
+	<url-mapping id="pregnancyobservationEdit" >
+		<pattern value="/amendment/pregnancyobservation/details/#{itemId: pregnancyObservationCrud.item.uuid}" />
+		<view-id>/pregnancyobservation/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="relationshipEdit" >
+		<pattern value="/amendment/relationship/details/#{itemId: relationshipCrud.item.uuid}" />
+		<view-id>/relationship/detail.xhtml</view-id>
+	</url-mapping>
+	
+	<url-mapping id="socialgroupEdit" >
+		<pattern value="/amendment/socialgroup/details/#{itemId: socialGroupCrud.item.uuid}" />
+		<view-id>/socialgroup/detail.xhtml</view-id> 
+	</url-mapping>
+			
+	<url-mapping id="visitEdit" >
+		<pattern value="/amendment/visit/details/#{itemId: visitCrud.item.uuid}" />
+		<view-id>/visit/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="outMigEdit" >
+		<pattern value="/amendment/outmigration/details/#{itemId: outMigrationCrud.item.uuid}" />
+		<view-id>/outmigration/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="migrationsEdit" >
+		<pattern value="/amendment/inmigration/details/#{itemId: inMigrationCrud.item.uuid}" />
+		<view-id>/migration/detail.xhtml</view-id> 
+	</url-mapping>	
+	
+	<url-mapping id="databaseConfiguration" >
+		<pattern value="/database-config" />
+		<view-id>/database-config/setup.xhtml</view-id> 
+	</url-mapping>
+		
+</pretty-config>

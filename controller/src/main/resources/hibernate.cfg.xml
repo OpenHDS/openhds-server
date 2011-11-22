@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+    
+<hibernate-configuration>
+	<session-factory>
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost/openhds?createDatabaseIfNotExist=true</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">password</property>		
+
+		<mapping class="org.openhds.domain.model.Death"/>
+		<mapping class="org.openhds.domain.model.FieldWorker"/>
+		<mapping class="org.openhds.domain.model.Individual"/>
+		<mapping class="org.openhds.domain.model.InMigration"/>
+		<mapping class="org.openhds.domain.model.Location"/>
+		<mapping class="org.openhds.domain.model.LocationHierarchy"/>
+		<mapping class="org.openhds.domain.model.LocationHierarchyLevel"/>
+		<mapping class="org.openhds.domain.model.Membership"/>
+		<mapping class="org.openhds.domain.model.Outcome"/>
+		<mapping class="org.openhds.domain.model.OutMigration"/>
+		<mapping class="org.openhds.domain.model.PregnancyObservation"/>
+		<mapping class="org.openhds.domain.model.PregnancyOutcome"/>
+		<mapping class="org.openhds.domain.model.Privilege"/>
+		<mapping class="org.openhds.domain.model.Relationship"/>
+		<mapping class="org.openhds.domain.model.Residency"/>
+		<mapping class="org.openhds.domain.model.Role"/>
+		<mapping class="org.openhds.domain.model.Round"/>
+		<mapping class="org.openhds.domain.model.SocialGroup"/>
+		<mapping class="org.openhds.domain.model.User"/>
+		<mapping class="org.openhds.domain.model.Visit"/>
+		<mapping class="org.openhds.domain.model.Whitelist"/>
+		<mapping class="org.openhds.domain.model.Note"/>
+		<mapping class="org.openhds.domain.model.Extension"/>
+		<mapping class="org.openhds.domain.model.ClassExtension"/>
+	</session-factory>
+</hibernate-configuration>

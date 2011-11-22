@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+        <!-- Mimic Internet Explorer 7 -->
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+           	<ui:param name="hideListing" value="true" />	
+        	<ui:param name="hideTabBar" value="true" />
+        	
+            <ui:define name="display">
+	            <h:form>
+	                <h1>OpenHDS</h1>                
+					<h3>Getting Started...</h3>
+					<p>
+	                	<h:commandLink styleClass="welcome-link" value="Database" action="#{siteProperties.getBaselineForm}" /> - Configure Database
+	                </p>
+	                <p>
+	                	<h:commandLink styleClass="welcome-link" value="BASELINE" action="#{siteProperties.getBaselineForm}" /> - Enter initial enumeration data
+	                </p>
+					<p>
+	                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.navBarUpdate}" >
+                            <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
+                        </h:commandLink> - Enter in collected round data
+	                </p>
+	                <p>
+	                    <strong>Version: #{appSettings.versionNumber}</strong> 
+	               		<br />
+	                    Tested on Mozilla Firefox 3.6.X
+	                </p>
+	            </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<value-constraints>
+	<!-- required constraint -->
+	<constraint id="socialGroupTypeConstraint">
+		<value description="Family">FAM</value>
+		<value description="Cohort">COH</value>
+	</constraint>
+	<!-- required constraint -->
+	<constraint id="dobAspectConstraint">
+		<value description="Exact">1</value>
+		<value description="Approximate">2</value>
+	</constraint>
+	<!-- required constraint -->
+	<constraint id="genderConstraint">
+		<value description="Male">M</value>
+		<value description="Female">F</value>
+	</constraint>
+	<!-- required constraint -->
+	<constraint id="locationTypeConstraint">
+		<value description="Rural">RUR</value>
+		<value description="Urban">URB</value>
+	</constraint>
+	<!-- required constraint -->
+	<constraint id="yesNoConstraint">
+		<value description="Yes">1</value>
+		<value description="No">2</value>
+	</constraint>
+	<!-- required constraint -->
+    <constraint id="maritalStatusConstraint">
+		<value description="Never Married">1</value>
+		<value description="Married">2</value>
+		<value description="Separated/Divorced">3</value>
+		<value description="Widowed">4</value>
+		<value description="Living Together">5</value>
+	</constraint>
+</value-constraints>
