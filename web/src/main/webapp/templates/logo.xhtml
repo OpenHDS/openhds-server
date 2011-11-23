@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core">
+
+    <head>
+    </head>
+
+    <body id="Home">
+        <ui:composition>
+            <h:form>
+                <div class="texta">
+                    <c:if test="#{prefLocale.locale == 'English'}">
+                        <h:outputText value="English" />
+                        <h:commandLink action="#{prefLocale.setSwahili}" value=" Swahili"> </h:commandLink>
+
+                        <f:loadBundle basename="MessageResource_en" var="msg"/>
+                    </c:if>
+                    <c:if test="#{prefLocale.locale == 'Swahili'}">
+                        <h:outputText value=" Swahili" />
+                        <h:commandLink action="#{prefLocale.setEnglish}" value=" English"> </h:commandLink>
+                        <f:loadBundle basename="MessageResource_sw" var="msg"/>
+                    </c:if>
+                    <c:if test="#{currentUser.name != null}">
+                        <div>
+		          			Welcome #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="Logout" />						
+                        </div>
+                    </c:if>
+                </div>
+            </h:form>
+        </ui:composition>
+    </body>
+</html>

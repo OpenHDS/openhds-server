@@ -31,7 +31,6 @@ public class ValueConstraintService {
 		return ele != null ? true : false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private Element findConstraintByName(String constraintName) {
 		List list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
@@ -42,7 +41,6 @@ public class ValueConstraintService {
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public boolean isValidConstraintValue(String constraintName, Object value) {
 		List list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
@@ -60,7 +58,6 @@ public class ValueConstraintService {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<String, String> getMapForConstraint(String constraintName) {
 		Map<String, String> keyValues = new TreeMap<String, String>();
 		Element constraint = findConstraintByName(constraintName);

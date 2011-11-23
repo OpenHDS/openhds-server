@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+
+ 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />		   
+    <head>
+
+        <title><ui:insert name="title"/></title>
+        
+        <link type="text/css" href="/openhds/resources/css/jquery.ui.all.css" rel="stylesheet" />
+        <link type="text/css" href="/openhds/resources/css/demos.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/default.css"/>
+        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/menuStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/jquery.ui.base.css"/>
+
+        <script type="text/javascript" src="/openhds/resources/scripts/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="/openhds/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
+
+		<script>
+			$(function() {
+				<c:if test="#{siteProperties.autocomplete}">
+					$(".visit").autocomplete({source:"/openhds/visit.autocomplete"});
+					$(".collectedBy").autocomplete({source:"/openhds/collectedBy.autocomplete"});
+					$(".location").autocomplete({source:"/openhds/location.autocomplete"});
+					$(".locationName").autocomplete({source:"/openhds/locationName.autocomplete"});
+					$(".socialGroup").autocomplete({source:"/openhds/socialGroup.autocomplete"});
+					$(".individual").autocomplete({source:"/openhds/individual.autocomplete"});
+				</c:if>
+			});
+		</script>
+    </head>
+
+    <body>
+		<div id="navi">
+            <div id="headers">
+                <h:graphicImage id="n" style="width: 100%" value="/resources/images/logo2.jpg"  title="Openhds logo"/>
+            </div>
+            <!-- Include the logo composition -->
+            <ui:include src="/templates/logo.xhtml" />
+
+            <c:if test="#{flowScope == null or flowScope.showNavMenu}">
+                <ui:include src="/snippets/menu.xhtml"/>
+            </c:if>
+        </div>
+
+        <div id="content">
+        	<c:if test="#{hideTabBar == null or hideTabBar != true}">
+				<ui:include src="/templates/tab-bar.xhtml" />
+			</c:if>
+            
+            <div id="center" class="boxcontent" >
+            	<div style="#{crud.showListing ? '' : 'display:none;'}">
+                	<ui:insert name="listing"/>
+               	</div>
+               	<div style="#{crud.showListing ? 'display:none;' : ''}">
+                	<ui:insert name="display" />
+                </div>
+            </div>
+        </div>
+
+		<div style="" />
+
+        <span id="navi-scroll-block" style="float:left;clear:left;height:4em;">
+        	<!-- Acting as a spacer because the footer will overlay the content since its position is set to fixed -->
+        	<!-- This will provide the necessary space so that scrolling works properly -->
+        </span>
+        
+		<div id="footer" align="center">
+			OpenHDS Health and Demographic System (OpenHDS)- Open Source License - Build ${appSettings.versionNumber}
+			<br />
+			This project is supported by the generous contributions of the IDRC
+			<a href="http://svn.rcg.usm.maine.edu/redmine/projects/show/openhds" title="Site">Project Website</a> | <a href="#" title="License">License</a> | <a href="http://svn.rcg.usm.maine.edu/redmine/repositories/show/openhds" title="Repository">Code Repository</a>
+		</div>
+
+
+
+    </body>
+</html>

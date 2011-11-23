@@ -1,0 +1,208 @@
+/*
+    Document   : main
+    Created on : Mar 17, 2010, 2:44:43 PM
+    Author     : Advocatus
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+body {
+    margin: 0;
+}
+
+#headers {
+    border-left: 1px solid #00CC66;
+    border-right: 1px solid #00CC66;
+    border-bottom: 1px solid #00CC66;
+    margin-left: 0%;
+}
+
+.ajaxResult { color: #440000;
+              font-weight: bold;
+              font-size: 18px;
+              font-family: Arial, Helvetica, sans-serif;
+}
+
+.error { background-color: yellow;
+         color: red;
+         font-weight: bold;
+         font-size: 12px;
+         font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.center {
+    text-align: center;
+}
+
+/*
+below are the old scripts
+
+*/
+#main {
+    border-top:  1px solid #00CC66;
+    border-left: 1px solid #00CC66;
+    border-right: 1px solid #00CC66;
+    border-bottom: 1px solid #00CC66;
+    margin-top: 4px;
+    width: 95%;
+    margin-left: 3%;
+    max-height: 65%;
+    min-height:65%;
+    float: none;
+    background-color:#E4F4E3;
+}
+
+
+/* the position of login status*/
+.logout {
+    margin-left: 10%;
+    width: 15%;
+    position: absolute;
+}
+#lang {
+    margin-left: 75%;
+    margin-top: -1.5%;
+    width: 5%;
+    position: absolute;
+}
+
+
+
+.texta {
+    font-size: 65%;
+    background-color: #DEEBE0;
+    border: 1px solid #CCCCCC;
+    width: 98%;
+    margin-left: 0%;
+    padding-bottom: 1%;
+    height: 20%;
+}
+
+span.title {
+    font-size: 200%;
+    font-weight: 600;
+    color: #FFFFFF;
+    width: 95%;
+    margin-left: 3%;
+
+}
+
+
+#content {
+    border-top:  1px solid #00CC66;
+    border-left: 1px solid #00CC66;
+    border-right: 1px solid #00CC66;
+    border-bottom: 1px solid #00CC66;
+    margin-left: 18%;
+    margin-right: 2%;
+    margin-top: 0.3%;
+    margin-bottom: 1%;
+    max-height: 90%;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; font-size:12px;
+    min-height: 533px;
+}
+
+.box {
+    border: 1px solid #00CC66;;
+    margin-top: 1%;
+    background-color: #86C583;
+    overflow:scroll;
+    height: 25%;
+    width: 100%;
+}
+
+.boxcontent {
+    border: 1px solid #00CC66;
+    background-color :#DEEBE0;
+    border-bottom: 1px solid #00CC66;
+    width: 100%;
+    overflow:scroll;
+}
+
+.contents {
+    border: 1px solid #00CC66;
+    margin-top: 1%;
+    background-color :#DEEBE0;
+    border-bottom: 1px solid #00CC66;
+    width: 79%;
+    font-family: Arial,Helvetica,sans-serif;
+    min-height: 533px;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; font-size:12px;
+
+}
+
+
+#boxtop {
+    border-top:  1px solid #00CC66;
+    border-left: 1px solid #00CC66;
+    border-right: 1px solid #00CC66;
+    border-bottom: 1px solid #00CC66;
+    width: 95%;
+    margin-top: 3px;
+    margin-left: 3%;
+    height: 100%;
+    margin-right:3%;
+    float: none;
+    background-color:#E4F4E3;
+
+}
+
+.update-btn {
+    width:125px;
+    height: 30px;
+}
+#footer {
+    padding-bottom: 1%;
+    border-top: 3px solid #006633 ;
+    background-color: #eaedf3;
+    text-align: center;
+    font-size: 90%;
+    width: 100%;
+    margin-top:1%;
+    margin: 15px 20px 0 0px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #579567;
+}
+
+a:link {
+    color: #336633;
+    text-decoration: none;
+}
+
+acronym,abbr {
+    border-bottom: 1px dotted #000000;
+    cursor: help;
+}
+
+p {
+    font-size: 85%;
+}
+
+#content p {
+    padding-left: 8px;
+}
+
+li {
+    font-size: 85%;
+}
+
+.paging-text {
+	font-size:.9em;	
+}
+
+.paging-element {
+	padding-left:12px;
+}
+
+.paging-link:link {
+	text-decoration:underline;	
+}
+
+.paging-link:hover {
+	text-decoration:underline;
+	color:#387C44;
+}

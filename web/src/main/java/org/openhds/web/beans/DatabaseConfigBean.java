@@ -2,21 +2,17 @@ package org.openhds.web.beans;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Properties;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.openhds.web.service.JsfService;
 import org.openhds.web.util.ScriptRunner;
 import org.springframework.core.io.ClassPathResource;
 import com.mysql.jdbc.Connection;
-
 
 public class DatabaseConfigBean {
 
@@ -59,16 +55,22 @@ public class DatabaseConfigBean {
 	}
 	
 	public void create() {
-		Properties properties = readDatabaseProperties();		
-		properties.put("dbDriver", dbDriver);
-		properties.put("dbUrl", dbUrl);
-		properties.put("dbUser", dbUsername);
-		properties.put("dbPass", dbPassword);
-		properties.put("hibernateDialect", dbDialect);
-		properties.put("hibernateExport", hibernateExport);
-		properties.put("hibernateShowSql", "true");
-		writePropertyFile(properties);
-		executeScript();
+		if (executeScript()) {
+			Properties properties = readDatabaseProperties();		
+			properties.put("dbDriver", dbDriver);
+			properties.put("dbUrl", dbUrl);
+			properties.put("dbUser", dbUsername);
+			properties.put("dbPass", dbPassword);
+			properties.put("hibernateDialect", dbDialect);
+			properties.put("hibernateExport", hibernateExport);
+			properties.put("hibernateShowSql", "true");
+			writePropertyFile(properties);
+		}
+	}
+	
+	public void editUrl() {
+		HtmlInputText text = (HtmlInputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("j_id45:url");
+		text.setDisabled(false);
 	}
 	
 	public Properties readDatabaseProperties() {
@@ -80,9 +82,6 @@ public class DatabaseConfigBean {
 			if (fis != null) {
 				prop = new Properties();
 				prop.load(fis);
-			}
-			else {
-				throw new Exception();
 			}
 			fis.close();	
 		} catch (Exception e) {
@@ -97,31 +96,31 @@ public class DatabaseConfigBean {
 		try {
 			fos = new FileOutputStream("src/main/resources/database.properties");
 			props.store(fos, "Database Configuration updated");
-			FacesContext.getCurrentInstance().renderResponse();
 		} catch (Exception e) {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
+			return;
 		}
+		jsfService.addMessage("Database Configuration updated successfully. Redeploy the web application for it to take effect.");
 	}
 	
-	public void executeScript() {
+	public boolean executeScript() {
 		
 		if (dbType.equals("MYSQL")) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection conn = (Connection) DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-				PreparedStatement stmt = conn.prepareStatement("CREATE DATABASE IF NOT EXISTS OPENHDS");
-				stmt.execute();
-				stmt.close();
-				
+
 				ScriptRunner runner = new ScriptRunner(conn, false, true);
+				runner.runScript(new BufferedReader(new FileReader("src/main/resources/openhds-schema.sql")));
 				runner.runScript(new BufferedReader(new FileReader("src/main/resources/openhds-required-data.sql")));
 				
 			} 
 			catch (Exception e) {
-				jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
+				jsfService.addMessage("Error executing script. Exception : " + e.getMessage());
+				return false;
 			}
 		}
-		jsfService.addMessage("Database Configuration updated successfully");
+		return true;
 	}
 
 	public String getDbUsername() {

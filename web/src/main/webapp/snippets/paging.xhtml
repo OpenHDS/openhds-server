@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		        xmlns:h="http://java.sun.com/jsf/html"
+		        xmlns:f="http://java.sun.com/jsf/core"
+		        xmlns:ui="http://java.sun.com/jsf/facelets"
+		        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		        xmlns:c="http://java.sun.com/jstl/core">
+	
+	<c:if test="#{flowScope == null}">	        
+		<c:if test="#{currentCrud.pager.totalCount > 0}">
+			<span class="paging-text paging-element">#{msg.pagingShowing} #{currentCrud.pager.pageIndex + 1} - #{currentCrud.pager.lastLogicalIndexOnCurrentPage} #{msg.pagingOf} #{currentCrud.pager.totalCount}</span>
+		</c:if>	
+	</c:if>
+	<c:if test="#{flowScope != null}">	  
+		<c:if test="#{currentCrud.pager.totalCount > 0}">
+     
+		<c:if test="#{fn:length(currentCrud.filteredPagedItems) > 0}">
+			<span class="paging-text paging-element">#{msg.pagingShowing} #{currentCrud.filteredPager.pageIndex + 1} - #{currentCrud.filteredPager.lastLogicalIndexOnCurrentPage} #{msg.pagingOf} #{currentCrud.filteredPager.totalCount}</span>
+		</c:if>	
+		
+		</c:if>	 		
+	</c:if>
+		
+	<c:if test="#{currentCrud.pager.pageIndex > 0}">
+		<span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true" action="#{currentCrud.firstPage}" value="&lt;&lt; #{msg.pagingFirst}" /></span>
+	
+		<span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true" action="#{currentCrud.prev}" value="&lt; #{msg.pagingPrev}" /></span>
+	</c:if>
+	
+	<c:if test="#{!currentCrud.pager.onLastPage}">
+		<span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true" action="#{currentCrud.next}" value="#{msg.pagingNext} >" /></span>
+		
+		<span class="paging-text paging-element"><h:commandLink styleClass="paging-link" immediate="true" action="#{currentCrud.lastPage}" value="#{msg.pagingLast} >>" /></span>
+	</c:if>
+	
+</ui:composition>

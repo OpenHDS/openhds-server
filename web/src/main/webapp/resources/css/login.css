@@ -1,0 +1,38 @@
+*
+{
+  font-family: tahoma, sans-serif;
+  line-height: 125%;
+}
+
+html,body
+{
+  background-color: #1d5000;  
+  color: white;
+  font-size: 16px;
+}
+
+.loginField
+{
+  margin-top: 7%;
+}
+
+.loginField td
+{
+  padding-right: 5px;
+}
+
+.headerText
+{
+  font-size: 20px;
+}
+
+.loginMessage
+{
+    background-color: #3b6da1;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D0D0D0;
+    padding: 11px;
+    display: block;
+    width: 400px;
+}

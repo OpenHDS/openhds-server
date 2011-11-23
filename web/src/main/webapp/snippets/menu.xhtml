@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<head>
+	</head>
+
+    <h:form>
+		<ul id="menu1" class="menu">
+	    	<li>
+	        	<h:commandLink action="demowelcome" value="#{msg.lblHome}" >
+	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
+	            </h:commandLink>
+	        </li>
+	        <sec:ifAllGranted roles="ACCESS_BASELINE">
+		   		<li>
+		   			<h:commandLink value="BASELINE" action="#{siteProperties.getBaselineForm}" />
+		    	</li>
+	    	</sec:ifAllGranted>
+	    	<sec:ifAllGranted roles="ACCESS_UPDATE">
+		    	<li>
+		    		<h:commandLink action="update_flow" value="#{msg.navBarUpdate}" >
+		    			<f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
+		            </h:commandLink>
+		    	</li>
+	    	</sec:ifAllGranted>
+	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
+		        <li>
+		            <h:commandLink value="#{msg.navBarAmendments}" >
+		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" /> 
+		            </h:commandLink>
+		            <c:if test="#{navController.showAmendments}" >
+			        <ul>
+				        <li><h:commandLink value="#{msg.navBarLocation}" action="#{locationCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarIndividual}" action="#{individualCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarPregOutcome}" action="pregnancy-outcome_flow" /></li>
+				        <li><h:commandLink value="#{msg.navBarPregnancyObservation}" action="#{pregnancyObservationCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarDeath}" action="#{deathCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarMigIntoLoc}" action="#{inMigrationCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarOutMigration}" action="#{outMigrationCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarResidency}" action="#{residencyCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarRelationship}" action="#{relationshipCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarMembership}" action="#{membershipCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarSocialGroup}" action="#{socialGroupCrud.createSetup}" /></li>
+				        <li><h:commandLink value="#{msg.navBarVisit}" action="#{visitCrud.createSetup}" /></li>                 
+			    	</ul>
+			    	</c:if>
+		    	</li>
+	    	</sec:ifAllGranted>
+			<sec:ifAllGranted roles="ACCESS_REPORTS">
+		    	<li>
+		        	<h:commandLink value="#{msg.navBarReports}" >
+		        		<f:setPropertyActionListener target="#{navController.showReports}" value="true" /> 
+		            </h:commandLink>
+		        	<c:if test="#{navController.showReports}" >
+		        	<ul>
+			            <li><h:commandLink value="Demographic Rates" action="#{demRatesCrud.createSetup}" /></li>
+			            <li><a href="/openhds/household-register.report" target="_blank">Household Register</a></li>
+			            <li><a href="/openhds/migration-ent-reconciliation.report" target="_blank">Migration Ent Reconciliation</a></li>
+			            <li><a href="/openhds/pregnancy-observ-reconciliation.report" target="_blank">Preg Observ Reconciliation</a></li>
+			        	<li><a href="/openhds/identification-book.report" target="_blank">Identification Book</a></li>
+			        	<li><a href="/openhds/temporary-identification.report" target="_blank">Temporary Identification</a></li>
+			        	<li><a href="/openhds/dhis/dhisexport.faces" target="_blank">Export to DHIS</a></li>
+			        </ul>
+			        </c:if>
+		    	</li>
+	    	</sec:ifAllGranted>
+	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
+			    <li>
+			        <h:commandLink value="UTILITY ROUTINES" >
+			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+			        </h:commandLink>
+			        <c:if test="#{navController.showUtilities}" >
+		        	<ul>
+		        	    <li><h:commandLink value="#{msg.navBarDataExtensions}" action="#{extensionCrud.createSetup}" /></li>
+			        	<li><h:commandLink value="#{msg.navBarIndivHistory}" action="individualHistory_flow" /></li>
+			        	<li><h:commandLink value="#{msg.navBarModifyGroupHead}" action="modifyHOH_flow" /></li>
+			            <li><h:commandLink value="#{msg.navBarDeathGroupHead}" action="deathForHOH_flow" /></li>
+			            <li><h:commandLink value="#{msg.navBarFieldWorkers}" action="#{fieldWorkerCrud.createSetup}" /></li>
+			            <li><h:commandLink value="#{msg.navBarLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}" /></li>
+			            <li><h:commandLink value="#{msg.navBarMergeIndividual}" action="#{individualMergeCrud.createSetup}" /></li>
+			            <li><h:commandLink value="#{msg.navBarRoundCodes}" action="#{roundCrud.createSetup}" /></li>
+			            <li><h:commandLink value="#{msg.navBarNotes}" action="#{noteCrud.createSetup}" /></li>
+			            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
+			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
+			   		    <li><h:commandLink value="#{msg.navBarWhitelistManagement}" action="#{whitelistCrud.createSetup}" /></li>
+			   		    <li><h:commandLink value="#{msg.navBarStudyDocument}" action="studyDocument_create" /></li>
+			    		  <li>
+			   		    	<h:outputLink value="/openhds/validationRoutine">
+			   		    		<h:outputText value="Validation Routine" />
+			   		    	</h:outputLink>
+			   		    </li>
+			    	</ul>
+			    	</c:if>
+			    </li>
+		    </sec:ifAllGranted>
+		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
+			    <li>
+			        <h:commandLink value="CONFIGURATION" >
+			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
+			        </h:commandLink>
+			        <c:if test="#{navController.showConfiguration}" >
+		        	<ul>
+			    		  <li>
+			   		    	<h:outputLink value="/openhds/database-config">
+			   		    		<h:outputText value="Database" />
+			   		    	</h:outputLink>
+			   		    </li>
+			    	</ul>
+			    	</c:if>
+			    </li>
+		    </sec:ifAllGranted>
+	    </ul>
+    </h:form>
+</ui:composition>
