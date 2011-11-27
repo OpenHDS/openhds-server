@@ -100,7 +100,7 @@ public class DatabaseConfigBean {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
 			return;
 		}
-		jsfService.addMessage("Database Configuration updated successfully. Redeploy the web application for it to take effect.");
+		jsfService.addMessage("Database Configuration updated successfully. Redeploy the web application for changes to take effect.");
 	}
 	
 	public boolean executeScript() {

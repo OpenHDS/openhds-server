@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 
@@ -75,8 +76,38 @@
 			This project is supported by the generous contributions of the IDRC
 			<a href="http://svn.rcg.usm.maine.edu/redmine/projects/show/openhds" title="Site">Project Website</a> | <a href="#" title="License">License</a> | <a href="http://svn.rcg.usm.maine.edu/redmine/repositories/show/openhds" title="Repository">Code Repository</a>
 		</div>
-
-
-
     </body>
+   	<o:popupLayer id="popupWindowForLocType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForLocType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Location Type valid values:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.locationTypeConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForDataStatus"
+            width="30%"
+            height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForDataStatus').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Data Status valid values:</h3>
+			<ul>
+				<li>#{siteProperties.dataStatusPendingCode} - Pending</li>
+				<li>#{siteProperties.dataStatusValidCode} - Valid</li>
+				<li>#{siteProperties.dataStatusVoidCode} - Void</li>
+				<li>#{siteProperties.dataStatusWarningCode} - Warning</li>
+				<li>#{siteProperties.dataStatusClosedCode} - Closed</li>
+				<li>#{siteProperties.dataStatusFatalCode} - Fatal</li>
+			</ul>
+	   	</div>
+	</o:popupLayer>	
 </html>

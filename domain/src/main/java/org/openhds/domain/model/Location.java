@@ -10,9 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.value.extension.ExtensionConstraint;
 
@@ -46,11 +44,6 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     @ExtensionConstraint(constraint="locationTypeConstraint", message="Invalid Value for location type",allowNull=true)
     @Description(description="The type of Location.")
     String locationType;
-    
-	@ManyToOne
-    @CheckEntityNotVoided
-    @CheckIndividualNotUnknown
-    Individual locationHead;
     
     int numberOfHouseholds;
     
@@ -86,14 +79,6 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     public String toString() {
         return locationName;
     }
-
-	public Individual getLocationHead() {
-		return locationHead;
-	}
-
-	public void setLocationHead(Individual locationHead) {
-		this.locationHead = locationHead;
-	}
 
 	public int getNumberOfHouseholds() {
 		return numberOfHouseholds;

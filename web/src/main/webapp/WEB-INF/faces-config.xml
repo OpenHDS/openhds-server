@@ -13,16 +13,6 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>adultvpm_create</from-outcome>
-			<to-view-id>/adultvpm/create.faces</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>adultvpm_edit</from-outcome>
-			<to-view-id>/adultvpm/edit.faces</to-view-id>
-			<redirect />		
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>demreports</from-outcome>
 			<to-view-id>/demographic.report</to-view-id>
 			<redirect />
@@ -252,16 +242,6 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>neonatalvpm_create</from-outcome>
-			<to-view-id>/neonatalvpm/create.faces</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>neonatalvpm_edit</from-outcome>
-			<to-view-id>/neonatalvpm/edit.faces</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>pregnancyobservation_list</from-outcome>
 			<to-view-id>/pregnancyobservation/create.faces</to-view-id>
 			<redirect />
@@ -290,16 +270,6 @@
 			<from-outcome>membership_edit</from-outcome>
 			<to-view-id>/membership/edit.faces</to-view-id>
 			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>adultvpm_create</from-outcome>
-			<to-view-id>/adultvpm/create.faces</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>adultvpm_edit</from-outcome>
-			<to-view-id>/adultvpm/edit.faces</to-view-id>
-			<redirect />		
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>note_create</from-outcome>
@@ -460,16 +430,6 @@
 			<from-outcome>update_flow</from-outcome>
 			<to-view-id>/update.flow</to-view-id>
 			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>vaccination_create</from-outcome>
-			<to-view-id>/vaccination/create.faces</to-view-id>
-			<redirect />
-		</navigation-case>	
-		<navigation-case>
-			<from-outcome>vaccination_edit</from-outcome>
-			<to-view-id>/vaccination/edit.faces</to-view-id>
-			<redirect />		
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>visit_list</from-outcome>

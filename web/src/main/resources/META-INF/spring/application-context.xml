@@ -25,6 +25,14 @@
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
                 
+    <!-- pulls values from the site-config.properties file and used in building the database for site specific requirements -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="location">
+            <value>classpath:location-levels.properties</value>
+        </property>
+    </bean>   
+                           
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
 			<bean class="org.openhds.web.security.AuthenticationSuccessHandler">
@@ -40,6 +48,9 @@
 			</bean>
    		</property>
 	</bean>
+	
+	    <!-- annotation-driven configuration -->
+    <context:component-scan base-package="org.openhds" />
 	
 	<bean id="prefLocale" class="org.openhds.web.util.Locale" >
         <property name="locale" value="English" />
@@ -62,11 +73,50 @@
         <security:intercept-url pattern="/webservice/ddiGenerator" access="ROLE_AUTHENTICATED"/>
         <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
     </security:http>
+    
+    <bean id="calendarConverter" class="org.openhds.web.cvt.CalendarConverter">
+        <property name="dateFormat" value="#{siteProperties.dateFormat}" />
+    </bean>
+    
+    <!-- Autocomplete converters -->
+    <bean id="fieldWorkerExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
+        <constructor-arg ref="fieldWorkerDao" />
+        <constructor-arg value="org.openhds.domain.model.FieldWorker" />
+        <constructor-arg value="extId" />
+    </bean>
+    
+    <bean id="locationExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
+        <constructor-arg ref="locationDao" />
+        <constructor-arg value="org.openhds.domain.model.Location" />
+        <constructor-arg value="extId" />
+    </bean>
+    
+    <bean id="locationHierarchyExtIdConverter" class="org.openhds.web.cvt.LocationHierarchyConverter">
+        <property name="genericDao" ref="genericDao" />
+    </bean>
 	
 	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="fieldWorkerDao" />
         <constructor-arg value="org.openhds.domain.model.FieldWorker" />
         <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="locationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="locationDao" />
+        <constructor-arg value="org.openhds.domain.model.Location" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="locationHierarchyConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="locationHierarchyDao" />
+        <constructor-arg value="org.openhds.domain.model.LocationHierarchy" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="noteConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+    	<constructor-arg ref="noteDao" />
+    	<constructor-arg value="org.openhds.domain.model.Note" />
+    	<constructor-arg value="java.lang.String" />
     </bean>
     
     <bean id="userConverter" class="org.openhds.web.cvt.EntityConverterImpl">
@@ -103,6 +153,27 @@
         <property name="service" ref="fieldWorkerService" />
     </bean>
     
+    <bean id="locationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.LocationCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Location" />
+        <property name="dao" ref="locationDao" />
+        <property name="converter" ref="locationConverter" />
+        <property name="siteProperties" ref="siteProperties" />
+        <property name="service" ref="locationHierarchyService" />
+    </bean>
+    
+    <bean id="locationHierarchyCrud" parent="baseCrud" class="org.openhds.web.crud.impl.LocationHierarchyCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.LocationHierarchy" />
+        <property name="dao" ref="locationHierarchyDao" />
+        <property name="converter" ref="locationHierarchyConverter" />
+        <property name="service" ref="locationHierarchyService" />
+    </bean>
+    
+    <bean id="noteCrud" parent="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl">
+    	<constructor-arg value="org.openhds.domain.model.Note" />
+    	<property name="dao" ref="noteDao" />
+    	<property name="converter" ref="noteConverter" />
+    </bean>
+    
     <bean id="userCrud" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
         <constructor-arg value="org.openhds.model.User" />
         <property name="dao" ref="userDao" />
@@ -117,6 +188,37 @@
 		<property name="dbPassword" value="${dbPass}"/>
 		<property name="dbDialect" value="${hibernateDialect}"/>
 		<property name="jsfService" ref="jsfService" />
-	 </bean>
+	</bean>
+	
+	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
+		<property name="jsfService" ref="jsfService" />
+		<property name="levelSetter" ref="locationLevelsSetter" />
+		<property name="level1"><value>${locationHierarchyLevel1}</value></property>
+		<property name="level2"><value>${locationHierarchyLevel2}</value></property>
+		<property name="level3"><value>${locationHierarchyLevel3}</value></property>
+		<property name="level4"><value>${locationHierarchyLevel4}</value></property>
+		<property name="level5"><value>${locationHierarchyLevel5}</value></property>
+		<property name="level6"><value>${locationHierarchyLevel6}</value></property>
+		<property name="level7"><value>${locationHierarchyLevel7}</value></property>
+		<property name="level8"><value>${locationHierarchyLevel8}</value></property>
+		<property name="level9"><value>${locationHierarchyLevel9}</value></property>
+	</bean>
+	
+	<bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl">
+    	<property name="genericDao" ref="genericDao" />
+        <property name="locationLevels">
+        	<props>
+            	<prop key="1">${locationHierarchyLevel1}</prop>
+                <prop key="2">${locationHierarchyLevel2}</prop>
+                <prop key="3">${locationHierarchyLevel3}</prop>
+                <prop key="4">${locationHierarchyLevel4}</prop>
+                <prop key="5">${locationHierarchyLevel5}</prop>
+                <prop key="6">${locationHierarchyLevel6}</prop>
+                <prop key="7">${locationHierarchyLevel7}</prop>
+                <prop key="8">${locationHierarchyLevel8}</prop>
+                <prop key="9">${locationHierarchyLevel9}</prop>
+            </props>
+         </property>
+    </bean>
    
 </beans>

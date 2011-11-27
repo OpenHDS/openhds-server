@@ -12,18 +12,17 @@
 		
             <ui:define name="display">
             
-            	<h:outputText value="#{navController.breadcrumbTrail} > Database" />
+            	<h:outputText value="#{navController.breadcrumbTrail} > #{msg.dbName}" />
             
-                <h1>Database Configuration</h1>
+                <h1>#{msg.dbConfig}</h1>
                 <h:messages id="successInfo" globalOnly="true" />
                 <h:form>
                 
-                	<h:outputText value="This is a one time configuration option. Do not modify these settings with live data. Doing so is at your own risk." />
-                	<h:outputText value="Before proceeding, ensure that the database name has already been created." />
+                	<h:outputText value="#{msg.dbName}:" />
                                 
                     <h:panelGrid columns="4">
                        
-                        <h:outputText value="Database Type:"/>
+                        <h:outputText value="#{msg.dbType}:"/>
                  		<h:selectOneRadio id="type" value="#{databaseConfig.dbType}" onchange="submit()" immediate="true" valueChangeListener="#{databaseConfig.updateType}">
    							<f:selectItem itemValue="HSQL" itemLabel="HSQL" />
 						   	<f:selectItem itemValue="MYSQL" itemLabel="MYSQL" />
@@ -32,27 +31,27 @@
 						<h:message for="type" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						<h:outputText />
                     
-                    	<h:outputText value="Username:"/>
+                    	<h:outputText value="#{msg.username}:"/>
                         <h:inputText id="user" value="#{databaseConfig.dbUsername}" converter="#{defaultConverter}" />
                         <h:message for="user" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     	<h:outputText />
                     
-                    	<h:outputText value="Password:"/>
+                    	<h:outputText value="#{msg.password}:"/>
                         <h:inputText id="password" value="#{databaseConfig.dbPassword}" converter="#{defaultConverter}" />
                         <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText />
                         
-                        <h:outputText value="Url:"/>
+                        <h:outputText value="#{msg.dbUrl}:"/>
                         <h:inputText id="url" value="#{databaseConfig.dbUrl}" converter="#{defaultConverter}" size="50" disabled="true" />
                         <h:message for="url" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     	<h:commandButton action="#{databaseConfig.editUrl}" value="Edit" />
                     
-                    	<h:outputText value="Driver:"/>
+                    	<h:outputText value="#{msg.dbDriver}:"/>
                         <h:inputText id="driver" value="#{databaseConfig.dbDriver}" converter="#{defaultConverter}" disabled="true" size="50" />
                         <h:message for="driver" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText />
                         
-                        <h:outputText value="Dialect:"/>
+                        <h:outputText value="#{msg.dbDialect}:"/>
                         <h:inputText id="dialect" value="#{databaseConfig.dbDialect}" converter="#{defaultConverter}" disabled="true" size="50" />
                         <h:message for="dialect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText /> 

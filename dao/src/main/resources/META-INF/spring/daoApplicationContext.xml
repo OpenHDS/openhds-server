@@ -17,14 +17,6 @@
         http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
         
    <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
-        
-    <!-- pulls values from the site-config.properties file and used in building the database for site specific requirements -->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="location">
-            <value>classpath:site-config.properties</value>
-        </property>
-    </bean>
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${dbDriver}"/>
@@ -211,22 +203,5 @@
     <bean id="noteDao" parent="baseDao" >
     	<constructor-arg value="org.openhds.domain.model.Note" />
     </bean>
-        
-    <bean id="locationLevelsSetter" class="org.openhds.dao.util.LocationLevelsSetter">
-    	<property name="genericDao" ref="genericDao" />
-        <property name="locationLevels">
-        	<props>
-            	<prop key="1">${openhds.locationHierarchyLevel1}</prop>
-                <prop key="2">${openhds.locationHierarchyLevel2}</prop>
-                <prop key="3">${openhds.locationHierarchyLevel3}</prop>
-                <prop key="4">${openhds.locationHierarchyLevel4}</prop>
-                <prop key="5">${openhds.locationHierarchyLevel5}</prop>
-                <prop key="6">${openhds.locationHierarchyLevel6}</prop>
-                <prop key="7">${openhds.locationHierarchyLevel7}</prop>
-                <prop key="8">${openhds.locationHierarchyLevel8}</prop>
-                <prop key="9">${openhds.locationHierarchyLevel9}</prop>
-            </props>
-         </property>
-    </bean>
-	
+
 </beans>

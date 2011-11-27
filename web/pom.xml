@@ -22,26 +22,6 @@
     
   <dependencies>
   	<dependency>
-    	<groupId>org.springframework.webflow</groupId>
-        <artifactId>spring-binding</artifactId>
-        <version>${org.springframework.swf.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.springframework.webflow</groupId>
-        <artifactId>spring-js</artifactId>
-        <version>${org.springframework.swf.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.springframework.webflow</groupId>
-        <artifactId>spring-webflow</artifactId>
-        <version>${org.springframework.swf.version}</version>  
-    </dependency>
-    <dependency>
-    	<groupId>org.springframework.webflow</groupId>
-        <artifactId>spring-faces</artifactId>
-        <version>${org.springframework.swf.version}</version>
-    </dependency>
-  	<dependency>
 		<groupId>javax.faces</groupId>
 		<artifactId>jsf-api</artifactId>
 		<version>1.2_13</version>

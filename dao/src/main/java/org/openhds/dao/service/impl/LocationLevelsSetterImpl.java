@@ -1,10 +1,11 @@
-package org.openhds.dao.util;
+package org.openhds.dao.service.impl;
 
 import java.util.Properties;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.dao.service.LocationLevelsSetter;
 import org.openhds.domain.model.LocationHierarchyLevel;
 
-public class LocationLevelsSetter {
+public class LocationLevelsSetterImpl implements LocationLevelsSetter {
 	
 	GenericDao genericDao;
 	
@@ -20,6 +21,10 @@ public class LocationLevelsSetter {
         			entity.setKeyIdentifier(i);
         			entity.setName(s);
             		genericDao.create(entity);
+        		}
+        		else {
+        			item.setName(s);
+        			genericDao.update(item);
         		}
     		}    			
     	}

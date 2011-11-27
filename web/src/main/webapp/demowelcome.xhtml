@@ -19,7 +19,24 @@
 	                <h1>OpenHDS</h1>                
 					<h3>Getting Started...</h3>
 					<p>
-	                	<h:commandLink styleClass="welcome-link" value="Database" action="#{siteProperties.getBaselineForm}" /> - Configure Database
+						<h:outputLink value="/openhds/database-config">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
+			   		    </h:outputLink>
+	                </p>
+	                <p>
+	                	<h:outputLink value="/openhds/location-levels">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
+			   		    </h:outputLink>
+	                </p>
+	                 <p>
+	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
+	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+	                	</h:commandLink>
+	                </p>
+	                <p>
+	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
+	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+	                	</h:commandLink>
 	                </p>
 	                <p>
 	                	<h:commandLink styleClass="welcome-link" value="BASELINE" action="#{siteProperties.getBaselineForm}" /> - Enter initial enumeration data

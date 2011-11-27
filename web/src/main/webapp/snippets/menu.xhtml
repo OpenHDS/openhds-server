@@ -103,9 +103,14 @@
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >
 		        	<ul>
-			    		  <li>
+			    		<li>
 			   		    	<h:outputLink value="/openhds/database-config">
-			   		    		<h:outputText value="Database" />
+			   		    		<h:outputText value="#{msg.dbName}" />
+			   		    	</h:outputLink>
+			   		    </li>
+			   		    <li>
+			   		    	<h:outputLink value="/openhds/location-levels">
+			   		    		<h:outputText value="#{msg.locationLevelsName}" />
 			   		    	</h:outputLink>
 			   		    </li>
 			    	</ul>

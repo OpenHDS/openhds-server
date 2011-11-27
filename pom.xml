@@ -17,9 +17,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <openhdsVersion>${project.version}</openhdsVersion>
     <org.springframework.version>3.0.3.RELEASE</org.springframework.version>
+	<org.springframework.swf.version>2.0.9.RELEASE</org.springframework.swf.version>
     <org.hibernate.core.version>3.5.3-Final</org.hibernate.core.version>
     <org.hibernate.annotation.version>3.5.3-Final</org.hibernate.annotation.version>
     <org.hibernate.validator.version>4.1.0.Final</org.hibernate.validator.version>
+	<hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
   </properties>
   
   <modules>
@@ -164,6 +166,31 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-web</artifactId>
         <version>${org.springframework.version}</version>
+    </dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${org.springframework.version}</version>
+    </dependency>
+		<dependency>
+    	<groupId>org.springframework.webflow</groupId>
+        <artifactId>spring-binding</artifactId>
+        <version>${org.springframework.swf.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework.webflow</groupId>
+        <artifactId>spring-js</artifactId>
+        <version>${org.springframework.swf.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework.webflow</groupId>
+        <artifactId>spring-webflow</artifactId>
+        <version>${org.springframework.swf.version}</version>  
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework.webflow</groupId>
+        <artifactId>spring-faces</artifactId>
+        <version>${org.springframework.swf.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.hibernate</groupId>
