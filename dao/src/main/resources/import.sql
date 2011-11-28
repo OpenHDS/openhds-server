@@ -35,7 +35,7 @@ INSERT INTO role_privileges (role_uuid, privilege_uuid) VALUES ('ROLE4', 'PRIVIL
 INSERT INTO role_privileges (role_uuid, privilege_uuid) VALUES ('ROLE4', 'PRIVILEGE8')
 
 -- Defined Admin user
-INSERT INTO user (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) VALUES ('User 1', 'FirstName', 'LastName', 'Administrator', 'Administrator User', 'admin', 'test', 0, false)
+INSERT INTO user (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) VALUES ('User 1', 'OpenHDS', 'Administrator', 'Administrator', 'Administrator User', 'admin', 'test', 0, false)
 INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 1', 'ROLE1')
 INSERT INTO user (uuid, firstName, lastName, fullName, description, username, password, lastLoginTime, deleted) VALUES ('User 2', 'Test', 'Account', 'Test Account', 'Test User Account', 'test', 'test', 0, false)
 INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 2', 'ROLE4')

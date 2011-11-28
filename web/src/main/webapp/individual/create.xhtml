@@ -1,0 +1,107 @@
+<ui:composition template="/templates/default.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://openfaces.org/"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+    <ui:define name="title">OpenHDS - Create Individual</ui:define>
+
+	<ui:param name="crud" value="#{individualCrud}" />
+	
+	<ui:param name="hideTabBar" value="#{flowScope != null}" />
+	
+	<ui:define name="listing">
+		<ui:include src="list.xhtml" />
+	</ui:define>
+    
+    <ui:define name="display">
+    
+    	<h:outputText value="#{navController.breadcrumbTrail}" />	
+
+        <c:choose>
+            <c:when test="#{flowScope.baselineAddSG}">
+                <h1>#{msg.socialGroupHead}</h1>
+            </c:when>
+            <c:otherwise>
+                <h1>#{msg.individualCreate}</h1>
+            </c:otherwise>
+        </c:choose>
+
+        <h:messages id="errors" globalOnly="true" />
+        <h:form id="individualForm">
+        	<h:panelGrid columns="4">
+                     	
+            	<c:if test="#{individualIdGenerator.generated == false}" >
+                	<h:outputText value="#{msg.individualId}:" />
+                	<h:outputText />
+                 	<h:inputText id="extId" value="#{individualCrud.item.extId}" converter="#{defaultConverter}" disabled="#{flowScope.pregnancyOutcome}" />
+					<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                </c:if>
+                
+                <h:outputText value="#{msg.individualFirstName}:"/>
+                <h:outputText />
+                <h:inputText id="firstName" value="#{individualCrud.item.firstName}" converter="#{defaultConverter}"/>
+                <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualMiddleName}:"/>
+                <h:outputText />
+                <h:inputText id="middleName" value="#{individualCrud.item.middleName}" converter="#{defaultConverter}"/>
+                <h:message for="middleName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualLastName}:"/>
+                <h:outputText />
+                <h:inputText id="lastName" value="#{individualCrud.item.lastName}" converter="#{defaultConverter}" />
+                <h:message for="lastName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+	            <h:outputText value="#{msg.individualGender}:"/>
+	            <img class="clickable" onclick="O$('popupWindowForSex').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+	            <h:inputText id="gender" value="#{individualCrud.item.gender}" converter="#{defaultConverter}" /> 
+	            <h:message for="gender" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					                        
+                <h:outputText value="#{msg.individualDob} (#{siteProperties.dateFormat})"/>
+                <h:outputText />
+                <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" />
+                <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+				<h:outputText value="#{msg.individualDobPartial}:"/>
+				<img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+				<h:inputText id="dobAspect" value="#{individualCrud.item.dobAspect}" converter="#{defaultConverter}" />
+				<h:message for="dobAspect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+                <h:outputText value="#{msg.individualMotherId} (Use #{siteProperties.unknownIdentifier} for Unknown)" />
+                <h:outputText />
+                <h:inputText styleClass="individual" autocomplete="off" id="mother" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />
+                <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualFatherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
+                <h:outputText />
+                <h:inputText styleClass="individual" autocomplete="off" id="father" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.father}" converter="#{individualExtIdConverter}" />
+                <h:message for="father" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.fieldWorkerId}:"/>
+                <h:outputText />
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" disabled="#{flowScope.updating or flowScope.pregnancyOutcome}" value="#{individualCrud.item.collectedBy}" title="#{msg.tipFWExtId}" converter="#{fieldWorkerExtIdConverter}"/>
+                <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            </h:panelGrid>
+            <script>
+                document.getElementById('individualForm:firstName').focus();
+                document.getElementById('individualForm:extId').focus();
+            </script>
+            <br />
+
+            <c:if test="#{flowScope == null}" >
+                <h:commandButton id ="create" action="#{individualCrud.create}" value="#{msg.lblCreate}"/>
+            </c:if>
+            <c:if test="#{flowScope != null}">
+                <h:commandButton rendered="#{flowScope.newIndiv}" id ="createIndividual" action="addChild" value="#{msg.lblCreate}"/>
+                <h:commandButton rendered="#{flowScope.baselineAddSG == true}" id ="addIndividual" action="addPerson" value="#{msg.lblCreate}"/>
+                <h:commandButton rendered="#{flowScope.editing}" id ="editIndividual" action="saveChild" value="Save Changes"/>
+                <h:commandButton rendered="#{flowScope.baselineAddIndiv == true}" id ="addMember" action="addMember" value="#{msg.lblCreate}"/>
+                <h:commandButton rendered="#{flowScope.regIndivToSg}" id="createIndividual" action="createIndividual" value="#{msg.lblCreate}"/>
+                <h:commandButton value="Cancel" immediate="true" action="cancel" />
+            </c:if>
+        </h:form>
+    </ui:define>
+</ui:composition>

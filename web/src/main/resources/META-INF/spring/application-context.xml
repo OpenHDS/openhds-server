@@ -85,6 +85,12 @@
         <constructor-arg value="extId" />
     </bean>
     
+    <bean id="individualExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
+        <constructor-arg ref="individualDao" />
+        <constructor-arg value="org.openhds.domain.model.Individual" />
+        <constructor-arg value="extId" />
+    </bean>
+        
     <bean id="locationExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
         <constructor-arg ref="locationDao" />
         <constructor-arg value="org.openhds.domain.model.Location" />
@@ -94,10 +100,23 @@
     <bean id="locationHierarchyExtIdConverter" class="org.openhds.web.cvt.LocationHierarchyConverter">
         <property name="genericDao" ref="genericDao" />
     </bean>
+    
+    <bean id="optionalIndividualExtIdConverter" class="org.openhds.web.cvt.OptionalEntityPropertyConverterImpl">
+        <constructor-arg ref="individualDao" />
+        <constructor-arg value="org.openhds.domain.model.Individual" />
+        <constructor-arg value="extId" />
+    </bean>
 	
+	<!-- Entity Converters -->
 	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="fieldWorkerDao" />
         <constructor-arg value="org.openhds.domain.model.FieldWorker" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="individualConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="individualDao" />
+        <constructor-arg value="org.openhds.domain.model.Individual" />
         <constructor-arg value="java.lang.String" />
     </bean>
     
@@ -141,7 +160,7 @@
         </property>
     </bean> 
     
-    <bean id ="entityValidator" class="org.openhds.web.service.impl.EntityValidationServiceImpl">
+    <bean id="entityValidator" class="org.openhds.web.service.impl.EntityValidationServiceImpl">
     	<constructor-arg ref="siteProperties" />
     	<constructor-arg ref="jsfService" />
     </bean>
@@ -169,6 +188,14 @@
         <property name="dao" ref="fieldWorkerDao" />
         <property name="converter" ref="fieldWorkerConverter" />
         <property name="service" ref="fieldWorkerService" />
+    </bean>
+    
+    <bean id="individualCrud" parent="baseCrud" class="org.openhds.web.crud.impl.IndividualCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Individual" />
+        <property name="dao" ref="individualDao" />
+        <property name="converter" ref="individualConverter" />
+        <property name="entityValidator" ref="entityValidator" />
+        <property name="service" ref="individualService"></property>
     </bean>
     
     <bean id="locationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.LocationCrudImpl">

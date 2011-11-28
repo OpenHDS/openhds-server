@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<head>
+    </head>
+    
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Create Note</ui:define>
+		
+			<ui:param name="crud" value="#{noteCrud}" />
+			
+            <ui:define name="listing">
+                <ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>#{msg.noteCreate}</h1>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form>
+                    <h:panelGrid columns="3">
+                       
+                    	<h:outputText value="#{msg.fieldWorkerId}:"/>
+                        <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{noteCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+                        <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>       
+                    
+                    	<h:outputText value="#{msg.noteDescription}:"/>
+                        <h:inputTextarea id="notes" value="#{noteCrud.item.description}" rows="5" cols="17" converter="#{defaultConverter}" />
+                        <h:message for="notes" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton action="#{noteCrud.create}" value="#{msg.lblCreate}" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

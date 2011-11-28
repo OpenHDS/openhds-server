@@ -77,11 +77,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Birth date of the individual.")
     Calendar dob;
-    
-    @ExtensionConstraint(constraint="workStatusConstraint", message="Invalid Value for work status", allowNull=true)
-    @Description(description="The work status of the individual.")
-    String workStatus;
-   
+       
 	// Gender seems like a reasonable constraint to enforce
     // But since there is a predefine unknown Individual, there is no way
     // currently to masquerade this unknown individual as both male and female
@@ -193,14 +189,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         this.extId = extId;
     }
     
-    public String getWorkStatus() {
-		return workStatus;
-	}
-
-	public void setWorkStatus(String workStatus) {
-		this.workStatus = workStatus;
-	}
-
     /**
      * The Set of residencies is annotated with OrderBy on start date
      * This annotation will order the set of residencies for this individual by start

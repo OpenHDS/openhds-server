@@ -77,6 +77,21 @@
 			<a href="http://svn.rcg.usm.maine.edu/redmine/projects/show/openhds" title="Site">Project Website</a> | <a href="#" title="License">License</a> | <a href="http://svn.rcg.usm.maine.edu/redmine/repositories/show/openhds" title="Repository">Code Repository</a>
 		</div>
     </body>
+    <o:popupLayer id="popupWindowForSex"
+        	 width="30%"
+        	 height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForSex').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Valid values:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.genderConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>
    	<o:popupLayer id="popupWindowForLocType"
              width="30%"
              height="30%">
@@ -91,6 +106,21 @@
 				</c:forEach>
 			</ul>
     	</div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForDobAspect"
+			width="30%"
+	        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForDobAspect').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Dob Aspect valid values:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.dobAspectConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+	    </div>
 	</o:popupLayer>
 	<o:popupLayer id="popupWindowForDataStatus"
             width="30%"
