@@ -3,7 +3,6 @@ package org.openhds.web.beans;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
-
 import org.openhds.dao.service.LocationLevelsSetter;
 import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.web.service.JsfService;
@@ -21,7 +20,6 @@ public class LocationLevelConfigBean {
 	String level8;
 	String level9;
 
-	LocationLevelsSetter levelSetter;
 	JsfService jsfService;
 
 	public void create() {
@@ -34,21 +32,7 @@ public class LocationLevelConfigBean {
 		properties.put("locationHierarchyLevel6", level6);
 		properties.put("locationHierarchyLevel7", level7);
 		properties.put("locationHierarchyLevel8", level8);
-		properties.put("locationHierarchyLevel9", level9);
-		
-		Properties levelProp = new Properties();
-		levelProp.put(1, level1);
-		levelProp.put(2, level2);
-		levelProp.put(3, level3);
-		levelProp.put(4, level4);
-		levelProp.put(5, level5);
-		levelProp.put(6, level6);
-		levelProp.put(7, level7);
-		levelProp.put(8, level8);
-		levelProp.put(9, level9);
-		
-		levelSetter.setLocationLevels(levelProp);
-		
+		properties.put("locationHierarchyLevel9", level9);	
 		writePropertyFile(properties);
 	}
 	
@@ -81,15 +65,7 @@ public class LocationLevelConfigBean {
 		}
 		jsfService.addMessage("Location Level Configuration updated successfully. Redeploy the web application for changes to take effect.");
 	}
-	
-	public LocationLevelsSetter getLevelSetter() {
-		return levelSetter;
-	}
-
-	public void setLevelSetter(LocationLevelsSetter levelSetter) {
-		this.levelSetter = levelSetter;
-	}
-	
+		
 	public JsfService getJsfService() {
 		return jsfService;
 	}

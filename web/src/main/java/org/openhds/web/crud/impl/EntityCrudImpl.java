@@ -21,7 +21,7 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
 import org.openhds.web.cvt.EntityConverter;
-import org.openhds.web.service.EntityValidationService;
+import org.openhds.controller.service.EntityValidationService;
 import org.openhds.web.service.JsfService;
 import org.openhds.web.service.WebFlowService;
 import org.openhds.web.ui.NavigationMenuBean;
@@ -89,6 +89,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 * Service that provides the business logic for creating, editing and deleting entities
 	 */
 	protected EntityService entityService;
+	
+	@SuppressWarnings("unchecked")
 	protected EntityValidationService entityValidationService;
 
 	private String navigateTo;
@@ -520,6 +522,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 			return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <S> boolean validateEntity(S entity, MessageContext messageContext) {
 		try {
 			entityValidationService.validateEntity(entity);
@@ -549,7 +552,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 * @param id The id of the pregnancy outcome to retrieve from the db
 	 * @return
 	 */
-	//@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
  	public boolean editByUuid(String id, MessageContext messageContext) {
 		try {
 			entityItem = (T) entityService.read(entityItem.getClass(), id);
@@ -674,10 +677,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		this.properties = properties;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public EntityValidationService getEntityValidationService() {
 		return entityValidationService;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setEntityValidationService(EntityValidationService entityValidationService) {
 		this.entityValidationService = entityValidationService;
 	}

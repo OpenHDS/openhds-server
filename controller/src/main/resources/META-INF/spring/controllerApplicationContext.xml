@@ -117,18 +117,7 @@
 		    </bean>
 	    </property>
     </bean>
-	
-	<bean id="entityService" parent="baseTransactionBean">
-    	<property name="target">
-			<bean class="org.openhds.controller.service.impl.EntityServiceImpl">
-		        <constructor-arg ref="genericDao" />
-		        <constructor-arg ref="currentUser" />
-		        <constructor-arg ref="calendarUtil" />
-		        <constructor-arg ref="siteProperties" />
-	        </bean>
-        </property>
-    </bean> 
-		
+    		
 	<bean id="fieldWorkerService" parent="baseServiceBean">
 	 	<property name="target">
 	 		<bean class="org.openhds.controller.service.impl.FieldWorkerServiceImpl">

@@ -11,6 +11,7 @@ import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.User;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.controller.service.CurrentUser;
+import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.util.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,17 +28,20 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T>
  * @param <PK>
  */
+@SuppressWarnings("unchecked")
 public class EntityServiceImpl implements EntityService {
 	private GenericDao genericDao;
 	private CurrentUser currentUser;
 	private CalendarUtil calendarUtil;
 	private SitePropertiesService siteProperties;
+	private EntityValidationService classValidator;
 	
-	public EntityServiceImpl(GenericDao genericDao, CurrentUser currentUser, CalendarUtil calendarUtil, SitePropertiesService siteProperties) {
+	public EntityServiceImpl(GenericDao genericDao, CurrentUser currentUser, CalendarUtil calendarUtil, SitePropertiesService siteProperties, EntityValidationService classValidator) {
 		this.genericDao = genericDao;
 		this.currentUser = currentUser;
 		this.calendarUtil = calendarUtil;
 		this.siteProperties = siteProperties;
+		this.classValidator = classValidator;
 	}
 
 	@Transactional
@@ -60,7 +64,9 @@ public class EntityServiceImpl implements EntityService {
 				System.out.println(e.toString());
 			}
 		}
-		setStatusPending(entityItem);				
+		setStatusPending(entityItem);	
+		classValidator.validateEntity(entityItem);
+			
 		genericDao.create(entityItem);
 	}
 	
@@ -103,14 +109,15 @@ public class EntityServiceImpl implements EntityService {
 	
 	@Transactional
 	public <T> void save(T entityItem) throws ConstraintViolationException, SQLException {
-		setStatusPending(entityItem);		
+		setStatusPending(entityItem);	
+		classValidator.validateEntity(entityItem);
 		genericDao.update( genericDao.merge(entityItem) );
 	}
 
 	public <T> T read(Class<T> entityType, String id) {
 		return genericDao.read(entityType, id);
 	}
-	
+		
 	private <T> void setStatusVoided(T entityItem) {
 		if (entityItem instanceof AuditableCollectedEntity) {
 			((AuditableCollectedEntity)entityItem).setStatus(siteProperties.getDataStatusVoidCode());

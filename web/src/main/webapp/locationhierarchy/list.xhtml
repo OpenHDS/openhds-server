@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form>
+    	<div style="text-align:right;">
+        	<div style="float:left;">
+            	<h:commandButton immediate="true" action="#{locationHierarchyCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" />
+
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{locationHierarchyCrud}"/>
+				</ui:include>	
+            </div>
+        </div>
+          
+		<!-- Search Widget -->	
+		<ui:include src="/search/searchBox.xhtml">
+		     <ui:param name="crud" value="#{locationHierarchyCrud}"/>
+		</ui:include>	                
+          
+        <div>
+            <h:outputText escape="false" value="#{msg.locationHierarchyEmpty}" rendered="#{locationHierarchyCrud.pager.totalCount == 0}" />
+			<h:messages id="errors" globalOnly="true" />
+            <h:panelGroup rendered="#{fn:length(locationHierarchyCrud.pagedItems) > 0}">
+            	<h:dataTable value="#{locationHierarchyCrud.pagedItems}" var="loc"
+                			 width="100%" columnClasses="center,center,center,width3">
+                	<h:column headerClass="width1">
+                    	<f:facet name="header">
+                        	<h:outputText value="#{msg.locationHierarchyId}" />
+                        </f:facet>
+                        <h:outputText value="#{loc.extId}" title = "#{msg.tipLocHierarchyExtId}" />
+                    </h:column>
+                    <h:column headerClass="width1">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.locationHierarchyParentName}" />
+                        </f:facet>
+                        <h:outputText value="#{loc.parent.name}" />
+                    </h:column>
+                    <h:column headerClass="width1">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.locationHierarchyChildName}" />
+                        </f:facet>
+                        <h:outputText value="#{loc.name}" />
+                    </h:column>
+                    <h:column headerClass="width3">
+                        <f:facet name="header">
+                            <h:outputText escape="false" value=""/>
+                        </f:facet>
+                        <h:commandLink immediate="true" action="#{locationHierarchyCrud.detailSetup}">
+                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                            <f:param name="itemId" value="#{loc.uuid}"/>
+                        </h:commandLink>
+                        <h:commandLink immediate="true" action="#{locationHierarchyCrud.editSetup}">
+                            <h:graphicImage style="border: 0;" title="details" value="/resources/icons/edit.ico" />
+                            <f:param name="itemId" value="#{loc.uuid}"/>
+                        </h:commandLink>
+                        <h:commandLink  action="#{locationHierarchyCrud.delete}">
+                            <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                            <f:param name="itemId" value="#{loc.uuid}"/>
+                       	  </h:commandLink>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+    	</div>
+	</h:form>
+</ui:composition>

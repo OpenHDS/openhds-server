@@ -47,7 +47,6 @@ INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hi
 
 -- Field Worker
 INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false)
-INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', false)
 
 -- Unknown Individual: This should always be pre-populated
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,workStatus,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','1', '1', '1900-12-19 15:07:43', NULL, NULL,'User 1','2009-12-19 15:07:43','P','1',NULL,NULL,NULL,false,'UnknownFieldWorker')

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Field Worker Details</ui:define>
+		
+			<ui:param name="crud" value="#{fieldWorkerCrud}" />
+			
+            <ui:define name="listing">
+                <ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>#{msg.fieldWorkerDetail}</h1>
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{msg.fieldWorkerId}:"/>
+                        <h:outputText value="#{fieldWorkerCrud.item.extId}" />
+                        <h:outputText value="#{msg.fieldWorkerFirstName}:"/>
+                        <h:outputText value="#{fieldWorkerCrud.item.firstName}" />
+                        <h:outputText value="#{msg.fieldWorkerLastName}:"/>
+                        <h:outputText value="#{fieldWorkerCrud.item.lastName}" />
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton action="#{fieldWorkerCrud.editSetup}" value="#{msg.lblEdit}">
+                        <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{fieldWorkerCrud.item.uuid}" />
+                    </h:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+
+
