@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Round Code Details</ui:define>
+		
+			<ui:param name="crud" value="#{roundCrud}" />
+			
+            <ui:define name="listing">
+				<ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+				<h1>#{msg.roundDetail}</h1>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form id="roundForm">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{msg.roundNumber}:"/>
+                        <h:outputText id="roundNum" value="#{roundCrud.item.roundNumber}" converter="#{defaultConverter}" />
+                        <h:outputText value="#{msg.roundStartDate}:"/>
+                        <h:outputText id="startDate" styleClass="date demo_jqui" value="#{roundCrud.item.startDate}" converter="#{calendarConverter}"/>
+                        <h:outputText value="#{msg.roundEndDate}:"/>
+                        <h:outputText id="endDate" styleClass="date demo_jqui" value="#{roundCrud.item.endDate}" converter="#{calendarConverter}"/>
+                        <h:outputText value="#{msg.roundRemarks}:"/>
+                        <h:outputText id="remarks" value="#{roundCrud.item.remarks}" />
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

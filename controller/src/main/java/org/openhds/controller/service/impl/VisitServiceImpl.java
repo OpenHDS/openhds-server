@@ -26,6 +26,8 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	public Visit evaluateVisit(Visit entityItem) throws ConstraintViolations {
+		
+		VisitGenerator visitGen = (VisitGenerator)generator;
 				
 		if (!checkValidRoundNumber(entityItem.getRoundNumber())) 
     		throw new ConstraintViolations("The Round Number specified is not a valid Round Number.");	
@@ -33,7 +35,7 @@ public class VisitServiceImpl implements VisitService {
 		if (generator.isGenerated())
 			return generateId(entityItem);
 		
-		generator.validateIdLength(entityItem.getExtId(), generator.getIdScheme());
+		generator.validateIdLength(entityItem.getExtId(), visitGen.getIdScheme());
 		
         return entityItem;
     }

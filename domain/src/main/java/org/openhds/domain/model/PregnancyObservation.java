@@ -13,14 +13,12 @@ import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckIndividualGenderFemale;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
-import org.openhds.domain.constraint.CheckRecordedDateGreaterThanInsertDate;
 import org.openhds.domain.constraint.Searchable;
 
 @Description(description="A Pregnancy Observation is used to monitor a " +
 		"pregnancy. It contains information about the mother who is pregnant, " +
 		"the date the pregnancy started, as well as the expected delivery date.")
 @Entity
-@CheckRecordedDateGreaterThanInsertDate
 @Table(name="pregnancyobservation")
 public class PregnancyObservation extends AuditableCollectedEntity implements Serializable {
 
@@ -70,5 +68,4 @@ public class PregnancyObservation extends AuditableCollectedEntity implements Se
 	public void setRecordedDate(Calendar recordedDate) {
 		this.recordedDate = recordedDate;
 	}
-
 }

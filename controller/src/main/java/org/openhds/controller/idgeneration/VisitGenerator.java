@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
 
 /**
@@ -15,12 +16,11 @@ import org.openhds.domain.model.Visit;
  * the id. 
  */
 
-public class VisitGenerator<T> extends Generator<T> {
+public class VisitGenerator<T> extends Generator<Visit> {
 
 	@Override
-	public String generateId(T entityItem) throws ConstraintViolations  {
+	public String generateId(Visit entityItem) throws ConstraintViolations  {
 				
-		Visit visit = (Visit)entityItem;
 		StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
@@ -34,7 +34,7 @@ public class VisitGenerator<T> extends Generator<T> {
 			Integer filter = fields.get(key);
 			
 			if (key.equals(IdGeneratedFields.VISIT_LOCID.toString())) {
-				String locId = visit.getVisitLocation().getExtId();
+				String locId = entityItem.getVisitLocation().getExtId();
 				
 				if (locId.length() >= filter) {
 				
@@ -52,18 +52,18 @@ public class VisitGenerator<T> extends Generator<T> {
 			}
 			else if (key.equals(IdGeneratedFields.VISIT_ROUND.toString())) {	
 				if (filter > 0) {	
-					String round = visit.getRoundNumber().toString();	
+					String round = entityItem.getRoundNumber().toString();	
 					sb.append(round);
 				}
 			}
 		}
 		
-		String locId = visit.getVisitLocation().getExtId();
-		HashMap<String, Integer> map = scheme.getFields();
-		int length = map.get(IdGeneratedFields.VISIT_LOCID.toString());
-		String bound = locId.substring(length, locId.length());
-		sb.append(bound);
-
+		extId = sb.toString();
+		if (scheme.getIncrementBound() > 0) 
+			sb.append(buildNumberWithBound(entityItem, scheme));
+		else
+			sb.append(buildNumber(Visit.class, sb.toString(), scheme.isCheckDigit()));
+		
 		if (scheme.isCheckDigit()) 
 			sb.append(generateCheckCharacter(sb.toString()));
 		
@@ -72,10 +72,36 @@ public class VisitGenerator<T> extends Generator<T> {
 		return sb.toString();
 	}
 
-	// not applicable for visit
 	@Override
-	public String buildNumberWithBound(T entityItem, IdScheme scheme) throws ConstraintViolations {
-		return null;
+	public String buildNumberWithBound(Visit entityItem, IdScheme scheme) throws ConstraintViolations {
+		Visit visit = new Visit();
+		
+		Integer size = 1;
+		String result = "";
+		
+		// get length of the incrementBound
+		Integer incBound = scheme.getIncrementBound();
+		int incBoundLength = incBound.toString().length();
+
+		while (visit != null) {
+			
+			result = "";
+			String tempExtId = "";
+			
+			if (extId != null)
+				tempExtId = extId;
+			
+			while (result.toString().length() < incBoundLength) {
+				if (result.toString().length()+ size.toString().length() < incBoundLength)
+					result += "0";
+				if (result.toString().length() + size.toString().length() == incBoundLength)
+					result = result.concat(size.toString());
+			}
+			tempExtId = tempExtId.concat(result);
+			visit = genericDao.findByProperty(Visit.class, "extId", tempExtId);
+			size++;
+		}
+		return result;
 	}
 	
 	public IdScheme getIdScheme() {

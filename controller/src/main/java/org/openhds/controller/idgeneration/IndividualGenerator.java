@@ -15,11 +15,11 @@ import org.openhds.domain.model.Individual;
  * the id. 
  */
 
-public class IndividualGenerator<T> extends Generator<T> {
+public class IndividualGenerator<T> extends Generator<Individual> {
 		
 	@SuppressWarnings("unchecked")
 	@Override
-	public String generateId(T entityItem) throws ConstraintViolations  {
+	public String generateId(Individual entityItem) throws ConstraintViolations  {
 		Individual individual = (Individual)entityItem;
 		StringBuilder sb = new StringBuilder();	
 		
@@ -93,7 +93,7 @@ public class IndividualGenerator<T> extends Generator<T> {
 		if (scheme.getIncrementBound() > 0) 
 			sb.append(buildNumberWithBound(entityItem, scheme));
 		else
-			sb.append(buildNumber((Class<T>) Individual.class, sb.toString(), scheme.isCheckDigit()));
+			sb.append(buildNumber(Individual.class, sb.toString(), scheme.isCheckDigit()));
 		
 		if (scheme.isCheckDigit()) 
 			sb.append(generateCheckCharacter(sb.toString()));
@@ -104,10 +104,9 @@ public class IndividualGenerator<T> extends Generator<T> {
 	}
 
 	@Override
-	public String buildNumberWithBound(T entityItem, IdScheme scheme) throws ConstraintViolations {
+	public String buildNumberWithBound(Individual entityItem, IdScheme scheme) throws ConstraintViolations {
 
 		Individual tempIndividual = new Individual();
-		Individual indiv = (Individual)entityItem;
 				
 		Integer size = 1;
 		String result = "";
@@ -129,7 +128,7 @@ public class IndividualGenerator<T> extends Generator<T> {
 			}
 			
 			if (extId == null)
-				tempExtId = indiv.getExtId().concat(result);
+				tempExtId = entityItem.getExtId().concat(result);
 			else
 				tempExtId = tempExtId.concat(result);
 			tempIndividual = genericDao.findByProperty(Individual.class, "extId", tempExtId);

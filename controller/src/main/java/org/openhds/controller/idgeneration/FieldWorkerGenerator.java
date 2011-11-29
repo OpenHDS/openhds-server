@@ -15,12 +15,11 @@ import org.openhds.domain.model.FieldWorker;
  * the id. 
  */
 
-public class FieldWorkerGenerator<T> extends Generator<T> {
+public class FieldWorkerGenerator<T> extends Generator<FieldWorker> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public String generateId(T entityItem) throws ConstraintViolations  {
-		FieldWorker fieldWorker = (FieldWorker)entityItem;
+	public String generateId(FieldWorker entityItem) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
 		
 		int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("FieldWorker"));
@@ -35,7 +34,7 @@ public class FieldWorkerGenerator<T> extends Generator<T> {
 			Integer filter = fields.get(key);
 			
 			if (key.equals(IdGeneratedFields.FIELDWORKER_FNAME.toString())) {
-				String fname = fieldWorker.getFirstName();
+				String fname = entityItem.getFirstName();
 				
 				if (fname.length() >= filter) {
 				
@@ -52,7 +51,7 @@ public class FieldWorkerGenerator<T> extends Generator<T> {
 							"specified in the id configuration.");
 			}
 			else if (key.equals(IdGeneratedFields.FIELDWORKER_LNAME.toString())) {
-				String lname = fieldWorker.getLastName();
+				String lname = entityItem.getLastName();
 				
 				if (lname.length() >= filter) {
 				
@@ -71,7 +70,7 @@ public class FieldWorkerGenerator<T> extends Generator<T> {
 		}
 
 		if (scheme.getIncrementBound() == 0)		
-			sb.append(buildNumber((Class<T>) FieldWorker.class, sb.toString(), scheme.isCheckDigit()));
+			sb.append(buildNumber(FieldWorker.class, sb.toString(), scheme.isCheckDigit()));
 		
 		if (scheme.isCheckDigit()) 
 			sb.append(generateCheckCharacter(sb.toString()));
@@ -81,7 +80,7 @@ public class FieldWorkerGenerator<T> extends Generator<T> {
 	
 	// not applicable for field worker 
 	@Override
-	public String buildNumberWithBound(T entityItem, IdScheme scheme) throws ConstraintViolations {
+	public String buildNumberWithBound(FieldWorker entityItem, IdScheme scheme) throws ConstraintViolations {
 		return null;
 	}
 }

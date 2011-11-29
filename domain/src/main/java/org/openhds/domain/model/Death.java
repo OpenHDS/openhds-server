@@ -53,19 +53,10 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @Description(description="Visit associated with the death, identified by external id.")
     Visit visitDeath;
-        
+    
     @Description(description="Age of death in number of days.")
     Long ageAtDeath;
-    
-    public Long getAgeAtDeath() {
-		return ageAtDeath;
-	}
-
-	public void setAgeAtDeath(Long ageAtDeath) {
-		//this.ageAtDeath = (this.getDeathDate().getTimeInMillis() - this.getIndividual().getDob().getTimeInMillis())/86400000;
-		this.ageAtDeath = ageAtDeath;
-	}
-
+            
     public Individual getIndividual() {
         return individual;
     }
@@ -106,6 +97,14 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     public void setVisitDeath(Visit visitDeath) {
         this.visitDeath = visitDeath;
     }
+    
+    public Long getAgeAtDeath() {
+		return ageAtDeath;
+	}
+
+	public void setAgeAtDeath(Long ageAtDeath) {
+		this.ageAtDeath = ageAtDeath;
+	}
     
     @Override
     public String toString() {

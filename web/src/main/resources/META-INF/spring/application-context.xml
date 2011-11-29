@@ -106,8 +106,32 @@
         <constructor-arg value="org.openhds.domain.model.Individual" />
         <constructor-arg value="extId" />
     </bean>
+    
+    <bean id="socialGroupExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
+        <constructor-arg ref="socialGroupDao" />
+        <constructor-arg value="org.openhds.domain.model.SocialGroup" />
+        <constructor-arg value="extId" />
+    </bean>
+    
+    <bean id="visitExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
+        <constructor-arg ref="visitDao" />
+        <constructor-arg value="org.openhds.domain.model.Visit" />
+        <constructor-arg value="extId" />
+    </bean>
 	
 	<!-- Entity Converters -->
+	<bean id="deathConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="deathDao" />
+        <constructor-arg value="org.openhds.domain.model.Death" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="extensionConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="extensionDao" />
+        <constructor-arg value="org.openhds.domain.model.ClassExtension" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+	
 	<bean id="fieldWorkerConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="fieldWorkerDao" />
         <constructor-arg value="org.openhds.domain.model.FieldWorker" />
@@ -138,9 +162,27 @@
     	<constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="pregnancyObservationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="pregnancyObservationDao" />
+        <constructor-arg value="org.openhds.domain.model.PregnancyObservation" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="roundConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="roundDao" />
+        <constructor-arg value="org.openhds.domain.model.Round" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="userConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="userDao" />
         <constructor-arg value="org.openhds.domain.model.User" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="visitConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="visitDao" />
+        <constructor-arg value="org.openhds.domain.model.Visit" />
         <constructor-arg value="java.lang.String" />
     </bean>
     
@@ -183,6 +225,22 @@
         <property name="entityValidationService" ref="entityValidator" />
     </bean>
     
+    <bean id="deathCrud" parent="baseCrud" class="org.openhds.web.crud.impl.DeathCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Death" />
+        <property name="dao" ref="deathDao" />
+        <property name="converter" ref="deathConverter" />
+        <property name="entityValidator" ref="entityValidator" />
+        <property name="service" ref="deathService" />
+    </bean>
+    
+    <bean id="extensionCrud" parent="baseCrud" class="org.openhds.web.crud.impl.ExtensionCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.ClassExtension" />
+        <property name="dao" ref="extensionDao" />
+        <property name="converter" ref="extensionConverter" />
+        <property name="service" ref="extensionService" />
+        <property name="entityValidator" ref="entityValidator" />
+    </bean>
+    
     <bean id="fieldWorkerCrud" parent="baseCrud" class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
         <constructor-arg value="org.openhds.domain.model.FieldWorker" />
         <property name="dao" ref="fieldWorkerDao" />
@@ -219,11 +277,35 @@
     	<property name="converter" ref="noteConverter" />
     </bean>
     
+    <bean id="pregnancyObservationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.PregnancyObservationCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.PregnancyObservation" />
+        <property name="dao" ref="pregnancyObservationDao" />
+        <property name="converter" ref="pregnancyObservationConverter" />
+        <property name="entityValidator" ref="entityValidator" />
+        <property name="service" ref="pregnancyService" />
+    </bean>
+    
+    <bean id="roundCrud" parent="baseCrud" class="org.openhds.web.crud.impl.RoundCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Round" />
+        <property name="dao" ref="roundDao" />
+        <property name="converter" ref="roundConverter" />
+        <property name="service" ref="roundService" />
+    </bean>
+    
     <bean id="userCrud" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
         <constructor-arg value="org.openhds.model.User" />
         <property name="dao" ref="userDao" />
         <property name="converter" ref="userConverter" />
         <property name="service" ref="userService" />
+    </bean>
+    
+    <bean id="visitCrud" parent="baseCrud" class="org.openhds.web.crud.impl.VisitCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Visit" />
+        <property name="dao" ref="visitDao" />
+        <property name="converter" ref="visitConverter" />
+        <property name="service" ref="visitService"></property>
+        <property name="extensionService" ref="extensionService"></property>
+        <property name="siteProperties" ref="siteProperties"></property>
     </bean>
     
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">

@@ -15,12 +15,11 @@ import org.openhds.domain.model.SocialGroup;
  * the id. 
  */
 
-public class SocialGroupGenerator<T> extends Generator<T> {
+public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public String generateId(T entityItem) throws ConstraintViolations  {
-		SocialGroup socialGroup = (SocialGroup)entityItem;
+	public String generateId(SocialGroup entityItem) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
@@ -36,7 +35,7 @@ public class SocialGroupGenerator<T> extends Generator<T> {
 			if (filter != null) {
 			
 				if (key.equals(IdGeneratedFields.SOCIALGROUP_NAME.toString())) {
-					String name = socialGroup.getGroupName();
+					String name = entityItem.getGroupName();
 					
 					if (name.length() >= filter) {
 					
@@ -59,7 +58,7 @@ public class SocialGroupGenerator<T> extends Generator<T> {
 		if (scheme.getIncrementBound() > 0) 
 			sb.append(buildNumberWithBound(entityItem, scheme));
 		else
-			sb.append(buildNumber((Class<T>) SocialGroup.class, sb.toString(), scheme.isCheckDigit()));
+			sb.append(buildNumber(SocialGroup.class, sb.toString(), scheme.isCheckDigit()));
 		
 		if (scheme.isCheckDigit()) 
 			sb.append(generateCheckCharacter(sb.toString()));
@@ -70,7 +69,7 @@ public class SocialGroupGenerator<T> extends Generator<T> {
 	}
 
 	@Override
-	public String buildNumberWithBound(T entityItem, IdScheme scheme) throws ConstraintViolations {
+	public String buildNumberWithBound(SocialGroup entityItem, IdScheme scheme) throws ConstraintViolations {
 
 		SocialGroup tempSocialGroup = new SocialGroup();
 		SocialGroup sg = (SocialGroup)entityItem;

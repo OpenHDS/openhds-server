@@ -1,6 +1,9 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,7 +23,7 @@ import org.openhds.domain.constraint.Searchable;
 		"data model i.e. Longitude, Latitude then it can be represented here. ")
 @Entity
 @Table(name="classExtension")
-public class ClassExtension implements Serializable  {
+public class ClassExtension implements Serializable {
 
 	private static final long serialVersionUID = 5217442538717720482L;
 
@@ -111,5 +114,15 @@ public class ClassExtension implements Serializable  {
 
 	public void setRoundNumber(Integer roundNumber) {
 		this.roundNumber = roundNumber;
+	}
+	
+	public List<String> getExtensionAnswers() {
+		List<String> output = new ArrayList<String>();
+		String[] array = answers.split(", ");
+		
+		for (String s : array)
+			output.add(s);
+		
+		return output;
 	}
 }

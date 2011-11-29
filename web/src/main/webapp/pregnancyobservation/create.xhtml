@@ -1,0 +1,51 @@
+<ui:composition template="/templates/default.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://openfaces.org/"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="title">OpenHDS - Create Pregnancy Observation</ui:define>
+
+	<ui:param name="crud" value="#{pregnancyObservationCrud}" />
+	
+    <ui:define name="listing">
+        <ui:include src="list.xhtml" />
+    </ui:define>
+    
+    <ui:define name="display">
+    
+    	<h:outputText value="#{navController.breadcrumbTrail}" />
+    
+        <h1>#{msg.pregnancyObservationCreate}</h1>
+        <h:messages id="errors" globalOnly="true" />
+        <h:form id="form">
+            <h:panelGrid columns="3">
+
+                <h:outputText value="#{msg.pregnancyObservationMotherId}:"/>
+                <h:inputText styleClass="individual" autocomplete="off" id="mother" value="#{pregnancyObservationCrud.item.mother}" disabled="#{flowScope != null}" converter="#{individualExtIdConverter}"/>
+                <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.pregnancyObservationEDD} (#{siteProperties.dateFormat})" />
+                <o:dateChooser id="deliveryDate" value="#{pregnancyObservationCrud.edd}" pattern="#{siteProperties.dateFormat}" />
+                <h:message for="deliveryDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.pregnancyObservationRecordedDate} (#{siteProperties.dateFormat})" />
+                <o:dateChooser id="recordedDate" value="#{pregnancyObservationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" />
+                <h:message for="recordedDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.fieldWorkerId}:"/>
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" converter="#{fieldWorkerExtIdConverter}" value="#{pregnancyObservationCrud.item.collectedBy}" />
+                <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            </h:panelGrid>
+            <script>
+            	document.getElementById('form:deliveryDate').focus();
+				document.getElementById('form:mother').focus();
+			</script>
+             <br />
+             <h:commandButton action="#{pregnancyObservationCrud.create}" value="#{msg.lblCreate}"/>
+         	<h:commandButton value="#{msg.lblCancel}" rendered="#{flowScope.updating}" immediate="true" action="cancel" />
+         </h:form>
+     </ui:define>
+</ui:composition>

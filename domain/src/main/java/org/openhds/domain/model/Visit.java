@@ -31,22 +31,22 @@ public class Visit extends AuditableCollectedEntity implements Serializable {
    
     @Searchable
     @Description(description="External Id of the visit. This id is used internally.")
-    private String extId;
+    String extId;
 
     @Searchable
     @ManyToOne
     @Description(description="Location that this visit is for.")
-    private Location visitLocation;
+    Location visitLocation;
     
     @NotNull
     @Past(message = "Visit date should be in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Date of the visit.")
-    private Calendar visitDate;
+    Calendar visitDate;
     
 	@CheckInteger(min=1)
 	@Description(description="Round number for the visit.")
-	private Integer roundNumber;
+	Integer roundNumber;
 	
     @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="entity")
     @Description(description="The assigned extension and their values specific for this entity.")
