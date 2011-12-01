@@ -1,7 +1,7 @@
 package org.openhds.controller.service;
 
 import java.sql.SQLException;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.PrivilegeConstants;
 
@@ -26,10 +26,10 @@ public interface EntityService {
 	 * @throws SQLException if the entity fails to be persisted
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	<T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolationException, SQLException;
+	<T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException;
 			
 	@Authorized({PrivilegeConstants.EDIT_ENTITY})
-	<T> void save(T entityItem) throws ConstraintViolationException, SQLException;
+	<T> void save(T entityItem) throws ConstraintViolations, SQLException;
 
 	/**
 	 * Read entity

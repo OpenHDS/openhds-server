@@ -3,7 +3,7 @@ package org.openhds.controller.service;
 import java.sql.SQLException;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
@@ -37,7 +37,7 @@ public interface SocialGroupService {
 	List<String> getSocialGroupExtIds(String term);
 
 	@Authorized({PrivilegeConstants.EDIT_ENTITY})
-	void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> memberships) throws ConstraintViolationException, SQLException, Exception;
+	void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> memberships) throws ConstraintViolations, SQLException, Exception;
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	SocialGroup findSocialGroupById(String socialGroupId, String msg) throws Exception; 

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.InMigrationService;
@@ -76,7 +75,7 @@ public class InMigrationServiceImpl implements InMigrationService {
 		}
 	}
 
-	private void checkIfResidencyIsValid(Residency residency) throws ConstraintViolationException, ConstraintViolations {
+	private void checkIfResidencyIsValid(Residency residency) throws ConstraintViolations {
 		residencyService.evaluateResidency(residency);
 	}
 	

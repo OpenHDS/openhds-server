@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.controller.exception.AuthorizationException;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PrivilegeConstants;
@@ -23,5 +22,5 @@ public interface IndividualMergeService {
 	 * @return the number of events merged
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	public int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> eventTypesToMerge) throws ConstraintViolations, ConstraintViolationException, SQLException, AuthorizationException;
+	public int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> eventTypesToMerge) throws ConstraintViolations, ConstraintViolations, SQLException, AuthorizationException;
 }

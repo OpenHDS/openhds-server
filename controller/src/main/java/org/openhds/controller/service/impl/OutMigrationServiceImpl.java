@@ -3,7 +3,6 @@ package org.openhds.controller.service.impl;
 import java.sql.SQLException;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
@@ -56,7 +55,7 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public void createOutMigration(OutMigration outMigration) throws ConstraintViolations, IllegalArgumentException, ConstraintViolationException, SQLException {
+	public void createOutMigration(OutMigration outMigration) throws ConstraintViolations, IllegalArgumentException, SQLException {
 		Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
 		
 		// configure out migration

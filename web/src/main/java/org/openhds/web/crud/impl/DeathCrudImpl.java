@@ -9,7 +9,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.AuthorizationException;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Death;
 import org.openhds.controller.service.DeathService;
@@ -39,9 +39,7 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
         } 
         catch(ConstraintViolations e) {
         	jsfService.addError(e.getMessage());
-        } catch (ConstraintViolationException e) {
-        	jsfService.addError(e.getMessage());
-		} catch (SQLException e) {
+        } catch (SQLException e) {
 			jsfService.addError(e.getMessage());
 		} catch (AuthorizationException e) {
 			jsfService.addError(e.getMessage());

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.idgeneration.SocialGroupGenerator;
@@ -125,7 +124,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 		
 	@Transactional(rollbackFor=Exception.class)
 	public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, 
-			List<Membership> memberships) throws ConstraintViolationException, SQLException, Exception {
+			List<Membership> memberships) throws ConstraintViolations, SQLException, Exception {
 
 		group.setGroupHead(selectedSuccessor);
 		

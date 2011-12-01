@@ -3,7 +3,7 @@ package org.openhds.controller.service;
 import java.sql.SQLException;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyObservation;
@@ -55,7 +55,7 @@ public interface PregnancyService {
 	 * @throws SQLException
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createPregnancyOutcome(PregnancyOutcome outcome) throws IllegalArgumentException, ConstraintViolationException, SQLException;
+	void createPregnancyOutcome(PregnancyOutcome outcome) throws IllegalArgumentException, ConstraintViolations, SQLException;
 	
 	/**
 	 * Verify a pregnancy outcome is valid

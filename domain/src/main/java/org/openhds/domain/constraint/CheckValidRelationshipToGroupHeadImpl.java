@@ -12,14 +12,10 @@ public class CheckValidRelationshipToGroupHeadImpl extends AppContextAware imple
 	
 	public void initialize(CheckValidRelationshipToGroupHead arg0) { 	}
 	
-	public boolean isValid(Membership mem,
-			ConstraintValidatorContext arg1) {
+	public boolean isValid(Membership mem, ConstraintValidatorContext arg1) {
 		
 		SiteProperties properties = (SiteProperties)context.getBean("siteProperties");
-		
-		if (properties.isValueExtensionsForMembershipCodesEnabled())
-			return true;
-		
+				
 		Calendar dobIndiv = mem.getIndividual().getDob();
 		Calendar dobHead = mem.getSocialGroup().getGroupHead().getDob();
 			

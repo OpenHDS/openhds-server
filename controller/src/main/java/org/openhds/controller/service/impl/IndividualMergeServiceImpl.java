@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.InMigrationService;
@@ -43,8 +42,8 @@ public class IndividualMergeServiceImpl implements IndividualMergeService {
 	 * (non-Javadoc)
 	 * @see org.openhds.service.IndividualMergeService#mergeIndividuals(org.openhds.model.Individual, org.openhds.model.Individual)
 	 */
-	@Transactional(rollbackFor={ConstraintViolationException.class, SQLException.class})
-	public int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> events) throws ConstraintViolations, ConstraintViolationException, SQLException{
+	@Transactional(rollbackFor={ConstraintViolations.class, SQLException.class})
+	public int mergeIndividuals(Individual primary, Individual toMergeFrom, List<MergeEvents> events) throws ConstraintViolations, SQLException{
 		// this is a naive implementation and will most likely be extended/specialized in the future
 		// currently, only in migrations and memberships can be merged/copied from 2 individuals
 		int eventsMerged = 0;

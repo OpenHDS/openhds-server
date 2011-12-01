@@ -32,4 +32,16 @@
 		<value description="Widowed">4</value>
 		<value description="Living Together">5</value>
 	</constraint>
+	<!-- required constraint -->
+    <constraint id="membershipConstraint">
+		<value description="Head">01</value>
+		<value description="Spouse">02</value>
+		<value description="Son/Daughter">03</value>
+		<value description="Brother/Sister">04</value>
+		<value description="Parent">05</value>
+		<value description="Grandchild">06</value>
+		<value description="Not Related">07</value>
+		<value description="Other Relative">08</value>
+		<value description="Don't Know">09</value>
+	</constraint>
 </value-constraints>

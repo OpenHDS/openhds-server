@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.service.JsfService;
@@ -39,11 +39,11 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
 		}	
 	}
 
-	public void validateEntity(T entityItem) throws ConstraintViolationException {
+	public void validateEntity(T entityItem) throws ConstraintViolations {
 		List<String> violations = validateType(entityItem);
     	
     	if (violations.size() > 0) {
-    		throw new ConstraintViolationException(violations.get(0).toString(), violations);
+    		throw new ConstraintViolations(violations.get(0).toString(), violations);
     	}
 	}
 

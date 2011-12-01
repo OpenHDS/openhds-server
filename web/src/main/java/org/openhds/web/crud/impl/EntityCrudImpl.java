@@ -16,7 +16,7 @@ import org.openhds.domain.constraint.Searchable;
 import org.openhds.dao.service.Dao;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.controller.exception.AuthorizationException;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
@@ -218,8 +218,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		} catch (IllegalArgumentException e) {
 			jsfService.addError(e.getMessage());
 			return null;
-		} catch (ConstraintViolationException e) {
-			for(String msg : e.getConstraintViolations()) {
+		} catch (ConstraintViolations e) {
+			for(String msg : e.getViolations()) {
 				jsfService.addError(msg);
 			}
 			return null;
@@ -274,8 +274,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         // attempt to update
         try {
 			entityService.save(entityItem);
-        } catch(ConstraintViolationException e) {
-			for(String msg : e.getConstraintViolations()) {
+        } catch(ConstraintViolations e) {
+			for(String msg : e.getViolations()) {
 				jsfService.addError(msg);
 			}
 			return null;
@@ -484,9 +484,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		// wrapped in a try catch in case commit fails
 		try {
 			entityService.create(entityItem);
-		} catch(ConstraintViolationException e) {
+		} catch(ConstraintViolations e) {
 			// these exceptions are thrown by the service layer
-			for(String msg : e.getConstraintViolations()) {
+			for(String msg : e.getViolations()) {
 				webFlowService.createMessage(messageContext, msg);
 			}
 			return false;
@@ -505,9 +505,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	public boolean save(MessageContext messageContext) {
 			try {
 				entityService.save(entityItem);
-			} catch(ConstraintViolationException e) {
+			} catch(ConstraintViolations e) {
 				// these exceptions are thrown by the service layer
-				for(String msg : e.getConstraintViolations()) {
+				for(String msg : e.getViolations()) {
 					webFlowService.createMessage(messageContext, msg);
 				}
 				return false;
@@ -526,8 +526,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	public <S> boolean validateEntity(S entity, MessageContext messageContext) {
 		try {
 			entityValidationService.validateEntity(entity);
-		} catch (ConstraintViolationException e) {
-			for(String msg : e.getConstraintViolations()) {
+		} catch (ConstraintViolations e) {
+			for(String msg : e.getViolations()) {
 				webFlowService.createMessage(messageContext, msg);
 			}
 			return false;

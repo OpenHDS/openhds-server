@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
@@ -95,7 +94,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws IllegalArgumentException, ConstraintViolationException, SQLException {
+	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws IllegalArgumentException, ConstraintViolations, SQLException {
 		// the algorithm for completing a pregnancy outcome is as follows:
 		// (Please note, this may change in the future)
 		// If pregnancy outcome has live births

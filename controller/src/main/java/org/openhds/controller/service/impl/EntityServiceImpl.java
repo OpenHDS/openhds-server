@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.User;
@@ -45,7 +45,7 @@ public class EntityServiceImpl implements EntityService {
 	}
 
 	@Transactional
-	public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolationException, SQLException {
+	public <T> void create(T entityItem) throws IllegalArgumentException, ConstraintViolations, SQLException {
 		if (entityItem instanceof AuditableEntity) {
 			try {
 		        Method insertByMethod = null;
@@ -108,7 +108,7 @@ public class EntityServiceImpl implements EntityService {
 	}
 	
 	@Transactional
-	public <T> void save(T entityItem) throws ConstraintViolationException, SQLException {
+	public <T> void save(T entityItem) throws ConstraintViolations, SQLException {
 		setStatusPending(entityItem);	
 		classValidator.validateEntity(entityItem);
 		genericDao.update( genericDao.merge(entityItem) );

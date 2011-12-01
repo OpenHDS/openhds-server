@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/default.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:c="http://java.sun.com/jstl/core"
+	    xmlns:o="http://openfaces.org/"
+		xmlns:t="http://myfaces.apache.org/tomahawk">      
+
+		<ui:define name="title">OpenHDS - Create Membership</ui:define>
+	
+		<ui:param name="crud" value="#{membershipCrud}" />
+		
+		<ui:param name="hideTabBar" value="#{flowScope != null and flowScope.showListing == false}" />
+		
+		<ui:define name="listing">
+			<c:if test="#{flowScope == null or flowScope.showListing == null}">
+			    <ui:include src="list.xhtml" />
+			</c:if>
+	    </ui:define>
+	    <ui:define name="display">
+	    
+	    	<h:outputText value="#{navController.breadcrumbTrail}" />
+	    
+	    	<h1><h:outputText value="#{msg.membershipCreate}" /></h1>
+	       	<h:messages id="errors" globalOnly="true" />
+	       	
+	        <h:form id="form">
+	        	<h:panelGrid columns="4">
+		            <h:outputText value="#{msg.individualId}:"/>
+		            <h:outputText />
+		            <h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{membershipCrud.item.individual}" disabled="#{flowScope.updatingBaseline != null or flowScope.pregnancyOutcome or flowScope.updating or flowScope.regIndivToSg}" converter="#{individualExtIdConverter}" />
+		            <h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		
+		       		<h:outputText value="#{msg.socialGroupId}:"/>
+		       		<h:outputText />
+		        	<h:inputText styleClass="socialGroup" autocomplete="off" id="socialGrp" value="#{membershipCrud.item.socialGroup}" converter="#{socialGroupExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.settingDeathHOH or flowScope.modifyHOH}" />
+		            <h:message for="socialGrp" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		  
+			        <h:outputText value="#{msg.membershipRelationToHead}:" />
+			        <img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+					<h:inputText id="relationshipType1" value="#{membershipCrud.item.bIsToA}" converter="#{membershipCodesConverter}" />
+			        <h:message for="relationshipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		   
+		            <h:outputText value="#{msg.membershipStartDate} (#{siteProperties.dateFormat})" />
+		            <h:outputText />
+		            <o:dateChooser id="startDate" value="#{membershipCrud.startDate}" pattern="#{siteProperties.dateFormat}" disabled="#{flowScope.updatingBaseline or flowScope.deathHOH or flowScope.pregnancyOutcome}"/>
+		            <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+			        <h:outputText value="#{msg.membershipStartType}:"/>
+			        <img class="clickable" onclick="O$('popupWindowForMembershipStartType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+					<h:inputText id="membershipType1" value="#{membershipCrud.item.startType}" converter="#{membershipStartTypeCodesConverter}" />
+			        <h:message for="membershipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+							
+		            <h:outputText value="#{msg.membershipEndDate} (#{siteProperties.dateFormat})" />
+		            <h:outputText />
+		            <o:dateChooser id="endDate" value="#{membershipCrud.endDate}" pattern="#{siteProperties.dateFormat}" disabled="true" /> 
+		            <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		
+		            <h:outputText value="#{msg.membershipEndType}:"/>
+		            <img class="clickable" onclick="O$('popupWindowForMembershipEndType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+					<h:inputText id="membershipEndType" value="#{membershipCrud.item.endType}" converter="#{membershipEndTypeCodesConverter}" disabled="true" />
+		            <h:message for="membershipEndType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		
+		            <h:outputText value="#{msg.fieldWorkerId}:"/>
+		            <h:outputText />
+		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.updating or flowScope.deathHOH or flowScope.pregnancyOutcome or flowScope.regIndivToSg}" />
+		            <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            </h:panelGrid>
+	            <script>
+	            	document.getElementById('form:socialGrp').focus();
+					document.getElementById('form:indiv').focus();
+				</script>
+	        <br />
+			<c:choose>
+                <c:when test="#{flowScope != null}">
+                    <h:commandButton id="create" action="createMembership" value="#{msg.lblCreate}" />
+                	<h:commandButton value="#{msg.lblCancel}" immediate="true" action="cancel" />
+                </c:when>
+                <c:otherwise>
+                	<h:commandButton action="#{membershipCrud.create}" value="#{msg.lblCreate}"/>
+            	</c:otherwise>
+        	</c:choose>
+	    </h:form>
+	</ui:define>
+</ui:composition>

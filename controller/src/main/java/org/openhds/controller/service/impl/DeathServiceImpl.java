@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.DeathService;
 import org.openhds.controller.service.EntityService;
@@ -47,7 +46,7 @@ public class DeathServiceImpl implements DeathService {
 	}
 		
 	@Transactional(rollbackFor=Exception.class)
-	public Death createDeath(Death entityItem) throws ConstraintViolationException, SQLException {
+	public Death createDeath(Death entityItem) throws ConstraintViolations, SQLException {
 		Calendar endDate = entityItem.getDeathDate();
 		
 		if (entityItem.getIndividual().getCurrentResidency() != null) {
@@ -150,7 +149,7 @@ public class DeathServiceImpl implements DeathService {
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
-	public void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws ConstraintViolationException, SQLException, Exception {
+	public void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws ConstraintViolations, SQLException, Exception {
 		
 		// Create the death event for the Group Head
 		entityService.create(createDeath(death));

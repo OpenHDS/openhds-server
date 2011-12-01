@@ -3,7 +3,6 @@ package org.openhds.controller.service;
 import java.sql.SQLException;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
@@ -18,5 +17,5 @@ public interface OutMigrationService {
 	List<OutMigration> getOutMigrations(Individual individual);
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createOutMigration(OutMigration outMigration) throws ConstraintViolations, IllegalArgumentException, ConstraintViolationException, SQLException;
+	void createOutMigration(OutMigration outMigration) throws ConstraintViolations, IllegalArgumentException, ConstraintViolations, SQLException;
 }

@@ -2,7 +2,7 @@ package org.openhds.controller.service;
 
 import java.util.List;
 
-import org.openhds.controller.exception.ConstraintViolationException;
+import org.openhds.controller.exception.ConstraintViolations;
 
 public interface EntityValidationService<T> {
 	
@@ -10,5 +10,5 @@ public interface EntityValidationService<T> {
 		
 	<S> List<String> validateType(S entity);
 	
-	void validateEntity(T entityItem) throws ConstraintViolationException; 
+	void validateEntity(T entityItem) throws ConstraintViolations; 
 }

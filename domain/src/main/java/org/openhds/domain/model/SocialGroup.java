@@ -46,23 +46,11 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
     @ManyToOne(cascade = {CascadeType.ALL})
     @Description(description="Individual who is head of the social group, identified by external id.")
     Individual groupHead;
-    
-    @Searchable
-    @CheckEntityNotVoided
-    @CheckIndividualNotUnknown
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Individual.class)
-    @Description(description="Individual who supplied the information for this social group.")
-    Individual respondent;
-    
+        
     @ExtensionConstraint(constraint="socialGroupTypeConstraint", message="Invalid Value for social group type",allowNull=true)
     @Description(description="Type of the social group.")
     String groupType;
-    
-	@Past
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @Description(description="Date of interview.")
-    Calendar dateOfInterview;
-    
+        
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="socialGroup" )
     @Description(description="Set of all memberships of the social group.")
     Set<Membership> memberships;
@@ -83,15 +71,6 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
         this.groupType = type;
     }
     
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
-    public Calendar getDateOfInterview() {
-		return dateOfInterview;
-	}
-
-	public void setDateOfInterview(Calendar dateOfInterview) {
-		this.dateOfInterview = dateOfInterview;
-	}
-
     public Set<Membership> getMemberships() {
         return memberships;
     }
@@ -115,12 +94,4 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
     public void setGroupHead(Individual head) {
         this.groupHead = head;
     }
-    
-    public Individual getRespondent() {
-		return respondent;
-	}
-
-	public void setRespondent(Individual respondent) {
-		this.respondent = respondent;
-	}
-}
+ }

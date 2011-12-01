@@ -15,10 +15,10 @@ import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.CheckStartDateGreaterThanBirthDate;
-import org.openhds.domain.constraint.CheckValidRelationshipToGroupHead;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.value.extension.ExtensionConstraint;
 
 @Description(description="A Membership represents an Individual's association with a " +
 		"particular Social Group. Memberships are identified by a uniquely generated " +
@@ -26,7 +26,6 @@ import org.openhds.domain.constraint.Searchable;
 		"about the date the Membership started and ended, as well as the start and end types. " +
 		"It also contains the Individual's relationship to the head of the Social Group.")
 @Entity
-@CheckValidRelationshipToGroupHead
 @CheckEndDateGreaterThanStartDate(allowNull=true)
 @CheckStartDateGreaterThanBirthDate
 @CheckEndDateAndEndEventType
@@ -63,6 +62,7 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
     @Description(description="End type of the membership.")
 	String endType;
     
+    @ExtensionConstraint(constraint="membershipConstraint", message="Invalid Value for membership relation to head", allowNull=true)
     @Description(description="Relationship type to the group head.")
     String bIsToA;
 	

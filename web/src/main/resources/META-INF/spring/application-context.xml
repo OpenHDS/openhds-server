@@ -156,6 +156,12 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="membershipConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="membershipDao" />
+        <constructor-arg value="org.openhds.domain.model.Membership" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="noteConverter" class="org.openhds.web.cvt.EntityConverterImpl">
     	<constructor-arg ref="noteDao" />
     	<constructor-arg value="org.openhds.domain.model.Note" />
@@ -171,6 +177,12 @@
     <bean id="roundConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="roundDao" />
         <constructor-arg value="org.openhds.domain.model.Round" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="socialGroupConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="socialGroupDao" />
+        <constructor-arg value="org.openhds.domain.model.SocialGroup" />
         <constructor-arg value="java.lang.String" />
     </bean>
     
@@ -271,6 +283,14 @@
         <property name="service" ref="locationHierarchyService" />
     </bean>
     
+    <bean id="membershipCrud" parent="baseCrud" class="org.openhds.web.crud.impl.MembershipCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Membership" />
+        <property name="dao" ref="membershipDao" />
+        <property name="converter" ref="membershipConverter" />
+        <property name="entityValidator" ref="entityValidator" />
+        <property name="service" ref="membershipService" />
+    </bean>
+    
     <bean id="noteCrud" parent="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl">
     	<constructor-arg value="org.openhds.domain.model.Note" />
     	<property name="dao" ref="noteDao" />
@@ -290,6 +310,14 @@
         <property name="dao" ref="roundDao" />
         <property name="converter" ref="roundConverter" />
         <property name="service" ref="roundService" />
+    </bean>
+    
+    <bean id="socialGroupCrud" parent="baseCrud" class="org.openhds.web.crud.impl.SocialGroupCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.SocialGroup" />
+        <property name="dao" ref="socialGroupDao" />
+        <property name="converter" ref="socialGroupConverter" />
+        <property name="socialGroupService" ref="socialGroupService" />
+        <property name="individualService" ref="individualService" />
     </bean>
     
     <bean id="userCrud" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
