@@ -43,6 +43,7 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 		}
 		
         Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
+        outMigration.setResidency(currentResidence);
 
         // verify the date of the out migration is after the residency start date
 		if (currentResidence.getStartDate().compareTo(outMigration.getRecordedDate()) > 0) {
