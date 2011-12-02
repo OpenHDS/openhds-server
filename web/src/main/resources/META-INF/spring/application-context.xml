@@ -174,6 +174,18 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="relationshipConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="relationshipDao" />
+        <constructor-arg value="org.openhds.domain.model.Relationship" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="residencyConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="residencyDao" />
+        <constructor-arg value="org.openhds.domain.model.Residency" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="roundConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="roundDao" />
         <constructor-arg value="org.openhds.domain.model.Round" />
@@ -305,6 +317,21 @@
         <property name="service" ref="pregnancyService" />
     </bean>
     
+    <bean id="relationshipCrud" parent="baseCrud" class="org.openhds.web.crud.impl.RelationshipCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Relationship" />
+        <property name="dao" ref="relationshipDao" />
+        <property name="converter" ref="relationshipConverter" />
+        <property name="entityValidator" ref="entityValidator" />
+        <property name="service" ref="relationshipService"></property>
+    </bean>
+    
+    <bean id="residencyCrud" parent="baseCrud" class="org.openhds.web.crud.impl.ResidencyCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Residency" />
+        <property name="dao" ref="residencyDao" />
+        <property name="converter" ref="residencyConverter" />
+        <property name="residencyService" ref="residencyService" />
+    </bean>
+    
     <bean id="roundCrud" parent="baseCrud" class="org.openhds.web.crud.impl.RoundCrudImpl">
         <constructor-arg value="org.openhds.domain.model.Round" />
         <property name="dao" ref="roundDao" />
@@ -358,5 +385,21 @@
 		<property name="level9"><value>${locationHierarchyLevel9}</value></property>
 	</bean>
 	
-   
+	<bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl">
+        <property name="genericDao" ref="genericDao" />
+        <property name="locationLevels">
+            <props>
+                <prop key="1">${locationHierarchyLevel1}</prop>
+                <prop key="2">${locationHierarchyLevel2}</prop>
+                <prop key="3">${locationHierarchyLevel3}</prop>
+                <prop key="4">${locationHierarchyLevel4}</prop>
+                <prop key="5">${locationHierarchyLevel5}</prop>
+                <prop key="6">${locationHierarchyLevel6}</prop>
+                <prop key="7">${locationHierarchyLevel7}</prop>
+                <prop key="8">${locationHierarchyLevel8}</prop>
+                <prop key="9">${locationHierarchyLevel9}</prop>
+            </props>
+         </property>
+	 </bean>
+
 </beans>

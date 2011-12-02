@@ -416,31 +416,4 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
 		
-	public List<LocationHierarchy> getAllSubLH(List<LocationHierarchy> listLH){
-		
-		List<LocationHierarchy> temp = new ArrayList<LocationHierarchy>();
-		
-		for(LocationHierarchy lh : listLH){
-			if(lh.getSubLH() != null && lh.getSubLH().size() > 0){
-				temp.addAll(lh.getSubLH());
-			}
-		}
-		
-		return temp;
-	}
-
-	public List<LocationHierarchy> getEntireLHBelow(LocationHierarchy parent){
-		if(parent != null && parent.getSubLH() != null){
-			
-			List<LocationHierarchy> parentSubs = parent.getSubLH();
-			List<LocationHierarchy> aggregatedLH = new ArrayList<LocationHierarchy>();
-			aggregatedLH.addAll(parentSubs);
-			
-			while (getAllSubLH(parentSubs)!= null && getAllSubLH(parentSubs).size() > 0) {
-				parentSubs = getAllSubLH(parentSubs);
-				aggregatedLH.addAll(parentSubs);
-			}
-			return aggregatedLH;
-		} else return null;	
-	}
 }

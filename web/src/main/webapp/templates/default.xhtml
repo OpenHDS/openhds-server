@@ -176,7 +176,7 @@
 			<input type="button" value="Close [X]" onclick="O$('popupWindowForMembershipEndType').hide();"/>
 		</div>
 		<div style="overflow:auto;padding:.5em;">
-			<h3>Valid values:</h3>
+			<h3>#{msg.popupValidValues}:</h3>
 			<ul>
 				<li>#{siteProperties.deathCode} - #{msg.death}</li>
 				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
@@ -184,6 +184,64 @@
 			</ul>
     	</div>
 	</o:popupLayer>
+	<o:popupLayer id="popupWindowForMaritalStatusEndType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMaritalStatusEndType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.notApplicableCode} - #{msg.none}</li>
+				<li>#{siteProperties.deathCode} - #{msg.death}</li>
+				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForMaritalStatusStartType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMaritalStatusStartType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.maritalStatusConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForResidencyStartTypeCodes"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForResidencyStartTypeCodes').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.enumerationCode} - #{msg.enumeration}</li>
+				<li>#{siteProperties.inmigrationCode} - #{msg.inmigration}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForResidencyEndTypeCodes"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForResidencyEndTypeCodes').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
+				<li>#{siteProperties.deathCode} - #{msg.death}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>		
 	<o:popupLayer id="popupWindowForDataStatus"
             width="30%"
             height="30%">

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+<body>
+    <ui:composition template="/templates/default.xhtml">
+        <ui:define name="title">OpenHDS - Residency</ui:define>
+    
+        <ui:param name="crud" value="#{residencyCrud}" />
+        
+        <ui:define name="listing">
+            <ui:include src="list.xhtml" />
+        </ui:define>
+        <ui:define name="display">
+            <h:outputText value="#{navController.breadcrumbTrail}" />
+        
+            <h1>#{msg.residencyUnableToDelete}</h1>
+            <c:choose>
+                <c:when test="#{residencyCrud.startEventName != ''}">
+                    <p class="error">
+                       #{msg.residencyUnableToDeleteMsg}
+                    </p>   
+					<div>#{msg.residencyDeleteStartEvent}: #{residencyCrud.startEventName} 
+					<c:choose>
+					  <c:when test="#{residencyCrud.startEventName == 'Birth'}">
+					     <a href="#{request.contextPath}/amendment/pregnancyoutcome/details/#{residencyCrud.startEventUuid}">#{msg.residencyViewEvent}</a>
+					  </c:when>
+					  <c:otherwise>
+					     <a href="#{request.contextPath}/amendment/inmigration/details/#{residencyCrud.startEventUuid}">#{msg.residencyViewEvent}</a>
+					  </c:otherwise>
+					</c:choose>
+					</div>
+                </c:when>
+                <c:otherwise>
+                    <p class="error">
+                       #{msg.residencyUnableToDeleteOtherwiseMessage}
+                    </p>   
+                </c:otherwise>
+            </c:choose>           
+           <c:if test="#{residencyCrud.endEventName != ''}">
+               <div>#{msg.residencyDeleteEndEvent}: #{residencyCrud.endEventName}
+               <c:choose>
+                 <c:when test="#{residencyCrud.endEventName == 'Death'}">
+                    <a href="#{request.contextPath}/amendment/death/details/#{residencyCrud.endEventUuid}">#{msg.residencyViewEvent}</a>
+                 </c:when>
+                 <c:otherwise>
+                   <a href="#{request.contextPath}/amendment/outmigration/details/#{residencyCrud.endEventUuid}">#{msg.residencyViewEvent}</a>
+                 </c:otherwise>
+               </c:choose>
+               </div>
+           </c:if>
+        </ui:define>
+    </ui:composition>
+  </body>
+</html>

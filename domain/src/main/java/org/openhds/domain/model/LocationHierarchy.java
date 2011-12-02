@@ -50,15 +50,7 @@ public class LocationHierarchy implements Serializable {
 	@Description(description="Parent location's name.")
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = LocationHierarchy.class)
     LocationHierarchy parent;
-	
-	@OneToMany(targetEntity=LocationHierarchy.class,fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "parent_uuid")
-	private List<LocationHierarchy> subLH;
-	
-	@OneToMany(targetEntity=Location.class,fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "locationLevel_uuid")
-	private List<Location> childLocs;
-	
+		
 	@NotNull
 	@CheckFieldNotBlank
 	@Searchable
@@ -138,115 +130,5 @@ public class LocationHierarchy implements Serializable {
 		} else if (!uuid.equals(other.uuid))
 			return false;
 		return true;
-	}
-
-	/**
-	 * @param subLH the subLH to set
-	 */
-	public void setSubLH(List<LocationHierarchy> subLH) {
-		this.subLH = subLH;
-	}
-
-	/**
-	 * @return the subLH
-	 */
-	public List<LocationHierarchy> getSubLH() {
-		return subLH;
-	}
-
-	public boolean hasChildren() {
-		return subLH != null && subLH.size() > 0;
-	}
-
-	public void addLH(LocationHierarchy lh) {
-        if (lh == null)
-            throw new IllegalArgumentException("lh shouldn't be null");
-        if (subLH == null)
-            subLH = new ArrayList<LocationHierarchy>();
-        
-        subLH.add(lh);
-    }
-
-	/**
-	 * @return the fullName
-	 */
-	public String getFullName() {
-		if(this.getLevel() != null){
-		return this.getLevel().getName() + " " + this.getName() + " " + this.getExtId() + " (" + getNumberChildLocs() + " locations)";
-		}else{
-			return this.getName() + " " + this.getExtId();
-		}
-	}
-
-	/**
-	 * @param childLocs the childLocs to set
-	 */
-	public void setChildLocs(List<Location> childLocs) {
-		this.childLocs = childLocs;
-	}
-
-	/**
-	 * @return the childLocs
-	 */
-	public List<Location> getChildLocs() {
-		return childLocs;
-	}
-	
-	public int getNumberChildLocs(){
-		//if(getChildLocs() != null){
-		List<Location> locs = getAggregateLocations();
-		if(locs != null){			
-			return locs.size();
-		}else return 0;
-	}
-
-	public List<Location> getAggregateLocations(){
-		return getAggregateLocations(this);
-	}	
-	
-	public List<Location> getAggregateLocations(LocationHierarchy locH) {
-		if ((locH instanceof LocationHierarchy) && locH != null) {
-			List<Location> aggLocs = new ArrayList<Location>();
-			aggLocs.addAll(locH.getChildLocs());
-			for (LocationHierarchy lh : getEntireLHBelow(locH)) {
-				aggLocs.addAll(lh.getChildLocs());
-			}
-			
-			aggLocs.addAll(locH.getChildLocs());
-			aggLocs.removeAll(Collections.singleton(null));
-			//CollectionsUtil.removeDuplicatesPutOrder(aggLocs);
-			return aggLocs;
-		} 
-		
-		else return null;
-	}	
-	
-	public List<LocationHierarchy> getAllSubLH(List<LocationHierarchy> listLH){
-		
-		List<LocationHierarchy> temp = new ArrayList<LocationHierarchy>();
-		
-		for(LocationHierarchy lh : listLH){
-			if(lh.getSubLH() != null && lh.getSubLH().size() > 0){
-				temp.addAll(lh.getSubLH());
-			}
-		}
-		
-		return temp;
-	}
-
-	public List<LocationHierarchy> getEntireLHBelow(LocationHierarchy parent){
-		if(parent != null && parent.getSubLH() != null){
-			
-			List<LocationHierarchy> parentSubs = parent.getSubLH();
-			List<LocationHierarchy> aggregatedLH = new ArrayList<LocationHierarchy>();
-			aggregatedLH.addAll(parentSubs);
-			
-			while (getAllSubLH(parentSubs)!= null && getAllSubLH(parentSubs).size() > 0) {
-				parentSubs = getAllSubLH(parentSubs);
-				aggregatedLH.addAll(parentSubs);
-			}
-			return aggregatedLH;
-		} else return null;
-		
 	}
 }
