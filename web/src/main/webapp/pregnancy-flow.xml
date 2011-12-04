@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A flow that models a pregnancy outcome event -->
+<!-- The Flow has the following steps: -->
+<!-- 1) Fill in initial information about pregnancy outcome (mother, type of birth, etc.) -->
+<!-- 2) Add outcome(s) to pregnancy -->
+<!--   2a) In the case of a live birth, transition user to individual form to create new individual -->
+<!-- 3) User creates the pregnancy outcome (if live birth occurred, also create those in same transaction) -->
+<!-- This flow also handles the viewing of a completed pregnancy outcome -->
+
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+      http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!-- This element is needed - it provides a flow scoped persistent context -->
+    <persistence-context />
+
+    <!-- These inputs can be used when this flow is used as a sub flow -->
+    <input name="visit" type="org.openhds.domain.model.Visit" />
+    <input name="mother" type="org.openhds.domain.model.Individual" />
+    <input name="fieldWorker" type="org.openhds.domain.model.FieldWorker" />
+    <input name="updating" />
+
+    <on-start>
+        <!-- Initialize the crud -->
+        <evaluate expression="pregnancyOutcomeCrud.initFlow()" />
+
+        <!-- in cases where a visit/mother are supplied, set these -->
+                <!-- values in the crud. If they are not supplied, the fields will be set to null -->
+        <evaluate expression="pregnancyOutcomeCrud.getItem().setVisit(visit)" />
+        <evaluate expression="pregnancyOutcomeCrud.getItem().setMother(mother)" />
+        <evaluate expression="pregnancyOutcomeCrud.getItem().setCollectedBy(fieldWorker)" />
+
+
+        <!-- Navigation menu should be shown if pregnancy outcome is being -->
+                <!-- used outside the update form. Otherwise, the nav menu should be hidden -->
+        <set name="flowScope.showNavMenu" value="updating == null" />
+
+        <!-- Flag to disable a subset of fields on the individual create form -->
+        <set name="flowScope.pregnancyOutcome" value="true" />
+
+        <!-- Flag to indicate whether this flow is being used as a subflow -->
+        <set name="flowScope.updating" value="updating" />
+        <evaluate expression="navController.determineOriginForPregOutcome(flowScope.updating)" />
+    </on-start>
+
+    <!-- Initial view of the pregnany outcome form -->
+    <view-state id="create" view="pregnancy-outcome/create.xhtml">
+        <on-entry>
+            <!-- Keep track of the current view the user is looking at -->
+            <set name="flowScope.currentView" value="'create'" />
+        </on-entry>
+
+        <!-- User wants to add an outcome to this pregnancy outcome -->
+        <transition on="addOutcome" to="addOutcomeAction">
+        	<evaluate expression="pregnancyOutcomeCrud.validateEntity(pregnancyOutcomeCrud.item, messageContext)" />
+            <!-- Set flag so user must now confirm to navigate away -->
+            <set name="flowScope.pregStarted" value="true" />
+        </transition>
+
+        <!-- User has successfully created a pregnany outcome -->
+        <transition on="pregnancyoutcome_list" to="complete" />
+
+        <!-- User wants to cancel the current pregnany outcome -->
+        <transition on="cancel" to="complete" />
+
+        <!-- User wants to clear or reset the form to defaults -->
+        <transition on="reset" to="reset" />
+    </view-state>
+
+    <!-- Determine where the flow should should navigate to based on the type of pregnancy outcome -->
+        <!-- the user has selected -->
+    <action-state id="addOutcomeAction">
+        <!-- The logic is in this method ... -->
+        <evaluate expression="pregnancyOutcomeCrud.addOutcome()" />
+
+        <!-- User has selected to add a live birth -->
+        <transition on="liveBirth" to="indivFormCreate" />
+
+        <!-- User selected something other than live birth -->
+        <transition on="other" to="create" />
+    </action-state>
+
+    <!-- A view that displays the details of a pregnancy outcome -->
+    <view-state id="details" view="pregnancy-outcome/detail.xhtml" >
+    	<on-entry>
+    		<evaluate expression="navController.addItemToTrail('PregnancyOutcome Detail')" />
+    	</on-entry>
+    	<transition on="cancel" to="complete" />
+    </view-state>
+
+    <!-- View used for the initial creation of an individual -->
+    <view-state id="indivFormCreate" view="individual/create.xhtml">
+        <on-entry>
+            <!-- Init the individual form (clear out any old data values) -->
+            <evaluate expression="individualCrud.initFlow()" />
+
+            <!-- Pre-populate fields based on the pregnancy form -->
+            <evaluate expression="navController.setCurrentItem('PregnancyOutcome')" />
+            <evaluate expression="individualCrud.item.setMother(pregnancyOutcomeCrud.item.getMother())" />
+            <evaluate expression="individualCrud.item.setFather(pregnancyOutcomeCrud.item.getFather())" />
+            <evaluate expression="individualCrud.item.setDob(pregnancyOutcomeCrud.item.getOutcomeDate())" />
+            <evaluate expression="individualCrud.item.setCollectedBy(pregnancyOutcomeCrud.item.collectedBy)" />
+			<evaluate expression="navController.addItemToTrail('Individual Create')" />
+
+            <!-- Remember the view being looked at -->
+            <set name="flowScope.currentView" value="'indivFormCreate'" />
+
+            <!-- Set flag to show the correct create button on individual form -->
+            <set name="flowScope.newIndiv" value="true" />
+
+            <!-- Disable the listing of individuals from being displayed -->
+            <set name="flowScope.showListing" value="false" />
+           
+        </on-entry>
+
+        <!-- When the create button is clicked on the individual form -->
+        <transition on="addChild" to="addMember">
+            <!-- Since the individual is not actually persisted at this point, -->
+            <!-- it does not go through the typical validation. This first -->
+            <!-- expression will run the class validations on the individual entity -->
+            <evaluate expression="individualCrud.validateEntity(individualCrud.item, messageContext)" />
+
+            <!-- This second validation call makes use of the individual service -->
+            <!-- to carry out any integrity constraints that the class validations -->
+            <!-- do not cover -->
+            <evaluate expression="individualCrud.validateIndividual(messageContext)" />
+
+            <!-- Finally, add the individual to the list of births for this p.o. -->
+            <evaluate expression="pregnancyOutcomeCrud.addChild(individualCrud.getItem())" />
+        </transition>
+
+        <!-- User pressed the cancel button on the individual form -->
+        <transition on="cancel" to="create" >
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+	<!-- View for the creation of a membership for a live birth -->
+    <view-state id="addMember" view="membership/create.xhtml" >
+    	<!-- Configure membership form -->
+        <on-entry>
+            <evaluate expression="membershipCrud.initFlow()" />
+            <evaluate expression="membershipCrud.item.setStartDate(individualCrud.getItem().getDob())" />
+            <evaluate expression="membershipCrud.item.setIndividual(individualCrud.getItem())" />
+            <evaluate expression="membershipCrud.item.setSocialGroup(pregnancyOutcomeCrud.getMothersSocialGroupForCurrentIndividual())" />
+            <evaluate expression="membershipCrud.item.setCollectedBy(pregnancyOutcomeCrud.item.collectedBy)" />
+            <set name="membershipCrud.item.endType" value="siteProperties.notApplicableCode" />
+        	<evaluate expression="navController.setCurrentItem('PregnancyOutcome')" />
+        	<evaluate expression="navController.addItemToTrail('Membership Create')" />
+        </on-entry>
+        
+        <!-- Handle create button action  -->
+        <transition on="createMembership" to="create" >
+        	<!-- Validate the user entered information for membership -->
+            <evaluate expression="membershipCrud.validateEntity(membershipCrud.item, messageContext)" />
+            <!-- Set the membership for the current outcome -->
+            <set name="pregnancyOutcomeCrud.membershipOnCurrentOutcome" value="membershipCrud.item" />
+            <!-- Add the outcome to the pregancyoutcome -->
+            <evaluate expression="pregnancyOutcomeCrud.addCurrentOutcome()" />
+            <!-- Must remove last two entries of trail representing the individual and membership -->
+            <evaluate expression="navController.removeLastCrumb()" />
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        
+        <!-- Handle cancel button action -->
+        <transition on="cancel" to="create" >
+        	<!-- Must remove last two entries of trail representing the individual and membership -->
+        	<evaluate expression="navController.removeLastCrumb()" />
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <!-- Confirm dialog form used when a user attempts to navigate away from -->
+    <!-- the pregnancy outcome form -->
+    <view-state id="confirm" view="pregnancy-outcome/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="exit" />
+    </view-state>
+
+    <!-- Confirm dialog form used when user attempts to logout of the system -->
+    <view-state id="confirmLogout" view="pregnancy-outcome/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+
+        <transition on="cancel" to="logout" />
+    </view-state>
+    
+    <decision-state id="isComingFromUpdate">
+        <if test="flowScope.updating" then="confirmLogout" else="logout" />
+    </decision-state>
+
+    <!-- Determine whether to show the confirm form -->
+        <!-- Currently, confirm will only be shown if the user has clicked -->
+        <!-- The add child button -->
+    <decision-state id="shouldShowConfirm">
+        <if test="flowScope.pregStarted" then="confirm" else="exit" />
+    </decision-state>
+
+    <!-- Determine whether to show the confirm form for logout -->
+        <!-- Currently, confirm will only be shown if the user has clicked -->
+        <!-- The add child button -->
+    <decision-state id="shouldShowLogoutConfirm">
+        <if test="flowScope.pregStarted" then="confirmLogout" else="logout" />
+    </decision-state>
+
+    <!-- Normal end state -->
+    <end-state id="complete" />
+
+    <!-- End state when user wishes to "clear" or reset the form -->
+    <end-state id="reset" />
+
+    <!-- This end state is used when the user attempts to navigate away from this flow -->
+        <!-- In theory, it should redirect the user to the page they clicked on -->
+    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+
+    <!-- This end state is used when the user clicks the logout link -->
+    <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+
+    <!-- Global Transitions not related to any specific view -->
+    <global-transitions>
+        <!-- User clicked the details link for a pregnancy outcome entity -->
+        <transition on="details" to="details">
+            <!-- Save the uuid of the entity the user clicked on -->
+            <evaluate expression="pregnancyOutcomeCrud.editByUuid(requestParameters.itemId, messageContext)" />
+        </transition>
+       
+        <!-- User clicked the add new button in the listing frame -->
+        <transition on="addNew" to="reset" />
+
+        <!-- User clicked the logout link -->
+        <transition on="logoutLnk" to="shouldShowLogoutConfirm" />
+
+        <!-- A catch all that will match any other links clicked by the user -->
+        <transition to="shouldShowConfirm">
+            <!-- Record the page id the user is trying to navigate to in case they do want to navigate away -->
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+            <evaluate expression="navController.removeItemFromTrailInFlow('PregnancyOutcome')" />
+        </transition>
+    </global-transitions>
+</flow>

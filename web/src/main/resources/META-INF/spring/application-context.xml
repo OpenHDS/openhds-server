@@ -144,6 +144,12 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="inMigrationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="inMigrationDao" />
+        <constructor-arg value="org.openhds.domain.model.InMigration" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="locationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="locationDao" />
         <constructor-arg value="org.openhds.domain.model.Location" />
@@ -171,6 +177,12 @@
     <bean id="outMigrationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="outMigrationDao" />
         <constructor-arg value="org.openhds.domain.model.OutMigration" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="pregnancyConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="pregnancyDao" />
+        <constructor-arg value="org.openhds.domain.model.PregnancyOutcome" />
         <constructor-arg value="java.lang.String" />
     </bean>
     
@@ -286,6 +298,13 @@
         <property name="service" ref="individualService"></property>
     </bean>
     
+    <bean id="inMigrationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.InMigrationCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.InMigration" />
+        <property name="dao" ref="inMigrationDao" />
+        <property name="converter" ref="inMigrationConverter" />
+        <property name="service" ref="inMigrationService" />
+    </bean>
+    
     <bean id="locationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.LocationCrudImpl">
         <constructor-arg value="org.openhds.domain.model.Location" />
         <property name="dao" ref="locationDao" />
@@ -321,6 +340,15 @@
         <property name="converter" ref="outMigrationConverter" />
         <property name="entityService" ref="entityService" />
         <property name="service" ref="outMigrationService" />
+    </bean>
+    
+    <bean id="pregnancyOutcomeCrud" parent="baseCrud" class="org.openhds.web.crud.impl.PregnancyOutcomeCrudImpl" >
+        <constructor-arg value="org.openhds.domain.model.PregnancyOutcome" />
+        <property name="dao" ref="pregnancyDao" />
+        <property name="converter" ref="pregnancyConverter" />
+        <property name="entityService" ref="entityService" />
+        <property name="service" ref="pregnancyService" />
+        <property name="sgService" ref="socialGroupService" />
     </bean>
     
     <bean id="pregnancyObservationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.PregnancyObservationCrudImpl">

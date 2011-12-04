@@ -242,6 +242,23 @@
 			</ul>
     	</div>
 	</o:popupLayer>		
+    <o:popupLayer id="popupWindowForPregOutcome"
+             width="30%"
+             height="30%"
+             modal="true">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForPregOutcome').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.liveBirthCode} - #{msg.pregnancyOutcomeLiveBirth}</li>
+				<li>#{siteProperties.stillBirthCode} - #{msg.pregnancyOutcomeStillBirth}</li>
+				<li>#{siteProperties.miscarriageCode} - #{msg.pregnancyOutcomeMiscarriage}</li>
+				<li>#{siteProperties.abortionCode} - #{msg.pregnancyOutcomeAbortion}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>		
 	<o:popupLayer id="popupWindowForDataStatus"
             width="30%"
             height="30%">

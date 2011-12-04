@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:c="http://java/sun.com/jslt/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+<body>
+	<ui:composition template="/templates/default.xhtml">
+	 	<ui:define name="title">OpenHDS - Edit Migration Into Location</ui:define>
+	
+		<ui:param name="crud" value="#{inMigrationCrud}" />
+		
+		<ui:define name="listing">
+			<ui:include src="list.xhtml" />
+		</ui:define>
+		<ui:define name="display">
+		
+	    	<h:outputText value="#{navController.breadcrumbTrail}" />	
+		
+	        <h1>#{msg.inmigrationEdit}</h1>
+	        <h:messages id="errors" globalOnly="true"/>
+	        <h:form id="form">
+	            <h:panelGrid columns="3">
+	            	<h:outputText value="#{msg.individualId}:"/>
+	                <h:outputText id="indiv" value="#{inMigrationCrud.item.individual}" converter="#{individualExtIdConverter}" />
+	            	<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            	
+	            	<h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})" />
+	               	<o:dateChooser id="endDate" value="#{inMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" /> 
+	            	<h:message for="rec_date" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+	            	<h:outputText value="#{msg.inmigrationOrigin}:"/>
+	                <h:inputText id="origin" value="#{inMigrationCrud.item.origin}" converter="#{defaultConverter}"/>
+	            	<h:message for="origin" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+	            	<h:outputText value="#{msg.inmigrationReason}:"/>
+	                <h:inputText id="reason" value="#{inMigrationCrud.item.reason}" converter="#{defaultConverter}"/>
+	            	<h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                    <h:outputText value="#{msg.fieldWorkerId}:"/>
+	                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{inMigrationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+	            	<h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            	
+                    <h:outputText value="#{msg.visitId}:"/>
+                    <h:inputText styleClass="visit" autocomplete="off" id="visitId" value="#{inMigrationCrud.item.visit}" converter="#{visitExtIdConverter}" />
+	            	<h:message for="visitId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            </h:panelGrid>
+	            <script>
+  					document.getElementById('form:loc').focus();
+  				</script>
+	            <br />
+	            <h:commandButton action="#{inMigrationCrud.edit}" value="#{msg.lblSave}">
+	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{inMigrationCrud.item.uuid}" />
+	            </h:commandButton>
+	        </h:form>
+		</ui:define>		
+	</ui:composition>
+  </body>
+</html>

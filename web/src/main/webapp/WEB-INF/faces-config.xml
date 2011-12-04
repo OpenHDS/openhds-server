@@ -312,8 +312,8 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>pregnancyoutcome_create</from-outcome>
-			<to-view-id>/pregnancy-outcome/create.faces</to-view-id>
+			<from-outcome>pregnancy-outcome_flow</from-outcome>
+			<to-view-id>/pregnancy-outcome.flow</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

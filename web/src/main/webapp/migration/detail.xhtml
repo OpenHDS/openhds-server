@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java/sun.com/jslt/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+<body>
+	<ui:composition template="/templates/default.xhtml">
+	 	<ui:define name="title">OpenHDS - Migration Into Location Details</ui:define>
+	
+		<ui:param name="crud" value="#{inMigrationCrud}" />
+		
+		<ui:define name="listing">
+			<ui:include src="list.xhtml" />
+		</ui:define>
+		<ui:define name="display">
+		
+	    	<h:outputText value="#{navController.breadcrumbTrail}" />	
+		
+	        <h1>#{msg.inmigrationDetail}</h1>
+	        <h:form>
+	        
+	        	<h:outputText styleClass="error" value="#{inMigrationCrud.item.statusMessage}" />
+	        
+	            <h:panelGrid columns="3">
+	                <h:outputText value="#{msg.individualId}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.individual}" converter="#{individualExtIdConverter}" />
+	                
+	                <h:outputText value="#{msg.locationId}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.residency.location}" converter="#{locationExtIdConverter}"/>
+	                
+	                <h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.recordedDate}" converter="#{calendarConverter}" />
+	                
+	                <h:outputText value="#{msg.inmigrationOrigin}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.origin}" />
+	                
+	                <h:outputText value="#{msg.inmigrationReason}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.reason}" />
+	                
+	                <h:outputText value="#{msg.inmigrationTemporaryIndividualId}:" />
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.unknownIndividual ? msg.yes : msg.no}" />
+                    
+                    <h:outputText value="#{msg.fieldWorkerId}:"/>
+                    <h:outputText />
+                    <h:outputText value="#{inMigrationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+                   	
+                   	<h:outputText value="#{msg.visitId}:"/>
+                    <h:outputText />
+                    <h:outputText value="#{inMigrationCrud.item.visit}" converter="#{visitExtIdConverter}" />
+				    
+				    <h:outputText value="#{msg.insertDate}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{inMigrationCrud.item.insertDate}" converter="#{calendarConverter}" />
+					
+					<h:outputText value="#{msg.insertBy}:"/>
+					<h:outputText />
+					<h:outputText value="#{inMigrationCrud.item.insertBy.fullName}" />
+					
+					<h:outputText value="#{msg.dataStatus}:"/>
+		    		<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+					<h:outputText value="#{inMigrationCrud.item.status}" />	
+				</h:panelGrid>
+				<br />
+	           <h:commandButton action="#{inMigrationCrud.editSetup}" value="#{msg.lblEdit}">
+	               <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{inMigrationCrud.item.uuid}" />
+	           </h:commandButton>
+	        </h:form>
+		</ui:define>		
+	</ui:composition>
+  </body>
+</html>

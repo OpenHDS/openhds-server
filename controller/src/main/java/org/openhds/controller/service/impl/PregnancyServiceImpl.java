@@ -82,6 +82,9 @@ public class PregnancyServiceImpl implements PregnancyService {
     	if (entityItem.getOutcomes().size() == 0) {
     		throw new ConstraintViolations("A Pregnancy Outcome cannot be created unless it has at least 1 outcome.");
     	}
+		if (entityItem.getMother().getCurrentResidency() == null) {
+			throw new ConstraintViolations("A Pregnancy Outcome cannot be created because a Residency record cannot be found for the mother.");
+		}
 		return entityItem;
 	}
 	
@@ -102,6 +105,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 		// - create the new child
 		// - create new residency for child and set the location to the mothers current residency location
 		// - create a membership to the mothers social group for which the social group is of type family 
+		
 		Location motherLocation = pregOutcome.getMother().getCurrentResidency().getLocation();
 		
 		List<PregnancyOutcome> persistedPOList = genericDao.findListByMultiProperty(PregnancyOutcome.class, 

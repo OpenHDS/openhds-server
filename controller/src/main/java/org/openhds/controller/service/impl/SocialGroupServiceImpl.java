@@ -121,6 +121,21 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 		List<SocialGroup> list = genericDao.findListByProperty(SocialGroup.class, "groupHead", individual, true);
 		return list;
 	}
+	
+	public SocialGroup getSocialGroupForIndividualByType(Individual individual, String groupType) {
+        Set<Membership> memberships = individual.getAllMemberships();
+ 
+        for (Membership membership : memberships) {
+            if (membership.getSocialGroup().getGroupType() == null) {
+            	return null;
+            } else {
+                if (membership.getSocialGroup().getGroupType().equals("FAM")) {
+                    return membership.getSocialGroup();
+                }
+            }
+        }
+        return null;
+ 	}
 		
 	@Transactional(rollbackFor=Exception.class)
 	public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, 

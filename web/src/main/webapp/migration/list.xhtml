@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+      <h:form>
+          <div style="text-align:right;">
+              <div style="float:left;">
+                  <h:commandButton immediate="true" action="#{inMigrationCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" />
+
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{inMigrationCrud}"/>
+				</ui:include>
+              </div>
+          </div>
+          
+		<!-- Search Widget -->	
+		<ui:include src="/search/searchBox.xhtml">
+		     <ui:param name="crud" value="#{inMigrationCrud}"/>
+		</ui:include>                
+          
+          <div style="overflow:auto;">
+          	<c:if test="#{flowScope == null}" >
+              	<h:outputText escape="false" value="#{msg.inmigrationEmpty}" rendered="#{inMigrationCrud.pager.totalCount == 0}" />
+                   <h:panelGroup rendered="#{inMigrationCrud.pager.totalCount > 0}">
+                   <h:dataTable value="#{inMigrationCrud.pagedItems}" var="item"
+                                columnClasses="center,center,center,center,width3" width="100%"  >
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.individualId}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.individual.extId}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.locationId}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.residency.location}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.inmigrationOrigin}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.origin}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.inmigrationDate}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.residency.startDate}" converter="#{calendarConverter}" />
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText escape="false" value=""/>
+                           </f:facet>
+                           <h:outputLink value="/openhds/amendment/inmigration/details/#{item.uuid}" >
+                           		<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                           </h:outputLink>
+                           <h:outputText value=" "/>
+                           <h:outputLink value="/openhds/amendment/inmigration/edit/#{item.uuid}" >
+                           		<h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                           </h:outputLink>
+                           <h:outputText value=" "/>  
+                       </h:column>
+
+                   </h:dataTable>
+               </h:panelGroup>
+              </c:if>
+              <c:if test="#{flowScope != null}" >
+              	<h:outputText escape="false" value="#{msg.inmigrationEmpty}" rendered="#{fn:length(inMigrationCrud.filteredPagedItems) == 0}" />
+               <h:panelGroup rendered="#{fn:length(inMigrationCrud.filteredPagedItems) > 0}">
+                   <h:dataTable value="#{inMigrationCrud.filteredPagedItems}" var="item"
+                                columnClasses="center,center,center,center,width3" width="100%"  >
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.individualId}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.individual.extId}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.locationId}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.residency.location}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.inmigrationOrigin}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.origin}"/>
+                       </h:column>
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText value="#{msg.inmigrationDate}"/>
+                           </f:facet>
+                           <h:outputText value="#{item.residency.startDate}" converter="#{calendarConverter}" />
+                       </h:column>
+
+                       <h:column>
+                           <f:facet name="header">
+                               <h:outputText escape="false" value=""/>
+                           </f:facet>
+                           <h:commandLink id="inMigDetails" action="#{inMigrationCrud.detailSetup}" >
+                           		<f:param name="itemId" value="#{item.uuid}" />
+                           		<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                           </h:commandLink>
+                           <h:outputText value=" "/>
+                           <h:commandLink id="inMigEdit" action="#{inMigrationCrud.editSetup}" >
+                           		<f:param name="itemId" value="#{item.uuid}" />
+                           		<h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                           </h:commandLink>
+                           <h:outputText value=" "/>  
+                       </h:column>
+                   </h:dataTable>
+               </h:panelGroup>
+              </c:if>
+          </div>
+      </h:form>
+  </ui:composition>
