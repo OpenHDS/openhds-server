@@ -405,6 +405,21 @@
         <property name="siteProperties" ref="siteProperties"></property>
     </bean>
     
+    <!-- Beans -->
+    <bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean" >
+    	<property name="genericDao" ref="genericDao" />
+    	<property name="membershipService" ref="membershipService" />
+    	<property name="individualService" ref="individualService" />
+    	<property name="relationshipService" ref="relationshipService" />
+   		<property name="socialGroupService" ref="socialGroupService" />
+   		<property name="residencyService" ref="residencyService" />
+		<property name="inMigrationService" ref="inMigrationService" />
+		<property name="outMigrationService" ref="outMigrationService" />
+		<property name="pregnancyService" ref="pregnancyService" />
+		<property name="deathService" ref="deathService" />
+    	<property name="webFlowService" ref="webFlowService" />
+    </bean>
+    
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
 	 	<property name="dbDriver" value="${dbDriver}"/>
 		<property name="dbUrl" value="${dbUrl}"/>

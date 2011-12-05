@@ -43,6 +43,7 @@
 		<!--  <webflow:flow-location-pattern value="/**/*-flow.xml" /> -->
 		<webflow:flow-location path="inmigration-flow.xml" id="inmigration"></webflow:flow-location>
 		<webflow:flow-location path="pregnancy-flow.xml" id="pregnancy-outcome"></webflow:flow-location>
+		<webflow:flow-location path="individualHistory-flow.xml" id="individualHistory"></webflow:flow-location>
 	</webflow:flow-registry>
 	
 	<!-- Configures the Spring Web Flow JSF integration -->

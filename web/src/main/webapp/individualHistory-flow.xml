@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!--  This element is needed - it provides a flow scoped persistent context  -->
+    <persistence-context />
+
+    <on-start>
+    	<set name="flowScope.showNavMenu" value="true"></set>
+    	<set name="flowScope.step" value="0"></set>
+    	<evaluate expression="navController.clearTrailExceptFirst()" />
+    </on-start>
+
+    <view-state id="home" view="history/create.xhtml">
+        <on-entry>
+        	<evaluate expression="navController.setNextItem('Individual History')" />
+        	<evaluate expression="navController.addCrumb('Individual History')" />
+        	<evaluate expression="individualHistoryBean.reset()" />
+            <set name="flowScope.currentView" value="'home'"></set>
+        </on-entry>
+        <transition on="setIndividual">
+        	<evaluate expression="individualHistoryBean.determineValidIndividual(messageContext)" />
+			<set name="flowScope.step" value="1" />
+		</transition>
+        <transition on="finish" to="resetForm">
+        	<evaluate expression="individualHistoryBean.reset()" />
+        </transition>
+    </view-state>
+    
+    <end-state id="resetForm" />
+    <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    
+    <global-transitions>
+    	<transition on="logoutLnk" to="logOut" />
+        <transition to="exit">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+        </transition>
+    </global-transitions>
+</flow>

@@ -27,14 +27,14 @@
         <evaluate expression="pregnancyOutcomeCrud.initFlow()" />
 
         <!-- in cases where a visit/mother are supplied, set these -->
-                <!-- values in the crud. If they are not supplied, the fields will be set to null -->
+        <!-- values in the crud. If they are not supplied, the fields will be set to null -->
         <evaluate expression="pregnancyOutcomeCrud.getItem().setVisit(visit)" />
         <evaluate expression="pregnancyOutcomeCrud.getItem().setMother(mother)" />
         <evaluate expression="pregnancyOutcomeCrud.getItem().setCollectedBy(fieldWorker)" />
 
 
         <!-- Navigation menu should be shown if pregnancy outcome is being -->
-                <!-- used outside the update form. Otherwise, the nav menu should be hidden -->
+        <!-- used outside the update form. Otherwise, the nav menu should be hidden -->
         <set name="flowScope.showNavMenu" value="updating == null" />
 
         <!-- Flag to disable a subset of fields on the individual create form -->
