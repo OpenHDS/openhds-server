@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+				<ui:define name="title">OpenHDS - Validation Routine</ui:define>
+			
+				<ui:param name="hideTabBar" value="true" />
+				   	
+	        
+	            <ui:define name="display">
+	            	            
+	            <style>
+		       		.base-table {
+		       			border:1px solid #98BF21;
+		       			border-collapse:collapse;
+						border-color:#888;
+						table-layout:fixed;
+		       		}
+		       		
+		       		.base-table th {
+		       			background-color:#B9D264;
+						font-weight:bold;
+						font-size:.9em;
+						overflow:hidden;
+		       		}
+		       		
+		       		.base-table td {
+		       			padding:5px 5px 5px;
+		       			text-align:center;
+		       		}
+		       		
+		       		.base-table a {
+		       			width:100%;
+						border:0;
+		       		}
+		       		
+		       		.base-table .alt {
+		       			background-color:#CCC;
+		       		}
+		       		
+		       		.base-table .alt-col {
+		       			width:40%;
+		       		}
+		       		.base-table-center {
+		       			margin:0 auto;
+		       		}
+	         	</style>
+           
+           		<h:outputText value="#{navController.breadcrumbTrail} > #{msg.validationRoutineName}" />
+           		
+           		<div id="loading-div">
+					<img src="/openhds/resources/images/ajax-loader.gif" /> #{msg.working}
+				</div>
+           
+                <h1>#{msg.validationRoutineName}</h1>
+                
+                <h3>#{msg.validationRoutineSelectEntity}:</h3>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form id="form">
+                    <h:panelGrid columns="1">
+
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateIndividuals}" value="#{msg.navBarIndividual}" onchange="submit()" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateLocations}" value="#{msg.navBarLocation}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateSocialGroups}" value="#{msg.navBarSocialGroup}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateRelationships}" value="#{msg.navBarRelationship}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateMemberships}" value="#{msg.navBarMembership}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validatePregnancyOutcomes}" value="#{msg.navBarPregOutcome}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validatePregnancyObservations}" value="#{msg.navBarPregnancyObservation}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateInMigrations}" value="#{msg.navBarMigIntoLoc}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateOutMigrations}" value="#{msg.navBarOutMigration}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateResidencies}" value="#{msg.navBarResidency}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateVisits}" value="#{msg.navBarVisit}" />
+                      <h:commandLink styleClass="validate" action="#{validationRoutineBean.validateDeaths}" value="#{msg.navBarDeath}" />
+                      
+                    </h:panelGrid>
+                    <br />
+                     
+                     <c:if test="#{fn:length(validationRoutineBean.errorKeys) eq 0 and validationRoutineBean.run}">
+                     	<h:outputText value="#{msg.validationRoutineEmpty}" />
+                     </c:if>
+	        		<br /><br />
+	        			
+	        		<h:dataTable value="#{validationRoutineBean.errorKeys}" rendered="#{fn:length(validationRoutineBean.errorKeys) > 0}" var="entry" 
+	        			styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+				  			 <h:column>
+		                    <f:facet name="header">
+		                        <h:outputText value="#{msg.validationRoutineEntity}"/>
+		                    </f:facet>
+		                    <h:dataTable value="#{entry}" var="type" >
+		                        <h:column>
+		                            <h:outputText value="#{type.key}"/>
+		                        </h:column>
+		                    </h:dataTable>
+		                </h:column>
+		                <h:column>
+		                    <f:facet name="header">
+		                        <h:outputText value="#{msg.validationRoutineEntityErrors}"/>
+		                    </f:facet>
+		                    <h:dataTable value="#{entry}" var="values" styleClass="base-table-center" >
+		                        <h:column>
+		                            <h:dataTable value="#{values.value}" var="num" >
+		                                <h:column>
+		                                    <h:outputLink id="viewLink" value="/openhds/amendment/#{num}" >
+		       									<h:outputText value="#{msg.view}"/>   
+											</h:outputLink>
+		                                </h:column>
+		                            </h:dataTable>
+		                        </h:column>
+		                    </h:dataTable>
+		                </h:column>
+            		</h:dataTable>
+            		
+            	<script>
+					//<![CDATA[
+					(function() {
+						$('.validate').click(function(evt) {
+							$('#loading-div').css('visibility', 'visible');
+						});
+					})();
+					//]]>
+				</script>
+    
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

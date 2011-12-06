@@ -41,7 +41,8 @@
 	</url-mapping>
 	
 	<url-mapping id="pregnancyoutcomeDetail" >
-		<pattern value="/amendment/pregnancyoutcome/details/#{itemId}" />
+	
+		<pattern value="/amendment/pregnancy-outcome/details/#{itemId}" />
 		<view-id>/pregnancy-outcome/detail.xhtml</view-id> 
 		<action onPostback="false">#{pregnancyOutcomeCrud.detailSetup}</action>
 	</url-mapping>

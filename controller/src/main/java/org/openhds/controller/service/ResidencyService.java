@@ -55,15 +55,6 @@ public interface ResidencyService {
 	List<Individual> getIndividualsByLocation(Location location);
 	
 	/**
-	 * Return the associated events for a given residency
-	 * (e.g. Pregnancy outcome, in migration, out migration, death).
-	 * 
-	 * @return the associated events for this residency
-	 */
-	
-	List<AuditableCollectedEntity> getResidencyAssociatedEvents(Residency residency);
-	
-	/**
 	 * Determine if an Individual has a current open residency. An open residency is defined as a residency
 	 * that has no end date
 	 * 

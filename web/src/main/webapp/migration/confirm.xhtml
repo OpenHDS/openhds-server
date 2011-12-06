@@ -10,13 +10,13 @@
 		<ui:param name="hideTabBar" value="true" />
 	
 		<ui:define name="display">
-			<h1>#{msginmigrationLeave}</h1>
+			<h1>#{msg.inmigrationLeave}</h1>
 	        <h:form id="inmigraiton">
 	           #{msg.inmigrationInProgress}
 	           	<br />
 	          #{msg.inmigrationNavigateAway}
-	           	<br />
-	           	<h:commandButton immediate="true" value="#{msg.inmigrationContine}" action="continue" />
+	           	<br /><br/>
+	           	<h:commandButton immediate="true" value="#{msg.inmigrationContinue}" action="continue" />
 	           	<h:commandButton value="#{msg.inmigrationCancel}" action="cancel" />
 	       	</h:form>
       	</ui:define>

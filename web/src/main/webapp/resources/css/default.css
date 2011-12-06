@@ -194,3 +194,17 @@ a.amendment-tab-unselected {
 	background-color:#86C583;
 	color:#306331;
 }
+
+#loading-div {
+    position:fixed;
+    top:0;
+    width:10%;
+    left:45%;
+    background-color:#608050;
+    text-align:center;
+    padding:.2em .8em;
+    border-left:1px solid #555;
+    border-bottom:1px solid #555;
+    border-right:1px solid #555;
+    visibility:hidden;
+}

@@ -54,7 +54,7 @@ public class ResidencyServiceImpl implements ResidencyService {
         Individual indiv = candidateResidency.getIndividual();
 
         checkIndividualEligibleForNewResdency(indiv);
-        
+
         // integrity checks on previous residencies
         for (Residency previousResidency : indiv.getAllResidencies()) {
             // its possible that the start residency being evaluated has already been persisted
@@ -226,85 +226,4 @@ public class ResidencyServiceImpl implements ResidencyService {
             return indiv1.getExtId().compareTo(indiv2.getExtId());
         }
     }
-
-    @Transactional(readOnly=true)
-    public List<AuditableCollectedEntity> getResidencyAssociatedEvents(final Residency residency) {
-		boolean isEnumerationResidency = residency.getStartType().equals(siteProperties.getEnumerationCode());
-		List<AuditableCollectedEntity> events = new ArrayList<AuditableCollectedEntity>();
-		
-		if (isEnumerationResidency && residency.getEndType() == null) {
-			return events;
-		}
-		
-		if (residency.getEndType() != null) {
-			if (residency.getEndType().equals(siteProperties.getDeathCode())) {
-				AuditableCollectedEntity ae = genericDao.findByMultiProperty(Death.class, 
-									getValueProperty("deathDate", residency.getEndDate()),
-									getValueProperty("individual", residency.getIndividual()));
-				if (ae == null) {
-					log.warn("Residency has end type has death code, but does not have a corresponding death event entity");
-				} else {
-					events.add(ae);
-				}
-			}
-			
-			if (residency.getEndType().equals(siteProperties.getOutmigrationCode())) {
-				AuditableCollectedEntity ae = genericDao.findByMultiProperty(OutMigration.class, 
-						getValueProperty("recordedDate", residency.getEndDate()),
-						getValueProperty("individual", residency.getIndividual()));
-				if (ae == null) {
-					log.warn("Residency has end type has outmigration code, but does not have a corresponding outmigration event entity");
-				} else {
-					events.add(ae);
-				}			
-			}
-		}
-		
-		if (isEnumerationResidency) {
-			return events;
-		}
-		
-		if (residency.getStartType().equals(siteProperties.getInmigrationCode())) {
-			AuditableCollectedEntity ae = genericDao.findByMultiProperty(InMigration.class, 
-					getValueProperty("recordedDate", residency.getStartDate()),
-					getValueProperty("individual", residency.getIndividual()));
-			if (ae == null) {
-				log.warn("Residency has start type has in migration code, but does not have a corresponding in migration event entity");
-			} else {
-				events.add(ae);
-			}				
-		}
-		
-		if (residency.getStartType().equals(siteProperties.getBirthCode())) {
-			AuditableCollectedEntity ae = genericDao.findByMultiProperty(PregnancyOutcome.class, 
-					getValueProperty("recordedDate", residency.getStartDate()),
-					getValueProperty("child1", residency.getIndividual()));
-			if (ae == null) {
-				// try the second child
-				ae = genericDao.findByMultiProperty(PregnancyOutcome.class, 
-						getValueProperty("recordedDate", residency.getStartDate()),
-						getValueProperty("child2", residency.getIndividual()));
-			}
-			
-			if (ae == null) {
-				log.warn("Residency has start type has birth code, but does not have a corresponding pregnancy outcome event entity");
-			} else {
-				events.add(ae);
-			}
-		}
-		
-    	return events;
-	}
-
-	private ValueProperty getValueProperty(final String string, final Object value) {
-		return new ValueProperty() {
-			public String getPropertyName() {
-				return string;
-			}
-
-			public Object getValue() {
-				return value;
-			}
-		};
-	}
 }

@@ -5,12 +5,12 @@
 		        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 		        xmlns:c="http://java.sun.com/jstl/core">
 	
-	<c:if test="#{flowScope == null}">	        
+	<c:if test="#{flowScope.updating == null}">	        
 		<c:if test="#{currentCrud.pager.totalCount > 0}">
 			<span class="paging-text paging-element">#{msg.pagingShowing} #{currentCrud.pager.pageIndex + 1} - #{currentCrud.pager.lastLogicalIndexOnCurrentPage} #{msg.pagingOf} #{currentCrud.pager.totalCount}</span>
 		</c:if>	
 	</c:if>
-	<c:if test="#{flowScope != null}">	  
+	<c:if test="#{flowScope.updating != null}">	  
 		<c:if test="#{currentCrud.pager.totalCount > 0}">
      
 		<c:if test="#{fn:length(currentCrud.filteredPagedItems) > 0}">

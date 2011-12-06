@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!--  This element is needed - it provides a flow scoped persistent context  -->
+    <persistence-context />
+    
+    <on-start>
+    	<set name="flowScope.step" value="0"></set>
+        <set name="flowScope.showListing" value="false"></set> 
+        <set name="flowScope.showNavMenu" value="true"></set>
+       	<set name="flowScope.successorSet" value="false"></set>
+       	<set name="flowScope.modifyHOH" value="false"></set>
+    	<evaluate expression="modifyHOHBean.clear()" />
+    	<evaluate expression="navController.clearTrailExceptFirst()" />
+    </on-start>
+    
+    <view-state id="home" view="modifyHOH/create.xhtml">
+    	<on-entry>
+    		<evaluate expression="navController.setNextItem('Modify Group Head')" />
+       		<evaluate expression="navController.addCrumb('Modify Group Head')" />
+            <set name="flowScope.currentView" value="'home'"></set>
+        </on-entry>
+        <transition on="setGroup">
+           	<evaluate expression="modifyHOHBean.checkValidHOH(messageContext)" />
+        	<set name="flowScope.showNavMenu" value="false"></set>
+        	<set name="flowScope.modifyHOH" value="true"></set>
+        	<set name="flowScope.step" value="1"></set>
+        </transition>
+        <transition on="setIndividual">
+        	<set name="flowScope.successorSet" value="true"></set>
+  			<evaluate expression="modifyHOHBean.setSuccessor(requestParameters.indivId)" />
+		</transition>  
+         <transition on="clearIndividual">
+         	<set name="flowScope.successorSet" value="false"></set>
+			<evaluate expression="modifyHOHBean.setSuccessor(null)" />
+			<evaluate expression="modifyHOHBean.getMemberships().clear()" />
+		</transition>
+		 <transition on="newMembership" to="membership" >
+		 	<evaluate expression="modifyHOHBean.determineValidMembershipToCreate(messageContext)" />
+		 <evaluate expression="modifyHOHBean.determineValidSuccessorBeforeCreatingMembership(messageContext, flowScope.successorSet)" />
+		 	<evaluate expression="membershipCrud.initFlow()" />
+        </transition>
+		<transition on="create" to="home">
+			 <evaluate expression="modifyHOHBean.checkValidSuccessor(messageContext)" />
+		 	 <evaluate expression="modifyHOHBean.checkCorrespondingMemberships(messageContext)" />   
+        	 <evaluate expression="modifyHOHBean.modifySocialGroupHead()" />
+        	 <evaluate expression="modifyHOHBean.clear()" />
+        	 <set name="flowScope.step" value="0"></set>
+        	 <set name="flowScope.showNavMenu" value="true"></set>
+        </transition>
+    	<transition on="finish" to="resetForm" >
+    		<evaluate expression="navController.removeLastCrumb()" />
+    	</transition>
+    </view-state>
+    
+     <view-state id="membership" view="membership/create.xhtml">
+        <on-entry>
+        	<set name="flowScope.currentView" value="'membership'"></set>
+        	<evaluate expression="membershipCrud.getItem().setSocialGroup(modifyHOHBean.group)" />
+        	<evaluate expression="membershipCrud.getItem().setEndType(siteProperties.getNotApplicableCode())" />
+       	</on-entry>
+        <transition on="createMembership" to="home">
+        	<evaluate expression="modifyHOHBean.checkValidMembershipToCreate(membershipCrud.getItem(), messageContext)" />
+       		<evaluate expression="membershipCrud.validateEntity(membershipCrud.getItem(), messageContext)" />
+       		<evaluate expression="modifyHOHBean.addMembership(membershipCrud.getItem())" />
+       		<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        <transition on="cancel" to="home">
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+    
+    <view-state id="confirm" view="modifyHOH/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="directCancel" />
+    </view-state>
+    
+    <decision-state id="directCancel">
+    	<if test="flowScope.modifyHOH" then="logout" else="exit" />
+	</decision-state>
+    
+    <decision-state id="loggingOut">
+    	<if test="flowScope.modifyHOH" then="confirm" else="logout" />
+	</decision-state>
+	
+    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+    <end-state id="resetForm" />
+    
+    <global-transitions>
+    	<transition on="logoutLnk" to="loggingOut" />
+        <transition to="exit">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+        </transition>
+    </global-transitions>
+    
+</flow>

@@ -228,6 +228,7 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="facesNavigation" class="org.openhds.web.ui.FacesNavigation" />
     <bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" />
     <bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl" />
     <bean id="webFlowService" class="org.openhds.web.service.impl.WebFlowServiceImpl" />
@@ -296,6 +297,11 @@
         <property name="converter" ref="individualConverter" />
         <property name="entityValidator" ref="entityValidator" />
         <property name="service" ref="individualService"></property>
+    </bean>
+    
+    <bean id="individualMergeCrud" parent="baseCrud" class="org.openhds.web.crud.impl.IndividualMergeCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.IndividualMerge" />
+        <property name="indivMergeService" ref="individualMergeService" />
     </bean>
     
     <bean id="inMigrationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.InMigrationCrudImpl">
@@ -406,7 +412,7 @@
     </bean>
     
     <!-- Beans -->
-    <bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean" >
+    <bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean" scope="session">
     	<property name="genericDao" ref="genericDao" />
     	<property name="membershipService" ref="membershipService" />
     	<property name="individualService" ref="individualService" />
@@ -419,6 +425,44 @@
 		<property name="deathService" ref="deathService" />
     	<property name="webFlowService" ref="webFlowService" />
     </bean>
+    
+    <bean id="modifyHOHBean" class="org.openhds.web.beans.ModifyHOHBean" scope="session">
+        <property name="socialGroupService" ref="socialGroupService" />
+        <property name="membershipService" ref="membershipService" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="entityService" ref="entityService" />
+        <property name="genericDao" ref="genericDao" />
+    </bean>
+    
+    <bean id="deathHOHBean" class="org.openhds.web.beans.DeathHOHBean" scope="session">
+        <property name="socialGroupService" ref="socialGroupService" />
+        <property name="deathService" ref="deathService" />
+        <property name="membershipService" ref="membershipService" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="entityService" ref="entityService" />
+        <property name="genericDao" ref="genericDao" />
+    </bean>
+    
+    <bean id="validationRoutineBean" class="org.openhds.web.beans.ValidationRoutineBean">
+		<property name="individualService" ref="individualService" />	
+		<property name="locationService" ref="locationHierarchyService" />
+		<property name="socialgroupService" ref="socialGroupService" />
+		<property name="relationshipService" ref="relationshipService" />
+		<property name="membershipService" ref="membershipService" />
+		<property name="pregnancyService" ref="pregnancyService" />
+		<property name="visitService" ref="visitService" />
+		<property name="deathService" ref="deathService" />
+		<property name="inmigrationService" ref="inMigrationService" />
+		<property name="outmigrationService" ref="outMigrationService" />
+		<property name="residencyService" ref="residencyService" />
+		<property name="genericDao" ref="genericDao" />
+		<property name="entityValidator" ref="entityValidator" />	
+		<property name="properties" ref="siteProperties" />
+		<property name="indivGenerator" ref="individualIdGenerator" />
+		<property name="locGenerator" ref="locationIdGenerator" />
+		<property name="sgGenerator" ref="socialGroupIdGenerator" />
+		<property name="visitGenerator" ref="visitIdGenerator" />
+	</bean>
     
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
 	 	<property name="dbDriver" value="${dbDriver}"/>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!--  This element is needed - it provides a flow scoped persistent context  -->
+    <persistence-context />
+    
+    <on-start>
+    	<set name="flowScope.step" value="0"></set>
+    	<set name="flowScope.settingDeathHOH" value="true"></set> 
+    	<set name="flowScope.deathIsSet" value="false"></set> 
+        <set name="flowScope.showListing" value="false"></set> 
+        <set name="flowScope.showNavMenu" value="true"></set>
+       	<set name="flowScope.deathHOH" value="false"></set>	
+       	<set name="flowScope.successorSet" value="false"></set>
+    	<evaluate expression="deathHOHBean.clear()" />
+    	<evaluate expression="deathHOHBean.initializeMembershipList()" />
+    </on-start>
+    
+    <view-state id="home" view="deathforHOH/create.xhtml">
+    	<on-entry>
+            <set name="flowScope.currentView" value="'home'"></set>
+            <evaluate expression="navController.addItemToTrail('Death for Group Head')" />
+        </on-entry>
+        <transition on="setGroup">
+           	<evaluate expression="deathHOHBean.checkValidHOH(messageContext)" />
+        	<evaluate expression="deathCrud.initFlow()" />
+        	<set name="flowScope.showNavMenu" value="false"></set>
+          	<set name="flowScope.deathHOH" value="true"></set>
+        	<set name="flowScope.step" value="1"></set>
+        </transition>
+        <transition on="setIndividual">
+        	<set name="flowScope.successorSet" value="true"></set>
+  			<evaluate expression="deathHOHBean.setSuccessor(requestParameters.indivId)" />
+		</transition>  
+         <transition on="clearIndividual">
+         	<set name="flowScope.successorSet" value="false"></set>
+			<evaluate expression="deathHOHBean.setSuccessor(null)" />
+			<evaluate expression="deathHOHBean.getMemberships().clear()" />
+		</transition>
+		 <transition on="newMembership" to="membership" >
+		 	<evaluate expression="deathHOHBean.determineValidMembershipToCreate(messageContext)" />
+		 	<evaluate expression="deathHOHBean.determineValidSuccessorBeforeCreatingMembership(messageContext, flowScope.successorSet)" />
+		 	<evaluate expression="membershipCrud.initFlow()" />
+        </transition>
+		<transition on="create" to="home">
+			 <evaluate expression="deathHOHBean.checkValidSuccessor(messageContext)" />
+		 	 <evaluate expression="deathHOHBean.checkCorrespondingMemberships(messageContext)" />
+		 	 <evaluate expression="deathHOHBean.createDeathAndSetNewHead(messageContext, deathCrud.getItem())" />
+             <set name="flowScope.deathIsSet" value="false"></set>  	   
+        	 <evaluate expression="deathHOHBean.clear()" />
+        	 <set name="flowScope.step" value="0"></set>
+        	 <set name="flowScope.showNavMenu" value="true"></set>
+        	 <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        <transition on="continue">	
+        	 <evaluate expression="deathHOHBean.checkValidSuccessor(messageContext)" />
+        	 <evaluate expression="deathHOHBean.checkCorrespondingMemberships(messageContext)" />
+        	 <evaluate expression="deathHOHBean.initializeMembershipList()" />
+			 <evaluate expression="deathHOHBean.incCurrent()" />
+			 <set name="flowScope.successorSet" value="false"></set>
+			 <set name="flowScope.deathIsSet" value="true"></set>  	   	 
+        </transition>
+    	<transition on="finish" to="resetForm" >
+    		<evaluate expression="navController.removeLastCrumb()" />
+    	</transition>
+    </view-state>
+    
+     <view-state id="membership" view="membership/create.xhtml">
+        <on-entry>
+        	<set name="flowScope.currentView" value="'membership'"></set>
+        	<evaluate expression="membershipCrud.getItem().setSocialGroup(deathHOHBean.group)" />
+        	<evaluate expression="membershipCrud.getItem().setCollectedBy(deathCrud.getItem().collectedBy)" />
+       		<evaluate expression="membershipCrud.getItem().setStartDate(deathCrud.getItem().deathDate)" />
+       		<evaluate expression="membershipCrud.getItem().setEndType(siteProperties.getNotApplicableCode())" />
+       	</on-entry>
+        <transition on="createMembership" to="home">
+        	<evaluate expression="deathHOHBean.checkValidMembershipToCreate(membershipCrud.getItem(), messageContext)" />
+       		<evaluate expression="membershipCrud.validateEntity(membershipCrud.getItem(), messageContext)" />
+       		<evaluate expression="deathHOHBean.addMembership(membershipCrud.getItem())" />
+        	<set name="flowScope.deathIsSet" value="true"></set>
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        <transition on="cancel" to="home" >
+        	<evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+    
+    <view-state id="confirm" view="deathForHOH/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="directCancel" />
+    </view-state>
+    
+    <decision-state id="directCancel">
+    	<if test="flowScope.deathHOH" then="logout" else="exit" />
+	</decision-state>
+    
+    <decision-state id="loggingOut">
+    	<if test="flowScope.deathHOH" then="confirm" else="logout" />
+	</decision-state>
+	
+    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+    <end-state id="resetForm" />
+    
+    <global-transitions>
+    	<transition on="logoutLnk" to="loggingOut" />
+        <transition to="exit">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+        </transition>
+    </global-transitions>
+    
+</flow>

@@ -44,6 +44,8 @@
 		<webflow:flow-location path="inmigration-flow.xml" id="inmigration"></webflow:flow-location>
 		<webflow:flow-location path="pregnancy-flow.xml" id="pregnancy-outcome"></webflow:flow-location>
 		<webflow:flow-location path="individualHistory-flow.xml" id="individualHistory"></webflow:flow-location>
+		<webflow:flow-location path="modifyHOH-flow.xml" id="modifyHOH"></webflow:flow-location>
+		<webflow:flow-location path="deathForHOH-flow.xml" id="deathForHOH"></webflow:flow-location>
 	</webflow:flow-registry>
 	
 	<!-- Configures the Spring Web Flow JSF integration -->
