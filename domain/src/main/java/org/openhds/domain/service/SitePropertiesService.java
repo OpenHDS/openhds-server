@@ -4,8 +4,7 @@ public interface SitePropertiesService {
 	
 	String getLocale();
 	String getDateFormat();
-	String getEarliestEnumerationDate();	
-	String getBaselineForm();			
+	String getEarliestEnumerationDate();		
     String getSpecialStudyLocation();			
 	String getUnknownIdentifier();	
 	String getInmigrationCode();

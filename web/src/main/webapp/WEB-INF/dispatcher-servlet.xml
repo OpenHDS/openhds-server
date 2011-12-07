@@ -42,6 +42,7 @@
 	<webflow:flow-registry id="flowRegistry" flow-builder-services="facesFlowBuilderServices" base-path="/">
 		<!--  <webflow:flow-location-pattern value="/**/*-flow.xml" /> -->
 		<webflow:flow-location path="update-flow.xml" id="update"></webflow:flow-location>
+		<webflow:flow-location path="baseline-flow.xml" id="baseline"></webflow:flow-location>
 		<webflow:flow-location path="inmigration-flow.xml" id="inmigration"></webflow:flow-location>
 		<webflow:flow-location path="pregnancy-flow.xml" id="pregnancy-outcome"></webflow:flow-location>
 		<webflow:flow-location path="individualHistory-flow.xml" id="individualHistory"></webflow:flow-location>

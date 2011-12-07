@@ -16,7 +16,9 @@
 	        </li>
 	        <sec:ifAllGranted roles="ACCESS_BASELINE">
 		   		<li>
-		   			<h:commandLink value="BASELINE" action="#{siteProperties.getBaselineForm}" />
+		   			<h:commandLink action="baseline_flow" value="#{msg.navBarBaseline}" >
+		    			<f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
+		            </h:commandLink>
 		    	</li>
 	    	</sec:ifAllGranted>
 	    	<sec:ifAllGranted roles="ACCESS_UPDATE">

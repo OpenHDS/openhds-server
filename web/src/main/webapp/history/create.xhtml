@@ -132,12 +132,15 @@
 	                        </f:facet>
 	                        <h:outputText value="#{relationship.individualB.extId}" />
                       	 </h:column>	
-                         <h:column headerClass="width1">
-	                        <f:facet name="header">
-	                            <h:outputText value="#{msg.relationshipType}" />
-	                        </f:facet>
-	                        <h:outputText value="#{relationship.aIsToB}" />
-                      	 </h:column>	
+                    	 <h:column>
+                           	<f:facet name="header">
+                           		<h:panelGroup>
+                           			<h:outputText value="#{msg.navBarRelationship}" /> <br />
+                           			<img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+                           		</h:panelGroup>
+                               </f:facet>
+                           	<h:outputText value="#{relationship.aIsToB}" />
+                         </h:column>   
 						 <h:column headerClass="width3">
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>

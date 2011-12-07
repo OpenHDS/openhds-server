@@ -8,7 +8,6 @@ public class SiteProperties implements SitePropertiesService {
 	String dateFormat;
 	String earliestEnumerationDate;
 	String specialStudyLocation;
-	String baselineForm;
 	String unknownIdentifier;
 	String inmigrationCode;
 	String outmigrationCode;
@@ -68,15 +67,7 @@ public class SiteProperties implements SitePropertiesService {
 	public void setAutocomplete(boolean autocomplete) {
 		this.autocomplete = autocomplete;
 	}
-	
-	public String getBaselineForm() {
-		return baselineForm;
-	}
-
-	public void setBaselineForm(String baselineForm) {
-		this.baselineForm = baselineForm;
-	}
-				
+					
     public String getSpecialStudyLocation() {
 		return specialStudyLocation;
 	}

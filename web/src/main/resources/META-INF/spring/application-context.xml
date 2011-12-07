@@ -78,6 +78,9 @@
         <property name="dateFormat" value="#{siteProperties.dateFormat}" />
     </bean>
     
+    <!-- jsf validators -->
+    <bean id="checkMinimumEnumerationDate" class="org.openhds.web.vld.CheckMinimumEnumerationStartDateValidator" />
+    
     <!-- Autocomplete converters -->
     <bean id="fieldWorkerExtIdConverter" class="org.openhds.web.cvt.EntityPropertyConverterImpl">
         <constructor-arg ref="fieldWorkerDao" />
@@ -418,6 +421,16 @@
         <property name="genericDao" ref="genericDao" />
         <property name="webFlowService" ref="webFlowService" />
         <property name="jsfService" ref="jsfService" />
+    </bean>
+    
+    <bean id="baselineFlowBean" class="org.openhds.web.beans.BaselineFlowBean" scope="session">
+        <property name="residencyService" ref="residencyService" />
+        <property name="baselineService" ref="baselineService" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="individualService" ref="individualService" />
+        <property name="genericDao" ref="genericDao" />
+        <property name="socialGroupGenerator" ref="socialGroupIdGenerator" />
+        <property name="properties" ref="siteProperties" />
     </bean>
     
     <bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean" scope="session">

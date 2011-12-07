@@ -65,8 +65,6 @@
 		<property name="earliestEnumerationDate"><value>${openhds.earliestEnumerationDate}</value></property>
         <property name="valueExtensionsForMembershipCodesEnabled"><value>${openhds.valueExtensionsForMembershipCodesEnabled}</value></property>
         <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
-        <!-- valid values are baseline, baseline_flow -->
-        <property name="baselineForm"><value>${openhds.webFormBaseline}</value></property>
     </bean> 
     
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" /> 

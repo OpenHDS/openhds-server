@@ -34,14 +34,14 @@
 	</constraint>
 	<!-- required constraint -->
     <constraint id="membershipConstraint">
-		<value description="Head">01</value>
-		<value description="Spouse">02</value>
-		<value description="Son/Daughter">03</value>
-		<value description="Brother/Sister">04</value>
-		<value description="Parent">05</value>
-		<value description="Grandchild">06</value>
-		<value description="Not Related">07</value>
-		<value description="Other Relative">08</value>
-		<value description="Don't Know">09</value>
+		<value description="Head">1</value>
+		<value description="Spouse">2</value>
+		<value description="Son/Daughter">3</value>
+		<value description="Brother/Sister">4</value>
+		<value description="Parent">5</value>
+		<value description="Grandchild">6</value>
+		<value description="Not Related">7</value>
+		<value description="Other Relative">8</value>
+		<value description="Don't Know">9</value>
 	</constraint>
 </value-constraints>
