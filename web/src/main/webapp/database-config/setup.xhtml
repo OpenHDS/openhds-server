@@ -12,6 +12,10 @@
 		
             <ui:define name="display">
             
+                <div id="loading-div">
+					<img src="/openhds/resources/images/ajax-loader.gif" /> #{msg.working}
+				</div>
+            
             	<h:outputText value="#{navController.breadcrumbTrail} > #{msg.dbName}" />
             
                 <h1>#{msg.dbConfig}</h1>
@@ -58,7 +62,17 @@
                           
                     </h:panelGrid>
                     <br />
-                    <h:commandButton action="#{databaseConfig.create}" value="#{msg.lblCreate}" />
+                    <h:commandButton styleClass="config" action="#{databaseConfig.create}" value="#{msg.lblCreate}" />
+                    
+                    <script>
+						//<![CDATA[
+						(function() {
+							$('.config').click(function(evt) {
+								$('#loading-div').css('visibility', 'visible');
+							});
+						})();
+						//]]>
+					</script>
                 </h:form>
             </ui:define>
         </ui:composition>

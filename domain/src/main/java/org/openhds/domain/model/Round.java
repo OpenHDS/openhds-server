@@ -13,6 +13,7 @@ import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
 import org.openhds.domain.constraint.CheckInteger;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
+import org.openhds.domain.constraint.Searchable;
 
 @Description(description="A Round represents a range of dates in which Visits " +
 		"can take place.")

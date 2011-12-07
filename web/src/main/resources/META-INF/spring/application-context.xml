@@ -411,7 +411,15 @@
         <property name="siteProperties" ref="siteProperties"></property>
     </bean>
     
-    <!-- Beans -->
+    <!-- Beans -->   
+    <bean id="updateBean" class="org.openhds.web.beans.UpdateBean" scope="session">
+        <property name="residencyService" ref="residencyService" />
+        <property name="properties" ref="siteProperties" />
+        <property name="genericDao" ref="genericDao" />
+        <property name="webFlowService" ref="webFlowService" />
+        <property name="jsfService" ref="jsfService" />
+    </bean>
+    
     <bean id="individualHistoryBean" class="org.openhds.web.beans.IndividualHistoryBean" scope="session">
     	<property name="genericDao" ref="genericDao" />
     	<property name="membershipService" ref="membershipService" />
