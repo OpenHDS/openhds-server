@@ -26,7 +26,7 @@
                     </c:if>
                     <c:if test="#{currentUser.name != null}">
                         <div>
-		          			Welcome #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="Logout" />						
+		          			#{msg.welcome} #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="#{msg.logout}" />						
                         </div>
                     </c:if>
                 </div>

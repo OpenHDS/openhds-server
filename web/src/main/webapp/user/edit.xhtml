@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Edit User</ui:define>
+		
+			<ui:param name="crud" value="#{userCrud}" />
+		
+            <ui:define name="listing">
+                <ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>#{msg.userEdit}</h1>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form>
+                    <h:panelGrid columns="3">
+                        <h:outputText value="#{msg.userFirstName}:"/>
+                        <h:inputText id="firstName" value="#{userCrud.item.firstName}" converter="#{defaultStringConverter}"/>
+                        <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.userLastName}:"/>
+                        <h:inputText id="surname" value="#{userCrud.item.lastName}" converter="#{defaultStringConverter}" />
+                        <h:message for="surname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+						<h:outputText value="#{msg.userDescription}:"/>
+                        <h:inputText id="description" value="#{userCrud.item.description}" converter="#{defaultStringConverter}" />
+                        <h:message for="description" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.userUsername}:"/>
+                        <h:inputText id="username" value="#{userCrud.item.username}" disabled="true" converter="#{defaultStringConverter}" />
+                        <h:message for="username" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.userPassword}:"/>
+                        <h:inputSecret id="password" value="#{userCrud.item.password}" converter="#{defaultStringConverter}" />
+                        <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 
+ 						<h:outputText value="#{msg.userConfirmPassword}:"/>
+                        <h:inputSecret id="confPass" value="#{userCrud.retypedPassword}" converter="#{defaultStringConverter}" />
+                        <h:message for="confPass" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 
+ 						<h:outputText value="#{msg.userRoles}:"/>
+ 						<h:selectManyCheckbox id="roles" value="#{userCrud.roles}" layout="pageDirection">
+						  <f:selectItems value="#{userCrud.roleSelectItems}"/>
+						</h:selectManyCheckbox>
+						<h:message for="roles" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton action="#{userCrud.edit}" value="#{msg.lblSave}">
+                        <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{userCrud.item.uuid}" />
+                    </h:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

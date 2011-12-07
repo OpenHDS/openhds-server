@@ -27,8 +27,13 @@ public class DatabaseConfigBean {
 	JsfService jsfService;
 	
 	public DatabaseConfigBean() {
-		this.dbType = "HSQL";
-		this.hibernateExport = "create";
+		Properties props = readDatabaseProperties();
+		this.dbType = props.getProperty("dbType");
+		
+		if (dbType.equals("HSQL"))
+			this.hibernateExport = "create";
+		else
+			this.hibernateExport = "update";
 	}
 	
 	public void updateType(ValueChangeEvent event) {
@@ -38,25 +43,29 @@ public class DatabaseConfigBean {
 			dbUrl = "jdbc:hsqldb:mem:openhds";
 			dbDialect = "org.hibernate.dialect.HSQLDialect";
 			dbDriver = "org.hsqldb.jdbcDriver";
+			dbType = "HSQL";
 			hibernateExport = "create";
 		}
 		else if (dbType.equals("MYSQL")) {
 			dbUrl = "jdbc:mysql://localhost/openhds";
 			dbDialect = "org.hibernate.dialect.MySQL5InnoDBDialect";
 			dbDriver = "com.mysql.jdbc.Driver";
+			dbType="MYSQL";
 			hibernateExport = "update";
 		}
 		else if (dbType.equals("POSTGRES")) {
 			dbUrl = "jdbc:postgresql://localhost/openhds";
 			dbDialect = "org.hibernate.dialect.PostgreSQLDialect";
 			dbDriver = "org.postgres.Driver";
+			dbType="POSTGRES";
 			hibernateExport = "update";
 		}
 	}
 	
 	public void create() {
 		if (executeScript()) {
-			Properties properties = readDatabaseProperties();		
+			Properties properties = readDatabaseProperties();	
+			properties.put("dbType", dbType);
 			properties.put("dbDriver", dbDriver);
 			properties.put("dbUrl", dbUrl);
 			properties.put("dbUser", dbUsername);

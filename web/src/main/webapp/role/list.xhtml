@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+      <h:form>
+          <div style="text-align:right;">
+              <div style="float:left;">
+                  <h:commandButton immediate="true" action="#{roleCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" />
+                  
+					<!-- Paging -->	
+					<ui:include src="/snippets/paging.xhtml">
+					     <ui:param name="currentCrud" value="#{roleCrud}"/>
+					</ui:include>	
+              </div>
+          </div>       
+
+			<!-- Search Widget -->	
+			<ui:include src="/search/searchBox.xhtml">
+			     <ui:param name="crud" value="#{roleCrud}"/>
+			</ui:include>	                       
+
+            <div>
+            	<div class="center">
+            		<h:messages errorClass="error" style="width:100%" globalOnly="false"/>
+            	</div>
+   				<h:outputText escape="false" value="#{msg.roleEmpty}" rendered="#{roleCrud.pager.totalCount == 0}" />
+                <h:panelGroup rendered="#{fn:length(roleCrud.pagedItems) > 0}">
+                    <h:dataTable value="#{roleCrud.pagedItems}" var="role"
+                                 width="100%" columnClasses="center,center,width3">
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.roleFullName}" />
+                            </f:facet>
+                            <h:outputText value="#{role.name}" />
+                        </h:column>
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.roleDescription}" />
+                            </f:facet>
+                            <h:outputText value="#{role.description}" />
+                        </h:column>
+                        <h:column headerClass="width3">
+                            <f:facet name="header">
+                                <h:outputText escape="false" value=""/>
+                            </f:facet>
+                            <h:commandLink immediate="true" action="#{roleCrud.detailSetup}">
+                                <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                                <f:param name="itemId" value="#{role.uuid}"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{roleCrud.editSetup}">
+                                 <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                                <f:param name="itemId" value="#{role.uuid}"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{roleCrud.delete}">
+                                <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                                <f:param name="itemId" value="#{role.uuid}"/>
+                            </h:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </div>
+        </h:form>
+    </ui:composition>

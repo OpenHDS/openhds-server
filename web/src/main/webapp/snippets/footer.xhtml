@@ -2,10 +2,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <div id="footer" align="center">
-		Open Health and Demographic Surveillance System (OpenHDS)- Open Source License - Build ${appSettings.versionNumber}
+		#{msg.footerTop} ${appSettings.versionNumber}
 		<br />
-		This project is supported by the generous contributions of the IDRC
-		<a href="http://svn.rcg.usm.maine.edu/redmine/projects/show/openhds" title="Site">Project Website</a> | <a href="#" title="License">License</a> | <a href="http://svn.rcg.usm.maine.edu/redmine/repositories/show/openhds" title="Repository">Code Repository</a>
+		#{msg.footerBottom}
+		<a href="http://svn.rcg.usm.maine.edu/redmine/projects/show/openhds" title="Site">#{msg.footerWebsite}</a> | <a href="#" title="License">#{msg.footerLicense}</a> | <a href="http://svn.rcg.usm.maine.edu/redmine/repositories/show/openhds" title="Repository">#{msg.footerRepository}</a>
     </div>
     
 </ui:composition>

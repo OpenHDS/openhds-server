@@ -207,6 +207,12 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="roleConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="roleDao" />
+        <constructor-arg value="org.openhds.domain.model.Role" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="roundConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="roundDao" />
         <constructor-arg value="org.openhds.domain.model.Round" />
@@ -228,6 +234,12 @@
     <bean id="visitConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="visitDao" />
         <constructor-arg value="org.openhds.domain.model.Visit" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
+    <bean id="whitelistConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="whitelistDao" />
+        <constructor-arg value="org.openhds.domain.model.Whitelist" />
         <constructor-arg value="java.lang.String" />
     </bean>
     
@@ -383,6 +395,13 @@
         <property name="residencyService" ref="residencyService" />
     </bean>
     
+    <bean id="roleCrud" parent="baseCrud" class="org.openhds.web.crud.impl.RoleCrudImpl">
+    	<constructor-arg value="org.openhds.domain.model.Role" />
+    	<property name="dao" ref="roleDao" />
+    	<property name="converter" ref="roleConverter" />
+    	<property name="service" ref="roleService" />
+    </bean>
+    
     <bean id="roundCrud" parent="baseCrud" class="org.openhds.web.crud.impl.RoundCrudImpl">
         <constructor-arg value="org.openhds.domain.model.Round" />
         <property name="dao" ref="roundDao" />
@@ -399,7 +418,7 @@
     </bean>
     
     <bean id="userCrud" parent="baseCrud" class="org.openhds.web.crud.impl.UserCrudImpl">
-        <constructor-arg value="org.openhds.model.User" />
+        <constructor-arg value="org.openhds.domain.model.User" />
         <property name="dao" ref="userDao" />
         <property name="converter" ref="userConverter" />
         <property name="service" ref="userService" />
@@ -412,6 +431,12 @@
         <property name="service" ref="visitService"></property>
         <property name="extensionService" ref="extensionService"></property>
         <property name="siteProperties" ref="siteProperties"></property>
+    </bean>
+    
+    <bean id="whitelistCrud" parent="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl">
+    	<constructor-arg value="org.openhds.domain.model.Whitelist" />
+        <property name="dao" ref="whitelistDao" />
+        <property name="converter" ref="whitelistConverter" />
     </bean>
     
     <!-- Beans -->   
@@ -484,6 +509,14 @@
 		<property name="sgGenerator" ref="socialGroupIdGenerator" />
 		<property name="visitGenerator" ref="visitIdGenerator" />
 	</bean>
+	
+	<bean id="studyDocBean" class="org.openhds.web.beans.StudyDocumentBean" />
+	
+	<bean id="ddiController" class="org.openhds.web.controller.DDIController">
+    	<property name="genericDao" ref="genericDao" />
+    	<property name="appSettings" ref="appSettings" />
+    	<property name="studyDocument" ref="studyDocBean" />
+    </bean>
     
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
 	 	<property name="dbDriver" value="${dbDriver}"/>

@@ -84,6 +84,16 @@
 		<servlet-name>autocomplete</servlet-name>
 		<url-pattern>*.autocomplete</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ddiGenerator</servlet-name>
+		<servlet-class>org.openhds.web.servlet.DDIGeneratorServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ddiGenerator</servlet-name>
+		<url-pattern>/webservice/ddiGenerator</url-pattern>
+	</servlet-mapping>
     
     <filter>
 		<filter-name>hibernateFilter</filter-name>

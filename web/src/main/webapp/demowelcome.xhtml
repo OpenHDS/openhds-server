@@ -16,8 +16,12 @@
         	
             <ui:define name="display">
 	            <h:form>
-	                <h1>OpenHDS</h1>                
-					<h3>Getting Started...</h3>
+	                <h1>OpenHDS</h1>    
+	                
+	                #{msg.mnWelcome} 
+                
+	                            
+					<h3>#{msg.mnGettingStarted}</h3>
 					<p>
 						<h:outputLink value="/openhds/database-config">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
@@ -39,17 +43,19 @@
 	                	</h:commandLink>
 	                </p>
 	                <p>
-	                	<h:commandLink styleClass="welcome-link" value="BASELINE" action="#{siteProperties.getBaselineForm}" /> - Enter initial enumeration data
+	                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
+                            <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
+                        </h:commandLink> - #{msg.mnBaselineDescription} 
 	                </p>
 					<p>
-	                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.navBarUpdate}" >
+	                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
                             <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
-                        </h:commandLink> - Enter in collected round data
+                        </h:commandLink> - #{msg.mnUpdateDescription}
 	                </p>
 	                <p>
 	                    <strong>Version: #{appSettings.versionNumber}</strong> 
 	               		<br />
-	                    Tested on Mozilla Firefox 3.6.X
+	                    #{msg.mnBrowser}
 	                </p>
 	            </h:form>
             </ui:define>

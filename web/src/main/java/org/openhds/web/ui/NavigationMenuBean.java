@@ -44,7 +44,7 @@ public class NavigationMenuBean {
 		if (!trail.contains(item)) {
 			
 			// we are viewing the Amendment forms
-			if (showAmendments) {
+			if (showAmendments || showConfiguration) {
 				
 				// the page to be viewed is of a different group
 				if (!nextItem.equals(currentItem)) {
@@ -54,7 +54,10 @@ public class NavigationMenuBean {
 						!currentItem.equals("InMigration"))
 						trail.clear();
 
-					addItemToTrail("Amendments");
+					if (showAmendments)
+						addItemToTrail("Amendments");
+					if (showConfiguration)
+						addItemToTrail("Configuration");
 					currentItem = nextItem;
 				}
 				// the page to be viewed is of the same group, so add it to the trail

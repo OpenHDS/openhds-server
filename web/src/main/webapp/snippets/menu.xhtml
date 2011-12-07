@@ -85,13 +85,10 @@
 			            <li><h:commandLink value="#{msg.navBarMergeIndividual}" action="#{individualMergeCrud.createSetup}" /></li>
 			            <li><h:commandLink value="#{msg.navBarRoundCodes}" action="#{roundCrud.createSetup}" /></li>
 			            <li><h:commandLink value="#{msg.navBarNotes}" action="#{noteCrud.createSetup}" /></li>
-			            <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>
-			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
-			   		    <li><h:commandLink value="#{msg.navBarWhitelistManagement}" action="#{whitelistCrud.createSetup}" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarStudyDocument}" action="studyDocument_create" /></li>
 			    		  <li>
 			   		    	<h:outputLink value="/openhds/validationRoutine">
-			   		    		<h:outputText value="Validation Routine" />
+			   		    		<h:outputText value="#{msg.validationRoutineName}" />
 			   		    	</h:outputLink>
 			   		    </li>
 			    	</ul>
@@ -115,6 +112,9 @@
 			   		    		<h:outputText value="#{msg.locationLevelsName}" />
 			   		    	</h:outputLink>
 			   		    </li>
+			   		    <li><h:commandLink value="#{msg.navBarRoleManagement}" action="#{roleCrud.createSetup}" /></li>
+			   		    <li><h:commandLink value="#{msg.navBarUserManagement}" action="#{userCrud.createSetup}" /></li>  
+			   		    <li><h:commandLink value="#{msg.navBarWhitelistManagement}" action="#{whitelistCrud.createSetup}" /></li>
 			    	</ul>
 			    	</c:if>
 			    </li>

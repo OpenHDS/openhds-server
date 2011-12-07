@@ -67,6 +67,10 @@
         <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
     </bean> 
     
+    <bean id="appSettings" class="org.openhds.domain.model.AppSettings" scope="prototype">
+    	<property name="versionNumber"><value>${openhdsVersion}</value></property>
+    </bean>
+    
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" /> 
     <bean id="valueConstraintService" class="org.openhds.domain.value.extension.ValueConstraintService" />
     	
