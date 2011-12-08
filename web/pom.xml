@@ -52,6 +52,18 @@
 		<version>1.7.1</version>
 	</dependency>
 	<dependency>
+	    <groupId>net.sf.jasperreports</groupId>
+	    <artifactId>jasperreports</artifactId>
+	    <version>4.0.1</version>
+	    <type>jar</type>
+		<exclusions>
+			<exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	<dependency>
       	<groupId>org.openhds</groupId>
      	<artifactId>domain</artifactId>
       	<version>${project.version}</version>
@@ -69,6 +81,11 @@
     <dependency>
       	<groupId>org.openhds</groupId>
       	<artifactId>ddi</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>report</artifactId>
       	<version>${project.version}</version>
     </dependency>
   </dependencies>

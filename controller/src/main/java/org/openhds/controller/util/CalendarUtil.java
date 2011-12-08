@@ -27,6 +27,11 @@ public class CalendarUtil {
 		return cal;
 	}
 	
+	public String formatDate(Calendar calendar) {
+		SimpleDateFormat format = new SimpleDateFormat(siteProperties.getDateFormat());
+		return format.format(calendar.getTime());
+	}
+	
     public SitePropertiesService getSiteProperties() {
 		return siteProperties;
 	}

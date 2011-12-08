@@ -26,6 +26,7 @@
     <module>controller</module>
     <module>web</module>
     <module>ddi</module>
+	<module>report</module>
   </modules>
   
   <repositories>
@@ -218,6 +219,11 @@
 		<groupId>org.springframework.security</groupId> 
 		<artifactId>facelets-taglib-jsf12-spring-3</artifactId> 
 		<version>0.4</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<version>3.2</version>
 	</dependency>
     <dependency>
         <groupId>mysql</groupId>
