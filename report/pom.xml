@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <artifactId>openhds</artifactId>
+    <groupId>org.openhds</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>org.openhds</groupId>
+  <artifactId>report</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>OpenHDS Reports</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+  	<dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>domain</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
+  	<dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>dao</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>controller</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
+  </dependencies>
+  
+</project>
