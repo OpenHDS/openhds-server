@@ -24,6 +24,7 @@
     <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/communityApplicationContext.xml" />
                 
     <!-- pulls values from the site-config.properties file and used in building the database for site specific requirements -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -556,5 +557,5 @@
             </props>
          </property>
 	 </bean>
-
+	 
 </beans>

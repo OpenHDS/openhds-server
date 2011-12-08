@@ -27,6 +27,7 @@
     <module>web</module>
     <module>ddi</module>
 	<module>report</module>
+    <module>community</module>
   </modules>
   
   <repositories>
