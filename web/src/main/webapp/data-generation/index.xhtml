@@ -1,0 +1,200 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:o="http://openfaces.org/"
+				xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:param name="hideTabBar" value="true" />
+	
+	<ui:define name="display">
+		<h1>Data Generation</h1>
+		<div style="color:red;font-weight:bold">DO NOT RUN THIS IN A PRODUCTION ENVIRONMENT. Running the Baseline Census will purge all tables.</div>
+		<p>This utility allows for arbitrary data generation.</p>
+		<h:messages style="color:red;font-weight:bold;" globalOnly="true" />
+		<h:form id="theForm" prependId="false">
+			<fieldset>
+				<legend>Baseline Census</legend>
+				<p>Locations will be created uniformly distributed over all LocationHierarchy elements in the system.</p>
+				Number of Locations:
+				<br />
+				<h:inputText id="numberOfLocations" value="#{dataGeneratorCrud.numLocations}">
+					<f:validateLongRange minimum="1" maximum="5000"/>
+				</h:inputText>
+				<h:selectBooleanCheckbox id="locationUseIdScheme" value="#{dataGeneratorCrud.useIdScheme}"/>
+				<h:outputLabel for="locationUseIdScheme" value="Use Id Scheme" />
+				<h:message for="numberOfLocations" />
+				<br />
+				Number of Field Workers:
+				<br />
+				<h:inputText id="numFieldWorkers" value="#{dataGeneratorCrud.numFieldWorkers}">
+					<f:validateLongRange minimum="1" maximum="1000"/>
+				</h:inputText>
+				<h:message for="numFieldWorkers" />
+				<br />
+				<p>
+					Individuals will be created uniformly distributed over all Locations in the system. All Individuals will have a 
+					Residency and Membership created for them automatically.
+				</p>
+				Total Number of Individuals to create:
+				<br />
+				<h:inputText id="numIndividuals" value="#{dataGeneratorCrud.numIndividuals}">
+					<f:validateLongRange minimum="1" maximum="50000"/>
+				</h:inputText>
+				<h:message for="numIndividuals" />
+				<br />
+				Min Individual per Social Group:
+				<br />
+				<h:inputText id="minIndivPerSG" value="#{dataGeneratorCrud.minIndividualPerSocialGroup}">
+					<f:validateLongRange minimum="1" maximum="5"/>
+				</h:inputText>
+				<h:message for="minIndivPerSG" />
+				<br />
+				Max Individual per Social Group:
+				<br />
+				<h:inputText id="maxIndivPerSG" value="#{dataGeneratorCrud.maxIndividualPerSocialGroup}">
+					<f:validateLongRange minimum="6" maximum="20"/>
+				</h:inputText>
+				<h:message for="maxIndivPerSG" />
+				<br />
+				Min age of Individual:
+				<br />
+				<h:inputText id="minIndivAge" value="#{dataGeneratorCrud.minIndividualAge}">
+					<f:validateLongRange minimum="0" maximum="20"/>
+				</h:inputText>
+				<h:message for="minIndivAge" />
+				<br />
+				Max age of Individual:
+				<br />
+				<h:inputText id="maxIndivAge" value="#{dataGeneratorCrud.maxIndividualAge}">
+					<f:validateLongRange minimum="21" maximum="100"/>
+				</h:inputText>
+				<h:message for="maxIndivAge" />
+				<br />
+				Number of marital Relationships:
+				<br />
+				<h:inputText id="baselineRelationships" value="#{dataGeneratorCrud.baselineRelationshipsToCreate}">
+					<f:validateLongRange minimum="0" />
+				</h:inputText>
+				<h:message for="baselineRelationships" />
+				<br />
+                Baseline Census Start Date:
+                <o:dateChooser value="#{dataGeneratorCrud.baselineStartDate}" pattern="#{siteProperties.dateFormat}" />
+				<br />
+                Baseline Census End Date:
+                <o:dateChooser value="#{dataGeneratorCrud.baselineEndDate}" pattern="#{siteProperties.dateFormat}" />
+				<br />
+				<h:selectBooleanCheckbox id="enableBaselineCensus" value="#{dataGeneratorCrud.enableBaselineCensus}"/>
+				<label for="enableBaselineCensus">
+					Run Baseline Census
+				</label>
+			</fieldset>	
+			<br />
+			<fieldset>
+				<legend>Update Rounds</legend>
+				<p>Create events for the Individuals in the system</p>
+				<div style="color:red;font-weight:bold">
+					You should only run the Update Round generation AFTER completing the Location and Baseline Census generation. 
+					Running this action can result in unpredicatable results unless Location and Baseline Census have been run.
+				</div>
+				<br />
+				Minimum number of Events per Visit:
+				<br />
+				<h:inputText id="minEventsPerVisit" value="#{dataGeneratorCrud.minNumberOfEventsPerVisit}">
+					<f:validateLongRange minimum="1" maximum="3"/>
+				</h:inputText>
+				<h:message for="minEventsPerVisit" />
+				<br />
+				Maximum number of Events per Visit:
+				<br />
+				<h:inputText id="maxEventsPerVisit" value="#{dataGeneratorCrud.maxNumberOfEventsPerVisit}">
+					<f:validateLongRange minimum="3" maximum="10"/>
+				</h:inputText>
+				<h:message for="maxEventsPerVisit" />
+				<br />
+				Number of Internal In Migrations:
+				<br />
+				<h:inputText id="internalInMigrations" value="#{dataGeneratorCrud.numberOfInternalInMigrations}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="internalInMigrations" />
+				<br />
+				Number of External In Migrations:
+				<br />
+				<h:inputText id="externalInMigrations" value="#{dataGeneratorCrud.numberOfExternalInMigrations}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="externalInMigrations" />
+				<br />
+				Number of Out Migrations:
+				<br />
+				<h:inputText id="outMigrations" value="#{dataGeneratorCrud.numberOfOutMigrations}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="outMigrations" />
+				<br />
+				Number of Deaths:
+				<br />
+				<h:inputText id="numOfDeaths" value="#{dataGeneratorCrud.numberOfDeaths}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="numOfDeaths" />
+				<br />
+				Number of Pregnancy Observations:
+				<br />
+				<h:inputText id="numPregObs" value="#{dataGeneratorCrud.numberOfPregnancyObservations}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="numPregObs" />
+				<br />
+				Number of Pregnancy Outcomes (Births):
+				<br />
+				<h:inputText id="numPregOut" value="#{dataGeneratorCrud.numberOfPregnancyOutcomes}">
+					<f:validateLongRange minimum="0" maximum="50000"/>
+				</h:inputText>
+				<h:message for="numPregOut" />
+				<br />
+				Update Event Generation Stategy:
+				<br />
+				<h:selectOneListbox value="#{dataGeneratorCrud.updateStragety}">
+					<f:selectItems value="#{dataGeneratorCrud.updateStrategies}" />
+				</h:selectOneListbox>
+				<br />
+				<h:selectBooleanCheckbox id="runUpdateRound" value="#{dataGeneratorCrud.runUpdateRound}" />
+				<h:outputLabel for="runUpdateRound" value="Run Update Round" />
+			</fieldset>
+			<br />
+			<h:commandButton id="generateData" action="#{dataGeneratorCrud.generateData}" value="Generate Data" />
+			<span id="loadSpan" style="visibility:hidden"><img src="/openhds/resources/images/ajax-loader-black-transparent.gif" /> Working, please wait <span id="periods">...</span></span>
+		</h:form>
+		<script>
+			(function() {
+				$('#generateData').get(0).onclick = function(evt) {
+					if (!confirm('This action could take several minutes or hours to complete. Are you sure you want to perform this action?')) {
+						evt.preventDefault();
+						evt.stopPropagation();
+						return false;
+					}
+					
+					var that = this;
+					setTimeout(function() {$(that).attr('disabled', 'disabled');}, 100);
+					setInterval(manipulatePeriods, 1000);
+					$('#loadSpan').css('visibility', 'visible');
+				};
+
+				function manipulatePeriods() {
+					var periods = $('#periods').text();
+					var cnt = periods.length;
+					if (cnt == 20) {
+						$('#periods').text('...');
+					} else {
+						$('#periods').text(periods + '.');
+					}
+				}
+			})();
+		</script>
+	</ui:define>
+	
+</ui:composition>

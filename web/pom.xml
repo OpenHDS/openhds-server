@@ -88,9 +88,14 @@
       	<artifactId>report</artifactId>
       	<version>${project.version}</version>
     </dependency>
-       <dependency>
+    <dependency>
       	<groupId>org.openhds</groupId>
       	<artifactId>community</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>datageneration</artifactId>
       	<version>${project.version}</version>
     </dependency>
   </dependencies>
