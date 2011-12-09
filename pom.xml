@@ -30,6 +30,7 @@
     <module>community</module>
     <module>datageneration</module>
     <module>specialstudy</module>
+    <module>webservice</module>
   </modules>
   
   <repositories>

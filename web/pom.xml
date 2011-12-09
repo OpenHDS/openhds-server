@@ -98,6 +98,11 @@
       	<artifactId>datageneration</artifactId>
       	<version>${project.version}</version>
     </dependency>
+    <dependency>
+      	<groupId>org.openhds</groupId>
+      	<artifactId>webservice</artifactId>
+      	<version>${project.version}</version>
+    </dependency>
   </dependencies>
   
   <build>
