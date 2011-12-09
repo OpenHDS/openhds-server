@@ -29,6 +29,7 @@
 	<module>report</module>
     <module>community</module>
     <module>datageneration</module>
+    <module>specialstudy</module>
   </modules>
   
   <repositories>

@@ -1,0 +1,1 @@
+INSERT INTO end_user (username, password) VALUES ('admin', 'test');
