@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		
+            <ui:define name="display">
+            
+                <div id="loading-div">
+					<img src="/openhds/resources/images/ajax-loader.gif" /> #{msg.working}
+				</div>
+            
+            	<h:outputText value="#{navController.breadcrumbTrail} > #{msg.codeName}" />
+            
+                <h1>#{msg.codeConfig}</h1>
+                <h:messages id="successInfo" globalOnly="true" />
+                <h:form>
+                                                
+                    <h:panelGrid columns="3">
+                                           
+                    	<h:outputText value="#{msg.codeUnknownIdentifier}:"/>
+                        <h:inputText id="unknownIdentifier" value="#{codeConfigBean.unknownIdentifier}" converter="#{defaultConverter}" />
+                        <h:message for="unknownIdentifier" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                    	<h:outputText value="#{msg.codeNotApplicable}:"/>
+                        <h:inputText id="na" value="#{codeConfigBean.notApplicable}" converter="#{defaultConverter}" />
+                        <h:message for="na" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeMale}:"/>
+                        <h:inputText id="male" value="#{codeConfigBean.male}" converter="#{defaultConverter}" />
+                        <h:message for="male" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    
+                    	<h:outputText value="#{msg.codeFemale}:"/>
+                        <h:inputText id="female" value="#{codeConfigBean.female}" converter="#{defaultConverter}" />
+                        <h:message for="female" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeYes}:"/>
+                        <h:inputText id="yes" value="#{codeConfigBean.yesResponse}" converter="#{defaultConverter}" />
+                        <h:message for="yes" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeNo}:"/>
+                        <h:inputText id="no" value="#{codeConfigBean.noResponse}" converter="#{defaultConverter}" />
+                        <h:message for="no" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeBirth}:"/>
+                        <h:inputText id="birth" value="#{codeConfigBean.birth}" converter="#{defaultConverter}" />
+                        <h:message for="birth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeDeath}:"/>
+                        <h:inputText id="death" value="#{codeConfigBean.death}" converter="#{defaultConverter}" />
+                        <h:message for="death" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeInMigration}:"/>
+                        <h:inputText id="inmigration" value="#{codeConfigBean.inmigration}" converter="#{defaultConverter}" />
+                        <h:message for="inmigration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+						<h:outputText value="#{msg.codeOutMigration}:"/>
+                        <h:inputText id="outmigration" value="#{codeConfigBean.outmigration}" converter="#{defaultConverter}" />
+                        <h:message for="outmigration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                          
+                        <h:outputText value="#{msg.codeEnumeration}:"/>
+                        <h:inputText id="enumeration" value="#{codeConfigBean.enumeration}" converter="#{defaultConverter}" />
+                        <h:message for="enumeration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                   
+                   		<h:outputText value="#{msg.codeMarriage}:"/>
+                        <h:inputText id="marriage" value="#{codeConfigBean.marriage}" converter="#{defaultConverter}" />
+                        <h:message for="marriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                        
+                        <h:outputText value="#{msg.codeLiveBirth}:"/>
+                        <h:inputText id="liveBirth" value="#{codeConfigBean.liveBirth}" converter="#{defaultConverter}" />
+                        <h:message for="liveBirth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+						<h:outputText value="#{msg.codeStillBirth}:"/>
+                        <h:inputText id="stillBirth" value="#{codeConfigBean.stillBirth}" converter="#{defaultConverter}" />
+                        <h:message for="stillBirth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                          
+                        <h:outputText value="#{msg.codeMiscarriage}:"/>
+                        <h:inputText id="miscarriage" value="#{codeConfigBean.miscarriage}" converter="#{defaultConverter}" />
+                        <h:message for="miscarriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                   
+                   		<h:outputText value="#{msg.codeAbortion}:"/>
+                        <h:inputText id="abortion" value="#{codeConfigBean.abortion}" converter="#{defaultConverter}" />
+                        <h:message for="abortion" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                        
+                        <h:outputText value="#{msg.codeDataStatusWarning}:"/>
+                        <h:inputText id="warning" value="#{codeConfigBean.dataStatusWarning}" converter="#{defaultConverter}" />
+                        <h:message for="warning" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                        
+                        <h:outputText value="#{msg.codeDataStatusValid}:"/>
+                        <h:inputText id="valid" value="#{codeConfigBean.dataStatusValid}" converter="#{defaultConverter}" />
+                        <h:message for="valid" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+						<h:outputText value="#{msg.codeDataStatusFatal}:"/>
+                        <h:inputText id="fatal" value="#{codeConfigBean.dataStatusFatal}" converter="#{defaultConverter}" />
+                        <h:message for="fatal" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                          
+                        <h:outputText value="#{msg.codeDataStatusVoid}:"/>
+                        <h:inputText id="void" value="#{codeConfigBean.dataStatusVoid}" converter="#{defaultConverter}" />
+                        <h:message for="void" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                   
+                   		<h:outputText value="#{msg.codeDataStatusPending}:"/>
+                        <h:inputText id="pending" value="#{codeConfigBean.dataStatusPending}" converter="#{defaultConverter}" />
+                        <h:message for="pending" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeDataStatusClosed}:"/>
+                        <h:inputText id="closed" value="#{codeConfigBean.dataStatusClosed}" converter="#{defaultConverter}" />
+                        <h:message for="closed" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                    </h:panelGrid>
+                    <br />
+                    <h:commandButton styleClass="config" action="#{codeConfigBean.create}" value="#{msg.lblCreate}" />
+                    
+                    <script>
+						//<![CDATA[
+						(function() {
+							$('.config').click(function(evt) {
+								$('#loading-div').css('visibility', 'visible');
+							});
+						})();
+						//]]>
+					</script>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -158,5 +158,10 @@
 		<pattern value="/location-levels" />
 		<view-id>/location-levels/setup.xhtml</view-id> 
 	</url-mapping>
+	
+	<url-mapping id="codesConfiguration" >
+		<pattern value="/codes-config" />
+		<view-id>/codes-config/setup.xhtml</view-id> 
+	</url-mapping>
 		
 </pretty-config>

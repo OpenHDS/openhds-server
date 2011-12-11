@@ -1,9 +1,9 @@
 package org.openhds.ddi.service;
 
 import java.util.List;
-
+import java.util.Map;
+import java.util.Properties;
 import edu.umich.icpsr.ddi.CodeBookDocument;
-
 
 public interface CodeBookService {
 		
@@ -19,4 +19,8 @@ public interface CodeBookService {
 			String fieldName, String type, String iteration, String desc, List<?> enumList);
 	
 	CodeBookDocument getDoc(); 
+	
+	void setMetadata(Map<?, ?> metadata);
+	
+	void setProperties(Properties properties);
 }

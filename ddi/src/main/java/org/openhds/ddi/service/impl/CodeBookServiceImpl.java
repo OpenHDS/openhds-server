@@ -25,11 +25,6 @@ public class CodeBookServiceImpl implements CodeBookService {
 	Map<?, ?> metadata;
 	Properties properties;
 	
-	public CodeBookServiceImpl(Map<?, ?> metadata, Properties properties) {
-		this.metadata = metadata;
-		this.properties = properties;
-	}
-
 	public void createCodeBook() {
 				
 		docDscrBuilder = new DocumentDescriptionBuilder();
@@ -77,4 +72,21 @@ public class CodeBookServiceImpl implements CodeBookService {
 	public CodeBookDocument getDoc() {
 		return doc;
 	}
+	
+	public Map<?, ?> getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Map<?, ?> metadata) {
+		this.metadata = metadata;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+
 }

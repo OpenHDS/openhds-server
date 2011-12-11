@@ -13,11 +13,14 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.0.xsd">
         
-    <!-- pulls values from the database.properties file and used in the hibernate configuration -->
     <bean id="databaseConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="location">
-            <value>classpath:database.properties</value>
+        <property name="locations">
+        	<list>
+            	<value>classpath:database.properties</value>
+            	<value>classpath:location-levels.properties</value>
+            	  <value>classpath:codes.properties</value>
+            </list>
         </property>
     </bean>	
         
@@ -25,15 +28,8 @@
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/communityApplicationContext.xml" />
-                
-    <!-- pulls values from the site-config.properties file and used in building the database for site specific requirements -->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="location">
-            <value>classpath:location-levels.properties</value>
-        </property>
-    </bean>   
-                           
+    <import resource="classpath*:/META-INF/spring/ddiApplicationContext.xml" />
+                                           
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
 			<bean class="org.openhds.web.security.AuthenticationSuccessHandler">
@@ -525,9 +521,10 @@
 	<bean id="studyDocBean" class="org.openhds.web.beans.StudyDocumentBean" />
 	
 	<bean id="ddiController" class="org.openhds.web.controller.DDIController">
-    	<property name="genericDao" ref="genericDao" />
-    	<property name="appSettings" ref="appSettings" />
-    	<property name="studyDocument" ref="studyDocBean" />
+    	<constructor-arg ref="genericDao" />
+    	<constructor-arg ref="appSettings" />
+    	<constructor-arg ref="studyDocBean" />
+    	<constructor-arg ref="codeBookService" />
     </bean>
     
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
@@ -568,5 +565,81 @@
             </props>
          </property>
 	 </bean>
+	 
+	 <bean id="codeConfigBean" class="org.openhds.web.beans.CodeConfigBean">
+	 	<property name="jsfService" ref="jsfService" />
+	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
+	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
+	 	<property name="outmigration"><value>${outmigration}</value></property>
+	 	<property name="birth"><value>${birth}</value></property>
+	 	<property name="death"><value>${death}</value></property>
+	 	<property name="enumeration"><value>${enumeration}</value></property>
+	 	<property name="marriage"><value>${marriage}</value></property>
+	 	<property name="notApplicable"><value>${notApplicable}</value></property>
+	 	<property name="liveBirth"><value>${liveBirth}</value></property>
+	 	<property name="stillBirth"><value>${stillBirth}</value></property>
+	 	<property name="miscarriage"><value>${miscarriage}</value></property>
+	 	<property name="abortion"><value>${abortion}</value></property>
+	 	<property name="male"><value>${male}</value></property>
+	 	<property name="female"><value>${female}</value></property>
+	 	<property name="dataStatusWarning"><value>${dataStatusWarning}</value></property>
+	 	<property name="dataStatusValid"><value>${dataStatusValid}</value></property>
+	 	<property name="dataStatusFatal"><value>${dataStatusFatal}</value></property>
+	 	<property name="dataStatusVoid"><value>${dataStatusVoid}</value></property>
+	 	<property name="dataStatusPending"><value>${dataStatusPending}</value></property>
+	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
+	 	<property name="yesResponse"><value>${yesResponse}</value></property>
+	 	<property name="noResponse"><value>${noResponse}</value></property>	
+	 </bean>
+	 
+	 	 <!--
+            Site Properties configuration.
+            Set the date format to be used.
+            Toggle autocomplete.
+            Set custom codes.
+           
+            Valid date formats are:
+			"dd/MM/yyyy"
+			"MM/dd/yyyy"
+			"yyyy/MM/dd"
+			"yyyy/dd/MM"
+			"dd-MM-yyyy"
+			"MM-dd-yyyy"
+			"yyyy-MM-dd"
+			"yyyy-dd-MM"
+    -->
+    <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
+    	<property name="locale"><value>${openhds.locale}</value></property>     
+        <property name="dateFormat"><value>${openhds.dateformat}</value></property>
+        <property name="autocomplete"><value>${openhds.autocomplete}</value></property>
+        <property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
+        <property name="inmigrationCode"><value>${inmigration}</value></property>
+        <property name="outmigrationCode"><value>${outmigration}</value></property>
+        <property name="birthCode"><value>${birth}</value></property>
+        <property name="deathCode"><value>${death}</value></property>
+        <property name="enumerationCode"><value>${enumeration}</value></property>
+        <property name="marriageCode"><value>${marriage}</value></property>
+        <property name="notApplicableCode"><value>${notApplicable}</value></property>
+        <property name="liveBirthCode"><value>${liveBirth}</value></property>
+        <property name="stillBirthCode"><value>${stillBirth}</value></property>
+        <property name="miscarriageCode"><value>${miscarriage}</value></property>
+        <property name="abortionCode"><value>${abortion}</value></property>
+        <property name="maleCode"><value>${male}</value></property>
+        <property name="femaleCode"><value>${female}</value></property>
+        <property name="dataStatusWarningCode"><value>${dataStatusWarning}</value></property>
+        <property name="dataStatusValidCode"><value>${dataStatusValid}</value></property>
+        <property name="dataStatusFatalCode"><value>${dataStatusFatal</value></property>
+        <property name="dataStatusVoidCode"><value>${dataStatusVoid}</value></property>
+        <property name="dataStatusPendingCode"><value>${dataStatusPending}</value></property>
+        <property name="dataStatusClosedCode"><value>${dataStatusClosed}</value></property>
+        <property name="minimumAgeOfParents"><value>${openhds.minimumAgeOfParents}</value></property>
+        <property name="minimumAgeOfHouseholdHead"><value>${openhds.minimumAgeOfHouseholdHead}</value></property>
+        <property name="minimumAgeOfMarriage"><value>${openhds.minimumAgeOfMarriage}</value></property>
+        <property name="yesResponse"><value>${yesResponse}</value></property>
+        <property name="noResponse"><value>${noResponse}</value></property>
+		<property name="earliestEnumerationDate"><value>${openhds.earliestEnumerationDate}</value></property>
+        <property name="valueExtensionsForMembershipCodesEnabled"><value>${openhds.valueExtensionsForMembershipCodesEnabled}</value></property>
+        <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
+    </bean> 
 	 
 </beans>

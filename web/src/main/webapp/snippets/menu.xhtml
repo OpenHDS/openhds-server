@@ -102,6 +102,11 @@
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >
 		        	<ul>
+		        		<li>
+			   		    	<h:outputLink value="/openhds/codes-config">
+			   		    		<h:outputText value="#{msg.codeName}" />
+			   		    	</h:outputLink>
+			   		    </li>
 			    		<li>
 			   		    	<h:outputLink value="/openhds/database-config">
 			   		    		<h:outputText value="#{msg.dbName}" />

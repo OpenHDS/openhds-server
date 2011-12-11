@@ -11,7 +11,6 @@ import javax.persistence.Enumerated;
 import org.hibernate.metadata.ClassMetadata;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.ddi.service.CodeBookService;
-import org.openhds.ddi.service.impl.CodeBookServiceImpl;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.model.AppSettings;
 import org.openhds.web.beans.StudyDocumentBean;
@@ -36,8 +35,15 @@ public class DDIController {
 	GenericDao genericDao;
 	AppSettings appSettings;
 	StudyDocumentBean studyDocument;
+	CodeBookService codeBookService;
 
-	public DDIController() {	}
+	public DDIController(GenericDao genericDao, AppSettings appSettings, StudyDocumentBean studyDocument,
+			CodeBookService codeBookService) {	
+		this.genericDao = genericDao;
+		this.appSettings = appSettings;
+		this.studyDocument = studyDocument;
+		this.codeBookService = codeBookService;
+	}
 		
 	public String buildDDIDocument() throws ClassNotFoundException {
 			
@@ -59,10 +65,11 @@ public class DDIController {
 		props.put("nation", studyDocument.getNationAbrv());
 		props.put("studyEndDate", studyDocument.getStudyEndDate().toString());
 		
-		CodeBookService cbService = new CodeBookServiceImpl(mapping, props);
-		cbService.createCodeBook();
-		cbService.buildDocumentDescription();
-		cbService.buildStudyDescription();
+		codeBookService.setMetadata(mapping);
+		codeBookService.setProperties(props);
+		codeBookService.createCodeBook();
+		codeBookService.buildDocumentDescription();
+		codeBookService.buildStudyDescription();
 		
 		int count = 0;
 		
@@ -107,11 +114,11 @@ public class DDIController {
 					type = data.getPropertyType(fieldName).getName();
 					
 				String iteration = Integer.toString(count);
-				cbService.buildFileDescription(tableName, classDesc, propertyNames, "jdbc:mysql://localhost/openhds");
-				cbService.buildDataDescription(tableName, fieldName, type, iteration, desc, enumList);
+				codeBookService.buildFileDescription(tableName, classDesc, propertyNames, "jdbc:mysql://localhost/openhds");
+				codeBookService.buildDataDescription(tableName, fieldName, type, iteration, desc, enumList);
 			}
 		}
-		return cbService.getDoc().toString();
+		return codeBookService.getDoc().toString();
 	}
 	
 	/**
@@ -201,29 +208,5 @@ public class DDIController {
 			}	
 		}	
 		return null;
-	}
-
-	public GenericDao getGenericDao() {
-		return genericDao;
-	}
-
-	public void setGenericDao(GenericDao genericDao) {
-		this.genericDao = genericDao;
-	}
-	
-	public AppSettings getAppSettings() {
-		return appSettings;
-	}
-
-	public void setAppSettings(AppSettings appSettings) {
-		this.appSettings = appSettings;
-	}
-	
-	public StudyDocumentBean getStudyDocument() {
-		return studyDocument;
-	}
-
-	public void setStudyDocument(StudyDocumentBean studyDocument) {
-		this.studyDocument = studyDocument;
 	}
 }
