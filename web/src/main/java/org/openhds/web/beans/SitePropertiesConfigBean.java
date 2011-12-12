@@ -2,12 +2,17 @@ package org.openhds.web.beans;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import org.openhds.web.service.JsfService;
 import org.springframework.core.io.ClassPathResource;
 
-public class CodeConfigBean {
-	
+public class SitePropertiesConfigBean {
+			
 	String unknownIdentifier;
 	String yesResponse;
 	String noResponse;
@@ -30,6 +35,15 @@ public class CodeConfigBean {
 	String dataStatusVoid;
 	String dataStatusPending;
 	String dataStatusClosed;
+	String dateFormat;
+	String autocomplete;
+	String earliestEnumerationDate;
+
+	Integer minAgeOfParenthood;
+	Integer minAgeOfHouseholdHead;
+	Integer minAgeOfMarriage;
+	
+	Date dateOfEnumeration;
 	
 	JsfService jsfService;
 	
@@ -57,9 +71,32 @@ public class CodeConfigBean {
 		properties.put("dataStatusVoid", dataStatusVoid);
 		properties.put("dataStatusPending", dataStatusPending);
 		properties.put("dataStatusClosed", dataStatusClosed);	
+		properties.put("dateFormat", dateFormat);
+		properties.put("autocomplete", autocomplete);
+		properties.put("minAgeOfParenthood", minAgeOfParenthood.toString());
+		properties.put("minAgeOfHouseholdHead", minAgeOfHouseholdHead.toString());
+		properties.put("minAgeOfMarriage", minAgeOfMarriage.toString());
+		properties.put("earliestEnumerationDate", earliestEnumerationDate);
 		writePropertyFile(properties);
 	}
-	
+		
+    public Date getDateOfEnumeration() throws ParseException {
+    	
+    	if (earliestEnumerationDate == null)
+    		return new Date();
+    	
+    	DateFormat formatter = new SimpleDateFormat(dateFormat);
+        Date date = formatter.parse(earliestEnumerationDate);
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(date);
+        return dateCal.getTime();
+	}
+
+	public void setDateOfEnumeration(Date dateOfEnumeration) throws ParseException {
+		SimpleDateFormat sdFormat = new SimpleDateFormat(dateFormat);
+		earliestEnumerationDate = sdFormat.format(dateOfEnumeration);
+	}
+			
 	public Properties readCodeProperties() {
 		FileInputStream fis = null;
 		Properties prop = null;
@@ -273,5 +310,52 @@ public class CodeConfigBean {
 	public void setJsfService(JsfService jsfService) {
 		this.jsfService = jsfService;
 	}
+	
+	public String getDateFormat() {
+		return dateFormat;
+	}
 
+	public void setDateFormat(String dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+	
+	public String getAutocomplete() {
+		return autocomplete;
+	}
+
+	public void setAutocomplete(String autocomplete) {
+		this.autocomplete = autocomplete;
+	}
+	
+	public String getEarliestEnumerationDate() {
+		return earliestEnumerationDate;
+	}
+
+	public void setEarliestEnumerationDate(String earliestEnumerationDate) {
+		this.earliestEnumerationDate = earliestEnumerationDate;
+	}
+	
+	public Integer getMinAgeOfParenthood() {
+		return minAgeOfParenthood;
+	}
+
+	public void setMinAgeOfParenthood(Integer minAgeOfParenthood) {
+		this.minAgeOfParenthood = minAgeOfParenthood;
+	}
+
+	public Integer getMinAgeOfHouseholdHead() {
+		return minAgeOfHouseholdHead;
+	}
+
+	public void setMinAgeOfHouseholdHead(Integer minAgeOfHouseholdHead) {
+		this.minAgeOfHouseholdHead = minAgeOfHouseholdHead;
+	}
+
+	public Integer getMinAgeOfMarriage() {
+		return minAgeOfMarriage;
+	}
+
+	public void setMinAgeOfMarriage(Integer minAgeOfMarriage) {
+		this.minAgeOfMarriage = minAgeOfMarriage;
+	}
 }

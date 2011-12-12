@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <head>
@@ -25,96 +26,132 @@
                     <h:panelGrid columns="3">
                                            
                     	<h:outputText value="#{msg.codeUnknownIdentifier}:"/>
-                        <h:inputText id="unknownIdentifier" value="#{codeConfigBean.unknownIdentifier}" converter="#{defaultConverter}" />
+                        <h:inputText id="unknownIdentifier" value="#{sitePropertiesConfigBean.unknownIdentifier}" converter="#{defaultConverter}" />
                         <h:message for="unknownIdentifier" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                     	<h:outputText value="#{msg.codeNotApplicable}:"/>
-                        <h:inputText id="na" value="#{codeConfigBean.notApplicable}" converter="#{defaultConverter}" />
+                        <h:inputText id="na" value="#{sitePropertiesConfigBean.notApplicable}" converter="#{defaultConverter}" />
                         <h:message for="na" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeMale}:"/>
-                        <h:inputText id="male" value="#{codeConfigBean.male}" converter="#{defaultConverter}" />
+                        <h:inputText id="male" value="#{sitePropertiesConfigBean.male}" converter="#{defaultConverter}" />
                         <h:message for="male" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     
                     	<h:outputText value="#{msg.codeFemale}:"/>
-                        <h:inputText id="female" value="#{codeConfigBean.female}" converter="#{defaultConverter}" />
+                        <h:inputText id="female" value="#{sitePropertiesConfigBean.female}" converter="#{defaultConverter}" />
                         <h:message for="female" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeYes}:"/>
-                        <h:inputText id="yes" value="#{codeConfigBean.yesResponse}" converter="#{defaultConverter}" />
+                        <h:inputText id="yes" value="#{sitePropertiesConfigBean.yesResponse}" converter="#{defaultConverter}" />
                         <h:message for="yes" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeNo}:"/>
-                        <h:inputText id="no" value="#{codeConfigBean.noResponse}" converter="#{defaultConverter}" />
+                        <h:inputText id="no" value="#{sitePropertiesConfigBean.noResponse}" converter="#{defaultConverter}" />
                         <h:message for="no" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeBirth}:"/>
-                        <h:inputText id="birth" value="#{codeConfigBean.birth}" converter="#{defaultConverter}" />
+                        <h:inputText id="birth" value="#{sitePropertiesConfigBean.birth}" converter="#{defaultConverter}" />
                         <h:message for="birth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeDeath}:"/>
-                        <h:inputText id="death" value="#{codeConfigBean.death}" converter="#{defaultConverter}" />
+                        <h:inputText id="death" value="#{sitePropertiesConfigBean.death}" converter="#{defaultConverter}" />
                         <h:message for="death" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeInMigration}:"/>
-                        <h:inputText id="inmigration" value="#{codeConfigBean.inmigration}" converter="#{defaultConverter}" />
+                        <h:inputText id="inmigration" value="#{sitePropertiesConfigBean.inmigration}" converter="#{defaultConverter}" />
                         <h:message for="inmigration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 						<h:outputText value="#{msg.codeOutMigration}:"/>
-                        <h:inputText id="outmigration" value="#{codeConfigBean.outmigration}" converter="#{defaultConverter}" />
+                        <h:inputText id="outmigration" value="#{sitePropertiesConfigBean.outmigration}" converter="#{defaultConverter}" />
                         <h:message for="outmigration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                           
                         <h:outputText value="#{msg.codeEnumeration}:"/>
-                        <h:inputText id="enumeration" value="#{codeConfigBean.enumeration}" converter="#{defaultConverter}" />
+                        <h:inputText id="enumeration" value="#{sitePropertiesConfigBean.enumeration}" converter="#{defaultConverter}" />
                         <h:message for="enumeration" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                    
                    		<h:outputText value="#{msg.codeMarriage}:"/>
-                        <h:inputText id="marriage" value="#{codeConfigBean.marriage}" converter="#{defaultConverter}" />
+                        <h:inputText id="marriage" value="#{sitePropertiesConfigBean.marriage}" converter="#{defaultConverter}" />
                         <h:message for="marriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                         
                         <h:outputText value="#{msg.codeLiveBirth}:"/>
-                        <h:inputText id="liveBirth" value="#{codeConfigBean.liveBirth}" converter="#{defaultConverter}" />
+                        <h:inputText id="liveBirth" value="#{sitePropertiesConfigBean.liveBirth}" converter="#{defaultConverter}" />
                         <h:message for="liveBirth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 						<h:outputText value="#{msg.codeStillBirth}:"/>
-                        <h:inputText id="stillBirth" value="#{codeConfigBean.stillBirth}" converter="#{defaultConverter}" />
+                        <h:inputText id="stillBirth" value="#{sitePropertiesConfigBean.stillBirth}" converter="#{defaultConverter}" />
                         <h:message for="stillBirth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                           
                         <h:outputText value="#{msg.codeMiscarriage}:"/>
-                        <h:inputText id="miscarriage" value="#{codeConfigBean.miscarriage}" converter="#{defaultConverter}" />
+                        <h:inputText id="miscarriage" value="#{sitePropertiesConfigBean.miscarriage}" converter="#{defaultConverter}" />
                         <h:message for="miscarriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                    
                    		<h:outputText value="#{msg.codeAbortion}:"/>
-                        <h:inputText id="abortion" value="#{codeConfigBean.abortion}" converter="#{defaultConverter}" />
+                        <h:inputText id="abortion" value="#{sitePropertiesConfigBean.abortion}" converter="#{defaultConverter}" />
                         <h:message for="abortion" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                         
                         <h:outputText value="#{msg.codeDataStatusWarning}:"/>
-                        <h:inputText id="warning" value="#{codeConfigBean.dataStatusWarning}" converter="#{defaultConverter}" />
+                        <h:inputText id="warning" value="#{sitePropertiesConfigBean.dataStatusWarning}" converter="#{defaultConverter}" />
                         <h:message for="warning" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                         
                         <h:outputText value="#{msg.codeDataStatusValid}:"/>
-                        <h:inputText id="valid" value="#{codeConfigBean.dataStatusValid}" converter="#{defaultConverter}" />
+                        <h:inputText id="valid" value="#{sitePropertiesConfigBean.dataStatusValid}" converter="#{defaultConverter}" />
                         <h:message for="valid" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 						<h:outputText value="#{msg.codeDataStatusFatal}:"/>
-                        <h:inputText id="fatal" value="#{codeConfigBean.dataStatusFatal}" converter="#{defaultConverter}" />
+                        <h:inputText id="fatal" value="#{sitePropertiesConfigBean.dataStatusFatal}" converter="#{defaultConverter}" />
                         <h:message for="fatal" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                           
                         <h:outputText value="#{msg.codeDataStatusVoid}:"/>
-                        <h:inputText id="void" value="#{codeConfigBean.dataStatusVoid}" converter="#{defaultConverter}" />
+                        <h:inputText id="void" value="#{sitePropertiesConfigBean.dataStatusVoid}" converter="#{defaultConverter}" />
                         <h:message for="void" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                    
                    		<h:outputText value="#{msg.codeDataStatusPending}:"/>
-                        <h:inputText id="pending" value="#{codeConfigBean.dataStatusPending}" converter="#{defaultConverter}" />
+                        <h:inputText id="pending" value="#{sitePropertiesConfigBean.dataStatusPending}" converter="#{defaultConverter}" />
                         <h:message for="pending" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
                         <h:outputText value="#{msg.codeDataStatusClosed}:"/>
-                        <h:inputText id="closed" value="#{codeConfigBean.dataStatusClosed}" converter="#{defaultConverter}" />
+                        <h:inputText id="closed" value="#{sitePropertiesConfigBean.dataStatusClosed}" converter="#{defaultConverter}" />
                         <h:message for="closed" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+						<h:outputText value="#{msg.codeDateFormat}:" />
+                 		<h:selectOneMenu id="format" value="#{sitePropertiesConfigBean.dateFormat}" onchange="submit()" immediate="true" >
+   							<f:selectItem itemValue="dd/MM/yyyy" itemLabel="dd/MM/yyyy" />
+						   	<f:selectItem itemValue="MM/dd/yyyy" itemLabel="MM/dd/yyyy" />
+						   	<f:selectItem itemValue="yyyy/MM/dd" itemLabel="yyyy/MM/dd" />
+						   	<f:selectItem itemValue="yyyy/dd/MM" itemLabel="yyyy/dd/MM" />
+						   	<f:selectItem itemValue="dd-MM-yyyy" itemLabel="dd-MM-yyyy" />
+						   	<f:selectItem itemValue="MM-dd-yyyy" itemLabel="MM-dd-yyyy" />
+						   	<f:selectItem itemValue="yyyy-MM-dd" itemLabel="yyyy-MM-dd" />
+						   	<f:selectItem itemValue="yyyy-dd-MM" itemLabel="yyyy-dd-MM" />
+						</h:selectOneMenu>
+						<h:message for="format" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+						<h:outputText value="#{msg.codeAutocomplete}:"/>
+                 		<h:selectOneMenu id="autocomplete" value="#{sitePropertiesConfigBean.autocomplete}">
+   							<f:selectItem itemValue="true" itemLabel="true" />
+						   	<f:selectItem itemValue="false" itemLabel="false" />
+						</h:selectOneMenu>
+						<h:message for="autocomplete" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+						
+						<h:outputText value="#{msg.codeMinAgeOfParenthood}:"/>
+                        <h:inputText id="minAgeParenthood" value="#{sitePropertiesConfigBean.minAgeOfParenthood}" converter="#{defaultConverter}" />
+                        <h:message for="minAgeParenthood" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                   
+                   		<h:outputText value="#{msg.codeMinAgeOfHouseholdHead}:"/>
+                        <h:inputText id="minAgeHouseholdHead" value="#{sitePropertiesConfigBean.minAgeOfHouseholdHead}" converter="#{defaultConverter}" />
+                        <h:message for="minAgeHouseholdHead" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeMinAgeOfMarriage}:"/>
+                        <h:inputText id="minAgeMarriage" value="#{sitePropertiesConfigBean.minAgeOfMarriage}" converter="#{defaultConverter}" />
+                        <h:message for="minAgeMarriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeEarliestEnumerationDate} (#{sitePropertiesConfigBean.dateFormat})"/>
+                		<o:dateChooser id="enumDate" value="#{sitePropertiesConfigBean.dateOfEnumeration}" pattern="#{sitePropertiesConfigBean.dateFormat}" />
+                		<h:message for="enumDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+						
                     </h:panelGrid>
                     <br />
-                    <h:commandButton styleClass="config" action="#{codeConfigBean.create}" value="#{msg.lblCreate}" />
+                    <h:commandButton styleClass="config" action="#{sitePropertiesConfigBean.create}" value="#{msg.lblCreate}" />
                     
                     <script>
 						//<![CDATA[

@@ -90,7 +90,6 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 */
 	protected EntityService entityService;
 	
-	@SuppressWarnings("unchecked")
 	protected EntityValidationService entityValidationService;
 
 	private String navigateTo;

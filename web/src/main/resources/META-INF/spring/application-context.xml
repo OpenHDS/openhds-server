@@ -566,7 +566,7 @@
          </property>
 	 </bean>
 	 
-	 <bean id="codeConfigBean" class="org.openhds.web.beans.CodeConfigBean">
+	 <bean id="sitePropertiesConfigBean" class="org.openhds.web.beans.SitePropertiesConfigBean">
 	 	<property name="jsfService" ref="jsfService" />
 	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
 	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
@@ -590,28 +590,18 @@
 	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
 	 	<property name="yesResponse"><value>${yesResponse}</value></property>
 	 	<property name="noResponse"><value>${noResponse}</value></property>	
+	 	<property name="dateFormat"><value>${dateFormat}</value></property>
+	 	<property name="autocomplete"><value>${autocomplete}</value></property>
+	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
+        <property name="minAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
+        <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
+        <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
 	 </bean>
 	 
-	 	 <!--
-            Site Properties configuration.
-            Set the date format to be used.
-            Toggle autocomplete.
-            Set custom codes.
-           
-            Valid date formats are:
-			"dd/MM/yyyy"
-			"MM/dd/yyyy"
-			"yyyy/MM/dd"
-			"yyyy/dd/MM"
-			"dd-MM-yyyy"
-			"MM-dd-yyyy"
-			"yyyy-MM-dd"
-			"yyyy-dd-MM"
-    -->
-    <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
+     <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
     	<property name="locale"><value>${openhds.locale}</value></property>     
-        <property name="dateFormat"><value>${openhds.dateformat}</value></property>
-        <property name="autocomplete"><value>${openhds.autocomplete}</value></property>
+        <property name="dateFormat"><value>${dateFormat}</value></property>
+        <property name="autocomplete"><value>${autocomplete}</value></property>
         <property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
         <property name="inmigrationCode"><value>${inmigration}</value></property>
         <property name="outmigrationCode"><value>${outmigration}</value></property>
@@ -632,14 +622,14 @@
         <property name="dataStatusVoidCode"><value>${dataStatusVoid}</value></property>
         <property name="dataStatusPendingCode"><value>${dataStatusPending}</value></property>
         <property name="dataStatusClosedCode"><value>${dataStatusClosed}</value></property>
-        <property name="minimumAgeOfParents"><value>${openhds.minimumAgeOfParents}</value></property>
-        <property name="minimumAgeOfHouseholdHead"><value>${openhds.minimumAgeOfHouseholdHead}</value></property>
-        <property name="minimumAgeOfMarriage"><value>${openhds.minimumAgeOfMarriage}</value></property>
+        <property name="minimumAgeOfParents"><value>${minAgeOfParenthood}</value></property>
+        <property name="minimumAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
+        <property name="minimumAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
         <property name="yesResponse"><value>${yesResponse}</value></property>
         <property name="noResponse"><value>${noResponse}</value></property>
-		<property name="earliestEnumerationDate"><value>${openhds.earliestEnumerationDate}</value></property>
+		<property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
         <property name="valueExtensionsForMembershipCodesEnabled"><value>${openhds.valueExtensionsForMembershipCodesEnabled}</value></property>
         <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
-    </bean> 
+     </bean> 
 	 
 </beans>

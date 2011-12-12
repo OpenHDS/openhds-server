@@ -3,8 +3,6 @@ package org.openhds.web.beans;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
-import org.openhds.dao.service.LocationLevelsSetter;
-import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.web.service.JsfService;
 import org.springframework.core.io.ClassPathResource;
 

@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Death;
 import org.openhds.controller.service.DeathService;
 import org.springframework.binding.message.MessageContext;
