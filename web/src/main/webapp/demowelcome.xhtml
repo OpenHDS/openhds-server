@@ -19,8 +19,7 @@
 	                <h1>OpenHDS</h1>    
 	                
 	                #{msg.mnWelcome} 
-                
-	                            
+	                           
 					<h3>#{msg.mnGettingStarted}</h3>
 					<p>
 						<h:outputLink value="/openhds/database-config">
@@ -30,6 +29,11 @@
 	                <p>
 	                	<h:outputLink value="/openhds/location-levels">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
+			   		    </h:outputLink>
+	                </p>
+	                <p>
+	                	<h:outputLink value="/openhds/codes-config">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
 			   		    </h:outputLink>
 	                </p>
 	                 <p>
