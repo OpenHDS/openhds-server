@@ -628,7 +628,6 @@
         <property name="yesResponse"><value>${yesResponse}</value></property>
         <property name="noResponse"><value>${noResponse}</value></property>
 		<property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
-        <property name="valueExtensionsForMembershipCodesEnabled"><value>${openhds.valueExtensionsForMembershipCodesEnabled}</value></property>
         <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
      </bean> 
 	 
