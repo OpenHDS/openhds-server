@@ -6,7 +6,6 @@ import java.util.List;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.Generator;
-import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
@@ -16,13 +15,11 @@ import org.openhds.domain.model.LocationHierarchyLevel;
 public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	private GenericDao genericDao;
-	private IndividualService individualService;
 	private Generator locationGenerator;
 	private Generator locationHierarchyGenerator;
 	
-	public LocationHierarchyServiceImpl(GenericDao genericDao, IndividualService individualService, Generator locationGenerator, Generator locationHierarchyGenerator) {
+	public LocationHierarchyServiceImpl(GenericDao genericDao, Generator locationGenerator, Generator locationHierarchyGenerator) {
 		this.genericDao = genericDao;
-		this.individualService = individualService;
 		this.locationGenerator = locationGenerator;
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
@@ -372,14 +369,12 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     }
     
     public LocationHierarchy getHierarchyItemHighestLevel() {
-    	
-    	List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
-    	
-    	for (LocationHierarchy item : hierarchyList) {
-    		if (item.getLevel().equals(getHeighestLevel()))
-    			return item;
-    	}
-    	return null;
+    	LocationHierarchyLevel highestLevel = getHeighestLevel();
+    	return genericDao.findByProperty(LocationHierarchy.class, "level", highestLevel);
+    }
+    
+    public List<LocationHierarchyLevel> getAllLevels() {
+    	return genericDao.findAll(LocationHierarchyLevel.class, false);
     }
                    
     public LocationHierarchyLevel getLowestLevel() {	  	
@@ -403,7 +398,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     	}
     	return genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", lowestKey);
     }
-    
+        
     public LocationHierarchyLevel getLevel(int level) {
     	return genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", level);
     }

@@ -517,16 +517,7 @@
 		<property name="sgGenerator" ref="socialGroupIdGenerator" />
 		<property name="visitGenerator" ref="visitIdGenerator" />
 	</bean>
-	
-	<bean id="studyDocBean" class="org.openhds.web.beans.StudyDocumentBean" />
-	
-	<bean id="ddiController" class="org.openhds.web.controller.DDIController">
-    	<constructor-arg ref="genericDao" />
-    	<constructor-arg ref="appSettings" />
-    	<constructor-arg ref="studyDocBean" />
-    	<constructor-arg ref="codeBookService" />
-    </bean>
-    
+		        
     <bean id="databaseConfig" class="org.openhds.web.beans.DatabaseConfigBean">
 	 	<property name="dbDriver" value="${dbDriver}"/>
 		<property name="dbUrl" value="${dbUrl}"/>

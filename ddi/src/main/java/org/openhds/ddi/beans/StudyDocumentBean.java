@@ -1,4 +1,4 @@
-package org.openhds.web.beans;
+package org.openhds.ddi.beans;
 
 public class StudyDocumentBean {
 	

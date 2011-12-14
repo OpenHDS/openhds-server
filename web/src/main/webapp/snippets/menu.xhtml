@@ -64,7 +64,6 @@
 			            <li><a href="/openhds/pregnancy-observ-reconciliation.report" target="_blank">Preg Observ Reconciliation</a></li>
 			        	<li><a href="/openhds/identification-book.report" target="_blank">Identification Book</a></li>
 			        	<li><a href="/openhds/temporary-identification.report" target="_blank">Temporary Identification</a></li>
-			        	<li><a href="/openhds/dhis/dhisexport.faces" target="_blank">Export to DHIS</a></li>
 			        </ul>
 			        </c:if>
 		    	</li>
@@ -85,6 +84,7 @@
 			            <li><h:commandLink value="#{msg.navBarMergeIndividual}" action="#{individualMergeCrud.createSetup}" /></li>
 			            <li><h:commandLink value="#{msg.navBarRoundCodes}" action="#{roundCrud.createSetup}" /></li>
 			            <li><h:commandLink value="#{msg.navBarNotes}" action="#{noteCrud.createSetup}" /></li>
+			            <li><h:commandLink value="DHIS Document" action="dhisDocument_create" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarStudyDocument}" action="studyDocument_create" /></li>
 			    		  <li>
 			   		    	<h:outputLink value="/openhds/validationRoutine">

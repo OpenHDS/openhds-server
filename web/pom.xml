@@ -80,17 +80,7 @@
     </dependency>
     <dependency>
       	<groupId>org.openhds</groupId>
-      	<artifactId>ddi</artifactId>
-      	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-      	<groupId>org.openhds</groupId>
       	<artifactId>report</artifactId>
-      	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-      	<groupId>org.openhds</groupId>
-      	<artifactId>community</artifactId>
       	<version>${project.version}</version>
     </dependency>
     <dependency>

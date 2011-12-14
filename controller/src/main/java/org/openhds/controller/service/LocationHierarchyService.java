@@ -51,9 +51,15 @@ public interface LocationHierarchyService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<String> getLocationNames(String term);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<LocationHierarchyLevel> getAllLevels();
 		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	LocationHierarchyLevel determineParentLevel(LocationHierarchyLevel level);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	LocationHierarchy getHierarchyItemHighestLevel(); 
 			
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	LocationHierarchyLevel getHeighestLevel();
@@ -69,5 +75,6 @@ public interface LocationHierarchyService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception; 
+	
 }
 

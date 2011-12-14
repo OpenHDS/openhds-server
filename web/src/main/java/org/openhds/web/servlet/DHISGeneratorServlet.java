@@ -6,27 +6,22 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.openhds.controller.export.DDIController;
+import org.openhds.controller.export.DHISController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/**
- * A servlet that will serve up a dynamic DDI 2.1 document for OpenHDS. 
- * Navigating to this URL will prompt the user to download the study definition.
- *
- */
-public class DDIGeneratorServlet extends HttpServlet {
-	
-	private static final long serialVersionUID = -7431786922240042765L;
+public class DHISGeneratorServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 8261524251386963564L;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// set header to force user to download study xml file
-		resp.setHeader("Content-Disposition", "attachment;filename=OpenHDSDDI.xml");
+		resp.setHeader("Content-Disposition", "attachment;filename=OpenHDSDHIS2.xml");
 		resp.setContentType("text/xml");
 		
 		try {
-			if(generateStudyDefinition(resp.getOutputStream())) {
+			if(generateDHISDefinition(resp.getOutputStream())) {
 				resp.setStatus(HttpServletResponse.SC_OK);
 			} else {
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -36,15 +31,15 @@ public class DDIGeneratorServlet extends HttpServlet {
 		}
 	}
 
-	private boolean generateStudyDefinition(ServletOutputStream outputStream) throws Exception {
+	private boolean generateDHISDefinition(ServletOutputStream outputStream) throws Exception {
 		// grab the web application context
 		WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 
-		DDIController generator = (DDIController) context.getBean("ddiController");
+		DHISController generator = (DHISController) context.getBean("dhisController");
 
 		// generate the DDI
 		try {
-			outputStream.print(generator.buildDDIDocument().toString());
+			outputStream.print(generator.buildDHISDocument().toString());
 		} catch (IOException e) {
 			return false;
 		}	

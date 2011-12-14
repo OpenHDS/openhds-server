@@ -15,4 +15,6 @@
         
        <bean id="codeBookService" class="org.openhds.ddi.service.impl.CodeBookServiceImpl" />
        
+       <bean id="studyDocBean" class="org.openhds.ddi.beans.StudyDocumentBean" />
+       
 </beans>

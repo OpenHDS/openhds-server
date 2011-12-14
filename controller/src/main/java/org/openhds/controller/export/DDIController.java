@@ -1,4 +1,4 @@
-package org.openhds.web.controller;
+package org.openhds.controller.export;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,7 +13,7 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.ddi.service.CodeBookService;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.model.AppSettings;
-import org.openhds.web.beans.StudyDocumentBean;
+import org.openhds.ddi.beans.StudyDocumentBean;
 
 /**
  * References:

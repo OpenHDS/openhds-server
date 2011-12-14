@@ -104,6 +104,16 @@
 		<servlet-name>ddiGenerator</servlet-name>
 		<url-pattern>/webservice/ddiGenerator</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>dhisGenerator</servlet-name>
+		<servlet-class>org.openhds.web.servlet.DHISGeneratorServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>dhisGenerator</servlet-name>
+		<url-pattern>/webservice/dhisGenerator</url-pattern>
+	</servlet-mapping>
     
     <filter>
 		<filter-name>hibernateFilter</filter-name>

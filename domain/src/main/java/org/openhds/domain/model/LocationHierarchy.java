@@ -51,7 +51,7 @@ public class LocationHierarchy implements Serializable {
 	@Description(description="The name of this location hierarchy record.")
     String name;
 	
-	@Description(description="Parent level of the location hierarchy.")
+	@Description(description="Level of the location hierarchy.")
 	@ManyToOne
 	LocationHierarchyLevel level;
 	   	
