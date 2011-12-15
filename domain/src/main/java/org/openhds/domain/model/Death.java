@@ -36,12 +36,12 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     @CheckFieldNotBlank
     @Searchable
 	@Description(description="Place where the death occurred.")
-    String deathPlace;
+    public String deathPlace;
     
     @CheckFieldNotBlank
     @Searchable
 	@Description(description="Cause of the death.")
-    String deathCause;
+    public String deathCause;
     
     @NotNull
     @Past(message = "Start date should be in the past")
@@ -55,7 +55,7 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     Visit visitDeath;
     
     @Description(description="Age of death in number of days.")
-    Long ageAtDeath;
+    public Long ageAtDeath;
             
     public Individual getIndividual() {
         return individual;

@@ -44,27 +44,7 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	
     	return null;
     }
-    
-    public void calculate() {
-        for (Individual i : this.getAllEntities()) {
-            // don't need to calc for unknown individual
-            // NOTE: this fixed a NPE when upgrading to newest hibernate validator release
-            if (i.getExtId().equals(properties.getUnknownIdentifier())) {
-                continue;
-            }
-
-            if (i.getAllResidencies() != null) {
-                i.setPD();
-                dao.saveOrUpdate(i);
-                dao.flush();
-            }
-        }
-    }
-
-    public void getCalculate() {
-        calculate();
-    }
-    
+        
     public Date getDateOfBirth() {
     	
     	if (entityItem.getDob() == null)

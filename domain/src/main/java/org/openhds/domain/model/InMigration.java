@@ -45,12 +45,12 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
     @CheckFieldNotBlank
     @Searchable
     @Description(description="The origin of the inmigration.")
-    String origin;
+    public String origin;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="The reason for inmigrating.")
-    String reason;
+    public String reason;
     
     @NotNull
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -65,10 +65,10 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
 
     @Enumerated(EnumType.STRING)
     @Description(description="The migration type.")
-    MigrationType migType = MigrationType.INTERNAL_INMIGRATION;    
+    public MigrationType migType = MigrationType.INTERNAL_INMIGRATION;    
     
     @Description(description="Flag for indicating if the individual who is inmigrating is known or not.")
-    Boolean unknownIndividual = false;
+    public Boolean unknownIndividual = false;
     
     public Residency getResidency() {
         return residency;

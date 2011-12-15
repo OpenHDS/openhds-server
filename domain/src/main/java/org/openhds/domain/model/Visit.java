@@ -46,7 +46,7 @@ public class Visit extends AuditableCollectedEntity implements Serializable {
     
 	@CheckInteger(min=1)
 	@Description(description="Round number for the visit.")
-	Integer roundNumber;
+	public Integer roundNumber;
 	
     @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="entity")
     @Description(description="The assigned extension and their values specific for this entity.")

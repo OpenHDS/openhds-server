@@ -56,7 +56,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     @CheckFieldNotBlank
     @ExtensionConstraint(constraint="maritalStatusConstraint", message="Invalid Value for relationship type",allowNull=false)
     @Description(description="Relationship type.")
-    String aIsToB;
+    public String aIsToB;
        
 	@NotNull
     @Past(message = "Start date should be in the past")
@@ -70,7 +70,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     Calendar endDate;
     
     @Description(description="End type of the relationship.")
-    String endType;
+    public String endType;
 
     public Individual getIndividualA() {
         return individualA;

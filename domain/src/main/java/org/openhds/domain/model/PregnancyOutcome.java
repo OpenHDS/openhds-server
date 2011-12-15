@@ -39,11 +39,11 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
    
     @CheckInteger
     @Description(description="Total number of children born, including live and still births.")
-    Integer childEverBorn = 0;
+    public Integer childEverBorn = 0;
    
     @CheckInteger
     @Description(description="Total number of live births.")
-    Integer numberOfLiveBirths = 0;
+    public Integer numberOfLiveBirths = 0;
    
     @Temporal(javax.persistence.TemporalType.DATE)
     @Past

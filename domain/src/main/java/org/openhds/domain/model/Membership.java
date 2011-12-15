@@ -53,18 +53,18 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
     
     @CheckFieldNotBlank
     @Description(description="Start type of the membership.")
-	String startType;
+	public String startType;
 	
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="End date of the membership.")
 	Calendar endDate;
     
     @Description(description="End type of the membership.")
-	String endType;
+	public String endType;
     
     @ExtensionConstraint(constraint="membershipConstraint", message="Invalid Value for membership relation to head", allowNull=true)
     @Description(description="Relationship type to the group head.")
-    String bIsToA;
+    public String bIsToA;
 	
 	public Individual getIndividual() {
 		return individual;

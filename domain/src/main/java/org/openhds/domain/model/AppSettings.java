@@ -5,7 +5,7 @@ import org.openhds.domain.annotations.Description;
 public class AppSettings {
 	
 	@Description(description="Version number of the application.")
-	public String versionNumber;
+	String versionNumber;
 
 	public String getVersionNumber() {
 		return versionNumber;

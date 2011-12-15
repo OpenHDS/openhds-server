@@ -49,7 +49,7 @@ public class LocationHierarchy implements Serializable {
 	@CheckFieldNotBlank
 	@Searchable
 	@Description(description="The name of this location hierarchy record.")
-    String name;
+    public String name;
 	
 	@Description(description="Level of the location hierarchy.")
 	@ManyToOne

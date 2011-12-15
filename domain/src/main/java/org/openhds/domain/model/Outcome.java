@@ -31,7 +31,7 @@ public class Outcome implements Serializable {
 	
 	@CheckFieldNotBlank
 	@Description(description="Pregnancy outcome type.")
-	String type;
+	public String type;
 	
 	@OneToOne(cascade = {CascadeType.ALL})
 	@CheckEntityNotVoided(allowNull=true)

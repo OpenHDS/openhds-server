@@ -4,6 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <head>
@@ -21,8 +22,23 @@
                 <h1>Create DHIS Document</h1>
                 <h:messages id="errors" globalOnly="true" />
                 <h:form id="form">
+                
+                	<h:panelGrid columns="3">
 
+						<h:outputText value="Start Date (#{siteProperties.dateFormat})"/>
+	                    <o:dateChooser id="startDate" value="#{dhisDocumentBean.startDate}" pattern="#{siteProperties.dateFormat}" />
+	                    <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+						
+						<h:outputText value="End Date (#{siteProperties.dateFormat})"/>
+	                    <o:dateChooser id="endDate" value="#{dhisDocumentBean.endDate}" pattern="#{siteProperties.dateFormat}" />
+	                    <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                    
+	                    <h:outputText value="Period:"/>
+	                    <h:inputText id="period" value="#{dhisDocumentBean.period}" converter="#{defaultConverter}" required="true"/>
+	                    <h:message for="period" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                        
+                    </h:panelGrid>
+                    <br />
                 	<h:commandButton action="generateDHISDoc" value="#{msg.lblCreate}" />
                 </h:form>
             </ui:define>

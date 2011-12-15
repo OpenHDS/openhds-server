@@ -3,16 +3,16 @@ package org.openhds.community.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrgUnit {
+public class OrgUnitBean {
 	
 	String id;
 	String name;
 	String code;
 	String level;
 	
-	List<OrgUnit> children = new ArrayList<OrgUnit>();
+	List<OrgUnitBean> children = new ArrayList<OrgUnitBean>();
 	
-	public OrgUnit(String id, String name, String code, String level) {
+	public OrgUnitBean(String id, String name, String code, String level) {
 		this.id = id;
 		this.name = name;
 		this.code = code;
@@ -51,11 +51,11 @@ public class OrgUnit {
 		this.level = level;
 	}
 
-	public List<OrgUnit> getChildren() {
+	public List<OrgUnitBean> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<OrgUnit> children) {
+	public void setChildren(List<OrgUnitBean> children) {
 		this.children = children;
 	}
 }

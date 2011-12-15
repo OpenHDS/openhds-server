@@ -127,6 +127,7 @@
   <!-- common base for identifiable objects -->
   <xs:complexType name="identifiableObject">
     <xs:sequence>
+      <xs:element ref="dxf2:id"/>
       <xs:element ref="dxf2:uuid"/>
       <xs:element ref="dxf2:name"/>
       <xs:element ref="dxf2:alternativeName"/>
@@ -134,8 +135,8 @@
       <xs:element ref="dxf2:code"/>
       <xs:element ref="dxf2:description"/>
     </xs:sequence>
-    <xs:attribute name="id" use="required" type="dxf2:dxfID"/>
   </xs:complexType>
+  <xs:element name="id" type="xs:int"/>
   <xs:element name="uuid" type="xs:string"/>
   <xs:element name="name" type="xs:string"/>
   <xs:element name="alternativeName" type="xs:string"/>

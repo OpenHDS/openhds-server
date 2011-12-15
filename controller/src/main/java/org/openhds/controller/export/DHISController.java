@@ -1,11 +1,17 @@
 package org.openhds.controller.export;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import org.openhds.community.beans.OrgUnit;
+import java.util.Map;
+import org.openhds.community.beans.DHISDocumentBean;
+import org.openhds.community.beans.OrgUnitBean;
 import org.openhds.community.service.DHISService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Description;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 
@@ -23,21 +29,26 @@ public class DHISController {
 	GenericDao genericDao;
 	LocationHierarchyService locationService;
 	DHISService dhisService;
+	DHISDocumentBean dhisDocumentBean;
 	
-	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService) {
+	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
+			DHISDocumentBean dhisDocumentBean) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;
+		this.dhisDocumentBean = dhisDocumentBean;
 	}
 	
-	public String buildDHISDocument() throws ClassNotFoundException {
+	public String buildDHISDocument() throws ClassNotFoundException, ParseException {
 		
 		dhisService.createDxfDocument();
+		
 		buildOrgUnit();
+		buildDataElement();
 		
 		return dhisService.getDxfDocument().toString();
 	}
-	
+		
 	private void buildOrgUnit() {
 		
 		LocationHierarchy root = locationService.getHierarchyItemHighestLevel();
@@ -47,7 +58,7 @@ public class DHISController {
 		String code = root.getExtId();
 		String name = root.getName();
 		
-		OrgUnit orgUnit = new OrgUnit(id, name, code, level);
+		OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level);
 		buildOrgUnitStructure(root, orgUnit);	
 		
 		List<String> levels = new ArrayList<String>();
@@ -56,7 +67,51 @@ public class DHISController {
 			levels.add(locHLevels.get(i).getName());
 		}
 		
-		dhisService.createOrgUnit(orgUnit, levels);
+		dhisService.createOrgUnit(orgUnit, levels, dhisDocumentBean.getsDate(), dhisDocumentBean.geteDate());
+	}
+	
+	private void buildDataElement() throws ClassNotFoundException {
+		
+		// a mapping of table names with their associated ClassMetaData
+		Map<?, ?> mapping = genericDao.getClassMetaData();
+				
+		// all table names
+		Object[] keySet = mapping.keySet().toArray();
+		
+		int count = 0;
+		
+		// iterate through all tables
+		for (int i = 0; i < keySet.length; i++) {
+			String tableName = (String) keySet[i];
+			
+			// using reflection to get the entity 
+			Class<?> clazz = Class.forName(tableName);	
+										
+			// list of all fields for the entity
+			ArrayList<Field> fieldsList = buildFieldList(clazz);
+			fieldsList = filterFieldList(clazz);
+	
+			// must iterate through all columns
+			for (int j = 0; j < fieldsList.size(); j++) {
+				count++;
+				
+				// the column name
+				String fieldName = fieldsList.get(j).getName();
+				
+				// annotations from the fieldName
+				Annotation[] annotations = getAnnotationMatch(fieldName, fieldsList);
+				
+				// description from annotation
+				String desc = getDescription(annotations);
+
+				String type = fieldsList.get(j).getType().getName();
+					
+				String iteration = Integer.toString(count);
+				
+				dhisService.createDataElement(fieldName, desc, type, iteration);
+				
+			}
+		}
 	}
 	
 	/**
@@ -64,7 +119,7 @@ public class DHISController {
 	 * location hierarchy only has parent references and the org unit has children references,
 	 * it must be converted over.
 	 */
-    private void buildOrgUnitStructure(LocationHierarchy item, OrgUnit unit) {
+    private void buildOrgUnitStructure(LocationHierarchy item, OrgUnitBean unit) {
     	
     	// find children of this locationHierarchy item
     	List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "parent", item);
@@ -77,11 +132,97 @@ public class DHISController {
 			String code = hierarchyItem.getExtId();
 			String name = hierarchyItem.getName();
 			
-			OrgUnit orgUnit = new OrgUnit(id, name, code, level);
+			OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level);
 			unit.getChildren().add(orgUnit);
 			
 			buildOrgUnitStructure(hierarchyItem, orgUnit);
     	}
-   }
-  
+    }
+    
+	/**
+	 * Returns a list of annotations for the specified field name.
+	 */
+	private Annotation[] getAnnotationMatch(String fieldName, ArrayList<Field> fieldsList) {
+		
+		// must iterate through the fields of the entity class
+		// in order to obtain the annotations
+		for (int i = 0; i < fieldsList.size(); i++) {						
+		
+			// if the field name and column name match then get the annotations
+			if (fieldsList.get(i).getName().equals(fieldName)) {			
+				Annotation[] annotations = fieldsList.get(i).getDeclaredAnnotations();	
+				return annotations;
+			}
+		}
+		return null;
+	}
+    
+	/**
+	 * Returns a list of all fields for the given entity class using reflection.
+	 */
+	private ArrayList<Field> buildFieldList(Class<?> clazz) {
+		
+		ArrayList<Field> fieldsList = new ArrayList<Field>();
+		
+		for (Field field : clazz.getDeclaredFields()) {
+			fieldsList.add(field);
+		}
+
+		if (clazz.getSuperclass() != null) {	
+			Class<?> superClazz1 = clazz.getSuperclass();
+			Class<?> superClazz2 = superClazz1.getSuperclass();
+			for (Field field : superClazz1.getDeclaredFields()) {
+				fieldsList.add(field);
+			}
+			if (superClazz2 != null) {
+				for (Field field : superClazz2.getDeclaredFields()) {
+					fieldsList.add(field);
+				}
+			}
+		}
+		return fieldsList;
+	}
+    
+	/**
+	 * Returns the description of a field identified by the
+	 * @Description annotation.
+	 */
+	private String getDescription(Annotation[] annotations) {
+		
+		// must iterate through the annotations to filter the ones we need
+		for (int j = 0; j < annotations.length; j++) {
+			
+			if (annotations[j] instanceof Description) {
+				Description descAno = (Description) annotations[j];
+				return descAno.description();
+			}	
+		}	
+		return null;
+	}
+	
+	public ArrayList<Field> filterFieldList(Class<?> clazz) {
+	
+		ArrayList<Field> output = new ArrayList<Field>();
+		Field[] fields = clazz.getFields();
+		
+		try {
+			
+			for (int i = 0; i < fields.length; i++) {
+				
+				Field field = fields[i];
+				
+				String simpleFieldType = field.getType().getSimpleName();
+				
+				if (simpleFieldType.equals("int") || simpleFieldType.equals("double") ||
+					simpleFieldType.equals("float") || simpleFieldType.equals("bool") ||
+					simpleFieldType.equals("char") || simpleFieldType.equals("short") ||
+					simpleFieldType.equals("String")) {
+					output.add(fields[i]);
+				}	
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}		
+		return output;
+	}
 }

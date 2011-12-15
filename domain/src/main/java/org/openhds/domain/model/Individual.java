@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
@@ -55,24 +54,21 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @CheckFieldNotBlank
     @Searchable
     @Description(description="First name of the individual.")
-    String firstName;
+    public String firstName;
     
     @Searchable
     @Description(description="Middle name of the individual.")
-    String middleName;
+    public String middleName;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Last name of the individual.")
-    String lastName;
+    public String lastName;
 
     @ExtensionConstraint(constraint="genderConstraint", message="Invalid Value for gender", allowNull=true)
     @Description(description="Gender of the individual.")
-    String gender;
-    
-    @Transient
-    long pD;
-    
+    public String gender;
+        
     @Past(message="Date of birth must a date in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Birth date of the individual.")
@@ -97,7 +93,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     
     @ExtensionConstraint(constraint="dobAspectConstraint", message="Invalid Value for partial date", allowNull=true)
     @Description(description="Identifer for determining if the birth date is partially known.")
-    String dobAspect;
+    public String dobAspect;
     
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy="individual")
     @OrderBy("startDate")
@@ -276,25 +272,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 		}
 		return pd;
     }
-
-    public void setPD(){
-		if (this.getAllResidencies().size() > 0) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.YEAR, 1800);
-			this.setPD(this.getPD(calendar, Calendar.getInstance()));
-		} else {
-	
-			this.setPD(0L);
-		}
-    }
     
-    public void setPD(Long l){
-    	this.pD = l;
-    }
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -308,9 +286,6 @@ public class Individual extends AuditableCollectedEntity implements Serializable
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -44,12 +44,12 @@ public class OutMigration extends AuditableCollectedEntity implements Serializab
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Destination of the outmigration.")
-    String destination;
+    public String destination;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Reason for outmigrating.")
-    String reason;
+    public String reason;
    
     @Searchable
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Visit.class)

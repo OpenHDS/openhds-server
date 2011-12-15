@@ -27,22 +27,22 @@ public class Round implements Serializable, GenericStartEndDateConstraint {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(length=32)
-	private String uuid;
+	String uuid;
 	
 	@CheckInteger(min=1)
 	@Description(description="Round number for the study.")
-	private Integer roundNumber;
+	Integer roundNumber;
 	
 	@Temporal(javax.persistence.TemporalType.DATE)
 	@Description(description="Start date of the round.")
-	private Calendar startDate;
+	Calendar startDate;
 	
 	@Temporal(javax.persistence.TemporalType.DATE)
 	@Description(description="End date of the round.")
-	private Calendar endDate;
+	Calendar endDate;
 	
 	@Description(description="Remarks about the round.")
-	private String remarks;
+	String remarks;
 
 	public String getUuid() {
 		return uuid;

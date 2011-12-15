@@ -277,6 +277,7 @@
     	<constructor-arg ref="genericDao" />
     	<constructor-arg ref="locationHierarchyService" />
     	<constructor-arg ref="dhisService" />
+    	<constructor-arg ref="dhisDocumentBean" />
     </bean>
      
     <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">
