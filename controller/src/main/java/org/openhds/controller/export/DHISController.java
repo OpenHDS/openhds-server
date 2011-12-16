@@ -14,6 +14,10 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
+import org.openhds.domain.value.extension.ExtensionConstraint;
+import org.openhds.domain.value.extension.ValueConstraintService;
+
+import com.sun.accessibility.internal.resources.accessibility;
 
 /**
  * References:
@@ -30,13 +34,15 @@ public class DHISController {
 	LocationHierarchyService locationService;
 	DHISService dhisService;
 	DHISDocumentBean dhisDocumentBean;
+	ValueConstraintService valueConstraintService;
 	
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
-			DHISDocumentBean dhisDocumentBean) {
+			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;
 		this.dhisDocumentBean = dhisDocumentBean;
+		this.valueConstraintService = valueConstraintService;
 	}
 	
 	public String buildDHISDocument() throws ClassNotFoundException, ParseException {
@@ -89,27 +95,37 @@ public class DHISController {
 										
 			// list of all fields for the entity
 			ArrayList<Field> fieldsList = buildFieldList(clazz);
-			fieldsList = filterFieldList(clazz);
 	
 			// must iterate through all columns
 			for (int j = 0; j < fieldsList.size(); j++) {
-				count++;
-				
+							
 				// the column name
 				String fieldName = fieldsList.get(j).getName();
 				
 				// annotations from the fieldName
 				Annotation[] annotations = getAnnotationMatch(fieldName, fieldsList);
 				
+				Map<String, String> valueConstraintMap = null;
+				String constraintName = "";
+				for (Annotation a : annotations) {
+					if (a instanceof ExtensionConstraint) {
+						ExtensionConstraint ext = (ExtensionConstraint)a;
+						constraintName = ext.constraint();
+						valueConstraintMap = valueConstraintService.getMapForConstraint(constraintName);	
+					}
+				}
+
 				// description from annotation
 				String desc = getDescription(annotations);
 
 				String type = fieldsList.get(j).getType().getName();
-					
-				String iteration = Integer.toString(count);
-				
-				dhisService.createDataElement(fieldName, desc, type, iteration);
-				
+									
+				if (valueConstraintMap != null) {
+					count++;
+					String iteration = Integer.toString(count);
+					dhisService.createCategories(valueConstraintMap, fieldName, desc, count);
+					dhisService.createDataElement(fieldName, desc, type, iteration);
+				}				
 			}
 		}
 	}
@@ -138,7 +154,7 @@ public class DHISController {
 			buildOrgUnitStructure(hierarchyItem, orgUnit);
     	}
     }
-    
+            
 	/**
 	 * Returns a list of annotations for the specified field name.
 	 */
@@ -198,31 +214,5 @@ public class DHISController {
 			}	
 		}	
 		return null;
-	}
-	
-	public ArrayList<Field> filterFieldList(Class<?> clazz) {
-	
-		ArrayList<Field> output = new ArrayList<Field>();
-		Field[] fields = clazz.getFields();
-		
-		try {
-			
-			for (int i = 0; i < fields.length; i++) {
-				
-				Field field = fields[i];
-				
-				String simpleFieldType = field.getType().getSimpleName();
-				
-				if (simpleFieldType.equals("int") || simpleFieldType.equals("double") ||
-					simpleFieldType.equals("float") || simpleFieldType.equals("bool") ||
-					simpleFieldType.equals("char") || simpleFieldType.equals("short") ||
-					simpleFieldType.equals("String")) {
-					output.add(fields[i]);
-				}	
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}		
-		return output;
 	}
 }

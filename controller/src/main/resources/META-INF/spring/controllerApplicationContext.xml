@@ -278,6 +278,7 @@
     	<constructor-arg ref="locationHierarchyService" />
     	<constructor-arg ref="dhisService" />
     	<constructor-arg ref="dhisDocumentBean" />
+    	<constructor-arg ref="valueConstraintService" />
     </bean>
      
     <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">
