@@ -54,20 +54,20 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @CheckFieldNotBlank
     @Searchable
     @Description(description="First name of the individual.")
-    public String firstName;
+    String firstName;
     
     @Searchable
     @Description(description="Middle name of the individual.")
-    public String middleName;
+    String middleName;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Last name of the individual.")
-    public String lastName;
+    String lastName;
 
     @ExtensionConstraint(constraint="genderConstraint", message="Invalid Value for gender", allowNull=true)
     @Description(description="Gender of the individual.")
-    public String gender;
+    String gender;
         
     @Past(message="Date of birth must a date in the past")
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -93,7 +93,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     
     @ExtensionConstraint(constraint="dobAspectConstraint", message="Invalid Value for partial date", allowNull=true)
     @Description(description="Identifer for determining if the birth date is partially known.")
-    public String dobAspect;
+    String dobAspect;
     
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy="individual")
     @OrderBy("startDate")

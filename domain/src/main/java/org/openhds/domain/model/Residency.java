@@ -42,14 +42,14 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     
     @CheckFieldNotBlank
     @Description(description="Residency start type.")
-    public String startType;
+    String startType;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     @Description(description="Residency end date.")
     Calendar endDate;
     
     @Description(description="Residency end type.")
-    public String endType;
+    String endType;
 
     public Individual getIndividual() {
         return individual;

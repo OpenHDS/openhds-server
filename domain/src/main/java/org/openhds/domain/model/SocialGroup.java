@@ -34,7 +34,7 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Name of the social group.")
-    public String groupName;
+    String groupName;
     
     @Searchable
     @CheckEntityNotVoided
@@ -46,7 +46,7 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
         
     @ExtensionConstraint(constraint="socialGroupTypeConstraint", message="Invalid Value for social group type",allowNull=true)
     @Description(description="Type of the social group.")
-    public String groupType;
+    String groupType;
         
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="socialGroup" )
     @Description(description="Set of all memberships of the social group.")

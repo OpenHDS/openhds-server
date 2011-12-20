@@ -34,7 +34,7 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Name of the location.")
-    public String locationName;
+    String locationName;
    
     @Description(description="Level of the location in the hierarchy.")
     @ManyToOne
@@ -43,11 +43,11 @@ public class Location extends AuditableCollectedEntity implements Serializable {
     
     @ExtensionConstraint(constraint="locationTypeConstraint", message="Invalid Value for location type",allowNull=true)
     @Description(description="The type of Location.")
-    public String locationType;
+    String locationType;
     
 	@OneToMany(targetEntity=Residency.class)
 	@JoinColumn(name = "location_uuid")
-	public List<Residency> residencies; 
+	List<Residency> residencies; 
                
 	public String getLocationName() {
         return locationName;

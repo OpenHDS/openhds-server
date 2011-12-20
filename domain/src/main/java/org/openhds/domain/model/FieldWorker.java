@@ -27,12 +27,12 @@ public class FieldWorker extends AuditableEntity implements Serializable {
     @CheckFieldNotBlank
     @Searchable
     @Description(description="First name of the field worker.")
-    public String firstName;
+    String firstName;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Last name of the field worker.")
-    public String lastName;
+    String lastName;
 
     public String getExtId() {
         return extId;

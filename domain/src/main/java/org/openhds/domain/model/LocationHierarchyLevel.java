@@ -29,13 +29,13 @@ public class LocationHierarchyLevel implements Serializable {
 	String uuid;
 	
 	@Description(description="A key to identify this level, assign 1, 2, 3, ... etc")
-    public int keyIdentifier;
+    int keyIdentifier;
 	
 	@NotNull
 	@CheckFieldNotBlank
 	@Searchable
 	@Description(description="The name of this location hierarchy level.")
-    public String name;
+    String name;
 
 	public String getUuid() {
 		return uuid;
