@@ -21,4 +21,10 @@
 	<bean id="calendarUtil" class="org.openhds.domain.util.CalendarUtil">
 		<property name="siteProperties" ref="siteProperties" />
 	</bean>
+	
+	<!-- CXF instantiates CalendarAdapter on demand during (un)marshaling so its outside the scope of Springs context  -->
+	<!-- This is a hack so that the adapter is able to be injected with the calendarUtil bean -->
+	<bean id="calendarAdapter" class="org.openhds.domain.util.CalendarAdapter">
+		<property name="calendarUtil" ref="calendarUtil" />
+	</bean>
 </beans>
