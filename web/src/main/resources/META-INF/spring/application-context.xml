@@ -29,6 +29,7 @@
     <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/communityApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/ddiApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/webserviceApplicationContext.xml" />
                                            
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
