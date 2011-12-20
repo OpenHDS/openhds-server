@@ -1,20 +1,16 @@
 <config>
 	<entity name="Location">
-	</entity>
-	<entity name="SocialGroup">
-	</entity>
-	<entity name="Visit">
-	</entity>
-	<entity name="Individual">
-	</entity>
-	<entity name="Death">
-	</entity>
-	<entity name="PregnancyObservation">
-	</entity>
-	<entity name="PregnancyOutcome">
-	</entity>
-	<entity name="OutMigration">
-	</entity>
-	<entity name="InMigration">
+		<attributes>
+			<attribute>
+				<name>longitude</name>
+				<description>Longitude for the location</description>
+				<type>Integer</type>
+			</attribute>
+			<attribute>
+				<name>latitude</name>
+				<description>Latitude for the location</description>
+				<type>Integer</type>
+			</attribute>
+		</attributes>
 	</entity>
 </config>
