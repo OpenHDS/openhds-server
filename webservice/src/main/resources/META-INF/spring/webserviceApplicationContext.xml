@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://cxf.apache.org/core
+       http://cxf.apache.org/schemas/core.xsd
+       http://cxf.apache.org/jaxrs
+       http://cxf.apache.org/schemas/jaxrs.xsd">
+       
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    
+    <!-- this bean implements web service methods -->
+    <bean id="coreWebService" class="org.openhds.webservice.CoreWebServiceImpl">
+        <property name="visitService" ref="visitService" />
+        <property name="locationService" ref="locationHierarchyService" />
+        <property name="fieldWorkerService" ref="fieldWorkerService" />
+        <property name="pregnancyService" ref="pregnancyService" />
+        <property name="entityService" ref="entityService" />
+        <property name="genericDao" ref="genericDao" />
+        <property name="deathService" ref="deathService" />
+        <property name="inMigrationService" ref="inMigrationService" />
+        <property name="individualService" ref="individualService" />
+        <property name="outmigrationService" ref="outMigrationService" />
+        <property name="whitelistService" ref="whitelistService" />
+        <property name="idUtilities" ref="idValidator" />
+        <property name="siteProperties" ref="siteProperties" />
+    </bean>
+    
+    <!-- this bean implements web service methods -->
+    <bean id="specialStudyWebService" class="org.openhds.webservice.SpecialStudyWebServiceImpl" >
+    	<property name="fieldWorkerService" ref="fieldWorkerService" />
+    	<property name="locationService" ref="locationHierarchyService" />
+    	<property name="visitService" ref="visitService" />
+    	<property name="individualService" ref="individualService" />
+    	<property name="socialGroupService" ref="socialGroupService" />
+    	<property name="currentUser" ref="currentUser" />
+    </bean>
+    
+    <bean id="mobileWebService" class="org.openhds.webservice.mobile.MobileWebService">
+        <property name="genericDao" ref="genericDao" />
+    </bean>
+    
+    <jaxrs:server id="openhdsCoreWebService" address="/corewebservice">
+        <jaxrs:serviceBeans>
+            <ref bean="coreWebService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="xml" value="application/xml" />
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+    
+    <jaxrs:server id="openhdsSpecialStudyWebService" address="/specialstudywebservice">
+        <jaxrs:serviceBeans>
+            <ref bean="specialStudyWebService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="xml" value="application/xml" />
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+    
+    <jaxrs:server id="openhdsMobileWebService" address="/mobile">
+        <jaxrs:serviceBeans>
+            <ref bean="mobileWebService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="xml" value="application/xml" />
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+</beans>
