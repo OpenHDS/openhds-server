@@ -1,4 +1,4 @@
-package org.openhds.controller.util;
+package org.openhds.domain.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;

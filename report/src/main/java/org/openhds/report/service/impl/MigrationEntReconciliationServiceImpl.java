@@ -3,12 +3,13 @@ package org.openhds.report.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.openhds.controller.util.CalendarUtil;
+
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.MigrationType;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.openhds.report.beans.MigrationEntReconciliationBean;
 import org.openhds.report.service.MigrationEntReconciliationService;
 import org.springframework.beans.factory.annotation.Autowired;

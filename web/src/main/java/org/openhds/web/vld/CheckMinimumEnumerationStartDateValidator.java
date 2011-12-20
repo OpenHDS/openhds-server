@@ -2,13 +2,15 @@ package org.openhds.web.vld;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+
 import org.openhds.domain.constraint.AppContextAware;
 import org.openhds.domain.service.SitePropertiesService;
-import org.openhds.controller.util.CalendarUtil;;
+import org.openhds.domain.util.CalendarUtil;
 
 /**
  * Used only from the baseline from the openfaces datechooser when validating 

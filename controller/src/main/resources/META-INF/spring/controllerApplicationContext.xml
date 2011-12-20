@@ -50,10 +50,6 @@
 	
 	<context:component-scan base-package="org.openhds"></context:component-scan>
     
-    <bean id="calendarUtil" class="org.openhds.controller.util.CalendarUtil">
-    	<property name="siteProperties" ref="siteProperties" />
-    </bean>
-    
     <!-- security configuration -->
     <bean id="userDetailsService" parent="baseTransactionBean">
     	<property name="target">

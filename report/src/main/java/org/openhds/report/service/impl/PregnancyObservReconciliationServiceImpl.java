@@ -6,10 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.openhds.controller.util.CalendarUtil;
+
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.openhds.report.beans.PregObservReconciliationBean;
 import org.openhds.report.service.PregnancyObservReconciliationService;
 import org.springframework.beans.factory.annotation.Autowired;
