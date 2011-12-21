@@ -5,19 +5,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import javassist.CannotCompileException;
+import javassist.NotFoundException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.aspectj.weaver.ast.Expr;
-import org.openhds.domain.model.Residency;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -30,28 +31,12 @@ import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JDocComment;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JExpressionImpl;
-import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JFieldVar;
-import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
-
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.CtNewMethod;
-import javassist.NotFoundException;
-import javassist.bytecode.AnnotationsAttribute;
-import javassist.bytecode.ClassFile;
-import javassist.bytecode.annotation.Annotation;
-import javassist.bytecode.annotation.StringMemberValue;
 
 /**
  * This class is automatically called by maven during the compile phase. The idea behind this is to load 
