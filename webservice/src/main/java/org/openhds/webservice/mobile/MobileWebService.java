@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.mobile.FormInstance;
+import org.openhds.domain.mobile.ValidationMessage;
 
 /**
  * Web Services that are directly related to Mobile

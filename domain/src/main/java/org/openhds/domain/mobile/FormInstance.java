@@ -1,4 +1,4 @@
-package org.openhds.webservice.mobile;
+package org.openhds.domain.mobile;
 
 import java.util.ArrayList;
 import java.util.List;

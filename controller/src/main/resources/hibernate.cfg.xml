@@ -35,5 +35,7 @@
 		<mapping class="org.openhds.domain.model.Note"/>
 		<mapping class="org.openhds.domain.model.Extension"/>
 		<mapping class="org.openhds.domain.model.ClassExtension"/>
+		<mapping class="org.openhds.domain.mobile.FormInstance" />
+		<mapping class="org.openhds.domain.mobile.ValidationMessage" />
 	</session-factory>
 </hibernate-configuration>
