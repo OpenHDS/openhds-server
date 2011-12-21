@@ -1,9 +1,9 @@
-package org.openhds.domain.value.extension;
+package org.openhds.domain.extension;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.openhds.domain.constraint.AppContextAware;
-import org.openhds.domain.value.extension.ValueConstraintService;
+import org.openhds.domain.extension.ValueConstraintService;
 
 public class ExtensionConstraintImpl extends AppContextAware implements ConstraintValidator<ExtensionConstraint, String> {
 

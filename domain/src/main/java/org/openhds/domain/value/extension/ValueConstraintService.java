@@ -1,4 +1,4 @@
-package org.openhds.domain.value.extension;
+package org.openhds.domain.extension;
 
 import java.io.IOException;
 import java.util.List;

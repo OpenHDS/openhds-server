@@ -1,4 +1,4 @@
-package org.openhds.domain.value.extension;
+package org.openhds.domain.extension;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
