@@ -12,7 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.value.extension.ExtensionConstraint;
+import org.openhds.domain.extension.ExtensionConstraint;
 
 @Description(description="All distinct Locations within the area of study are " +
 		"represented here. A Location is identified by a uniquely generated " +
@@ -20,7 +20,6 @@ import org.openhds.domain.value.extension.ExtensionConstraint;
 		"with it and resides at a particular level within the Location Hierarchy.")
 @Entity
 @Table(name="location")
-//@XmlRootElement(name = "location")
 public class Location extends AuditableCollectedEntity implements Serializable {
 
     private static final long serialVersionUID = 169551578162260199L;

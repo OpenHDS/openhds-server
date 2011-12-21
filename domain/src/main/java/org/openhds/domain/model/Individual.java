@@ -22,7 +22,7 @@ import org.openhds.domain.constraint.CheckIndividualGenderMale;
 import org.openhds.domain.constraint.CheckIndividualParentAge;
 import org.openhds.domain.constraint.CheckMotherFatherNotIndividual;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.value.extension.ExtensionConstraint;
+import org.openhds.domain.extension.ExtensionConstraint;
 
 @Description(description="An Individual represents one who is a part of the study. " +
 		"Each Individual is identified by a uniquely generated external identifier which " +

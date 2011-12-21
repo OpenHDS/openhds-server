@@ -21,7 +21,7 @@ import org.openhds.domain.constraint.CheckRelationshipAge;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.value.extension.ExtensionConstraint;
+import org.openhds.domain.extension.ExtensionConstraint;
 
 @Description(description="A Relationship is used to associate an Individual " +
 		"with another Indivual in some way. It can be identified by a uniquely " +

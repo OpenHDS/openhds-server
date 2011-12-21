@@ -5,7 +5,7 @@ import java.util.Iterator;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import org.openhds.domain.constraint.AppContextAware;
-import org.openhds.domain.value.extension.ValueConstraintService;
+import org.openhds.domain.extension.ValueConstraintService;
 
 public class ValueExtensionResolver extends ELResolver {
 	

@@ -18,7 +18,7 @@ import org.openhds.domain.constraint.CheckStartDateGreaterThanBirthDate;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.value.extension.ExtensionConstraint;
+import org.openhds.domain.extension.ExtensionConstraint;
 
 @Description(description="A Membership represents an Individual's association with a " +
 		"particular Social Group. Memberships are identified by a uniquely generated " +
