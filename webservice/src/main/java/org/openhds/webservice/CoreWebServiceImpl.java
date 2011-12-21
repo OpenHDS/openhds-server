@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.IdValidator;
+import org.openhds.controller.idgeneration.IndividualGenerator;
 import org.openhds.controller.service.DeathService;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.FieldWorkerService;
@@ -38,6 +39,7 @@ import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.MigrationType;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.PregnancyOutcome;
@@ -51,7 +53,10 @@ import org.openhds.domain.service.impl.SiteProperties;
 @Produces("application/xml")
 @Consumes("application/xml")
 public class CoreWebServiceImpl {
-
+	private static final String NO_FW_FOUND = "No field worker was specified";
+	private static final String NO_INDIV_FOUND = "No individual was specified";
+	private static final String NO_VISIT_FOUND = "No visit was specified";
+	
     private static final String INVALID_LOCATION_ID = "Invalid Location Id";
     private static final String INVALID_VISIT_ID = "Invalid Visit Id";
     private static final String INVALID_FIELD_WORKER_ID = "Invalid Field Worker Id";
@@ -70,6 +75,7 @@ public class CoreWebServiceImpl {
     private WhitelistService whitelistService;
     private IdValidator idUtilities;
     private SiteProperties siteProperties;
+    private IndividualGenerator<Individual> indivGen;
    
     @Context
     HttpServletRequest request;
@@ -121,7 +127,7 @@ public class CoreWebServiceImpl {
 		List<Individual> individuals = new ArrayList<Individual>();
     	
     	public FieldBuilder referenceField(Visit visit) {
-    		if (visit == null) {
+    		if (visit.getExtId() == null) {
     			violations.addViolations("No visit id provided");
     		} else {
     			try {
@@ -133,13 +139,6 @@ public class CoreWebServiceImpl {
     		
     		return this;
     	}
-    	
-    	public FieldBuilder requiredField(String requiredField, String violationMsg) {
-    		if (requiredField == null) {
-    			violations.addViolations(violationMsg);
-    		}
-    		return this;
-    	}
 
 		public void validate() throws ConstraintViolations {
 			if (hasViolations()) {
@@ -148,7 +147,7 @@ public class CoreWebServiceImpl {
 		}
 
 		public FieldBuilder referenceField(Individual individual, String msg) {
-    		if (individual == null) {
+    		if (individual.getExtId() == null) {
     			violations.addViolations(msg);
     		} else {
     			try {
@@ -162,7 +161,7 @@ public class CoreWebServiceImpl {
     	}
 
     	public FieldBuilder referenceField(FieldWorker collectedBy) {
-    		if (collectedBy == null) {
+    		if (collectedBy.getExtId() == null) {
     			violations.addViolations("No field worker id provided");
     		} else {
     			try {
@@ -187,12 +186,17 @@ public class CoreWebServiceImpl {
      */
     private abstract class InsertTemplate<T> {
     	
+    	private final List<String> nullMessages = new ArrayList<String>();
+    	
     	public Response insert(T entity) {
     		if (!authenticateOrigin()) {
     			return Response.status(401).build();
     		}
     		
     		try {
+    			verifyRequiredFields(entity);
+    			validateReqequireFields();
+    			
     			FieldBuilder builder = new FieldBuilder();
     			buildReferentialFields(entity, builder);
     			builder.validate();
@@ -211,6 +215,20 @@ public class CoreWebServiceImpl {
     		return Response.ok().build();
     	}
 
+		protected final void checkNonNull(Object value, String msg) {
+    		if (value == null) {
+    			nullMessages.add(msg);
+    		}
+    	}
+
+    	private void validateReqequireFields() throws ConstraintViolations {
+    		if (nullMessages.size() > 0) {
+    			throw new ConstraintViolations("Required fields missing", nullMessages);
+    		}
+		}
+    	
+    	protected abstract void verifyRequiredFields(T entity);
+    	
 		protected abstract void buildReferentialFields(T entity, FieldBuilder builder);
 
 		protected abstract void setReferentialFields(T entity, FieldBuilder builder);
@@ -249,6 +267,16 @@ public class CoreWebServiceImpl {
             deathService.evaluateDeath(entity);
             deathService.createDeath(entity);			
 		}
+
+		@Override
+		protected void verifyRequiredFields(Death entity) {
+			checkNonNull(entity.getCollectedBy(), NO_FW_FOUND);
+			checkNonNull(entity.getDeathCause(), "No death cause was specified");
+			checkNonNull(entity.getDeathDate(), "No death date was specified");
+			checkNonNull(entity.getDeathPlace(), "No death place was specified");
+			checkNonNull(entity.getVisitDeath(), NO_VISIT_FOUND);
+			checkNonNull(entity.getIndividual(), NO_INDIV_FOUND);
+		}
     }
     
     @POST
@@ -262,20 +290,62 @@ public class CoreWebServiceImpl {
 		@Override
 		protected void buildReferentialFields(InMigration entity, FieldBuilder builder) {
 	    	builder.referenceField(entity.getCollectedBy())
-			   	   .referenceField(entity.getVisit())
-			   	   .requiredField(entity.getIndividual().getExtId(), "A permanent id is required");		
+			   	   .referenceField(entity.getVisit());
+	    	
+	    	if (referencesIndividual(entity)) {
+	    		builder.referenceField(entity.getIndividual(), INDIVIDUAL_ID_NOT_FOUND);
+	    	} else {
+	    		builder.referenceField(entity.getIndividual().getMother(), "Mother id was not found");
+	    		builder.referenceField(entity.getIndividual().getFather(), "Father id was not found");
+	    	}
+		}
+
+		private boolean referencesIndividual(InMigration entity) {
+			return !entity.isUnknownIndividual() && entity.getMigType().equals(MigrationType.INTERNAL_INMIGRATION);
 		}
 
 		@Override
 		protected void setReferentialFields(InMigration entity, FieldBuilder builder) {
 			entity.setCollectedBy(builder.fw);
 			entity.setVisit(builder.visit);
+			if (referencesIndividual(entity)) {
+				entity.setIndividual(builder.individuals.get(0));
+			} else {
+				entity.getIndividual().setCollectedBy(builder.fw);
+				entity.getIndividual().setMother(builder.individuals.get(0));
+				entity.getIndividual().setFather(builder.individuals.get(1));
+			}
 		}
 
 		@Override
 		protected void saveEntity(InMigration entity) throws ConstraintViolations, Exception {
 			inMigrationService.evaluateInMigration(entity);
 			inMigrationService.createInMigration(entity);
+		}
+
+		@Override
+		protected void verifyRequiredFields(InMigration entity) {
+			checkNonNull(entity.getCollectedBy(), NO_FW_FOUND);
+			checkNonNull(entity.getIndividual(), NO_INDIV_FOUND);
+			checkNonNull(entity.getMigType(), "No migration type specified");
+			checkNonNull(entity.getOrigin(), "No origin was specified");
+			checkNonNull(entity.getReason(), "No reason was specified");
+			checkNonNull(entity.getRecordedDate(), "Date of Migration was not specified");
+			checkNonNull(entity.getVisit(), NO_VISIT_FOUND);
+			if (entity.getIndividual() != null && !referencesIndividual(entity)) {
+				// check the fields on the individual
+				Individual indiv = entity.getIndividual();
+				if (!indivGen.generated) {
+					checkNonNull(indiv.getExtId(), "No ext id was specified on migrant");
+				}
+				checkNonNull(indiv.getFirstName(), "No first name was specified on migrant");
+				checkNonNull(indiv.getLastName(), "No last name was specified on migrant");
+				checkNonNull(indiv.getGender(), "No gender was specified on migrant");
+				checkNonNull(indiv.getDob(), "No date of birth was specified on migrant");
+				checkNonNull(indiv.getDobAspect(), "No date of birth aspect was specified on migrant");
+				checkNonNull(indiv.getMother(), "No mother was specified on migrant");
+				checkNonNull(indiv.getFather(), "No father was specified on migrant");
+			}
 		}
     }
 
@@ -305,6 +375,13 @@ public class CoreWebServiceImpl {
 			entity.setCollectedBy(builder.fw);
 			entity.setMother(builder.individuals.get(0));	
 		}
+
+		@Override
+		protected void verifyRequiredFields(PregnancyObservation entity) {
+			// TODO Auto-generated method stub
+			
+		}
+
     }
 
     @POST
@@ -334,6 +411,13 @@ public class CoreWebServiceImpl {
 			outmigrationService.evaluateOutMigration(entity);
 			outmigrationService.createOutMigration(entity);
 		}
+
+		@Override
+		protected void verifyRequiredFields(OutMigration entity) {
+			// TODO Auto-generated method stub
+			
+		}
+
     }
 
     @POST
@@ -365,6 +449,13 @@ public class CoreWebServiceImpl {
 			 pregnancyService.evaluatePregnancyOutcome(entity);
              pregnancyService.createPregnancyOutcome(entity);			
 		}
+
+		@Override
+		protected void verifyRequiredFields(PregnancyOutcome entity) {
+			// TODO Auto-generated method stub
+			
+		}
+
     }
 
     @GET
@@ -534,4 +625,8 @@ public class CoreWebServiceImpl {
     public void setSiteProperties(SiteProperties siteProperties) {
         this.siteProperties = siteProperties;
     }
+
+	public void setIndivGen(IndividualGenerator<Individual> indivGen) {
+		this.indivGen = indivGen;
+	}
 }

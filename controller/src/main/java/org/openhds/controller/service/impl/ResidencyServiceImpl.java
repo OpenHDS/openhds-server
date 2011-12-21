@@ -60,7 +60,8 @@ public class ResidencyServiceImpl implements ResidencyService {
             // its possible that the start residency being evaluated has already been persisted
             // this case happens when the user is editing a residency
             // no need to have these checks on the same residency
-            if (previousResidency.getUuid().equals(candidateResidency.getUuid())) {
+            if (previousResidency.getUuid().equals(candidateResidency.getUuid())
+            		|| previousResidency.isDeleted()) {
                 continue;
             }
 
@@ -186,7 +187,8 @@ public class ResidencyServiceImpl implements ResidencyService {
      * @see org.openhds.service.ResidencyService#hasOpenResidency(org.openhds.model.Individual)
      */
     public boolean hasOpenResidency(Individual individual) {
-        if (individual.getCurrentResidency() == null || individual.getCurrentResidency().getEndDate() != null) {
+        if (individual.getCurrentResidency() == null || individual.getCurrentResidency().getEndDate() != null
+        		|| individual.getCurrentResidency().isDeleted()) {
             return false;
         }
 

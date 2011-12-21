@@ -11,6 +11,7 @@ import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.MigrationType;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,9 +83,23 @@ public class InMigrationServiceImpl implements InMigrationService {
 	@Transactional(rollbackFor=Exception.class)
 	public void createInMigration(InMigration inMigration) throws ConstraintViolations, SQLException, Exception {
 		setResidencyFieldsFromInMigration(inMigration);
-		checkIfResidencyIsValid(inMigration.getResidency());
-		
+		checkValidIndividual(inMigration);
+
+		residencyService.evaluateResidency(inMigration.getResidency());
+		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
+			entityService.create(inMigration.getIndividual());
+		}
+		entityService.create(inMigration.getResidency());
 		entityService.create(inMigration);
+	}
+
+	private void checkValidIndividual(InMigration inMigration) throws ConstraintViolations {
+		if (inMigration.getMigType().equals(MigrationType.INTERNAL_INMIGRATION)
+				&& !inMigration.isUnknownIndividual()) {
+			return; // individual is already in database
+		}
+		
+		individualService.evaluateIndividual(inMigration.getIndividual());
 	}
 
 	private void setResidencyFieldsFromInMigration(InMigration migration) {
@@ -94,6 +109,7 @@ public class InMigrationServiceImpl implements InMigrationService {
         residency.setStartType(siteProperties.getInmigrationCode());
         residency.setCollectedBy(migration.getCollectedBy());
         residency.setEndType(siteProperties.getNotApplicableCode());
+        residency.setLocation(migration.getVisit().getVisitLocation());
 	}
 	
 	public List<InMigration> getInMigrationsByIndividual(Individual individual) {

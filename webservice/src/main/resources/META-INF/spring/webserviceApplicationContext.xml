@@ -28,6 +28,7 @@
         <property name="whitelistService" ref="whitelistService" />
         <property name="idUtilities" ref="idValidator" />
         <property name="siteProperties" ref="siteProperties" />
+        <property name="indivGen" ref="individualIdGenerator" /> 
     </bean>
     
     <!-- this bean implements web service methods -->

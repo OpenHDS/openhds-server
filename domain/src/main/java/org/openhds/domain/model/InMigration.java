@@ -2,7 +2,7 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,12 +11,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.Cascade;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckInMigrationAfterDob;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="An InMigration represents a migration into the study area. " +
 		"It contains information about the Individual who is in-migrating to a particular " +
@@ -25,7 +28,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @CheckInMigrationAfterDob
 @Table(name="inmigration")
-//@XmlRootElement(name = "inmigration")
+@XmlRootElement(name = "inmigration")
 public class InMigration extends AuditableCollectedEntity implements Serializable {
 	private static final long serialVersionUID = 7889700709284952892L;
     
@@ -34,10 +37,9 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
     @CheckIndividualNotUnknown
     @ManyToOne
     @Description(description="The individual who is inmigrating, identified the by external id.")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     Individual individual;
     
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne
     @NotNull
     @Description(description="The residency the individual is inmigrating to.")
     Residency residency = new Residency();
@@ -45,12 +47,12 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
     @CheckFieldNotBlank
     @Searchable
     @Description(description="The origin of the inmigration.")
-    public String origin;
+    String origin;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="The reason for inmigrating.")
-    public String reason;
+    String reason;
     
     @NotNull
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -65,10 +67,10 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
 
     @Enumerated(EnumType.STRING)
     @Description(description="The migration type.")
-    public MigrationType migType = MigrationType.INTERNAL_INMIGRATION;    
+    MigrationType migType = MigrationType.INTERNAL_INMIGRATION;    
     
     @Description(description="Flag for indicating if the individual who is inmigrating is known or not.")
-    public Boolean unknownIndividual = false;
+    Boolean unknownIndividual = false;
     
     public Residency getResidency() {
         return residency;
@@ -94,7 +96,7 @@ public class InMigration extends AuditableCollectedEntity implements Serializabl
         this.reason = reason;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getRecordedDate() {
         return recordedDate;
     }
