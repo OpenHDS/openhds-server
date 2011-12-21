@@ -2,6 +2,7 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -9,11 +10,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckDeathDateGreaterThanBirthDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Death represents the final event than an Individual can " +
 		"have within the system. It consists of the Individual who has passed on, the " +
@@ -23,7 +28,7 @@ import org.openhds.domain.constraint.Searchable;
 @CheckDeathDateGreaterThanBirthDate
 @Entity
 @Table(name="death")
-//@XmlRootElement(name = "death")
+@XmlRootElement(name = "death")
 public class Death extends AuditableCollectedEntity implements Serializable {
     private static final long serialVersionUID = -6644256636909420061L;
 	    
@@ -36,12 +41,12 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     @CheckFieldNotBlank
     @Searchable
 	@Description(description="Place where the death occurred.")
-    public String deathPlace;
+    String deathPlace;
     
     @CheckFieldNotBlank
     @Searchable
 	@Description(description="Cause of the death.")
-    public String deathCause;
+    String deathCause;
     
     @NotNull
     @Past(message = "Start date should be in the past")
@@ -55,7 +60,7 @@ public class Death extends AuditableCollectedEntity implements Serializable {
     Visit visitDeath;
     
     @Description(description="Age of death in number of days.")
-    public Long ageAtDeath;
+    Long ageAtDeath;
             
     public Individual getIndividual() {
         return individual;
@@ -81,7 +86,7 @@ public class Death extends AuditableCollectedEntity implements Serializable {
         this.deathCause = deathCause;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getDeathDate() {
         return deathDate;
     }
