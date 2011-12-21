@@ -46,7 +46,7 @@
                         <h:outputText />
                         
                         <h:outputText value="#{msg.dbUrl}:"/>
-                        <h:inputText id="url" value="#{databaseConfig.dbUrl}" converter="#{defaultConverter}" size="50" disabled="true" />
+                        <h:inputText id="url" value="#{databaseConfig.dbUrl}" binding="#{databaseConfig.inputText}" converter="#{defaultConverter}" size="50" disabled="true" />
                         <h:message for="url" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     	<h:commandButton action="#{databaseConfig.editUrl}" value="Edit" />
                     

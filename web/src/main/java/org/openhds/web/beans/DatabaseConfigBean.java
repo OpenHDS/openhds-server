@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.DriverManager;
 import java.util.Properties;
+
+import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -25,6 +27,8 @@ public class DatabaseConfigBean {
 	String hibernateExport;
 	
 	JsfService jsfService;
+	
+	UIInput inputText = null;
 	
 	public DatabaseConfigBean() {
 		Properties props = readDatabaseProperties();
@@ -77,8 +81,8 @@ public class DatabaseConfigBean {
 		}
 	}
 	
-	public void editUrl() {
-		HtmlInputText text = (HtmlInputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("j_id45:url");
+	public void editUrl() {	
+		HtmlInputText text = (HtmlInputText) inputText;
 		text.setDisabled(false);
 	}
 	
@@ -187,4 +191,12 @@ public class DatabaseConfigBean {
 	public void setJsfService(JsfService jsfService) {
 		this.jsfService = jsfService;
 	}
+	
+	public void setInputText(UIInput inputText) {
+		this.inputText = inputText;
+	}
+		
+	public UIInput getInputText() {
+		return inputText;
+	} 	
 }
