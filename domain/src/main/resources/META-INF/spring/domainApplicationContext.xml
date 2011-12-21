@@ -16,7 +16,7 @@
     </bean>
     
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" /> 
-    <bean id="valueConstraintService" class="org.openhds.domain.extension.ValueConstraintService" />
+    <bean id="valueConstraintService" class="org.openhds.domain.extensions.ValueConstraintService" />
     
 	<bean id="calendarUtil" class="org.openhds.domain.util.CalendarUtil">
 		<property name="siteProperties" ref="siteProperties" />

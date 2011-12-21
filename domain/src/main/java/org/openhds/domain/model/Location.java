@@ -12,7 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extension.ExtensionConstraint;
+import org.openhds.domain.extensions.ExtensionConstraint;
 
 @Description(description="All distinct Locations within the area of study are " +
 		"represented here. A Location is identified by a uniquely generated " +

@@ -12,8 +12,8 @@ import org.openhds.community.service.DHISService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.extension.ExtensionConstraint;
-import org.openhds.domain.extension.ValueConstraintService;
+import org.openhds.domain.extensions.ExtensionConstraint;
+import org.openhds.domain.extensions.ValueConstraintService;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 
