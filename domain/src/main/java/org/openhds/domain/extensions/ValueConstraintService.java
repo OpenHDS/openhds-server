@@ -1,6 +1,7 @@
 package org.openhds.domain.extensions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -56,6 +57,17 @@ public class ValueConstraintService {
 			}
 		}
 		return false;
+	}
+	
+	public List<String> getAllConstraintNames() {
+		
+		List<String> output = new ArrayList<String>();
+		List list = doc.getRootElement().getChildren();
+		for (int i = 0; i < list.size(); i++) {
+			Element ele = (Element)list.get(i);
+			output.add(ele.getAttribute("id").getValue()); 
+		}
+		return output;
 	}
 	
 	public Map<String, String> getMapForConstraint(String constraintName) {

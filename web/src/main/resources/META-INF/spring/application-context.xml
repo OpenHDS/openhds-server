@@ -552,6 +552,15 @@
 		<property name="jsfService" ref="jsfService" />
 	</bean>
 	
+	<bean id="extensionConfig" class="org.openhds.web.beans.ExtensionConfigBean">
+		<property name="jsfService" ref="jsfService" />
+	</bean>
+	
+	<bean id="extensionConstraintConfig" class="org.openhds.web.beans.ConstraintConfigBean">
+		<constructor-arg ref="jsfService" />
+		<constructor-arg ref="valueConstraintService" />
+	</bean>
+	
 	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
 		<property name="jsfService" ref="jsfService" />
 		<property name="level1"><value>${locationHierarchyLevel1}</value></property>

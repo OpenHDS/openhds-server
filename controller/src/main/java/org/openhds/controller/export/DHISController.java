@@ -17,8 +17,6 @@ import org.openhds.domain.extensions.ValueConstraintService;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 
-import com.sun.accessibility.internal.resources.accessibility;
-
 /**
  * References:
  * 

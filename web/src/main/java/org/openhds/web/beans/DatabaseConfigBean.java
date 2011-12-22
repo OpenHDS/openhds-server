@@ -6,10 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.DriverManager;
 import java.util.Properties;
-
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.openhds.web.service.JsfService;
 import org.openhds.web.util.ScriptRunner;

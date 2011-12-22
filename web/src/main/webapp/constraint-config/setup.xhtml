@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		
+            <ui:define name="display">
+         
+	            <style>
+					.base-table {
+						border:0px solid #98BF21;
+						border-collapse:collapse;
+						border-color:#888;
+						table-layout:fixed;
+						margin-bottom:2em;
+					}
+					   		
+					.base-table th {
+					   	background-color:#B9D264;
+						font-weight:bold;
+						font-size:.9em;
+						overflow:hidden;
+					 }
+					   		
+					.base-table td {
+					   	padding:5px 5px 5px;
+					   	text-align:center;
+					 }
+					   		
+					.base-table a {
+					   	width:100%;
+						border:0;
+					 }
+					   		
+					 .base-table .alt {
+					   	background-color:#CCC;
+					 }
+					   		
+					.base-table .alt-col {
+						width:40%;
+					 }
+					 
+					.base-table-center {
+					   	margin:0 auto;
+					 }
+				</style>
+            
+            	<h:outputText value="#{msg.dbConfigName} > #{msg.navBarConstraints}" />
+            
+                <h1>#{msg.constraintTitle}</h1>
+                <h:messages id="successInfo" globalOnly="true" />
+                <h:form>
+                                
+                    <h:panelGrid columns="3">
+                       
+                        <h:outputText value="#{msg.constraintName}:"/>
+	                    <h:inputText id="constraintName" value="#{extensionConstraintConfig.constraintId}" binding="#{extensionConstraintConfig.constraintText}" converter="#{defaultConverter}" />
+	                	<h:message for="constraintName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+						<h:outputText value="#{msg.constraintDescription}:"/>
+	                    <h:inputText id="description" value="#{extensionConstraintConfig.description}" binding="#{extensionConstraintConfig.descriptionText}" converter="#{defaultConverter}" />
+	                	<h:message for="description" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+                       	<h:outputText value="#{msg.constraintValue}:"/>
+	                    <h:inputText id="value" value="#{extensionConstraintConfig.value}" binding="#{extensionConstraintConfig.valueText}" converter="#{defaultConverter}" />
+	                	<h:message for="value" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+		            </h:panelGrid>
+		            
+		            <br />
+		            <h:commandButton action="#{extensionConstraintConfig.addValue}" value="#{msg.constraintAddValue}" />
+		            <h:commandButton action="#{extensionConstraintConfig.clear}" value="#{msg.lblClear}" />
+                    <h:commandButton action="#{extensionConstraintConfig.create}" value="#{msg.lblCreate}" />
+		            <br /><br />
+		            
+		            <h:panelGroup rendered="#{fn:length(extensionConstraintConfig.constraints) > 0}">
+						<h:dataTable value="#{extensionConstraintConfig.constraintKeys}" var="key" 
+							styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+							<f:facet name="header">
+								<h:outputText value="#{extensionConstraintConfig.constraintId}" />
+							</f:facet>
+							<h:column>
+						    	<h:outputText value="#{key}"/>
+						    </h:column>
+						    <h:column>
+						        <h:outputText value="#{extensionConstraintConfig.constraints[key]}"/>
+						    </h:column>
+						</h:dataTable>
+					</h:panelGroup>
+		            
+		            <h:panelGroup rendered="#{fn:length(extensionConstraintConfig.extensions) > 0}">
+			  			<h:dataTable value="#{extensionConstraintConfig.extensions}" var="item"
+			  				styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">	
+				  			<f:facet name="header">
+		                    	<h:outputText value="#{msg.navBarConstraints}" />
+		                    </f:facet>
+				  			<h:column>
+		                        <h:outputText value="#{item.constraintId}" />
+	                      	 </h:column>	
+	                      	 <h:column>
+							    <h:dataTable value="#{item.constraintKeys}" var="key" >
+							      <h:column>
+							        <h:outputText value="#{item.constraintMap[key]}"/>
+							      </h:column>
+							      <h:column>
+							        <h:outputText value="#{key}"/>
+							      </h:column>
+							    </h:dataTable>
+							  </h:column>
+		        		</h:dataTable>
+					</h:panelGroup>
+					  
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
