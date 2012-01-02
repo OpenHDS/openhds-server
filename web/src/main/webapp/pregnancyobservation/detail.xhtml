@@ -44,6 +44,10 @@
 		                <h:outputText value="#{msg.fieldWorkerId}:"/>
 		                <h:outputText />
 		                <h:outputText value="#{pregnancyObservationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+		                
+		                <h:outputText value="#{msg.visitId}:"/>
+						<h:outputText />
+		                <h:outputText value="#{pregnancyObservationCrud.item.visit}" converter="#{visitExtIdConverter}" />
 		             	
 		             	<h:outputText value="#{msg.dataStatus}:" />
 		             	<h:outputText />
@@ -62,10 +66,11 @@
 						<h:outputText value="#{pregnancyObservationCrud.item.status}" />	
 		             </h:panelGrid>
 		            <br />
-		            <h:commandButton value="Cancel" immediate="true" action="cancel" rendered="#{flowScope.updating}" />
-		            <h:commandButton action="#{pregnancyObservationCrud.editSetup}" value="#{msg.lblEdit}" rendered="#{flowScope.updating == null}">
+		            <h:commandButton action="#{pregnancyObservationCrud.editSetup}" value="#{msg.lblEdit}">
 		                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{pregnancyObservationCrud.item.uuid}" />
 		            </h:commandButton>
+		            <h:outputText value=" " />
+		            <h:commandButton value="Cancel" immediate="true" action="cancel" rendered="#{flowScope.updating}" />
 	        	</h:form>
 			</ui:define>		
 		</ui:composition>

@@ -36,8 +36,12 @@
                 <h:message for="recordedDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
-                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" converter="#{fieldWorkerExtIdConverter}" value="#{pregnancyObservationCrud.item.collectedBy}" />
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" disabled="#{flowScope != null}" converter="#{fieldWorkerExtIdConverter}" value="#{pregnancyObservationCrud.item.collectedBy}" />
                 <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.visitId}:"/>
+                <h:inputText styleClass="visit" autocomplete="off" id="visit" disabled="#{flowScope != null}" converter="#{visitExtIdConverter}" value="#{pregnancyObservationCrud.item.visit}" />
+                <h:message for="visit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
             </h:panelGrid>
             <script>
             	document.getElementById('form:deliveryDate').focus();
@@ -45,6 +49,7 @@
 			</script>
              <br />
              <h:commandButton action="#{pregnancyObservationCrud.create}" value="#{msg.lblCreate}"/>
+             <h:outputText value=" " />
          	<h:commandButton value="#{msg.lblCancel}" rendered="#{flowScope.updating}" immediate="true" action="cancel" />
          </h:form>
      </ui:define>

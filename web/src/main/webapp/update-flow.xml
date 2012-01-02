@@ -247,57 +247,39 @@
         <on-entry>
             <set name="flowScope.currentView" value="'pregnancyObservation'"></set>
             <evaluate expression="pregnancyObservationCrud.initFlow()"></evaluate>
-            <evaluate expression="pregnancyObservationCrud.getItem().setMother(updateBean.getCurrentIndividual())"></evaluate>
+            <set name="pregnancyObservationCrud.item.mother" value="updateBean.currentIndividual" />
+            <set name="pregnancyObservationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
+            <set name="pregnancyObservationCrud.item.visit" value="updateBean.currentVisit" />
 			<evaluate expression="navController.addItemToTrail('PregnancyObservation Create')" />
         </on-entry>
-        <transition on="pregObservDetails" to="viewPregObservDetails">
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
-        <transition on="pregObservEdit" to="viewPregObservEdit">
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
+        <transition on="pregnancyobservation_detail" to="viewPregObservDetails" />
+        <transition on="pregnancyobservation_edit" to="viewPregObservEdit" />
         <transition on="pregnancyobservation_list" to="home" />
-        <transition on="pregnancyobservation_create" to="pregnancyObservation" >
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
+        <transition on="pregnancyobservation_create" to="pregnancyObservation"  />
         <transition on="cancel" to="home" />
     </view-state>
 
     <view-state id="viewPregObservDetails" view="pregnancyobservation/detail.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'viewPregObservDetails'"></set>
-            <evaluate expression="pregnancyObservationCrud.editByUuid(flowScope.uuid, messageContext)" />
             <evaluate expression="navController.addItemToTrail('PregnancyObservation Detail')" />
         </on-entry>
-        <transition on="pregObservEdit" to="viewPregObservEdit">
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
-        <transition on="pregObservDetails" >
-            <evaluate expression="pregnancyObservationCrud.editByUuid(requestParameters.itemId, messageContext)" />
-        </transition>
-        <transition on="pregnancyobservation_create" to="pregnancyObservation" >
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
-        <transition on="cancel" to="home" />
+        <transition on="pregnancyobservation_edit" to="viewPregObservEdit" />
+        <transition on="pregnancyobservation_detail" />
+        <transition on="pregnancyobservation_create" to="pregnancyObservation" />
+        <transition on="cancel" to="pregnancyObservation" />
     </view-state>
 
     <view-state id="viewPregObservEdit" view="pregnancyobservation/edit.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'viewPregObservEdit'"></set>
-            <evaluate expression="pregnancyObservationCrud.editByUuid(flowScope.uuid, messageContext)" />
             <evaluate expression="navController.addItemToTrail('PregnancyObservation Edit')" />
         </on-entry>
-        <transition on="pregObservDetails" to="viewPregObservDetails">
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
-        <transition on="pregObservEdit" >
-            <evaluate expression="pregnancyObservationCrud.editByUuid(requestParameters.itemId, messageContext)" />
-        </transition>
+        <transition on="pregnancyobservation_detail" to="viewPregObservDetails" />
+        <transition on="pregnancyobservation_edit" to="viewPregObservEdit" />
         <transition on="pretty:pregnancyobservationEdit" to="home" />
-        <transition on="pregnancyobservation_create" to="pregnancyObservation" >
-            <set name="flowScope.uuid" value="requestParameters.itemId" />
-        </transition>
-        <transition on="cancel" to="home" />
+        <transition on="pregnancyobservation_create" to="pregnancyObservation" />
+        <transition on="cancel" to="pregnancyObservation" />
     </view-state>
 
     <view-state id="visit" view="visit/create.xhtml">

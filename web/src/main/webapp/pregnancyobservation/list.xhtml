@@ -68,7 +68,7 @@
                                    width="100%" columnClasses="center,center,width3">
                           <h:column headerClass="width1">
                               <f:facet name="header">
-                                  <h:outputText value="#{msg.pregObservMotherId}" />
+                                  <h:outputText value="#{msg.pregnancyObservationMotherId}" />
                               </f:facet>
                               <h:outputText value="#{pregObserv.mother}" converter="#{individualExtIdConverter}" />
                           </h:column>
@@ -78,17 +78,23 @@
                               </f:facet>
                               <h:outputText value="#{pregObserv.expectedDeliveryDate}" converter="#{calendarConverter}"/>
                           </h:column>
+
                           <h:column headerClass="width3">
                               <f:facet name="header">
                                   <h:outputText escape="false" value=""/>
                               </f:facet>
-                              <h:commandLink immediate="true" action="pregObservDetails">
-                                  <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                          	  <h:commandLink action="#{pregnancyObservationCrud.detailSetup}">
+                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                              	<f:param name="itemId" value="#{pregObserv.uuid}"/>
+                          	  </h:commandLink>
+                              <h:outputText value=" "/>
+                              <h:commandLink action="#{pregnancyObservationCrud.editSetup}">
+                                  <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
                                   <f:param name="itemId" value="#{pregObserv.uuid}"/>
                               </h:commandLink>
                               <h:outputText value=" "/>
-                              <h:commandLink action="pregObservEdit">
-                                  <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                              <h:commandLink action="#{pregnancyObservationCrud.delete}">
+                                  <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
                                   <f:param name="itemId" value="#{pregObserv.uuid}"/>
                               </h:commandLink>
                           </h:column>

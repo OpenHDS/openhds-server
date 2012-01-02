@@ -367,21 +367,25 @@ public class CoreWebServiceImpl {
 		@Override
 		protected void buildReferentialFields(PregnancyObservation entity, FieldBuilder builder) {
 			builder.referenceField(entity.getCollectedBy())
-			   	   .referenceField(entity.getMother(), "Mother permanent id not found");
+			   	   .referenceField(entity.getMother(), "Mother permanent id not found")
+			   	   .referenceField(entity.getVisit());
 		}
 
 		@Override
 		protected void setReferentialFields(PregnancyObservation entity, FieldBuilder builder) {
 			entity.setCollectedBy(builder.fw);
 			entity.setMother(builder.individuals.get(0));	
+			entity.setVisit(builder.visit);
 		}
 
 		@Override
 		protected void verifyRequiredFields(PregnancyObservation entity) {
-			// TODO Auto-generated method stub
-			
+			checkNonNull(entity.getCollectedBy(), NO_FW_FOUND);
+			checkNonNull(entity.getExpectedDeliveryDate(), "Expected delivery date was not specified for the observation");
+			checkNonNull(entity.getMother(), "No mother was specified for the observation");
+			checkNonNull(entity.getRecordedDate(), "Recorded date was not specified for the observation");
+			checkNonNull(entity.getVisit(), "No visit was specified for the observation");
 		}
-
     }
 
     @POST

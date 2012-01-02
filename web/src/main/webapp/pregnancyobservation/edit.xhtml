@@ -41,7 +41,10 @@
                         <h:outputText value="#{msg.fieldWorkerId}:"/>
                         <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" converter="#{fieldWorkerExtIdConverter}" title="#{msg.tipFWExtId}" value="#{pregnancyObservationCrud.item.collectedBy}" />
                         <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-
+		                
+		                <h:outputText value="#{msg.visitId}:"/>
+		                <h:inputText styleClass="visit" autocomplete="off" id="visit" converter="#{visitExtIdConverter}" value="#{pregnancyObservationCrud.item.visit}" />
+		                <h:message for="visit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     </h:panelGrid>
                     <script>
   						document.getElementById('form:deliveryDate').focus();
@@ -50,6 +53,7 @@
                     <h:commandButton action="#{pregnancyObservationCrud.edit}" value="#{msg.lblSave}">
                         <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{pregnancyObservationCrud.item.uuid}" />
                     </h:commandButton>
+                    <h:outputText value=" " />
                     <h:commandButton value="Cancel" immediate="true" action="cancel" rendered="#{flowScope.updating}" />
                 </h:form>
             </ui:define>
