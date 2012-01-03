@@ -18,7 +18,7 @@
 					<tr>
 						<td><h:outputText value="Username:" /></td>
 						<td>	
-							<c:if test="${login_error}">
+							<c:if test="${not empty param.login_error}">
 								<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
 							</c:if>
 							<input type="text" name="j_username" value="#{username}"/>
@@ -32,8 +32,13 @@
 						<td><input name="submit" type="submit" value="Login" /></td>
 					</tr>
 				</table>
+				<br />
+				<c:if test="${not empty param.login_error}">
+					<span class="loginMessage">Wrong username or password. Please try again.</span>
+				</c:if>
 			</form>
 			</div>
+						
 		  	<c:if test="#{demoLoginString != ''}">
 				<div style="text-align:center;font-weight:bold;background-color:#FFcc00">
 			  		#{demoLoginString}
