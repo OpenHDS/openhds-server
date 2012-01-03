@@ -341,18 +341,18 @@
         <on-entry>
             <set name="flowScope.currentView" value="'outmigration'" />
             <evaluate expression="outMigrationCrud.initFlow()" />
-            <!-- populate any information we can extract from visit information and individual -->
-            <evaluate expression="outMigrationCrud.getItem().setIndividual(updateBean.getCurrentIndividual())" />
-            <evaluate expression="outMigrationCrud.getItem().setVisit(updateBean.getCurrentVisit())" />
-            <evaluate expression="outMigrationCrud.getItem().setCollectedBy(updateBean.getCurrentVisit().getCollectedBy())" />
+            <set name="outMigrationCrud.item.individual" value="updateBean.currentIndividual" />
+            <set name="outMigrationCrud.item.visit" value="updateBean.currentVisit" />
+            <set name="outMigrationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
         	<evaluate expression="navController.addItemToTrail('OutMigration Create')" />
         </on-entry>
-        <transition on="cancel" to="home" />
         <transition on="outmigration_list" to="home" >
             <evaluate expression="updateBean.removeIndividualFromResidentList()" />
         </transition>
         <transition on="outmigration_detail" to="outmigration_detail" />
+        <transition on="outmigration_edit" to="outmigration_edit" />
         <transition on="outmigration_create" to="outmigration" />
+        <transition on="cancel" to="home" />
     </view-state>
 
     <view-state id="outmigration_detail" view="outmigration/detail.xhtml">
@@ -361,8 +361,21 @@
     		<evaluate expression="navController.addItemToTrail('OutMigration Detail')" />
     	</on-entry>
         <transition on="outmigration_detail" to="outmigration_detail" />
+        <transition on="outmigration_edit" to="outmigration_edit" />
         <transition on="outmigration_create" to="outmigration" />
-        <transition on="cancel" to="home" />
+        <transition on="cancel" to="outmigration" />
+    </view-state>
+    
+    <view-state id="outmigration_edit" view="outmigration/edit.xhtml">
+    	<on-entry>
+    		<set name="flowScope.currentView" value="'viewOutMigrationDetail'"></set>
+    		<evaluate expression="navController.addItemToTrail('OutMigration Edit')" />
+    	</on-entry>
+        <transition on="outmigration_detail" to="outmigration_detail" />
+        <transition on="outmigration_edit" to="outmigration_edit" />
+        <transition on="outmigration_create" to="outmigration" />
+        <transition on="pretty:outMigEdit" to="home" />
+        <transition on="cancel" to="outmigration" />
     </view-state>
     
     <view-state id="inmigration" view="migration/create.xhtml">

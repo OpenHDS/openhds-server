@@ -2,6 +2,7 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -10,13 +11,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-//import javax.xml.bind.annotation.XmlRootElement;
-//import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="An OutMigration represents a migration out of the study area. " +
 		"It contains information about the Individual who is out-migrating to a particular " +
@@ -24,6 +27,7 @@ import org.openhds.domain.constraint.Searchable;
 		"Indiviudal is migrating as well as the Visit that is associated with the migration. ")
 @Entity
 @Table(name="outmigration")
+@XmlRootElement(name = "outmigration")
 public class OutMigration extends AuditableCollectedEntity implements Serializable {
 
     private static final long serialVersionUID = 6736599408170070468L;
@@ -44,12 +48,12 @@ public class OutMigration extends AuditableCollectedEntity implements Serializab
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Destination of the outmigration.")
-    public String destination;
+    String destination;
     
     @CheckFieldNotBlank
     @Searchable
     @Description(description="Reason for outmigrating.")
-    public String reason;
+    String reason;
    
     @Searchable
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Visit.class)
@@ -90,7 +94,7 @@ public class OutMigration extends AuditableCollectedEntity implements Serializab
         return recordedDate;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public void setRecordedDate(Calendar recordedDate) {
         this.recordedDate = recordedDate;
     }

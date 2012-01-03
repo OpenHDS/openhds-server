@@ -67,10 +67,10 @@
 	            </h:panelGroup>
             </c:if>
 			<c:if test="#{flowScope != null}">
-	            <h:outputText escape="false" value="#{msg.outmigrationEmptyy}" rendered="#{fn:length(outMigrationCrud.filteredPagedItems) == 0}" />
+	            <h:outputText escape="false" value="#{msg.outmigrationEmpty}" rendered="#{fn:length(outMigrationCrud.filteredPagedItems) == 0}" />
 	            <h:panelGroup rendered="#{fn:length(outMigrationCrud.filteredPagedItems) > 0}">
 	                <h:dataTable value="#{outMigrationCrud.filteredPagedItems}" var="item" 
-	                columnClasses="center,center,width3" width="100%"  >
+	                columnClasses="center,center,center,width3" width="100%"  >
 	                    <h:column>
 	                        <f:facet name="header">
 	                            <h:outputText value="#{msg.individualId}"/>

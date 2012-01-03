@@ -418,10 +418,13 @@ public class CoreWebServiceImpl {
 
 		@Override
 		protected void verifyRequiredFields(OutMigration entity) {
-			// TODO Auto-generated method stub
-			
+			checkNonNull(entity.getCollectedBy(), NO_FW_FOUND);
+			checkNonNull(entity.getDestination(), "No destination was specified for out migration");
+			checkNonNull(entity.getIndividual(), "No individual was specified for out migration");
+			checkNonNull(entity.getReason(), "No reason was specified for out migration");
+			checkNonNull(entity.getRecordedDate(), "Recorded date not specified for out migration");
+			checkNonNull(entity.getVisit(), "No visit was specified for out migration");
 		}
-
     }
 
     @POST
