@@ -1,24 +1,22 @@
-<config>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><config>
 	<entity name="Location">
-	<!-- 
 		<attributes>
-			<attribute>
-				<name>longitude</name>
-				<description>Longitude for the location</description>
-				<type>Integer</type>
-			</attribute>
-			<attribute>
-				<name>latitude</name>
-				<description>Latitude for the location</description>
-				<type>Integer</type>
-			</attribute>
-			<attribute>
-				<name>watersource</name>
-				<description>Watersource for the location</description>
-				<type>String</type>
-				<constraint>locationWaterSourceConstraint</constraint>
-			</attribute>
+			
+			
+			
+		
 		</attributes>
-	-->
+	</entity>
+	<entity name="Individual">
+		<attributes>
+		</attributes>
+	</entity>
+	<entity name="SocialGroup">
+		<attributes>
+		</attributes>
+	</entity>
+	<entity name="Visit">
+		<attributes>
+		</attributes>
 	</entity>
 </config>

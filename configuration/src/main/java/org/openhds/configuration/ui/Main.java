@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -14,29 +15,51 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.openhds.configuration.util.ExtensionService;
 import org.openhds.configuration.util.ValueConstraintService;
 import org.openhds.configuration.util.XMLWriter;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Main {
 
-	private JPanel panel;
+	private JPanel constraintPanel;
+	private JPanel extensionPanel;
 	private DefaultTableModel tableModel;
-	private DefaultTreeModel treeModel;
-	private DefaultMutableTreeNode top;
+	private JTree constraintTree;
+	private JTree extensionTree;
+	private DefaultTreeModel constraintTreeModel;
+	private DefaultTreeModel extensionTreeModel;
+	private DefaultMutableTreeNode constraintTop;
+	private DefaultMutableTreeNode extensionTop;
+	private DefaultMutableTreeNode selectedConstraintNode = null;
+	private DefaultMutableTreeNode selectedExtensionNode = null;
 	
 	private JFrame frmOpenhdsConfigurationUtility;
-	private JTextField nameField;
-	private JTextField descriptionField;
-	private JTextField valueField;
-	private JTable table;
+	private JTextField constraintNameField;
+	private JTextField constraintDescriptionField;
+	private JTextField constraintValueField;
+	private JTable constraintTable;
 	
 	private XMLWriter xmlWriter;
+	private JTextField attrNameTextField;
+	private JTextField attrDescTextField;
+	private JTextField constraintTextField;
+	private JComboBox entityTypeComboBox;
+	private JComboBox attrTypeComboBox;
+	
+	private HashMap<String, ArrayList<Map<String, String>>> extensionMap;
+	private ExtensionService extensionService;
 
 	/**
 	 * Launch the application.
@@ -75,126 +98,293 @@ public class Main {
 	 */
 	private void initialize() {
 		frmOpenhdsConfigurationUtility = new JFrame();
-		frmOpenhdsConfigurationUtility.setTitle("OpenHDS Configuration Utility");
-		frmOpenhdsConfigurationUtility.setBounds(100, 100, 542, 674);
+		frmOpenhdsConfigurationUtility.setTitle("OpenHDS Extension Configuration Utility");
+		frmOpenhdsConfigurationUtility.setBounds(100, 100, 418, 577);
 		frmOpenhdsConfigurationUtility.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOpenhdsConfigurationUtility.getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(60, 32, 283, 486);
+		tabbedPane.setBounds(10, 11, 383, 516);
 		frmOpenhdsConfigurationUtility.getContentPane().add(tabbedPane);
 		
-		panel = new JPanel();
-		tabbedPane.addTab("Constraint", null, panel, null);
-		panel.setLayout(null);
+		constraintPanel = new JPanel();
+		tabbedPane.addTab("Constraint", null, constraintPanel, null);
+		constraintPanel.setLayout(null);
+		
+		extensionPanel = new JPanel();
+		tabbedPane.addTab("Extension", null, extensionPanel, null);
+		extensionPanel.setLayout(null);
+								
+		initializeFields();
+		initializeBtns();
+		initializeTable();
+		initializeConstraintTree();
+		initializeExtensionTree();
+	}	
+	
+	public void initializeFields() {
 		
 		JLabel lblName = new JLabel("Name:");
-		lblName.setBounds(10, 11, 57, 14);
-		panel.add(lblName);
+		lblName.setBounds(36, 11, 57, 14);
+		constraintPanel.add(lblName);
 		
-		nameField = new JTextField();
-		nameField.setBounds(82, 8, 146, 20);
-		panel.add(nameField);
-		nameField.setColumns(10);
+		constraintNameField = new JTextField();
+		constraintNameField.setBounds(108, 8, 176, 20);
+		constraintPanel.add(constraintNameField);
+		constraintNameField.setColumns(10);
 		
 		JLabel lblDescription = new JLabel("Description:");
-		lblDescription.setBounds(10, 36, 72, 14);
-		panel.add(lblDescription);
+		lblDescription.setBounds(36, 36, 72, 14);
+		constraintPanel.add(lblDescription);
 		
-		descriptionField = new JTextField();
-		descriptionField.setBounds(82, 33, 146, 20);
-		panel.add(descriptionField);
-		descriptionField.setColumns(10);
+		constraintDescriptionField = new JTextField();
+		constraintDescriptionField.setBounds(108, 33, 176, 20);
+		constraintPanel.add(constraintDescriptionField);
+		constraintDescriptionField.setColumns(10);
 		
 		JLabel lblValue = new JLabel("Value:");
-		lblValue.setBounds(10, 61, 46, 14);
-		panel.add(lblValue);
+		lblValue.setBounds(36, 61, 46, 14);
+		constraintPanel.add(lblValue);
 		
-		valueField = new JTextField();
-		valueField.setBounds(82, 61, 146, 20);
-		panel.add(valueField);
-		valueField.setColumns(10);
+		constraintValueField = new JTextField();
+		constraintValueField.setBounds(108, 58, 176, 20);
+		constraintPanel.add(constraintValueField);
+		constraintValueField.setColumns(10);
 		
-		JButton btnAddValue = new JButton("Add Value");
-		btnAddValue.addActionListener(new ActionListener() {
+		JLabel lblEntityType = new JLabel("Entity Type:");
+		lblEntityType.setBounds(34, 11, 78, 14);
+		extensionPanel.add(lblEntityType);
+		
+		entityTypeComboBox = new JComboBox();
+		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "Social Group", "Visit"}));
+		entityTypeComboBox.setBounds(169, 8, 113, 20);
+		extensionPanel.add(entityTypeComboBox);
+		
+		JLabel lblAttributeType = new JLabel("Attribute Type:");
+		lblAttributeType.setBounds(34, 35, 78, 14);
+		extensionPanel.add(lblAttributeType);
+		
+		attrTypeComboBox = new JComboBox();
+		attrTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"String", "Boolean", "Integer", "Float"}));
+		attrTypeComboBox.setBounds(169, 32, 113, 20);
+		attrTypeComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JComboBox comboBox = (JComboBox)event.getSource();
+				if (comboBox.getSelectedIndex() != 0) {
+					constraintTextField.setText("");
+					constraintTextField.disable();
+				}
+				else {
+					constraintTextField.enable();
+				}
+			}
+			
+		});
+		extensionPanel.add(attrTypeComboBox);
+		
+		JLabel lblNewLabel = new JLabel("Attribute Name:");
+		lblNewLabel.setBounds(34, 60, 78, 14);
+		extensionPanel.add(lblNewLabel);
+		
+		attrNameTextField = new JTextField();
+		attrNameTextField.setBounds(169, 57, 165, 20);
+		extensionPanel.add(attrNameTextField);
+		attrNameTextField.setColumns(10);
+		
+		JLabel lblAttributeDescription = new JLabel("Attribute Description:");
+		lblAttributeDescription.setBounds(34, 85, 110, 14);
+		extensionPanel.add(lblAttributeDescription);
+		
+		attrDescTextField = new JTextField();
+		attrDescTextField.setBounds(169, 82, 165, 20);
+		extensionPanel.add(attrDescTextField);
+		attrDescTextField.setColumns(10);
+		
+		JLabel lblConstraint = new JLabel("Constraint:");
+		lblConstraint.setBounds(34, 110, 78, 14);
+		extensionPanel.add(lblConstraint);
+		
+		constraintTextField = new JTextField();
+		constraintTextField.setBounds(169, 107, 165, 20);
+		extensionPanel.add(constraintTextField);
+		constraintTextField.setColumns(10);
+	}
+	
+	public void initializeBtns() {
+		
+		JButton constraintAddValueBtn = new JButton("Add Value");
+		constraintAddValueBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
-				if (nameField.getText().length() > 0 && descriptionField.getText().length() > 0 && valueField.getText().length() > 0) {	
-					tableModel.insertRow(tableModel.getRowCount(), new Object[] {descriptionField.getText(), valueField.getText()});
-					descriptionField.setText("");
-					valueField.setText("");
-					nameField.disable();
+				if (constraintNameField.getText().length() > 0 && constraintDescriptionField.getText().length() > 0 && constraintValueField.getText().length() > 0) {	
+					tableModel.insertRow(tableModel.getRowCount(), new Object[] {constraintDescriptionField.getText(), constraintValueField.getText()});
+					constraintDescriptionField.setText("");
+					constraintValueField.setText("");
+					constraintNameField.disable();
 				}
 			}
 		});
-		btnAddValue.setBounds(10, 92, 81, 23);
-		panel.add(btnAddValue);
+		constraintAddValueBtn.setBounds(36, 92, 81, 23);
+		constraintPanel.add(constraintAddValueBtn);
 		
-		JButton btnClear = new JButton("Clear");
-		btnClear.addActionListener(new ActionListener() {
+		JButton constraintClearBtn = new JButton("Clear");
+		constraintClearBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				while (tableModel.getRowCount() > 0) {
 					tableModel.removeRow(0);
 				}
-				nameField.setText("");
-				descriptionField.setText("");
-				valueField.setText("");
-				nameField.enable();
+				constraintNameField.setText("");
+				constraintDescriptionField.setText("");
+				constraintValueField.setText("");
+				constraintNameField.enable();
 			}
 		});
-		btnClear.setBounds(171, 92, 57, 23);
-		panel.add(btnClear);
+		constraintClearBtn.setBounds(197, 92, 57, 23);
+		constraintPanel.add(constraintClearBtn);
 		
-		JButton btnCreate = new JButton("Create");
-		btnCreate.addActionListener(new ActionListener() {
+		JButton constraintDeleteBtn = new JButton("Delete");
+		constraintDeleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Map<String, String> map = new HashMap<String, String>();
+				
+				if (selectedConstraintNode != null) {
+					xmlWriter.removeConstraint(selectedConstraintNode.toString());
+					constraintTreeModel.removeNodeFromParent(selectedConstraintNode);
+					constraintTreeModel.reload();
+					selectedConstraintNode = null;
+				}
+			}
+		});
+		constraintDeleteBtn.setBounds(36, 456, 72, 23);
+		constraintPanel.add(constraintDeleteBtn);
+		
+		JButton constraintCreateBtn = new JButton("Create");
+		constraintCreateBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Map<String, String> map = new TreeMap<String, String>();
 				
 				for (int i = 0; i < tableModel.getRowCount(); i++) {
 					String key = tableModel.getValueAt(i, 0).toString();
 					String value = tableModel.getValueAt(i, 1).toString();
 					map.put(key, value);
 				}
-				xmlWriter.createConstraint(nameField.getText(), map);
+				xmlWriter.createConstraint(constraintNameField.getText(), map);
 								
-				DefaultMutableTreeNode category = new DefaultMutableTreeNode(nameField.getText());
-				top.add(category);
+				DefaultMutableTreeNode category = new DefaultMutableTreeNode(constraintNameField.getText());
+				constraintTop.add(category);
 	
 				List<String> keys = new ArrayList<String>();
 				keys.addAll(map.keySet());
 				
 				for (String key : keys) {
-					DefaultMutableTreeNode desc = new DefaultMutableTreeNode(map.get(key));
-					DefaultMutableTreeNode k = new DefaultMutableTreeNode(key);
+					DefaultMutableTreeNode desc = new DefaultMutableTreeNode(key);
+					DefaultMutableTreeNode k = new DefaultMutableTreeNode(map.get(key));
 					category.add(desc);	
 					desc.add(k);
 				}
-				treeModel.reload();
+				constraintTreeModel.reload();
 				
-				nameField.setText("");
-				descriptionField.setText("");
-				valueField.setText("");
-				nameField.enable();
+				constraintNameField.setText("");
+				constraintDescriptionField.setText("");
+				constraintValueField.setText("");
+				constraintNameField.enable();
 				while (tableModel.getRowCount() > 0) {
 					tableModel.removeRow(0);
 				}
 			}
 		});
-		btnCreate.setBounds(96, 92, 65, 23);
-		panel.add(btnCreate);
-								
-		JScrollPane treeScrollPane = new JScrollPane();
-		treeScrollPane.setBounds(10, 229, 254, 216);
-		panel.add(treeScrollPane);	
-
-		JTree tree = new JTree();		
-		top = new DefaultMutableTreeNode("Constraints");
+		constraintCreateBtn.setBounds(122, 92, 65, 23);
+		constraintPanel.add(constraintCreateBtn);
+		
+		JButton extensionCreateBtn = new JButton("Create");
+		extensionCreateBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String entity = entityTypeComboBox.getSelectedItem().toString();
+				String attributeName = attrNameTextField.getText();
+				String description = attrDescTextField.getText();
+				String type = attrTypeComboBox.getSelectedItem().toString();
+				String constraint = constraintTextField.getText();
+				
+				xmlWriter.createExtension(entity, attributeName, description, type, constraint);
+				
+				DefaultMutableTreeNode category = new DefaultMutableTreeNode(attributeName);
+				
+				for (int i = 0; i < extensionTreeModel.getChildCount(constraintTreeModel.getRoot()); i++) {
+					DefaultMutableTreeNode item = (DefaultMutableTreeNode) extensionTreeModel.getChild(extensionTreeModel.getRoot(), i);
+					
+					if (item.toString().equals(entity)) {
+						item.add(category);
+						break;
+					}
+				}
+				extensionTreeModel.reload();
+				
+				attrNameTextField.setText("");
+				attrDescTextField.setText("");
+				constraintTextField.setText("");
+				entityTypeComboBox.setSelectedIndex(0);
+				attrTypeComboBox.setSelectedIndex(0);
+			}
+		});
+		extensionCreateBtn.setBounds(34, 135, 65, 23);
+		extensionPanel.add(extensionCreateBtn);
+		
+		JButton extensionClearBtn = new JButton("Clear");
+		extensionClearBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attrNameTextField.setText("");
+				attrDescTextField.setText("");
+				constraintTextField.setText("");
+				entityTypeComboBox.setSelectedIndex(0);
+				attrTypeComboBox.setSelectedIndex(0);
+			}
+		});
+		extensionClearBtn.setBounds(109, 135, 57, 23);
+		extensionPanel.add(extensionClearBtn);
+		
+		JButton extensionDeleteBtn = new JButton("Delete");
+		extensionDeleteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (selectedExtensionNode != null) {
+					xmlWriter.removeExtension(selectedExtensionNode.getParent().toString(), selectedExtensionNode.toString());
+					extensionTreeModel.removeNodeFromParent(selectedExtensionNode);
+					extensionTreeModel.reload();
+					selectedExtensionNode = null;
+					
+					attrNameTextField.setText("");
+					attrDescTextField.setText("");
+					constraintTextField.setText("");
+					entityTypeComboBox.setSelectedIndex(0);
+					attrTypeComboBox.setSelectedIndex(0);
+				}
+			}
+		});
+		extensionDeleteBtn.setBounds(34, 454, 65, 23);
+		extensionPanel.add(extensionDeleteBtn);
+	}
+	
+	public void initializeTable() {
+		
+		JScrollPane constraintTableScrollPane = new JScrollPane();
+		constraintTableScrollPane.setBounds(36, 126, 303, 92);
+		constraintPanel.add(constraintTableScrollPane);
+		
+		tableModel = new DefaultTableModel();
+		tableModel.addColumn("Description");
+		tableModel.addColumn("Value");
+		constraintTable = new JTable(tableModel);
+		constraintTableScrollPane.setViewportView(constraintTable);
+	}
+	
+	public void initializeConstraintTree() {
+		
+		constraintTop = new DefaultMutableTreeNode("Constraints");
 		
 		ValueConstraintService valueConstraintService = new ValueConstraintService();
 		
 		List<String> names = valueConstraintService.getAllConstraintNames();
 		for (String name : names) {
 			DefaultMutableTreeNode category = new DefaultMutableTreeNode(name);
-			top.add(category);
+			constraintTop.add(category);
 			
 			Map<String, String> map = valueConstraintService.getMapForConstraint(name);
 			List<String> keys = new ArrayList<String>();
@@ -207,18 +397,110 @@ public class Main {
 				desc.add(k);
 			}
 		}
-		treeModel = new DefaultTreeModel(top);
-		tree.setModel(treeModel);	
-		treeScrollPane.setColumnHeaderView(tree);
-						
-		JScrollPane tableScrollPane = new JScrollPane();
-		tableScrollPane.setBounds(10, 126, 254, 92);
-		panel.add(tableScrollPane);
+		constraintTreeModel = new DefaultTreeModel(constraintTop);
 		
-		tableModel = new DefaultTableModel();
-		tableModel.addColumn("Description");
-		tableModel.addColumn("Value");
-		table = new JTable(tableModel);
-		tableScrollPane.setViewportView(table);
-	}	
+		JScrollPane constraintTreeScrollPane = new JScrollPane();
+		constraintTreeScrollPane.setBounds(36, 229, 303, 216);
+		constraintPanel.add(constraintTreeScrollPane);	
+		
+		constraintTree = new JTree();
+		constraintTreeScrollPane.setViewportView(constraintTree);
+		constraintTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		constraintTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) constraintTree.getLastSelectedPathComponent();
+				selectedConstraintNode = null;
+				if (node == null)
+					return;
+				
+				Object nodeInfo = node.getUserObject();
+				
+				int children = constraintTreeModel.getChildCount(constraintTreeModel.getRoot());
+				for (int i = 0; i < children; i++) {
+					Object item = constraintTreeModel.getChild(constraintTreeModel.getRoot(), i);
+					
+					if (nodeInfo.toString().equals(item.toString())) 
+						selectedConstraintNode = node;	
+				}
+			}
+		});
+		constraintTree.setModel(constraintTreeModel);
+	}
+	
+	public void initializeExtensionTree() {
+		
+		extensionTop = new DefaultMutableTreeNode("Extensions");
+		
+		JScrollPane extensionScrollPane = new JScrollPane();
+		extensionScrollPane.setBounds(34, 169, 300, 276);
+		extensionPanel.add(extensionScrollPane);
+		
+		extensionService = new ExtensionService();
+		extensionMap = extensionService.getMapForExtensions();
+		List<String> keys = new ArrayList<String>();
+		keys.addAll(extensionMap.keySet());
+		
+		for (String name : keys) {
+			DefaultMutableTreeNode category = new DefaultMutableTreeNode(name);
+			extensionTop.add(category);
+			
+			 ArrayList<Map<String, String>> list = extensionMap.get(name);
+			 
+			 for (int i = 0; i < list.size(); i++) {
+				 
+				 Map<String, String> attrs = list.get(i); 
+				 String nameAttr = attrs.get("name");
+				 DefaultMutableTreeNode nameAttrNode = new DefaultMutableTreeNode(nameAttr);
+				 category.add(nameAttrNode);
+			 }
+		}
+		extensionTreeModel = new DefaultTreeModel(extensionTop);
+			
+		extensionTree = new JTree();
+		extensionScrollPane.setViewportView(extensionTree);
+		extensionTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		extensionTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				
+				extensionService = new ExtensionService();
+				extensionMap = extensionService.getMapForExtensions();
+				List<String> keys = new ArrayList<String>();
+				keys.addAll(extensionMap.keySet());
+				
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) extensionTree.getLastSelectedPathComponent();
+				selectedExtensionNode = null;
+				if (node == null)
+					return;
+				
+				Object nodeInfo = node.getUserObject();
+						
+				if (extensionTreeModel.isLeaf(node) && !node.getParent().toString().equals(extensionTreeModel.getRoot().toString())) {
+					selectedExtensionNode = node;	
+					
+					String entityType = node.getParent().toString();
+					ArrayList<Map<String, String>> list = extensionMap.get(entityType);
+					
+					for (int i = 0; i < list.size(); i++) {
+						
+						Map<String, String> attrs = list.get(i);
+						if (attrs.get("name").equals(nodeInfo.toString())) {
+							attrNameTextField.setText(nodeInfo.toString());
+							attrDescTextField.setText(attrs.get("description"));
+							constraintTextField.setText(attrs.get("constraint"));
+							entityTypeComboBox.setSelectedItem(entityType);
+							attrTypeComboBox.setSelectedItem(attrs.get("type"));
+						}
+					}	
+				}
+				else {
+					attrNameTextField.setText("");
+					attrDescTextField.setText("");
+					constraintTextField.setText("");
+					entityTypeComboBox.setSelectedIndex(0);
+					attrTypeComboBox.setSelectedIndex(0);
+				}
+			}
+		});
+		extensionTree.setModel(extensionTreeModel);
+	}
 }
