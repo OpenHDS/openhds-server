@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -156,7 +159,7 @@ public class Main {
 		extensionPanel.add(lblEntityType);
 		
 		entityTypeComboBox = new JComboBox();
-		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "Social Group", "Visit"}));
+		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "SocialGroup", "Visit"}));
 		entityTypeComboBox.setBounds(169, 8, 113, 20);
 		extensionPanel.add(entityTypeComboBox);
 		
@@ -298,31 +301,45 @@ public class Main {
 		extensionCreateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				boolean error = false;
+				ValueConstraintService valueConstraintService = new ValueConstraintService();
+				
 				String entity = entityTypeComboBox.getSelectedItem().toString();
 				String attributeName = attrNameTextField.getText();
 				String description = attrDescTextField.getText();
 				String type = attrTypeComboBox.getSelectedItem().toString();
 				String constraint = constraintTextField.getText();
 				
-				xmlWriter.createExtension(entity, attributeName, description, type, constraint);
-				
-				DefaultMutableTreeNode category = new DefaultMutableTreeNode(attributeName);
-				
-				for (int i = 0; i < extensionTreeModel.getChildCount(constraintTreeModel.getRoot()); i++) {
-					DefaultMutableTreeNode item = (DefaultMutableTreeNode) extensionTreeModel.getChild(extensionTreeModel.getRoot(), i);
+				if (type.equals("String") && !constraint.equals("none")) {
+					List<String> names = valueConstraintService.getAllConstraintNames();
 					
-					if (item.toString().equals(entity)) {
-						item.add(category);
-						break;
+					if (!names.contains(constraint)) {
+						JOptionPane.showMessageDialog(null, "The constraint entered is not valid.");
+						error = true;
 					}
 				}
-				extensionTreeModel.reload();
 				
-				attrNameTextField.setText("");
-				attrDescTextField.setText("");
-				constraintTextField.setText("");
-				entityTypeComboBox.setSelectedIndex(0);
-				attrTypeComboBox.setSelectedIndex(0);
+				if (error == false) {
+					xmlWriter.createExtension(entity, attributeName, description, type, constraint);
+					
+					DefaultMutableTreeNode category = new DefaultMutableTreeNode(attributeName);
+					
+					for (int i = 0; i < extensionTreeModel.getChildCount(constraintTreeModel.getRoot()); i++) {
+						DefaultMutableTreeNode item = (DefaultMutableTreeNode) extensionTreeModel.getChild(extensionTreeModel.getRoot(), i);
+						
+						if (item.toString().equals(entity)) {
+							item.add(category);
+							break;
+						}
+					}
+					extensionTreeModel.reload();
+					
+					attrNameTextField.setText("");
+					attrDescTextField.setText("");
+					constraintTextField.setText("");
+					entityTypeComboBox.setSelectedIndex(0);
+					attrTypeComboBox.setSelectedIndex(0);
+				}
 			}
 		});
 		extensionCreateBtn.setBounds(34, 135, 65, 23);

@@ -12,7 +12,7 @@
   <groupId>org.openhds</groupId>
   <artifactId>configuration</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>configuration</name>
+  <name>OpenHDS Extension Configuration GUI</name>
   <url>http://maven.apache.org</url>
   
   <properties>
