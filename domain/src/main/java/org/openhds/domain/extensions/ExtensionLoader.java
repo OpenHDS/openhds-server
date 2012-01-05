@@ -154,7 +154,7 @@ public class ExtensionLoader extends AppContextAware {
 			listAttributes.put(name, attrMap);		
 		}
 		// pass this on to be handled by codemodel
-		modifyCode(stream, listAttributes);
+		modifyCode(stream, listAttributes, entity);
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public class ExtensionLoader extends AppContextAware {
 	 * @throws CannotCompileException
 	 * @throws NotFoundException 
 	 */
-	public static void modifyCode(InputStream stream, Map<String, Map<String, String>> map) {
+	public static void modifyCode(InputStream stream, Map<String, Map<String, String>> map, String entityName) {
 				
 		try {
 			
@@ -180,6 +180,13 @@ public class ExtensionLoader extends AppContextAware {
 			JDefinedClass jc = null;
 				
 			Set<String> keys = map.keySet();
+			
+			if (keys.size() == 0) {
+				if (entityName.equals("Location")) {
+					jc = jp._class(entityName);
+					locationTemplateBuilder.buildLocationTemplate(jc);
+				}
+			}
 			
 			Iterator<String> keysItr = keys.iterator();
 	
