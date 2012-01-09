@@ -163,16 +163,5 @@
 		<pattern value="/codes-config" />
 		<view-id>/codes-config/setup.xhtml</view-id> 
 	</url-mapping>
-	
-	<url-mapping id="extensionConfiguration" >
-		<pattern value="/extension-config" />
-		<view-id>/extension-config/setup.xhtml</view-id> 
-	</url-mapping>
-	
-	<url-mapping id="constraintConfiguration" >
-		<pattern value="/constraint-config" />
-		<view-id>/constraint-config/setup.xhtml</view-id> 
-		<action onPostback="false">#{extensionConstraintConfig.setup}</action>
-	</url-mapping>
 		
 </pretty-config>
