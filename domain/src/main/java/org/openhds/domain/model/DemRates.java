@@ -37,7 +37,6 @@ public class DemRates implements Serializable {
     @Description(description="Event type for this Demographic Rate.")
     String event;
     
-    @ExtensionConstraint(constraint="demRatesConstraint", message="Invalid Value for denominator", allowNull=false)
     @Description(description="Denominator for this Demographic Rate (PDO or Midpoint)")
     String denominator;
 
