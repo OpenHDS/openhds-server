@@ -12,6 +12,7 @@
 		<property name="connection.password">password</property>		
 
 		<mapping class="org.openhds.domain.model.Death"/>
+		<mapping class="org.openhds.domain.model.DemRates"/>
 		<mapping class="org.openhds.domain.model.FieldWorker"/>
 		<mapping class="org.openhds.domain.model.Individual"/>
 		<mapping class="org.openhds.domain.model.InMigration"/>

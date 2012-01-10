@@ -21,7 +21,7 @@
 		<view-id>/death/detail.xhtml</view-id> 
 		<action onPostback="false">#{deathCrud.detailSetup}</action>
 	</url-mapping>
-	
+		
 	<url-mapping id="membershipDetail" >
 		<pattern value="/amendment/membership/details/#{itemId}" />
 		<view-id>/membership/detail.xhtml</view-id> 

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://openfaces.org/">
+
+    <head>
+    </head>
+    
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Create Demographic Rates</ui:define>
+		
+			<ui:param name="crud" value="#{demRatesCrud}" />
+        
+            <ui:define name="listing">
+                <ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>Demographic Rates Calculation By Subsets of Individuals and Locations</h1>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form id="form">   
+                	  <h:panelGrid columns="4">
+                	  
+               				<h:outputText value="Start Date of Analysis (#{siteProperties.dateFormat}):" />
+               				<h:outputText />
+               				<o:dateChooser id="startDate" value="#{demRatesCrud.startDate}" pattern="#{siteProperties.dateFormat}" />
+               				<h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+               			               				
+               				<h:outputText value="End Date of Analysis (#{siteProperties.dateFormat}):" />
+               				<h:outputText />
+               				<o:dateChooser id="endDate" value="#{demRatesCrud.endDate}" pattern="#{siteProperties.dateFormat}" />
+               				<h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+               			               				
+               				<h:outputText value="Event Rate to Calculate:" />
+               				<h:outputText />              				 				
+               				<o:selectOneRadio id="radioList" value="#{demRatesCrud.item.event}" >
+								<f:selectItem itemValue="Fertility" itemLabel="Fertility"/>
+							  	<f:selectItem itemValue="Mortality" itemLabel="Mortality"/>
+							  	<f:selectItem itemValue="Marital" itemLabel="Marital"/>
+							  	<f:selectItem itemValue="OutMigration" itemLabel="OutMigration"/>
+							  	<f:selectItem itemValue="InMigration" itemLabel="InMigration"/>
+							  	<f:selectItem itemValue="Population" itemLabel="Population"/>
+							</o:selectOneRadio>
+							<h:message for="radioList" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+							
+							<h:outputText value="Denominator Type:" />
+               				<img class="clickable" onclick="O$('popupWindowForDemRates').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+               				<h:inputText id="denominator" value="#{demRatesCrud.item.denominator}" converter="#{defaultConverter}" />
+               				<h:message for="denominator" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+                		</h:panelGrid>	
+                	<h:commandButton action="#{demRatesCrud.edit}" value="#{msg.lblSave}">
+                		  <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{demRatesCrud.item.uuid}" />
+                	</h:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

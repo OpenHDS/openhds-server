@@ -14,6 +14,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -23,6 +25,7 @@ import org.openhds.domain.constraint.CheckIndividualParentAge;
 import org.openhds.domain.constraint.CheckMotherFatherNotIndividual;
 import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.extensions.ExtensionConstraint;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="An Individual represents one who is a part of the study. " +
 		"Each Individual is identified by a uniquely generated external identifier which " +
@@ -152,7 +155,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
         this.gender = gender;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getDob() {
         return dob;
     }
@@ -256,23 +259,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     public String toString() {
         return firstName + " " + lastName;
     }
-    
-    // get total Person Days of Observation
-	public Long getPD(Calendar start, Calendar end){
-    	Long pd = 0L;
-    	if (this.getAllResidencies().size() > 0) {
-			for (Residency r : this.getAllResidencies()) {
-				try {
-					pd += r.findDuration(start, end);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return pd;
-    }
-    
+        
 	@Override
 	public int hashCode() {
 		final int prime = 31;

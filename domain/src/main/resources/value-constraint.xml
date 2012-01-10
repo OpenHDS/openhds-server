@@ -42,4 +42,8 @@
 		<value description="Fountain">2</value>
 		<value description="Bore Hole">3</value>
 	</constraint>
+	<constraint id="demRatesConstraint">
+		<value description="Person Days Observed">1</value>
+		<value description="Population at Mid-point">2</value>
+	</constraint>
 </value-constraints>

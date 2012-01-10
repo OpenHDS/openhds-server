@@ -33,6 +33,7 @@
 				<value>org.openhds.domain.model.AuditableEntity</value>
 				<value>org.openhds.domain.model.ClassExtension</value>
 				<value>org.openhds.domain.model.Death</value>
+				<value>org.openhds.domain.model.DemRates</value>
 				<value>org.openhds.domain.model.Extension</value>
 				<value>org.openhds.domain.model.FieldWorker</value>
 				<value>org.openhds.domain.model.Individual</value>
@@ -134,6 +135,10 @@
     
     <bean id="deathDao" parent="baseDao">
         <constructor-arg value="org.openhds.domain.model.Death" />
+    </bean>
+    
+     <bean id="demRatesDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.DemRates" />
     </bean>
  
     <bean id="extensionDao" parent="baseDao">
