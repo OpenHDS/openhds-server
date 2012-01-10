@@ -105,6 +105,14 @@
 	    </property>
     </bean>
     
+    <bean id="demRatesService" parent="baseServiceTransactionBean">
+    	<property name="target">
+		    <bean class="org.openhds.controller.service.impl.DemRatesServiceImpl">
+		        <constructor-arg ref="genericDao" />
+		    </bean>
+	    </property>
+    </bean>
+    
     <bean id="extensionService" parent="baseServiceTransactionBean">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.ExtensionServiceImpl">
