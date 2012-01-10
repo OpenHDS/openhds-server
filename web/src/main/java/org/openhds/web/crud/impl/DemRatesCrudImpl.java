@@ -18,13 +18,13 @@ public class DemRatesCrudImpl extends EntityCrudImpl<DemRates, String> {
 	public DemRatesCrudImpl(Class<DemRates> entityClass) {
         super(entityClass);
     }
-	
+		
 	public Date getStartDate() {
 	    	
-		if (entityItem.getStartDate() == null)
+		if (getItem().getStartDate() == null)
 			return new Date();
     	
-    	return entityItem.getStartDate().getTime();
+    	return getItem().getStartDate().getTime();
 	}
 
 	public void setStartDate(Date startDate) throws ParseException {
@@ -36,10 +36,10 @@ public class DemRatesCrudImpl extends EntityCrudImpl<DemRates, String> {
 	
 	public Date getEndDate() {
     	
-		if (entityItem.getEndDate() == null)
+		if (getItem().getEndDate() == null)
 			return new Date();
     	
-    	return entityItem.getEndDate().getTime();
+    	return getItem().getEndDate().getTime();
 	}
 
 	public void setEndDate(Date endDate) throws ParseException {
