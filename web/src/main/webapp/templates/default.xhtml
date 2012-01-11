@@ -153,21 +153,6 @@
 				</ul>
 	    	</div>
 	</o:popupLayer>	
-	<o:popupLayer id="popupWindowForDemRates"
-	              width="30%"
-	              height="30%">
-			<div style="position:absolute;right:1%;top:1%">
-				<input type="button" value="Close [X]" onclick="O$('popupWindowForDemRates').hide();"/>
-			</div>
-			<div style="overflow:auto;padding:.5em;">
-				<h3>#{msg.popupValidValues}:</h3>
-				<ul>
-					<c:forEach items="#{valueExtensionIterator.demRatesConstraint}" var="dv">
-						<li>#{dv.key} - #{dv.value}</li>
-					</c:forEach>
-				</ul>
-	    	</div>
-	</o:popupLayer>	
 	<o:popupLayer id="popupWindowForMembershipStartType"
         width="30%"
         height="30%">

@@ -1,13 +1,11 @@
 package org.openhds.report.service.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.DemRates;
 import org.openhds.domain.service.SitePropertiesService;
@@ -19,17 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class DemographicRatesServiceImpl implements DemographicRatesService {
+public class DemographicRatesController implements DemographicRatesService {
 	
 	GenericDao genericDao;
 	SitePropertiesService siteProperties;
+	DemRatesService demRatesService;
 	CalendarUtil calendarUtil;
 	
 	@Autowired
-	public DemographicRatesServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties, CalendarUtil calendarUtil) {
+	public DemographicRatesController(GenericDao genericDao, SitePropertiesService siteProperties, 
+			CalendarUtil calendarUtil, DemRatesService demRatesService) {
 		this.genericDao = genericDao;
 		this.siteProperties = siteProperties;
 		this.calendarUtil = calendarUtil;
+		this.demRatesService = demRatesService;
 	}
 	
 	@RequestMapping(value = { "/inmigration.report", "/population.report", "/mortality.report", "/inmigration.report", 
@@ -63,7 +64,7 @@ public class DemographicRatesServiceImpl implements DemographicRatesService {
 		modelMap.put("locations", "All Locations");
 		modelMap.put("individuals", "All Individuals");
 				
-		//List data = new ArrayList<ReportRecord>(getReportRecords(isMidPoint, firstDate, lastDate, eventType));
+		
 		
 		
 		

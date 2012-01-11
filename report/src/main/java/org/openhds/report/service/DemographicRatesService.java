@@ -5,6 +5,5 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface DemographicRatesService {
 	
-	public ModelAndView getPopulationRates(HttpServletRequest request);
-
+	ModelAndView getPopulationRates(HttpServletRequest request); 
 }
