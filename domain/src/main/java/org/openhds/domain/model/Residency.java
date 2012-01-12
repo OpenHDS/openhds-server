@@ -98,40 +98,4 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
 	public void setEndType(String endType) {
 		this.endType = endType;
 	}
-    
-    public Long findDuration(Calendar startCalculateDate, Calendar endCalculateDate) /* throws Exception */ {
-    	Calendar cohortStart, cohortEnd;
-    	Long d = 0L;
-    	if (endCalculateDate.getTimeInMillis() > startCalculateDate.getTimeInMillis() ) {
-			
-    		if(this.startDate == null || (this.endDate != null && this.endDate.before(startCalculateDate)))
-			{ return d;
-			}
-						
-			// if there's a start date (of course there should be), then set the cohortStart
-			// if startCalculateDate before the residency startDate, set the residency start date
-			
-			else if (startCalculateDate.getTimeInMillis() < this.startDate.getTimeInMillis()){
-				cohortStart = this.startDate;}
-			else {
-				cohortStart = startCalculateDate;
-			}
-			
-			
-			if(endDate == null || (endDate.getTimeInMillis() > endCalculateDate.getTimeInMillis())){
-				cohortEnd = endCalculateDate;}
-			else{
-				cohortEnd = this.endDate;
-			}
-			
-			// 86400000 millis = 1 day
-			d = ((cohortEnd.getTimeInMillis() - cohortStart.getTimeInMillis())/86400000);
-		
-    	}else{
-    		// throw new Exception("startDate is after endDate");
-    		return null;
-    	}
-    	
-		return d;
-    }
 }
