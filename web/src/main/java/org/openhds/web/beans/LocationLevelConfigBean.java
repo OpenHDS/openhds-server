@@ -39,7 +39,8 @@ public class LocationLevelConfigBean {
 		Properties prop = null;
 		
 		try {
-			fis = new FileInputStream(new ClassPathResource("location-levels.properties").getFile());
+			fis = new FileInputStream(
+					new ClassPathResource("location-levels.properties").getFile());
 			if (fis != null) {
 				prop = new Properties();
 				prop.load(fis);
@@ -55,7 +56,8 @@ public class LocationLevelConfigBean {
 	public void writePropertyFile(Properties props) {
 		FileOutputStream fos = null;
 		try {
-			fos = new FileOutputStream("src/main/resources/location-levels.properties");
+			fos = new FileOutputStream(
+					new ClassPathResource("location-levels.properties").getFile());
 			props.store(fos, "Location Levels Configuration updated");
 		} catch (Exception e) {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());

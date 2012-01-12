@@ -102,7 +102,8 @@ public class SitePropertiesConfigBean {
 		Properties prop = null;
 		
 		try {
-			fis = new FileInputStream(new ClassPathResource("codes.properties").getFile());
+			fis = new FileInputStream(
+					new ClassPathResource("codes.properties").getFile());
 			if (fis != null) {
 				prop = new Properties();
 				prop.load(fis);
@@ -117,8 +118,9 @@ public class SitePropertiesConfigBean {
 	
 	public void writePropertyFile(Properties props) {
 		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("src/main/resources/codes.properties");
+		try {	
+			fos = new FileOutputStream(
+					new ClassPathResource("codes.properties").getFile());
 			props.store(fos, "Code Configuration updated");
 		} catch (Exception e) {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());

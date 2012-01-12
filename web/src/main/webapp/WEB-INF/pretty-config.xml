@@ -150,17 +150,17 @@
 	</url-mapping>	
 	
 	<url-mapping id="databaseConfiguration" >
-		<pattern value="/database-config" />
+		<pattern value="/database-config/" />
 		<view-id>/database-config/setup.xhtml</view-id> 
 	</url-mapping>
 	
 	<url-mapping id="locationLevelsConfiguration" >
-		<pattern value="/location-levels" />
+		<pattern value="/location-levels/" />
 		<view-id>/location-levels/setup.xhtml</view-id> 
 	</url-mapping>
 	
 	<url-mapping id="codesConfiguration" >
-		<pattern value="/codes-config" />
+		<pattern value="/codes-config/" />
 		<view-id>/codes-config/setup.xhtml</view-id> 
 	</url-mapping>
 		

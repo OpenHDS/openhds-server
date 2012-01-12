@@ -3,7 +3,7 @@ package org.openhds.web.beans;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.sql.DriverManager;
 import java.util.Properties;
 import javax.faces.component.UIInput;
@@ -89,7 +89,8 @@ public class DatabaseConfigBean {
 		Properties prop = null;
 		
 		try {
-			fis = new FileInputStream(new ClassPathResource("database.properties").getFile());
+			fis = new FileInputStream(
+					new ClassPathResource("database.properties").getFile());
 			if (fis != null) {
 				prop = new Properties();
 				prop.load(fis);
@@ -104,8 +105,9 @@ public class DatabaseConfigBean {
 	
 	public void writePropertyFile(Properties props) {
 		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("src/main/resources/database.properties");
+		try {	
+			fos = new FileOutputStream(
+					new ClassPathResource("database.properties").getFile());
 			props.store(fos, "Database Configuration updated");
 		} catch (Exception e) {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
@@ -122,9 +124,12 @@ public class DatabaseConfigBean {
 				Connection conn = (Connection) DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 
 				ScriptRunner runner = new ScriptRunner(conn, false, true);
-				runner.runScript(new BufferedReader(new FileReader("src/main/resources/openhds-schema.sql")));
-				runner.runScript(new BufferedReader(new FileReader("src/main/resources/openhds-required-data.sql")));
-				
+				runner.runScript(new BufferedReader(
+					      new InputStreamReader(
+					      new ClassPathResource("openhds-schema.sql").getInputStream())));
+				runner.runScript(new BufferedReader(
+						  new InputStreamReader(
+						  new ClassPathResource("openhds-required-data.sql").getInputStream())));
 			} 
 			catch (Exception e) {
 				jsfService.addMessage("Error executing script. Exception : " + e.getMessage());

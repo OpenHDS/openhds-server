@@ -19,7 +19,7 @@
         	<list>
             	<value>classpath:database.properties</value>
             	<value>classpath:location-levels.properties</value>
-            	  <value>classpath:codes.properties</value>
+            	<value>classpath:codes.properties</value>
             </list>
         </property>
     </bean>	
@@ -563,15 +563,6 @@
 		<property name="dbPassword" value="${dbPass}"/>
 		<property name="dbDialect" value="${hibernateDialect}"/>
 		<property name="jsfService" ref="jsfService" />
-	</bean>
-	
-	<bean id="extensionConfig" class="org.openhds.web.beans.ExtensionConfigBean">
-		<property name="jsfService" ref="jsfService" />
-	</bean>
-	
-	<bean id="extensionConstraintConfig" class="org.openhds.web.beans.ConstraintConfigBean">
-		<constructor-arg ref="jsfService" />
-		<constructor-arg ref="valueConstraintService" />
 	</bean>
 	
 	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">
