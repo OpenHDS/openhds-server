@@ -466,6 +466,31 @@ public class CoreWebServiceImpl {
     }
 
     @GET
+    @Path("/hierarchy")
+    public ReferencedEntity getHierarchyIds() {
+       
+    	ReferencedEntity refEntity = new ReferencedEntity();
+        List<LocationHierarchy> hierarchyList = genericDao.findAll(LocationHierarchy.class, false);
+           
+        int count = 0;
+        for (LocationHierarchy item : hierarchyList) {
+            if (!item.getExtId().equals("HIERARCHY_ROOT")) {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", item.getName());
+               
+                ReferencedBaseEntity entity = new ReferencedBaseEntity();
+                entity.setExtId(item.getExtId());
+                entity.setType("hierarchy");
+                entity.setParams(params);
+                refEntity.getEntity().add(entity);
+                count++;
+            }
+        }
+        refEntity.setCount(count);
+        return refEntity;
+    }    
+    
+    @GET
     @Path("entityIds/{locationHierarchy}")
     public ReferencedEntity getIdsByLocationHierarchyLevel(@PathParam("locationHierarchy") String locationHierarchy) {
        
