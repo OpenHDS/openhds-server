@@ -3,12 +3,14 @@ package org.openhds.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * A class that identifies any of the core entities by it's id. 
  * This is used in web service calls to retrieve a list
  * of entities by their ids.
  */
-
+@XmlRootElement(name = "entities")
 public class ReferencedEntity {
 	
 	int count;
