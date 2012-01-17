@@ -18,5 +18,8 @@ public interface DemRatesService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<Residency> getResidenciesAtMidPoint(Calendar midpoint);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	long daysBetween(Calendar startDate, Calendar endDate); 
 
 }

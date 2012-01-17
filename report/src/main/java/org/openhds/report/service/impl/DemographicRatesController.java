@@ -2,14 +2,17 @@ package org.openhds.report.service.impl;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.DemRates;
+import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.report.service.CalculationService;
 import org.openhds.report.service.DemographicRatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,15 +25,17 @@ public class DemographicRatesController implements DemographicRatesService {
 	GenericDao genericDao;
 	SitePropertiesService siteProperties;
 	DemRatesService demRatesService;
+	CalculationService calculationService;
 	CalendarUtil calendarUtil;
-	
+		
 	@Autowired
 	public DemographicRatesController(GenericDao genericDao, SitePropertiesService siteProperties, 
-			CalendarUtil calendarUtil, DemRatesService demRatesService) {
+			CalendarUtil calendarUtil, DemRatesService demRatesService, CalculationService calculationService) {
 		this.genericDao = genericDao;
 		this.siteProperties = siteProperties;
 		this.calendarUtil = calendarUtil;
 		this.demRatesService = demRatesService;
+		this.calculationService = calculationService;
 	}
 	
 	@RequestMapping(value = { "/inmigration.report", "/population.report", "/mortality.report", "/inmigration.report", 
@@ -63,13 +68,22 @@ public class DemographicRatesController implements DemographicRatesService {
 		modelMap.put("lastDate", calendarUtil.formatDate(endDate));
 		modelMap.put("locations", "All Locations");
 		modelMap.put("individuals", "All Individuals");
-				
-		
-		
-		
+			
+		if (denomType.equals("Population at Midpoint")) {
+			Calendar midpoint = demRatesService.getMidPointDate(startDate, endDate);
+			List<Residency> residencies = demRatesService.getResidenciesAtMidPoint(midpoint);
+			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
+		}
 		
 		return null;
 	}
 	
-
+	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {
+		
+		for (Residency residency : residencies) {		
+			Individual individual = residency.getIndividual();
+			long age = (long) (demRatesService.daysBetween(individual.getDob(), midpoint) / 365.25);
+			calculationService.setAgeGroups(age, individual);
+		}
+	}
 }
