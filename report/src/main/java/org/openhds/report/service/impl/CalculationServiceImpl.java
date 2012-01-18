@@ -73,150 +73,342 @@ public class CalculationServiceImpl implements CalculationService {
 		ageGrp24 = new ReportRecordBean();
 	}
 	
-	public void setAgeGroups(long age, Individual individual) {
+	public void setAgeGroups(long age, Individual individual, boolean denominator) {
 		if (age < 1) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp1.addMale();
-			else
-				ageGrp1.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp1.addDenominatorMale();
+				else
+					ageGrp1.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp1.addDenominatorFemale();
+				else
+					ageGrp1.addNumeratorFemale();
+			}
 		}
 		else if (age >= 1 && age < 2) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp2.addMale();
-			else
-				ageGrp2.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp2.addDenominatorMale();
+				else
+					ageGrp2.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp2.addDenominatorFemale();
+				else
+					ageGrp2.addNumeratorFemale();
+			}
 		}
 		else if (age >= 2 && age < 3) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp3.addMale();
-			else
-				ageGrp3.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp3.addDenominatorMale();
+				else
+					ageGrp3.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp3.addDenominatorFemale();
+				else
+					ageGrp3.addNumeratorFemale();
+			}
 		}
 		else if (age >= 3 && age < 4) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp4.addMale();
-			else
-				ageGrp4.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp4.addDenominatorMale();
+				else
+					ageGrp4.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp4.addDenominatorFemale();
+				else
+					ageGrp4.addNumeratorFemale();
+			}
 		}
 		else if (age >= 4 && age < 5) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp5.addMale();
-			else
-				ageGrp5.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp5.addDenominatorMale();
+				else
+					ageGrp5.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp5.addDenominatorFemale();
+				else
+					ageGrp5.addNumeratorFemale();
+			}
 		}
 		else if (age >= 5 && age < 10) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp6.addMale();
-			else
-				ageGrp6.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp6.addDenominatorMale();
+				else
+					ageGrp6.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp6.addDenominatorFemale();
+				else
+					ageGrp6.addNumeratorFemale();
+			}
 		}
 		else if (age >= 10 && age < 15) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp7.addMale();
-			else
-				ageGrp7.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp7.addDenominatorMale();
+				else
+					ageGrp7.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp7.addDenominatorFemale();
+				else
+					ageGrp7.addNumeratorFemale();
+			}
 		}
 		else if (age >= 15 && age < 20) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp8.addMale();
-			else
-				ageGrp8.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp8.addDenominatorMale();
+				else
+					ageGrp8.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp8.addDenominatorFemale();
+				else
+					ageGrp8.addNumeratorFemale();
+			}
 		}
 		else if (age >= 20 && age < 25) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp9.addMale();
-			else
-				ageGrp9.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp9.addDenominatorMale();
+				else
+					ageGrp9.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp9.addDenominatorFemale();
+				else
+					ageGrp9.addNumeratorFemale();
+			}
 		}
 		else if (age >= 25 && age < 30) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp10.addMale();
-			else
-				ageGrp10.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp10.addDenominatorMale();
+				else
+					ageGrp10.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp10.addDenominatorFemale();
+				else
+					ageGrp10.addNumeratorFemale();
+			}
 		}
 		else if (age >= 30 && age < 35) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp11.addMale();
-			else
-				ageGrp11.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp11.addDenominatorMale();
+				else
+					ageGrp11.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp11.addDenominatorFemale();
+				else
+					ageGrp11.addNumeratorFemale();
+			}
 		}
 		else if (age >= 35 && age < 40) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp12.addMale();
-			else
-				ageGrp12.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp12.addDenominatorMale();
+				else
+					ageGrp12.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp12.addDenominatorFemale();
+				else
+					ageGrp12.addNumeratorFemale();
+			}
 		}
 		else if (age >= 40 && age < 45) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp13.addMale();
-			else
-				ageGrp13.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp13.addDenominatorMale();
+				else
+					ageGrp13.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp13.addDenominatorFemale();
+				else
+					ageGrp13.addNumeratorFemale();
+			}
 		}
 		else if (age >= 45 && age < 50) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp14.addMale();
-			else
-				ageGrp14.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp14.addDenominatorMale();
+				else
+					ageGrp14.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp14.addDenominatorFemale();
+				else
+					ageGrp14.addNumeratorFemale();
+			}
 		}
 		else if (age >= 50 && age < 55) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp15.addMale();
-			else
-				ageGrp15.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp15.addDenominatorMale();
+				else
+					ageGrp15.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp15.addDenominatorFemale();
+				else
+					ageGrp15.addNumeratorFemale();
+			}
 		}
 		else if (age >= 55 && age < 60) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp16.addMale();
-			else
-				ageGrp16.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp16.addDenominatorMale();
+				else
+					ageGrp16.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp16.addDenominatorFemale();
+				else
+					ageGrp16.addNumeratorFemale();
+			}
 		}
 		else if (age >= 60 && age < 65) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp17.addMale();
-			else
-				ageGrp17.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp17.addDenominatorMale();
+				else
+					ageGrp17.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp17.addDenominatorFemale();
+				else
+					ageGrp17.addNumeratorFemale();
+			}
 		}
 		else if (age >= 65 && age < 70) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp18.addMale();
-			else
-				ageGrp18.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp18.addDenominatorMale();
+				else
+					ageGrp18.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp18.addDenominatorFemale();
+				else
+					ageGrp18.addNumeratorFemale();
+			}
 		}
 		else if (age >= 70 && age < 75) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp19.addMale();
-			else
-				ageGrp19.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp19.addDenominatorMale();
+				else
+					ageGrp19.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp19.addDenominatorFemale();
+				else
+					ageGrp19.addNumeratorFemale();
+			}
 		}
 		else if (age >= 75 && age < 80) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp20.addMale();
-			else
-				ageGrp20.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp20.addDenominatorMale();
+				else
+					ageGrp20.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp20.addDenominatorFemale();
+				else
+					ageGrp20.addNumeratorFemale();
+			}
 		}
 		else if (age >= 80 && age < 85) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp21.addMale();
-			else
-				ageGrp21.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp21.addDenominatorMale();
+				else
+					ageGrp21.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp21.addDenominatorFemale();
+				else
+					ageGrp21.addNumeratorFemale();
+			}
 		}
 		else if (age >= 85 && age < 90) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp22.addMale();
-			else
-				ageGrp22.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp22.addDenominatorMale();
+				else
+					ageGrp22.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp22.addDenominatorFemale();
+				else
+					ageGrp22.addNumeratorFemale();
+			}
 		}
 		else if (age >= 90 && age < 95) {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp23.addMale();
-			else
-				ageGrp23.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp23.addDenominatorMale();
+				else
+					ageGrp23.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp23.addDenominatorFemale();
+				else
+					ageGrp23.addNumeratorFemale();
+			}
 		}
 		else {
-			if (individual.getGender().equals(siteProperties.getMaleCode()))
-				ageGrp24.addMale();
-			else
-				ageGrp24.addFemale();
+			if (individual.getGender().equals(siteProperties.getMaleCode())) {
+				if (denominator)	
+					ageGrp24.addDenominatorMale();
+				else
+					ageGrp24.addNumeratorMale();
+			}
+			else {
+				if (denominator)
+					ageGrp24.addDenominatorFemale();
+				else
+					ageGrp24.addNumeratorFemale();
+			}
 		}
 	}
 }

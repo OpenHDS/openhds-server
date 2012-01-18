@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.DemRates;
+import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.domain.model.Residency;
 
@@ -18,6 +19,9 @@ public interface DemRatesService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<Residency> getResidenciesAtMidPoint(Calendar midpoint);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<InMigration> getInMigrationsBetweenInterval(Calendar startDate, Calendar endDate);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	long daysBetween(Calendar startDate, Calendar endDate); 

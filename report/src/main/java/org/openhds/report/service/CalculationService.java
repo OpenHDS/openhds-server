@@ -8,5 +8,5 @@ import org.openhds.domain.model.PrivilegeConstants;
 public interface CalculationService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setAgeGroups(long age, Individual individual); 
+	void setAgeGroups(long age, Individual individual, boolean denominator); 
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.DemRates;
+import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
@@ -75,15 +76,29 @@ public class DemographicRatesController implements DemographicRatesService {
 			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
 		}
 		
+		if (event.equals("InMigration")) {
+			List<InMigration> inmigrations = demRatesService.getInMigrationsBetweenInterval(startDate, endDate);
+			setAgeGroupsForInMigrations(inmigrations);
+		}
+		
 		return null;
 	}
 	
-	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {
-		
+	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
 			long age = (long) (demRatesService.daysBetween(individual.getDob(), midpoint) / 365.25);
-			calculationService.setAgeGroups(age, individual);
+			calculationService.setAgeGroups(age, individual, true);
 		}
 	}
+	
+	public void setAgeGroupsForInMigrations(List<InMigration> inmigrations) {
+		for (InMigration inmigration : inmigrations) {
+			Individual individual = inmigration.getIndividual();
+			long age = (long) (demRatesService.daysBetween(individual.getDob(), inmigration.getRecordedDate()) / 365.25);
+			calculationService.setAgeGroups(age, individual, false);
+		}
+	}
+	
+
 }
