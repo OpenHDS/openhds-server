@@ -1,5 +1,10 @@
 package org.openhds.report.service.impl;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.openhds.controller.service.DemRatesService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.report.beans.ReportRecordBean;
@@ -40,37 +45,122 @@ public class CalculationServiceImpl implements CalculationService {
 		ageGrp19, ageGrp20, ageGrp21, ageGrp22, ageGrp23, ageGrp24;
 	
 	SitePropertiesService siteProperties;
+	DemRatesService demRatesService;
 	
-	public CalculationServiceImpl(SitePropertiesService siteProperties) {
+	public CalculationServiceImpl(SitePropertiesService siteProperties, DemRatesService demRatesService) {
 		this.siteProperties = siteProperties;
+		this.demRatesService = demRatesService;
 		initializeGroups();
 	}
 	
 	private void initializeGroups() {
-		ageGrp1 = new ReportRecordBean();
-		ageGrp2 = new ReportRecordBean();
-		ageGrp3 = new ReportRecordBean();
-		ageGrp4 = new ReportRecordBean();
-		ageGrp5 = new ReportRecordBean();
-		ageGrp6 = new ReportRecordBean();
-		ageGrp7 = new ReportRecordBean();
-		ageGrp8 = new ReportRecordBean();
-		ageGrp9 = new ReportRecordBean();
-		ageGrp10 = new ReportRecordBean();
-		ageGrp11 = new ReportRecordBean();
-		ageGrp12 = new ReportRecordBean();
-		ageGrp13 = new ReportRecordBean();
-		ageGrp14 = new ReportRecordBean();
-		ageGrp15 = new ReportRecordBean();
-		ageGrp16 = new ReportRecordBean();
-		ageGrp17 = new ReportRecordBean();
-		ageGrp18 = new ReportRecordBean();
-		ageGrp19 = new ReportRecordBean();
-		ageGrp20 = new ReportRecordBean();
-		ageGrp21 = new ReportRecordBean();
-		ageGrp22 = new ReportRecordBean();
-		ageGrp23 = new ReportRecordBean();
-		ageGrp24 = new ReportRecordBean();
+		ageGrp1 = new ReportRecordBean("0");
+		ageGrp2 = new ReportRecordBean("1");
+		ageGrp3 = new ReportRecordBean("2");
+		ageGrp4 = new ReportRecordBean("3");
+		ageGrp5 = new ReportRecordBean("4");
+		ageGrp6 = new ReportRecordBean("5-9");
+		ageGrp7 = new ReportRecordBean("10-14");
+		ageGrp8 = new ReportRecordBean("15-19");
+		ageGrp9 = new ReportRecordBean("20-24");
+		ageGrp10 = new ReportRecordBean("25-29");
+		ageGrp11 = new ReportRecordBean("30-34");
+		ageGrp12 = new ReportRecordBean("35-39");
+		ageGrp13 = new ReportRecordBean("40-44");
+		ageGrp14 = new ReportRecordBean("45-49");
+		ageGrp15 = new ReportRecordBean("50-54");
+		ageGrp16 = new ReportRecordBean("55-59");
+		ageGrp17 = new ReportRecordBean("60-64");
+		ageGrp18 = new ReportRecordBean("65-69");
+		ageGrp19 = new ReportRecordBean("70-74");
+		ageGrp20 = new ReportRecordBean("75-79");
+		ageGrp21 = new ReportRecordBean("80-84");
+		ageGrp22 = new ReportRecordBean("85-89");
+		ageGrp23 = new ReportRecordBean("90-94");
+		ageGrp24 = new ReportRecordBean("95+");
+	}
+		
+	public void setDenominatorTotals() {
+		ageGrp1.setDenominatorTotal(ageGrp1.getDenominatorMale() + ageGrp1.getDenominatorFemale());
+		ageGrp2.setDenominatorTotal(ageGrp2.getDenominatorMale() + ageGrp2.getDenominatorFemale());
+		ageGrp3.setDenominatorTotal(ageGrp3.getDenominatorMale() + ageGrp3.getDenominatorFemale());
+		ageGrp4.setDenominatorTotal(ageGrp4.getDenominatorMale() + ageGrp4.getDenominatorFemale());
+		ageGrp5.setDenominatorTotal(ageGrp5.getDenominatorMale() + ageGrp5.getDenominatorFemale());
+		ageGrp6.setDenominatorTotal(ageGrp6.getDenominatorMale() + ageGrp6.getDenominatorFemale());
+		ageGrp7.setDenominatorTotal(ageGrp7.getDenominatorMale() + ageGrp7.getDenominatorFemale());
+		ageGrp8.setDenominatorTotal(ageGrp8.getDenominatorMale() + ageGrp8.getDenominatorFemale());
+		ageGrp9.setDenominatorTotal(ageGrp9.getDenominatorMale() + ageGrp9.getDenominatorFemale());
+		ageGrp10.setDenominatorTotal(ageGrp10.getDenominatorMale() + ageGrp10.getDenominatorFemale());
+		ageGrp11.setDenominatorTotal(ageGrp11.getDenominatorMale() + ageGrp11.getDenominatorFemale());
+		ageGrp12.setDenominatorTotal(ageGrp12.getDenominatorMale() + ageGrp12.getDenominatorFemale());
+		ageGrp13.setDenominatorTotal(ageGrp13.getDenominatorMale() + ageGrp13.getDenominatorFemale());
+		ageGrp14.setDenominatorTotal(ageGrp14.getDenominatorMale() + ageGrp14.getDenominatorFemale());
+		ageGrp15.setDenominatorTotal(ageGrp15.getDenominatorMale() + ageGrp15.getDenominatorFemale());
+		ageGrp16.setDenominatorTotal(ageGrp16.getDenominatorMale() + ageGrp16.getDenominatorFemale());
+		ageGrp17.setDenominatorTotal(ageGrp17.getDenominatorMale() + ageGrp17.getDenominatorFemale());
+		ageGrp18.setDenominatorTotal(ageGrp18.getDenominatorMale() + ageGrp18.getDenominatorFemale());
+		ageGrp19.setDenominatorTotal(ageGrp19.getDenominatorMale() + ageGrp19.getDenominatorFemale());
+		ageGrp20.setDenominatorTotal(ageGrp20.getDenominatorMale() + ageGrp20.getDenominatorFemale());
+		ageGrp21.setDenominatorTotal(ageGrp21.getDenominatorMale() + ageGrp21.getDenominatorFemale());
+		ageGrp22.setDenominatorTotal(ageGrp22.getDenominatorMale() + ageGrp22.getDenominatorFemale());
+		ageGrp23.setDenominatorTotal(ageGrp23.getDenominatorMale() + ageGrp23.getDenominatorFemale());
+		ageGrp24.setDenominatorTotal(ageGrp24.getDenominatorMale() + ageGrp24.getDenominatorFemale());
+	}
+	
+	public void setNumeratorTotals() {
+		ageGrp1.setNumeratorTotal(ageGrp1.getNumeratorMale() + ageGrp1.getNumeratorFemale());
+		ageGrp2.setNumeratorTotal(ageGrp2.getNumeratorMale() + ageGrp2.getNumeratorFemale());
+		ageGrp3.setNumeratorTotal(ageGrp3.getNumeratorMale() + ageGrp3.getNumeratorFemale());
+		ageGrp4.setNumeratorTotal(ageGrp4.getNumeratorMale() + ageGrp4.getNumeratorFemale());
+		ageGrp5.setNumeratorTotal(ageGrp5.getNumeratorMale() + ageGrp5.getNumeratorFemale());
+		ageGrp6.setNumeratorTotal(ageGrp6.getNumeratorMale() + ageGrp6.getNumeratorFemale());
+		ageGrp7.setNumeratorTotal(ageGrp7.getNumeratorMale() + ageGrp7.getNumeratorFemale());
+		ageGrp8.setNumeratorTotal(ageGrp8.getNumeratorMale() + ageGrp8.getNumeratorFemale());
+		ageGrp9.setNumeratorTotal(ageGrp9.getNumeratorMale() + ageGrp9.getNumeratorFemale());
+		ageGrp10.setNumeratorTotal(ageGrp10.getNumeratorMale() + ageGrp10.getNumeratorFemale());
+		ageGrp11.setNumeratorTotal(ageGrp11.getNumeratorMale() + ageGrp11.getNumeratorFemale());
+		ageGrp12.setNumeratorTotal(ageGrp12.getNumeratorMale() + ageGrp12.getNumeratorFemale());
+		ageGrp13.setNumeratorTotal(ageGrp13.getNumeratorMale() + ageGrp13.getNumeratorFemale());
+		ageGrp14.setNumeratorTotal(ageGrp14.getNumeratorMale() + ageGrp14.getNumeratorFemale());
+		ageGrp15.setNumeratorTotal(ageGrp15.getNumeratorMale() + ageGrp15.getNumeratorFemale());
+		ageGrp16.setNumeratorTotal(ageGrp16.getNumeratorMale() + ageGrp16.getNumeratorFemale());
+		ageGrp17.setNumeratorTotal(ageGrp17.getNumeratorMale() + ageGrp17.getNumeratorFemale());
+		ageGrp18.setNumeratorTotal(ageGrp18.getNumeratorMale() + ageGrp18.getNumeratorFemale());
+		ageGrp19.setNumeratorTotal(ageGrp19.getNumeratorMale() + ageGrp19.getNumeratorFemale());
+		ageGrp20.setNumeratorTotal(ageGrp20.getNumeratorMale() + ageGrp20.getNumeratorFemale());
+		ageGrp21.setNumeratorTotal(ageGrp21.getNumeratorMale() + ageGrp21.getNumeratorFemale());
+		ageGrp22.setNumeratorTotal(ageGrp22.getNumeratorMale() + ageGrp22.getNumeratorFemale());
+		ageGrp23.setNumeratorTotal(ageGrp23.getNumeratorMale() + ageGrp23.getNumeratorFemale());
+		ageGrp24.setNumeratorTotal(ageGrp24.getNumeratorMale() + ageGrp24.getNumeratorFemale());
+	}
+	
+	public List<ReportRecordBean> getReportRecords() {
+		List<ReportRecordBean> reports = new ArrayList<ReportRecordBean>();
+		reports.add(ageGrp1);
+		reports.add(ageGrp2);
+		reports.add(ageGrp3);
+		reports.add(ageGrp4);
+		reports.add(ageGrp5);
+		reports.add(ageGrp6);
+		reports.add(ageGrp7);
+		reports.add(ageGrp8);
+		reports.add(ageGrp9);
+		reports.add(ageGrp10);
+		reports.add(ageGrp11);
+		reports.add(ageGrp12);
+		reports.add(ageGrp13);
+		reports.add(ageGrp14);
+		reports.add(ageGrp15);
+		reports.add(ageGrp16);
+		reports.add(ageGrp17);
+		reports.add(ageGrp18);
+		reports.add(ageGrp19);
+		reports.add(ageGrp20);
+		reports.add(ageGrp21);
+		reports.add(ageGrp22);
+		reports.add(ageGrp23);
+		reports.add(ageGrp24);
+		return reports;
 	}
 	
 	public void setAgeGroups(long age, Individual individual, boolean denominator) {

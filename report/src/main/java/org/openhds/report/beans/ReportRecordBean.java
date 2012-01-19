@@ -2,6 +2,8 @@ package org.openhds.report.beans;
 
 public class ReportRecordBean {
 	
+	String ageGroupName;
+	
 	int denominatorMale;
 	int denominatorFemale;
 	
@@ -11,7 +13,9 @@ public class ReportRecordBean {
 	int numeratorTotal;
 	int denominatorTotal;
 	
-	public ReportRecordBean() { }
+	public ReportRecordBean(String ageGroupName) {
+		this.ageGroupName = ageGroupName;
+	}
 	
 	public void addDenominatorMale() {
 		denominatorMale++;
@@ -28,6 +32,14 @@ public class ReportRecordBean {
 	public void addNumeratorFemale() {
 		numeratorFemale++;
 	}	
+	
+	public String getAgeGroupName() {
+		return ageGroupName;
+	}
+
+	public void setAgeGroupName(String ageGroupName) {
+		this.ageGroupName = ageGroupName;
+	}
 	
 	public int getDenominatorMale() {
 		return denominatorMale;

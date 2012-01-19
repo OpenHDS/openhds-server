@@ -13,6 +13,7 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.report.beans.ReportRecordBean;
 import org.openhds.report.service.CalculationService;
 import org.openhds.report.service.DemographicRatesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		this.calculationService = calculationService;
 	}
 	
-	@RequestMapping(value = { "/inmigration.report", "/population.report", "/mortality.report", "/inmigration.report", 
+	@RequestMapping(value = { "/inmigration.report", "/population.report", "/mortality.report", 
 			"/outmigration.report", "/marital.report", "/childmortalityratios.report", "/fertility.report"})
 	public ModelAndView getPopulationRates(HttpServletRequest request) {
 		
@@ -62,7 +63,6 @@ public class DemographicRatesController implements DemographicRatesService {
 		 */
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		modelMap.put("format", "pdf"); // xls, pdf, html, csv
 		modelMap.put("event", event);
 		modelMap.put("denomType", denomType);
 		modelMap.put("firstDate", calendarUtil.formatDate(startDate));
@@ -70,18 +70,26 @@ public class DemographicRatesController implements DemographicRatesService {
 		modelMap.put("locations", "All Locations");
 		modelMap.put("individuals", "All Individuals");
 			
+		List<Residency> residencies = null;
+		
+		// denominator
 		if (denomType.equals("Population at Midpoint")) {
 			Calendar midpoint = demRatesService.getMidPointDate(startDate, endDate);
-			List<Residency> residencies = demRatesService.getResidenciesAtMidPoint(midpoint);
+			residencies = demRatesService.getResidenciesAtMidPoint(midpoint);
 			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
 		}
 		
+		// numerator
 		if (event.equals("InMigration")) {
 			List<InMigration> inmigrations = demRatesService.getInMigrationsBetweenInterval(startDate, endDate);
 			setAgeGroupsForInMigrations(inmigrations);
 		}
+				
+		List<ReportRecordBean> data = calculationService.getReportRecords();
+		modelMap.put("dataSource", data);
 		
-		return null;
+		String selectedReport = event.toLowerCase().concat("Report");
+		return new ModelAndView(selectedReport, modelMap);
 	}
 	
 	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
@@ -89,6 +97,7 @@ public class DemographicRatesController implements DemographicRatesService {
 			Individual individual = residency.getIndividual();
 			long age = (long) (demRatesService.daysBetween(individual.getDob(), midpoint) / 365.25);
 			calculationService.setAgeGroups(age, individual, true);
+			calculationService.setDenominatorTotals();
 		}
 	}
 	
@@ -97,8 +106,7 @@ public class DemographicRatesController implements DemographicRatesService {
 			Individual individual = inmigration.getIndividual();
 			long age = (long) (demRatesService.daysBetween(individual.getDob(), inmigration.getRecordedDate()) / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
+			calculationService.setNumeratorTotals();
 		}
 	}
-	
-
 }
