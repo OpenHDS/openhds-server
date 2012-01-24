@@ -8,28 +8,22 @@
 	<parameter name="denomType" class="java.lang.String"/>
 	<parameter name="locations" class="java.lang.String"/>
 	<parameter name="individuals" class="java.lang.String"/>
-	<field name="male" class="java.lang.Long"/>
-	<field name="female" class="java.lang.Long"/>
-	<field name="totalGender" class="java.lang.Long"/>
-	<field name="maleMR" class="java.lang.Double"/>
-	<field name="femaleMR" class="java.lang.Double"/>
-	<field name="totalMR" class="java.lang.Double"/>
+	<field name="numeratorMale" class="java.lang.Integer"/>
+	<field name="numeratorFemale" class="java.lang.Integer"/>
+	<field name="numeratorTotal" class="java.lang.Integer"/>
+	<field name="pyoMale" class="java.lang.Long"/>
+	<field name="pyoFemale" class="java.lang.Long"/>
+	<field name="pyoTotal" class="java.lang.Long"/>
 	<field name="ageGroupName" class="java.lang.String"/>
-	<field name="totalPYO" class="java.lang.Double"/>
-	<field name="malePYO" class="java.lang.Double"/>
-	<field name="femalePYO" class="java.lang.Double"/>
-	<field name="min" class="java.lang.Double"/>
-	<group name="min" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{min}]]></groupExpression>
-	</group>
+	<field name="pdoTotal" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement x="300" y="0" width="225" height="19"/>
-				<textElement>
+				<reportElement x="282" y="0" width="206" height="19"/>
+				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Migration into the Study Area]]></text>
@@ -87,22 +81,22 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{individuals}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="100" y="20" width="143" height="20"/>
+				<reportElement x="100" y="20" width="145" height="20"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Number of Observations]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="265" y="20" width="206" height="20"/>
+				<reportElement x="265" y="20" width="223" height="20"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Person Years Observed]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="508" y="20" width="212" height="20"/>
-				<textElement>
+				<reportElement x="488" y="20" width="236" height="20"/>
+				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rate Per 1000 Person Years]]></text>
@@ -119,7 +113,7 @@
 				<text><![CDATA[Female]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="688" y="0" width="100" height="20"/>
+				<reportElement x="688" y="0" width="104" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -161,25 +155,11 @@
 				<text><![CDATA[Male]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="418" y="0" width="53" height="20"/>
+				<reportElement x="365" y="0" width="123" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Both]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="275" y="0" width="45" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[male]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="338" y="0" width="55" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[female]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -195,47 +175,37 @@
 			<textField pattern="#,##0">
 				<reportElement x="100" y="0" width="55" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{male}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numeratorMale}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="155" y="0" width="55" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{female}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numeratorFemale}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="210" y="0" width="55" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{totalGender}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.0" isBlankWhenNull="true">
-				<reportElement x="489" y="0" width="100" height="15"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{maleMR}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.0" isBlankWhenNull="true">
-				<reportElement x="589" y="0" width="100" height="15"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{femaleMR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numeratorTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.0">
-				<reportElement x="689" y="0" width="100" height="15"/>
+				<reportElement x="689" y="0" width="103" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalMR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{pyoTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.0">
-				<reportElement x="275" y="0" width="45" height="15"/>
+				<reportElement x="365" y="0" width="123" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{malePYO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{pdoTotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.0">
-				<reportElement x="338" y="0" width="55" height="15"/>
+			<textField>
+				<reportElement x="588" y="0" width="100" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{femalePYO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{pyoFemale}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.0">
-				<reportElement x="418" y="0" width="53" height="15"/>
+			<textField>
+				<reportElement x="488" y="0" width="100" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalPYO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{pyoMale}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -243,9 +213,9 @@
 		<band height="15" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="7" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="10" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

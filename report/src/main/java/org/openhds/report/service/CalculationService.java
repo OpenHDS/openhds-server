@@ -1,5 +1,6 @@
 package org.openhds.report.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.openhds.domain.annotations.Authorized;
@@ -18,6 +19,9 @@ public interface CalculationService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void setDenominatorTotals();
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	void completeReportRecords(Calendar startDate, Calendar endDate);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<ReportRecordBean> getReportRecords();

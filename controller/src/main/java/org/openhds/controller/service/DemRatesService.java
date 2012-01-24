@@ -24,6 +24,6 @@ public interface DemRatesService {
 	List<InMigration> getInMigrationsBetweenInterval(Calendar startDate, Calendar endDate);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	long daysBetween(Calendar startDate, Calendar endDate); 
+	int daysBetween(Calendar startDate, Calendar endDate); 
 
 }

@@ -84,7 +84,10 @@ public class DemographicRatesController implements DemographicRatesService {
 			List<InMigration> inmigrations = demRatesService.getInMigrationsBetweenInterval(startDate, endDate);
 			setAgeGroupsForInMigrations(inmigrations);
 		}
-				
+			
+		// call this once denominator and numerator totals have been calculated
+		calculationService.completeReportRecords(startDate, endDate);
+		
 		List<ReportRecordBean> data = calculationService.getReportRecords();
 		modelMap.put("dataSource", data);
 		
@@ -95,7 +98,8 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
-			long age = (long) (demRatesService.daysBetween(individual.getDob(), midpoint) / 365.25);
+			int days = demRatesService.daysBetween(individual.getDob(), midpoint);
+			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, true);
 			calculationService.setDenominatorTotals();
 		}
@@ -104,7 +108,8 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForInMigrations(List<InMigration> inmigrations) {
 		for (InMigration inmigration : inmigrations) {
 			Individual individual = inmigration.getIndividual();
-			long age = (long) (demRatesService.daysBetween(individual.getDob(), inmigration.getRecordedDate()) / 365.25);
+			int days = demRatesService.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
+			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setNumeratorTotals();
 		}
