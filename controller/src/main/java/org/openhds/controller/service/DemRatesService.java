@@ -13,17 +13,4 @@ public interface DemRatesService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	DemRates findDemRateByUuid(String itemId);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	Calendar getMidPointDate(Calendar startDate, Calendar endDate);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<Residency> getResidenciesAtMidPoint(Calendar midpoint);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<InMigration> getInMigrationsBetweenInterval(Calendar startDate, Calendar endDate);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	int daysBetween(Calendar startDate, Calendar endDate); 
-
 }

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.DemRates;
 import org.openhds.domain.model.InMigration;
@@ -26,17 +25,15 @@ public class DemographicRatesController implements DemographicRatesService {
 	
 	GenericDao genericDao;
 	SitePropertiesService siteProperties;
-	DemRatesService demRatesService;
 	CalculationService calculationService;
 	CalendarUtil calendarUtil;
 		
 	@Autowired
 	public DemographicRatesController(GenericDao genericDao, SitePropertiesService siteProperties, 
-			CalendarUtil calendarUtil, DemRatesService demRatesService, CalculationService calculationService) {
+			CalendarUtil calendarUtil, CalculationService calculationService) {
 		this.genericDao = genericDao;
 		this.siteProperties = siteProperties;
 		this.calendarUtil = calendarUtil;
-		this.demRatesService = demRatesService;
 		this.calculationService = calculationService;
 	}
 	
@@ -74,14 +71,19 @@ public class DemographicRatesController implements DemographicRatesService {
 		
 		// denominator
 		if (denomType.equals("Population at Midpoint")) {
-			Calendar midpoint = demRatesService.getMidPointDate(startDate, endDate);
-			residencies = demRatesService.getResidenciesAtMidPoint(midpoint);
+			Calendar midpoint = calculationService.getMidPointDate(startDate, endDate);
+			residencies = calculationService.getResidenciesAtMidPoint(midpoint);
 			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
+		}
+		else {
+			residencies = calculationService.getResidenciesInBetween(startDate, endDate);
+			calculationService.setIntervalsOfResidencies(residencies, startDate, endDate);
+			calculationService.setDenominatorTotals();
 		}
 		
 		// numerator
 		if (event.equals("InMigration")) {
-			List<InMigration> inmigrations = demRatesService.getInMigrationsBetweenInterval(startDate, endDate);
+			List<InMigration> inmigrations = calculationService.getInMigrationsBetweenInterval(startDate, endDate);
 			setAgeGroupsForInMigrations(inmigrations);
 		}
 			
@@ -98,7 +100,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
-			int days = demRatesService.daysBetween(individual.getDob(), midpoint);
+			int days = calculationService.daysBetween(individual.getDob(), midpoint);
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, true);
 			calculationService.setDenominatorTotals();
@@ -108,7 +110,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForInMigrations(List<InMigration> inmigrations) {
 		for (InMigration inmigration : inmigrations) {
 			Individual individual = inmigration.getIndividual();
-			int days = demRatesService.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
+			int days = calculationService.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setNumeratorTotals();

@@ -16,6 +16,7 @@
        <bean id="calculationService" class="org.openhds.report.service.impl.CalculationServiceImpl">
        		<constructor-arg ref="siteProperties" />
        		<constructor-arg ref="demRatesService" />
+       		<constructor-arg ref="genericDao" />
        </bean>
               
 </beans>

@@ -2,9 +2,14 @@ package org.openhds.report.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import org.openhds.controller.service.DemRatesService;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Residency;
+import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.report.beans.ReportRecordBean;
 import org.openhds.report.service.CalculationService;
@@ -33,35 +38,38 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	SitePropertiesService siteProperties;
 	DemRatesService demRatesService;
+	GenericDao genericDao;
 	
-	public CalculationServiceImpl(SitePropertiesService siteProperties, DemRatesService demRatesService) {
+	public CalculationServiceImpl(SitePropertiesService siteProperties, 
+			DemRatesService demRatesService, GenericDao genericDao) {
 		this.siteProperties = siteProperties;
 		this.demRatesService = demRatesService;
+		this.genericDao = genericDao;
 		initializeGroups();
 	}
 	
 	private void initializeGroups() {
-		reportRecords.add(new ReportRecordBean("ALL"));
-		reportRecords.add(new ReportRecordBean("0-4"));
-		reportRecords.add(new ReportRecordBean("5-9"));
-		reportRecords.add(new ReportRecordBean("10-14"));
-		reportRecords.add(new ReportRecordBean("15-19"));
-		reportRecords.add(new ReportRecordBean("20-24"));
-		reportRecords.add(new ReportRecordBean("25-29"));
-		reportRecords.add(new ReportRecordBean("30-34"));
-		reportRecords.add(new ReportRecordBean("35-39"));
-		reportRecords.add(new ReportRecordBean("40-44"));
-		reportRecords.add(new ReportRecordBean("45-49"));
-		reportRecords.add(new ReportRecordBean("50-54"));
-		reportRecords.add(new ReportRecordBean("55-59"));
-		reportRecords.add(new ReportRecordBean("60-64"));
-		reportRecords.add(new ReportRecordBean("65+"));
+		reportRecords.add(new ReportRecordBean("ALL", 0, 100));
+		reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+		reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+		reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+		reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+		reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+		reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+		reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+		reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+		reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+		reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+		reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+		reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+		reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+		reportRecords.add(new ReportRecordBean("65+", 65, 100));
 		
 	}
 	
 	public void completeReportRecords(Calendar startDate, Calendar endDate) {		
 		// calculate pdo's
-		int daysBetween = (int) demRatesService.daysBetween(startDate, endDate);
+		int daysBetween = (int) daysBetween(startDate, endDate);
 		for (int i = 1; i < reportRecords.size(); i++) {
 			ReportRecordBean record = reportRecords.get(i);
 			record.setPdoMale(record.getNumeratorMale() * daysBetween);
@@ -104,10 +112,215 @@ public class CalculationServiceImpl implements CalculationService {
 		}
 	}
 	
-	public List<ReportRecordBean> getReportRecords() {
-		return reportRecords;
+	public List<Residency> getResidenciesAtMidPoint(Calendar midpoint) {
+		
+		List<Residency> residencies = genericDao.findAll(Residency.class, true);
+		List<Residency> midPointResidencies = new ArrayList<Residency>();
+			
+		Calendar resEndDate = null;
+		for (Residency res : residencies) {
+			// handle residencies that haven't ended, if null then use the date of the last visit
+			if (res.getEndDate() == null) {
+	
+				// get all visits for this residency
+				List<Visit> visits = genericDao.findListByProperty(Visit.class, "visitLocation", res.getLocation());
+				
+				if (visits.size() > 0) {
+					// grab latest visit
+					Calendar latestDate = new GregorianCalendar(1900, Calendar.JANUARY, 1);
+					for (Visit visit : visits) {
+						Calendar visitDate = visit.getVisitDate();
+						if (visitDate.after(latestDate))
+							latestDate = visitDate;
+					}		
+					resEndDate = latestDate;
+					res.setEndDate(resEndDate);
+				}
+			}
+			else 
+				resEndDate = res.getEndDate();
+
+			if (resEndDate != null) {
+				// for residency to be added to analysis set, 
+				// its end date has to be on or after the midpoint
+				// and its start date has to be on or before the midpoint
+				if ((resEndDate.after(midpoint) || resEndDate.equals(midpoint)) && 
+					((res.getStartDate().before(midpoint) || res.getStartDate().equals(midpoint)))) {
+					midPointResidencies.add(res);
+				}
+			}
+			resEndDate = null;
+		}
+		return midPointResidencies;
 	}
 	
+	public List<Residency> getResidenciesInBetween(Calendar startDate, Calendar endDate) {
+		
+		List<Residency> residencies = genericDao.findAll(Residency.class, true);
+		List<Residency> validResidencies = new ArrayList<Residency>();
+
+		Calendar resEndDate = null;
+		for (Residency res : residencies) {
+			
+			// handle residencies that haven't ended, if null then use the date of the last visit
+			if (res.getEndDate() == null) {
+				
+				// get all visits for this residency
+				List<Visit> visits = genericDao.findListByProperty(Visit.class, "visitLocation", res.getLocation());
+				
+				if (visits.size() > 0) {
+					// grab latest visit
+					Calendar latestDate = new GregorianCalendar(1900, Calendar.JANUARY, 1);
+					for (Visit visit : visits) {
+						Calendar visitDate = visit.getVisitDate();
+						if (visitDate.after(latestDate))
+							latestDate = visitDate;
+					}		
+					resEndDate = latestDate;
+					res.setEndDate(resEndDate);
+				}
+			}
+			else 
+				resEndDate = res.getEndDate();
+			
+			// for residency to be added to analysis set, 
+			// its start date has to be on or before the end date
+			// and its start date has to be on or before the midpoint
+			if ((res.getStartDate().before(endDate) || res.getStartDate().equals(endDate)) && 
+					(resEndDate == null || res.getEndDate().after(startDate) || res.getEndDate().equals(startDate))) {
+				validResidencies.add(res);
+			}
+		}
+		return validResidencies;
+	}
+	
+	public void setIntervalsOfResidencies(List<Residency> list, Calendar startDate, Calendar endDate) {
+				
+		for (Residency res : list) {
+			Calendar beginInterval = null;
+			Calendar endInterval = null;
+			
+			// determine intervals
+			if (res.getStartDate().after(startDate)) 
+				beginInterval = res.getStartDate();
+			else
+				beginInterval = startDate;
+			if (res.getEndDate().before(endDate))
+				endInterval = res.getEndDate();
+			else
+				endInterval = endDate;	
+			
+			// determine age groups at beginning and end of residency
+			int ageAtBeg = (int) (daysBetween(beginInterval, res.getIndividual().getDob()) / 365.25);
+			int ageAtEnd = (int) (daysBetween(endInterval, res.getIndividual().getDob()) / 365.25);
+			int firstGroup = determineAgeGroup(ageAtBeg);
+			int lastGroup = determineAgeGroup(ageAtEnd);
+			
+			int currentGroup = firstGroup;
+			
+			if ((endInterval.after(beginInterval) || endInterval.equals(beginInterval)) && 
+					(firstGroup == lastGroup)) {
+				
+				ReportRecordBean group = reportRecords.get(currentGroup);
+				if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
+					group.setDenominatorMale(daysBetween(beginInterval, endInterval));
+				else 
+					group.setDenominatorFemale(daysBetween(beginInterval, endInterval));
+				
+				daysBetween(beginInterval, endInterval);
+			}
+			// determine where to split the residencies
+			else {
+				
+				do {				
+					ReportRecordBean group = reportRecords.get(currentGroup);
+					int difference = group.getMax() - ageAtBeg;
+					int adjustedAge = ageAtBeg + difference;
+					Calendar dob = res.getIndividual().getDob();
+					
+					Calendar groupEndDate = dob;
+					groupEndDate.add(Calendar.YEAR, adjustedAge);
+					groupEndDate.add(Calendar.DAY_OF_MONTH, -1); 
+					
+					if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
+						group.setDenominatorMale(daysBetween(beginInterval, groupEndDate));
+					else 
+						group.setDenominatorFemale(daysBetween(beginInterval, groupEndDate));
+
+					beginInterval = groupEndDate;
+					currentGroup++;
+
+				} while (currentGroup <= lastGroup);
+			}
+		}
+	}
+	
+	public List<InMigration> getInMigrationsBetweenInterval(Calendar startDate, Calendar endDate) {
+		
+		List<InMigration> inmigrations = genericDao.findAll(InMigration.class, true);
+		List<InMigration> inmigrationsInInterval = new ArrayList<InMigration>();
+		
+		for (InMigration inmig : inmigrations) {		
+			if (inmig.getRecordedDate().after(startDate) &&
+				inmig.getRecordedDate().before(endDate)) {
+				inmigrationsInInterval.add(inmig);
+			}
+		}
+		return inmigrationsInInterval;
+	}
+	
+	public Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
+		int daysBtw = (int)daysBetween(startDate, endDate);
+		Calendar midPoint = (Calendar)startDate.clone();
+		midPoint.add(Calendar.DATE, (int) (daysBtw * 0.5));
+		return midPoint;
+	}
+	
+	public int daysBetween(Calendar startDate, Calendar endDate) {  
+		Calendar date = (Calendar) startDate.clone();  
+		int daysBetween = 0;  
+		while (date.before(endDate)) {  
+			date.add(Calendar.DAY_OF_MONTH, 1);  
+		    daysBetween++;  
+		}  
+		return daysBetween;  
+	} 
+		
+	/**
+	 * Returns the index in which age report record the age belongs.
+	 * Corresponds to the CalculationService reportRecord
+	 */
+	public int determineAgeGroup(int age) {
+		if (age >= 0 && age < 5)
+			return 1;
+		else if (age >= 5 && age < 10)
+			return 2;
+		else if (age >= 10 && age < 15)
+			return 3;
+		else if (age >= 15 && age < 20)
+			return 4;
+		else if (age >= 20 && age < 25)
+			return 5;
+		else if (age >= 25 && age < 30)
+			return 6;
+		else if (age >= 30 && age < 35)
+			return 7;
+		else if (age >= 35 && age < 40)
+			return 8;
+		else if (age >= 40 && age < 45)
+			return 9;
+		else if (age >= 45 && age < 50)
+			return 10;
+		else if (age >= 50 && age < 55)
+			return 11;
+		else if (age >= 55 && age < 60)
+			return 12;
+		else if (age >= 60 && age < 65)
+			return 13;
+		else
+			return 14;
+	}
+		
 	public void setAgeGroups(long age, Individual individual, boolean denominator) {
 		if (age >= 0 && age < 5) {
 			if (individual.getGender().equals(siteProperties.getMaleCode())) {
@@ -305,5 +518,9 @@ public class CalculationServiceImpl implements CalculationService {
 					reportRecords.get(14).addNumeratorFemale();
 			}
 		}
+	}
+	
+	public List<ReportRecordBean> getReportRecords() {
+		return reportRecords;
 	}
 }

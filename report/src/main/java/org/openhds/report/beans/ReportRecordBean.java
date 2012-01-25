@@ -21,8 +21,13 @@ public class ReportRecordBean {
 	long pyoFemale;
 	long pyoTotal;
 	
-	public ReportRecordBean(String ageGroupName) {
+	int min;
+	int max;
+	
+	public ReportRecordBean(String ageGroupName, int min, int max) {
 		this.ageGroupName = ageGroupName;
+		this.min = min;
+		this.max = max;
 	}
 	
 	public void addDenominatorMale() {
@@ -169,5 +174,13 @@ public class ReportRecordBean {
 
 	public void setPyoTotal() {
 		pyoTotal = pyoMale + pyoFemale;
+	}
+	
+	public int getMax() {
+		return max;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
 	}
 }
