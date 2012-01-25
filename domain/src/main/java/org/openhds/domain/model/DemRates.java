@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.extensions.ExtensionConstraint;
 import org.openhds.domain.util.CalendarAdapter;
 
 @Entity

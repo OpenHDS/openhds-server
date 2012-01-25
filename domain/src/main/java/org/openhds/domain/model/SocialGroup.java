@@ -14,7 +14,7 @@ import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckHouseholdHeadAge;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionConstraint;
+import org.openhds.domain.extensions.ExtensionStringConstraint;
 
 @Description(description="A Social Group represents a distinct family within the " +
 		"study area. Social Groups are identified by a uniquely generated identifier " +
@@ -44,7 +44,7 @@ public class SocialGroup extends AuditableCollectedEntity implements Serializabl
     @Description(description="Individual who is head of the social group, identified by external id.")
     Individual groupHead;
         
-    @ExtensionConstraint(constraint="socialGroupTypeConstraint", message="Invalid Value for social group type",allowNull=true)
+    @ExtensionStringConstraint(constraint="socialGroupTypeConstraint", message="Invalid Value for social group type",allowNull=true)
     @Description(description="Type of the social group.")
     String groupType;
         

@@ -24,7 +24,7 @@ import org.openhds.domain.constraint.CheckIndividualGenderMale;
 import org.openhds.domain.constraint.CheckIndividualParentAge;
 import org.openhds.domain.constraint.CheckMotherFatherNotIndividual;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionConstraint;
+import org.openhds.domain.extensions.ExtensionStringConstraint;
 import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="An Individual represents one who is a part of the study. " +
@@ -68,7 +68,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Description(description="Last name of the individual.")
     String lastName;
 
-    @ExtensionConstraint(constraint="genderConstraint", message="Invalid Value for gender", allowNull=true)
+    @ExtensionStringConstraint(constraint="genderConstraint", message="Invalid Value for gender", allowNull=true)
     @Description(description="Gender of the individual.")
     String gender;
         
@@ -94,7 +94,7 @@ public class Individual extends AuditableCollectedEntity implements Serializable
     @Description(description="The individual's father, identified by the external id.")
     Individual father;
     
-    @ExtensionConstraint(constraint="dobAspectConstraint", message="Invalid Value for partial date", allowNull=true)
+    @ExtensionStringConstraint(constraint="dobAspectConstraint", message="Invalid Value for partial date", allowNull=true)
     @Description(description="Identifer for determining if the birth date is partially known.")
     String dobAspect;
     

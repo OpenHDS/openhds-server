@@ -106,7 +106,7 @@ public class LocationTemplateBuilder {
 		
 		// location type
 		JFieldVar jfLocationType = jc.field(JMod.NONE , java.lang.String.class, "locationType");
-		JAnnotationUse jaLocationType = jfLocationType.annotate(org.openhds.domain.extensions.ExtensionConstraint.class);
+		JAnnotationUse jaLocationType = jfLocationType.annotate(org.openhds.domain.extensions.ExtensionStringConstraint.class);
 		jaLocationType.param("constraint", "locationTypeConstraint");
 		jaLocationType.param("message", "Invalid Value for location type");
 		jaLocationType.param("allowNull", true);

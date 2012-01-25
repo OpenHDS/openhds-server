@@ -21,7 +21,7 @@ import org.openhds.domain.constraint.CheckRelationshipAge;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionConstraint;
+import org.openhds.domain.extensions.ExtensionStringConstraint;
 
 @Description(description="A Relationship is used to associate an Individual " +
 		"with another Indivual in some way. It can be identified by a uniquely " +
@@ -54,7 +54,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
     Individual individualB;
     
     @CheckFieldNotBlank
-    @ExtensionConstraint(constraint="maritalStatusConstraint", message="Invalid Value for relationship type",allowNull=false)
+    @ExtensionStringConstraint(constraint="maritalStatusConstraint", message="Invalid Value for relationship type",allowNull=false)
     @Description(description="Relationship type.")
     String aIsToB;
        

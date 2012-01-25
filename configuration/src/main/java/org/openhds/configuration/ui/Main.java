@@ -173,7 +173,7 @@ public class Main {
 		attrTypeComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				JComboBox comboBox = (JComboBox)event.getSource();
-				if (comboBox.getSelectedIndex() != 0) {
+				if (comboBox.getSelectedItem().toString().equals("Boolean") || comboBox.getSelectedItem().toString().equals("Float")) {
 					constraintTextField.setText("");
 					constraintTextField.disable();
 				}

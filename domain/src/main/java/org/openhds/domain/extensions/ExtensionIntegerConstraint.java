@@ -12,9 +12,9 @@ import javax.validation.Payload;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = ExtensionConstraintImpl.class)
+@Constraint(validatedBy = ExtensionIntegerConstraintImpl.class)
 @Documented
-public @interface ExtensionConstraint {
+public @interface ExtensionIntegerConstraint {
 
 	String message() default "Invalid value";
 	
@@ -23,7 +23,4 @@ public @interface ExtensionConstraint {
 	Class<? extends Payload>[] payload() default {};
 	
 	String constraint();
-	
-	boolean allowNull() default true;
 }
-

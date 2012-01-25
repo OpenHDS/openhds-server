@@ -141,14 +141,15 @@ public class ExtensionLoader extends AppContextAware {
 			
 			// constraints are optional attributes
 			String constraint = NONE_TYPE;
-			if (type.equals(STRING_TYPE))
+			if (type.equals(STRING_TYPE) || type.equals(INTEGER_TYPE))
 				constraint = element.getElementsByTagName("constraint").item(0).getChildNodes().item(0).getNodeValue();
 				
 			attrMap.put("entity", entity);
 			attrMap.put("type", type);
 			attrMap.put("description", description);
 			
-			if (type.equals(STRING_TYPE) && !constraint.equals(NONE_TYPE)) 
+			if ((type.equals(STRING_TYPE) && !constraint.equals(NONE_TYPE)) ||
+				(type.equals(INTEGER_TYPE) && !constraint.equals(NONE_TYPE))) 
 				attrMap.put("constraint", constraint);
 			
 			listAttributes.put(name, attrMap);		
@@ -220,11 +221,16 @@ public class ExtensionLoader extends AppContextAware {
 				jaDesc.param("description", desc);	
 				
 				// determine constraint info
-				if (type.equals("String") && constraint != null) {
-					JAnnotationUse ja = jf.annotate(org.openhds.domain.extensions.ExtensionConstraint.class);
+				if ((type.equals("String")) && constraint != null) {
+					JAnnotationUse ja = jf.annotate(org.openhds.domain.extensions.ExtensionStringConstraint.class);
 					ja.param("constraint", constraint);
 					ja.param("message", "Invalid Value for " + attribute);
 					ja.param("allowNull", true);
+				}
+				else if ((type.equals("Integer")) && constraint != null) {
+					JAnnotationUse ja = jf.annotate(org.openhds.domain.extensions.ExtensionIntegerConstraint.class);
+					ja.param("constraint", constraint);
+					ja.param("message", "Invalid Value for " + attribute);
 				}
 
 				// getters
