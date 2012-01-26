@@ -8,6 +8,7 @@ import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
@@ -267,6 +268,20 @@ public class CalculationServiceImpl implements CalculationService {
 			}
 		}
 		return inmigrationsInInterval;
+	}
+	
+	public List<OutMigration> getOutMigrationsBetweenInterval(Calendar startDate, Calendar endDate) {
+		
+		List<OutMigration> outmigrations = genericDao.findAll(OutMigration.class, true);
+		List<OutMigration> outmigrationsInInterval = new ArrayList<OutMigration>();
+		
+		for (OutMigration outmig : outmigrations) {		
+			if (outmig.getRecordedDate().after(startDate) &&
+					outmig.getRecordedDate().before(endDate)) {
+				outmigrationsInInterval.add(outmig);
+			}
+		}
+		return outmigrationsInInterval;
 	}
 	
 	public Calendar getMidPointDate(Calendar startDate, Calendar endDate) {

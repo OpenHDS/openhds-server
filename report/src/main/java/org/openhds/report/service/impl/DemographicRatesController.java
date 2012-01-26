@@ -9,6 +9,7 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.DemRates;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
@@ -37,8 +38,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		this.calculationService = calculationService;
 	}
 	
-	@RequestMapping(value = { "/inmigration.report", "/population.report", "/mortality.report", 
-			"/outmigration.report", "/marital.report", "/childmortalityratios.report", "/fertility.report"})
+	@RequestMapping(value = {"/inmigration.report", "/outmigration.report"})
 	public ModelAndView getPopulationRates(HttpServletRequest request) {
 		
 		String ratesUuid = request.getParameter("ratesUUID");
@@ -86,6 +86,10 @@ public class DemographicRatesController implements DemographicRatesService {
 			List<InMigration> inmigrations = calculationService.getInMigrationsBetweenInterval(startDate, endDate);
 			setAgeGroupsForInMigrations(inmigrations);
 		}
+		else if (event.equals("OutMigration")) {
+			List<OutMigration> outmigrations = calculationService.getOutMigrationsBetweenInterval(startDate, endDate);
+			setAgeGroupsForOutMigrations(outmigrations);
+		}
 			
 		// call this once denominator and numerator totals have been calculated
 		calculationService.completeReportRecords(startDate, endDate);
@@ -111,6 +115,16 @@ public class DemographicRatesController implements DemographicRatesService {
 		for (InMigration inmigration : inmigrations) {
 			Individual individual = inmigration.getIndividual();
 			int days = calculationService.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
+			long age = (long) (days / 365.25);
+			calculationService.setAgeGroups(age, individual, false);
+			calculationService.setNumeratorTotals();
+		}
+	}
+	
+	public void setAgeGroupsForOutMigrations(List<OutMigration> outmigrations) {
+		for (OutMigration outmigration : outmigrations) {
+			Individual individual = outmigration.getIndividual();
+			int days = calculationService.daysBetween(individual.getDob(), outmigration.getRecordedDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setNumeratorTotals();
