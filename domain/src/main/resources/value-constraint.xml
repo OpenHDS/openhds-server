@@ -37,9 +37,4 @@
 		<value description="Other Relative">8</value>
 		<value description="Don't Know">9</value>
 	</constraint>
-	<constraint id="locationWaterSourceConstraint">
-		<value description="Well">1</value>
-		<value description="Fountain">2</value>
-		<value description="Bore Hole">3</value>
-	</constraint>
 </value-constraints>

@@ -176,6 +176,7 @@ public class ExtensionLoader extends AppContextAware {
 			jCodeModel = new JCodeModel();	
 			
 			LocationTemplateBuilder locationTemplateBuilder = new LocationTemplateBuilder(jCodeModel);
+			IndividualTemplateBuilder individualTemplateBuilder = new IndividualTemplateBuilder(jCodeModel);
 			
 			JPackage jp = jCodeModel._package("org.openhds.domain.model");					
 			JDefinedClass jc = null;
@@ -186,6 +187,10 @@ public class ExtensionLoader extends AppContextAware {
 				if (entityName.equals("Location")) {
 					jc = jp._class(entityName);
 					locationTemplateBuilder.buildLocationTemplate(jc);
+				}
+				else if (entityName.equals("Individual")) {
+					jc = jp._class(entityName);
+					individualTemplateBuilder.buildIndividualTemplate(jc);
 				}
 			}
 			
@@ -210,6 +215,8 @@ public class ExtensionLoader extends AppContextAware {
 				
 				if (entity.equals("Location") && locationTemplateBuilder.locationTemplateBuilt == false)
 					locationTemplateBuilder.buildLocationTemplate(jc);
+				else if (entity.equals("Individual") && individualTemplateBuilder.individualTemplateBuilt == false)
+					individualTemplateBuilder.buildIndividualTemplate(jc);
 				
 				// build extended fields
 				JFieldVar jf = jc.field(JMod.NONE , 			
