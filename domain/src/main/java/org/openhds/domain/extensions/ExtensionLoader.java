@@ -186,11 +186,11 @@ public class ExtensionLoader extends AppContextAware {
 			if (keys.size() == 0) {
 				if (entityName.equals("Location")) {
 					jc = jp._class(entityName);
-					locationTemplateBuilder.buildLocationTemplate(jc);
+					locationTemplateBuilder.buildTemplate(jc);
 				}
 				else if (entityName.equals("Individual")) {
 					jc = jp._class(entityName);
-					individualTemplateBuilder.buildIndividualTemplate(jc);
+					individualTemplateBuilder.buildTemplate(jc);
 				}
 			}
 			
@@ -214,9 +214,9 @@ public class ExtensionLoader extends AppContextAware {
 					jc = jp._class(entity);
 				
 				if (entity.equals("Location") && locationTemplateBuilder.locationTemplateBuilt == false)
-					locationTemplateBuilder.buildLocationTemplate(jc);
+					locationTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("Individual") && individualTemplateBuilder.individualTemplateBuilt == false)
-					individualTemplateBuilder.buildIndividualTemplate(jc);
+					individualTemplateBuilder.buildTemplate(jc);
 				
 				// build extended fields
 				JFieldVar jf = jc.field(JMod.NONE , 			
