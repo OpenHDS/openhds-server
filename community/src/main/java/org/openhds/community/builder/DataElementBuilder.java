@@ -1,8 +1,9 @@
 package org.openhds.community.builder;
 
-import org.dhis2.ns.schema.dxf2.DataElementDefinitionDocument.DataElementDefinition;
+import java.util.Calendar;
+
 import org.dhis2.ns.schema.dxf2.DataElementDocument.DataElement;
-import org.dhis2.ns.schema.dxf2.MetadataDocument.Metadata;
+import org.dhis2.ns.schema.dxf2.DataElementsDocument.DataElements;
 
 /**
  * Builds the DataElement section of the DHIS2 schema.
@@ -11,16 +12,21 @@ import org.dhis2.ns.schema.dxf2.MetadataDocument.Metadata;
  */
 public class DataElementBuilder {
 	
-	public void buildDataElement(Metadata metadata, String name, String description, String type, String number) {
-		
-		DataElementDefinition dataElementDef = metadata.addNewDataElementDefinition();			
+	public void buildDataElement(DataElements dataElementDef, String name, String description, String type, String number) {
+			
 		DataElement dataElement = dataElementDef.addNewDataElement();
 		
+		dataElement.setUuid("");
 		dataElement.setName(name);
 		dataElement.setAlternativeName(name);
-		dataElement.setCode(name);
+		dataElement.setShortName(name);
+		dataElement.setCode("");
 		dataElement.setDescription(description);
+		dataElement.setActive("true");
 		dataElement.setType(type);
+		dataElement.setAggregationOperator("sum");
+		dataElement.setCategoryCombo(1);
+		dataElement.setLastUpdated(Calendar.getInstance());
 		dataElement.setId(Integer.parseInt(number));
 	}
 }

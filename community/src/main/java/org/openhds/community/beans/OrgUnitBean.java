@@ -9,14 +9,17 @@ public class OrgUnitBean {
 	String name;
 	String code;
 	String level;
+	int index;
+	OrgUnitBean parent;
 	
 	List<OrgUnitBean> children = new ArrayList<OrgUnitBean>();
 	
-	public OrgUnitBean(String id, String name, String code, String level) {
+	public OrgUnitBean(String id, String name, String code, String level, int index) {
 		this.id = id;
 		this.name = name;
 		this.code = code;
 		this.level = level;
+		this.index = index;
 	}
 	
 	public String getId() {
@@ -57,5 +60,21 @@ public class OrgUnitBean {
 
 	public void setChildren(List<OrgUnitBean> children) {
 		this.children = children;
+	}
+	
+	public OrgUnitBean getParent() {
+		return parent;
+	}
+
+	public void setParent(OrgUnitBean parent) {
+		this.parent = parent;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

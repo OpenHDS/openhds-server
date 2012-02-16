@@ -3,7 +3,11 @@ package org.openhds.community.builder;
 import java.util.Map;
 import java.util.Set;
 import org.dhis2.ns.schema.dxf2.CategoriesDocument.Categories;
+import org.dhis2.ns.schema.dxf2.CategoryComboDocument.CategoryCombo;
+import org.dhis2.ns.schema.dxf2.CategoryCombosDocument.CategoryCombos;
 import org.dhis2.ns.schema.dxf2.CategoryDocument.Category;
+import org.dhis2.ns.schema.dxf2.CategoryOptionComboDocument.CategoryOptionCombo;
+import org.dhis2.ns.schema.dxf2.CategoryOptionCombosDocument.CategoryOptionCombos;
 import org.dhis2.ns.schema.dxf2.CategoryOptionsDocument.CategoryOptions;
 import org.dhis2.ns.schema.dxf2.IdentifiableObject;
 import org.dhis2.ns.schema.dxf2.MetadataDocument.Metadata;
@@ -45,5 +49,39 @@ public class CategoryBuilder {
 			catOption.setCode(array[i]);
 			catOption.setDescription("");
 		}
+	}
+	
+	public void buildDefaultCategoryCombos(Metadata metadata) {
+		CategoryCombos categoryCombos = metadata.addNewCategoryCombos();
+		CategoryCombo categoryCombo = categoryCombos.addNewCategoryCombo();
+		
+		categoryCombo.setId(1);
+		categoryCombo.setName("default");
+	}
+	
+	public void buildDefaultCategoryOptions(Metadata metadata) {
+		CategoryOptions categoryOptions = metadata.addNewCategoryOptions();
+		IdentifiableObject categoryOption = categoryOptions.addNewCategoryOption();
+		
+		categoryOption.setId(1);
+		categoryOption.setName("default");
+	}
+	
+	public void buildDefaultCategoryOptionCombos(Metadata metadata) {
+		
+		CategoryOptionCombos categoryOptionCombos = metadata.addNewCategoryOptionCombos();
+		CategoryOptionCombo categoryOptionCombo = categoryOptionCombos.addNewCategoryOptionCombo();
+		
+		categoryOptionCombo.setId(1);
+		categoryOptionCombo.setName("default");
+		
+		CategoryCombo categoryCombo = categoryOptionCombo.addNewCategoryCombo();
+		categoryCombo.setId(1);
+		categoryCombo.setName("default");
+		
+		CategoryOptions categoryOptions = categoryOptionCombo.addNewCategoryOptions();
+		IdentifiableObject categoryOption = categoryOptions.addNewCategoryOption();
+		categoryOption.setId(1);
+		categoryOption.setName("default");	
 	}
 }
