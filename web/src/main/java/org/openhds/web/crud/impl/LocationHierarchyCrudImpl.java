@@ -29,7 +29,7 @@ public class LocationHierarchyCrudImpl extends EntityCrudImpl<LocationHierarchy,
     @Override
     public String edit() {
     	
-    	LocationHierarchy persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	LocationHierarchy persistedItem = (LocationHierarchy)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	
     	try {
     		service.checkLocationHierarchy(persistedItem, entityItem);	
@@ -44,7 +44,7 @@ public class LocationHierarchyCrudImpl extends EntityCrudImpl<LocationHierarchy,
     @Override
     public String delete() {
     	
-    	LocationHierarchy persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	LocationHierarchy persistedItem = (LocationHierarchy)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	
     	try {
     		service.deleteLocationHierarchy(persistedItem);	

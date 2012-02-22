@@ -53,7 +53,7 @@ public class PregnancyObservationCrudImpl extends EntityCrudImpl<PregnancyObserv
 	
 	@Override
 	public String delete() {		
-		PregnancyObservation obs = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+		PregnancyObservation obs = (PregnancyObservation)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
 		obs.setStatus(properties.getDataStatusClosedCode());
 		
         try {

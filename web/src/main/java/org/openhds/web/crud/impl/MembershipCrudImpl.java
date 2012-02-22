@@ -59,7 +59,7 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     @Override
     public String edit() {
     	
-    	Membership persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	Membership persistedItem = (Membership)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
 
         try {
         	service.checkMembership(persistedItem, entityItem);

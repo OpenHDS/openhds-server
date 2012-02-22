@@ -44,7 +44,7 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
     @Override
     public String delete() {
     	
-    	Location persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	Location persistedItem = (Location)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	
     	try {
     		service.deleteLocation(persistedItem);

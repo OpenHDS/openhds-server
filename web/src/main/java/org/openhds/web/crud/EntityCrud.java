@@ -2,11 +2,13 @@ package org.openhds.web.crud;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+
 import org.openhds.dao.service.Dao;
-import org.openhds.web.cvt.EntityConverter;
 import org.openhds.web.ui.PagingState;
 
 /**
@@ -81,9 +83,9 @@ public interface EntityCrud<T, PK extends Serializable> {
 
     SelectItem[] getSelectItems();
 
-    void setConverter(EntityConverter<T> converter);
+    void setConverter(Converter converter);
 
-    EntityConverter<T> getConverter();
+    Converter getConverter();
 
     void validateCreate(FacesContext facesContext, UIComponent component, Object value);
 

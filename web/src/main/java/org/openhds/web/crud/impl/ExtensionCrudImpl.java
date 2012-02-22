@@ -51,7 +51,7 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
     @Override
     public String delete() {
     	
-    	ClassExtension persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	ClassExtension persistedItem = (ClassExtension)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	
     	try {
     		service.deleteClassExtension(persistedItem);	

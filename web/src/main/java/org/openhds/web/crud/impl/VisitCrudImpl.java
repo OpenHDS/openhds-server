@@ -201,7 +201,7 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
     @Override
     public String edit() {
     	
-    	Visit persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	Visit persistedItem = (Visit)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
 
         try {
         	service.checkVisit(persistedItem, entityItem);

@@ -6,22 +6,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openhds.domain.constraint.Searchable;
-import org.openhds.dao.service.Dao;
-import org.openhds.dao.service.GenericDao;
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
+import org.openhds.controller.service.EntityValidationService;
+import org.openhds.dao.service.Dao;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.constraint.Searchable;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
-import org.openhds.web.cvt.EntityConverter;
-import org.openhds.controller.service.EntityValidationService;
 import org.openhds.web.service.JsfService;
 import org.openhds.web.service.WebFlowService;
 import org.openhds.web.ui.NavigationMenuBean;
@@ -71,7 +73,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
 	// used to convert an entity from a string to object, or
     // object to a string
-    protected EntityConverter<T> converter;
+    protected Converter converter;
    
     // helper service
     public JsfService jsfService;
@@ -298,7 +300,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
      */
      public String delete() {
 
-        T persistentObject = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+        Object persistentObject = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
         
         try {
 			entityService.delete(persistentObject);
@@ -459,11 +461,11 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         return jsfService.getSelectItems(dao.findListByProperty(propertyName, value, true));
     }
 
-    public void setConverter(EntityConverter<T> converter) {
+    public void setConverter(Converter converter) {
         this.converter = converter;
     }
 
-    public EntityConverter<T> getConverter() {
+    public Converter getConverter() {
         return converter;
     }
 

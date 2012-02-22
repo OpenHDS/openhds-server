@@ -3,8 +3,11 @@ package org.openhds.web.cvt;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openhds.dao.service.Dao;
@@ -20,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <PK>
  */
 
-public class EntityConverterImpl<T, PK extends Serializable> implements EntityConverter<T> {
+public class EntityConverterImpl<T, PK extends Serializable> implements Converter {
 
 	private static Log log = LogFactory.getLog(EntityConverterImpl.class);
 

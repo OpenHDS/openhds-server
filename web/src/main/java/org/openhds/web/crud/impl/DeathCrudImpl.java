@@ -50,7 +50,7 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
     @Override
     public String delete() {
     	
-    	Death death = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	Death death = (Death)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	service.deleteDeath(death);
     	
         try {

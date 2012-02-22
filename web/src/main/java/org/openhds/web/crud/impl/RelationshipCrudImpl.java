@@ -61,7 +61,7 @@ public class RelationshipCrudImpl extends EntityCrudImpl<Relationship, String> {
     @Override
     public String edit() {
     	
-    	Relationship persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	Relationship persistedItem = (Relationship)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
 
         try {
         	service.checkRelationship(persistedItem, entityItem);

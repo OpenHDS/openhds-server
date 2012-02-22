@@ -85,7 +85,7 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
     		return null;
     	}
     	
-    	selectedRole = converter.getAsObject(FacesContext.getCurrentInstance(), null, entityId);
+    	selectedRole = (Role)converter.getAsObject(FacesContext.getCurrentInstance(), null, entityId);
     	
     	List<User> usersWithRole = service.findUsersWithRole(selectedRole);
     	

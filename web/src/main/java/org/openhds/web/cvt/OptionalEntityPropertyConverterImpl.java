@@ -5,8 +5,11 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+
 import org.openhds.dao.service.Dao;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <PK>
  */
 public class OptionalEntityPropertyConverterImpl<T, PK extends Serializable> implements
-		EntityConverter<T> {
+		Converter {
 
 	Dao<T, PK> entityDao;
 	String propertyName;

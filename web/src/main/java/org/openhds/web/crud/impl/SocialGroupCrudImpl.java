@@ -34,7 +34,7 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     @Override
     public String edit() {
     	
-    	SocialGroup persistedItem = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	SocialGroup persistedItem = (SocialGroup)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
 
         try {
         	socialGroupService.checkSocialGroup(persistedItem, entityItem);
@@ -56,7 +56,7 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     
     @Override
     public String delete() {
-    	SocialGroup sg = converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
+    	SocialGroup sg = (SocialGroup)converter.getAsObject(FacesContext.getCurrentInstance(), null, jsfService.getReqParam("itemId"));
     	
         try {
         	socialGroupService.deleteSocialGroup(sg);
