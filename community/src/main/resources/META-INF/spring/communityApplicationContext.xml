@@ -14,5 +14,7 @@
         http://www.springframework.org/schema/security/spring-security-3.0.xsd">
         
 	<bean id="dhisService" class="org.openhds.community.service.impl.DHISServiceImpl" />
-			
+	
+	<bean id="dhisDocumentBean" class="org.openhds.community.beans.DHISDocumentBean" />
+		
 </beans>

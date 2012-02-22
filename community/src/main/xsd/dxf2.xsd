@@ -20,11 +20,10 @@
     <xs:complexType>
       <xs:sequence>
         <xs:group minOccurs="0" ref="dxf2:CategoryDimensions"/>
-        <xs:element minOccurs="0" ref="dxf2:dataElements"/>
+        <xs:element minOccurs="0" ref="dxf2:DataElementDefinition"/>
         <xs:group minOccurs="0" ref="dxf2:IndicatorDefinition"/>
         <xs:group minOccurs="0" ref="dxf2:GroupSetDimensions"/>
-        <xs:element minOccurs="0" ref="dxf2:dataSets"/>
-        <xs:element minOccurs="0" ref="dxf2:dataSetMembers"/>
+        <xs:element minOccurs="0" ref="dxf2:DataSetDefinition"/>
         <xs:element minOccurs="0" ref="dxf2:DataDictionaryDefinition"/>
         <xs:element minOccurs="0" ref="dxf2:orgUnitStructure"/>
         <xs:element minOccurs="0" ref="dxf2:periods"/>
@@ -50,11 +49,10 @@
     <xs:sequence>
       <xs:element ref="dxf2:categories"/>
       <xs:element ref="dxf2:categoryCombos"/>
-      <xs:element ref="dxf2:categoryOptions"/>
       <xs:element ref="dxf2:categoryOptionCombos"/>
     </xs:sequence>
   </xs:group>
-  <xs:element name="dataElements">
+  <xs:element name="DataElementDefinition" abstract="true">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:dataElement"/>
@@ -73,13 +71,12 @@
       <xs:element ref="dxf2:indicatorGroupSets"/>
     </xs:sequence>
   </xs:group>
-  <xs:element name="dataSets">
+  <xs:element name="DataSetDefinition" abstract="true">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" name="dataSet">
           <xs:complexType>
             <xs:sequence>
-              <xs:element ref="dxf2:id"/>
               <xs:element ref="dxf2:name"/>
               <xs:element ref="dxf2:shortName"/>
               <xs:element ref="dxf2:code"/>
@@ -92,15 +89,9 @@
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
+            <xs:attribute name="id" use="required" type="dxf2:dxfID"/>
           </xs:complexType>
         </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dataSetMembers">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:dataSetMember"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -109,7 +100,6 @@
       <xs:sequence>
         <xs:element ref="dxf2:organisationUnitLevels"/>
         <xs:element ref="dxf2:organisationUnits"/>
-        <xs:element ref="dxf2:organisationUnitRelationships"/>
         <xs:element ref="dxf2:organisationUnitGroups"/>
         <xs:element ref="dxf2:groupSets"/>
       </xs:sequence>
@@ -146,7 +136,7 @@
       <xs:element ref="dxf2:description"/>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="id" type="dxf2:dxfID"/>
+  <xs:element name="id" type="xs:int"/>
   <xs:element name="uuid" type="xs:string"/>
   <xs:element name="name" type="xs:string"/>
   <xs:element name="alternativeName" type="xs:string"/>
@@ -192,14 +182,14 @@
         <xs:element maxOccurs="unbounded" ref="dxf2:categoryCombo"/>
       </xs:sequence>
     </xs:complexType>
-  </xs:element>  
+  </xs:element>
   <xs:element name="categoryCombo">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="dxf2:id" />
         <xs:element ref="dxf2:name"/>
         <xs:element ref="dxf2:categoryRefs"/>
       </xs:sequence>
+      <xs:attribute name="id" use="required" type="dxf2:dxfID"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="categoryRefs">
@@ -226,8 +216,7 @@
       <xs:complexContent>
         <xs:extension base="dxf2:identifiableObject">
           <xs:sequence>
-            <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:categoryCombo"/>
-            <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:categoryOptions"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:categoryOptionRef"/>
           </xs:sequence>
           <xs:attribute name="categoryComboRef" use="required" type="dxf2:dxfIDRef"/>
         </xs:extension>
@@ -320,6 +309,7 @@
     </xs:complexType>
   </xs:element>
   <!-- DataElementDefinition -->
+  <xs:element name="dataElements" substitutionGroup="dxf2:DataElementDefinition"/>
   <xs:element name="dataElement">
     <xs:complexType>
       <xs:complexContent>
@@ -328,9 +318,8 @@
             <xs:element name="active" type="xs:string"/>
             <xs:element ref="dxf2:type"/>
             <xs:element ref="dxf2:aggregationOperator"/>
-            <xs:element name="categoryCombo" type="dxf2:dxfIDRef"/>
-            <xs:element minOccurs="0" ref="dxf2:lastUpdated"/>
           </xs:sequence>
+          <xs:attribute name="categoryComboRef" use="required" type="dxf2:dxfIDRef"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
@@ -407,6 +396,7 @@
   </xs:element>
   <xs:element name="region" type="xs:string"/>
   <!-- DataSet Definition -->
+  <xs:element name="dataSets" substitutionGroup="dxf2:DataSetDefinition"/>
   <xs:element name="periodType" type="xs:string"/>
   <!-- Organisation Unit Definition -->
   <xs:element name="groupSets">
@@ -514,19 +504,10 @@
             <xs:element minOccurs="0" ref="dxf2:longitude"/>
             <xs:element minOccurs="0" ref="dxf2:url"/>
             <xs:element minOccurs="0" ref="dxf2:lastUpdated"/>
-            <xs:element minOccurs="0" ref="dxf2:feature"/>
             <xs:element ref="dxf2:children"/>
           </xs:sequence>
         </xs:extension>
       </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dataSetMember">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="dataSet" type="xs:int"/>
-        <xs:element name="dataElement" type="xs:int"/>
-      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="dataSetRef">
@@ -543,7 +524,6 @@
   <xs:element name="longitude" type="xs:string"/>
   <xs:element name="url" type="xs:string"/>
   <xs:element name="lastUpdated" type="xs:date"/>
-  <xs:element name="feature" type="xs:string"/>
   <xs:element name="children">
     <xs:complexType>
       <xs:sequence>
@@ -551,23 +531,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="organisationUnitRelationships">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dxf2:organisationUnitRelationship"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="organisationUnitRelationship">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="dxf2:parent"/>
-        <xs:element ref="dxf2:child"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="parent" type="xs:integer"/>
-  <xs:element name="child" type="xs:integer"/>
   <xs:element name="organisationUnitLevels">
     <xs:complexType>
       <xs:sequence>
@@ -577,14 +540,11 @@
   </xs:element>
   <xs:element name="organisationUnitLevel">
     <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="dxf2:identifiableObject">
-          <xs:sequence>
-            <xs:element ref="dxf2:level"/>
-            <xs:element ref="dxf2:name"/>
-          </xs:sequence>
-      </xs:extension>
-      </xs:complexContent>
+      <xs:sequence>
+        <xs:element ref="dxf2:level"/>
+        <xs:element ref="dxf2:name"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="dxf2:dxfID"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="level" type="xs:integer"/>
@@ -599,15 +559,15 @@
   <xs:element name="period">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="dxf2:id"/>
         <xs:element ref="dxf2:periodType"/>
         <xs:element ref="dxf2:startDate"/>
         <xs:element ref="dxf2:endDate"/>
       </xs:sequence>
+      <xs:attribute name="id" use="required" type="dxf2:dxfID"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="startDate" type="xs:string"/>
-  <xs:element name="endDate" type="xs:string"/>
+  <xs:element name="startDate" type="xs:date"/>
+  <xs:element name="endDate" type="xs:date"/>
   <!-- ReportTable Definition -->
   <xs:element name="reportTables">
     <xs:complexType>
