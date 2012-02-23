@@ -15,11 +15,10 @@ import org.openhds.domain.model.LocationHierarchy;
  * the id. 
  */
 
-public class LocationHierarchyGenerator<T> extends Generator<LocationHierarchy> {
+public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 
 	@Override
-	public String generateId(LocationHierarchy entityItem) throws ConstraintViolations  {
-		LocationHierarchy location = (LocationHierarchy)entityItem;
+	public String generateId(LocationHierarchy location) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();

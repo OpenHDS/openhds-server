@@ -15,9 +15,8 @@ import org.openhds.domain.model.FieldWorker;
  * the id. 
  */
 
-public class FieldWorkerGenerator<T> extends Generator<FieldWorker> {
+public class FieldWorkerGenerator extends Generator<FieldWorker> {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public String generateId(FieldWorker entityItem) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	

@@ -16,7 +16,7 @@ import org.openhds.domain.model.Visit;
  * the id. 
  */
 
-public class VisitGenerator<T> extends Generator<Visit> {
+public class VisitGenerator extends Generator<Visit> {
 
 	@Override
 	public String generateId(Visit entityItem) throws ConstraintViolations  {

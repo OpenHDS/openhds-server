@@ -15,12 +15,11 @@ import org.openhds.domain.model.Location;
  * the id. 
  */
 
-public class LocationGenerator<T> extends Generator<T> {
+public class LocationGenerator extends Generator<Location> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String generateId(T entityItem) throws ConstraintViolations  {
-		Location location = (Location)entityItem;
+	public String generateId(Location location) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
@@ -67,9 +66,9 @@ public class LocationGenerator<T> extends Generator<T> {
 		
 		extId = sb.toString();
 		if (scheme.getIncrementBound() > 0) 
-			sb.append(buildNumberWithBound(entityItem, scheme));
+			sb.append(buildNumberWithBound(location, scheme));
 		else
-			sb.append(buildNumber((Class<T>) Location.class, sb.toString(), scheme.isCheckDigit()));
+			sb.append(buildNumber(Location.class, sb.toString(), scheme.isCheckDigit()));
 			
 		if (scheme.isCheckDigit()) 
 			sb.append(generateCheckCharacter(sb.toString()));
@@ -80,7 +79,7 @@ public class LocationGenerator<T> extends Generator<T> {
 	}
 
 	@Override
-	public String buildNumberWithBound(T entityItem, IdScheme scheme) throws ConstraintViolations {
+	public String buildNumberWithBound(Location entityItem, IdScheme scheme) throws ConstraintViolations {
 		
 		Location loc = new Location();
 		
@@ -117,9 +116,7 @@ public class LocationGenerator<T> extends Generator<T> {
 		return resource.getIdScheme().get(index);
 	}
 	
-	public void validateId(T entityItem) throws ConstraintViolations {
-		
-		Location loc = (Location)entityItem;
+	public void validateId(Location loc) throws ConstraintViolations {
 		IdScheme scheme = getIdScheme();
 		
 		HashMap<String, Integer> fields = scheme.getFields();

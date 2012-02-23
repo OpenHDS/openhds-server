@@ -15,12 +15,11 @@ import org.openhds.domain.model.Individual;
  * the id. 
  */
 
-public class IndividualGenerator<T> extends Generator<Individual> {
+public class IndividualGenerator extends Generator<Individual> {
 		
 	@SuppressWarnings("unchecked")
 	@Override
-	public String generateId(Individual entityItem) throws ConstraintViolations  {
-		Individual individual = (Individual)entityItem;
+	public String generateId(Individual individual) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
@@ -91,7 +90,7 @@ public class IndividualGenerator<T> extends Generator<Individual> {
 		
 		extId = sb.toString();
 		if (scheme.getIncrementBound() > 0) 
-			sb.append(buildNumberWithBound(entityItem, scheme));
+			sb.append(buildNumberWithBound(individual, scheme));
 		else
 			sb.append(buildNumber(Individual.class, sb.toString(), scheme.isCheckDigit()));
 		
