@@ -75,7 +75,7 @@ public class CoreWebServiceImpl {
     private WhitelistService whitelistService;
     private IdValidator idUtilities;
     private SiteProperties siteProperties;
-    private IndividualGenerator<Individual> indivGen;
+    private IndividualGenerator indivGen;
    
     @Context
     HttpServletRequest request;
@@ -658,7 +658,7 @@ public class CoreWebServiceImpl {
         this.siteProperties = siteProperties;
     }
 
-	public void setIndivGen(IndividualGenerator<Individual> indivGen) {
+	public void setIndivGen(IndividualGenerator indivGen) {
 		this.indivGen = indivGen;
 	}
 }
