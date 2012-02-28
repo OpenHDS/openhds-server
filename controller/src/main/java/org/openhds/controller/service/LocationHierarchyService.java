@@ -53,6 +53,9 @@ public interface LocationHierarchyService {
 	List<String> getLocationNames(String term);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<String> getValidLocationsInHierarchy(String locationHierarchyItem);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<LocationHierarchyLevel> getAllLevels();
 		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})

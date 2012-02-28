@@ -27,6 +27,16 @@ public class CalendarUtil {
 		return cal;
 	}
 	
+	public static long daysBetween(Calendar startDate, Calendar endDate) {  
+		Calendar date = (Calendar) startDate.clone();  
+		long daysBetween = 0;  
+		while (date.before(endDate)) {  
+			date.add(Calendar.DAY_OF_MONTH, 1);  
+			daysBetween++;  
+		}  
+		return daysBetween;  
+	}  		
+	
 	public String formatDate(Calendar calendar) {
 		SimpleDateFormat format = new SimpleDateFormat(siteProperties.getDateFormat());
 		return format.format(calendar.getTime());

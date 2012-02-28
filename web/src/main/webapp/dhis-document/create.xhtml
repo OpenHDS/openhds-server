@@ -24,22 +24,109 @@
                 <h:form id="form">
                 
                 	<h:panelGrid columns="3">
+                	
+                		<h:outputText value="Location Hierarchy Name:" />
+						<h:inputText id="hierarchy" value="#{dhisDocumentBean.hierarchyExtId}" required="true"/>
+	                    <h:message for="hierarchy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+						
+                	 	<h:outputText value="Period:"/>
+                    	<h:selectOneMenu id="periodList" value="#{dhisDocumentBean.period}" onchange="setPeriod()" >
+							<f:selectItem itemValue="Daily" itemLabel="Daily" selected="true" />
+						  	<f:selectItem itemValue="Monthly" itemLabel="Monthly"/>
+						  	<f:selectItem itemValue="Yearly" itemLabel="Yearly"/>
+						</h:selectOneMenu>
+	                    <h:message for="period" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
-						<h:outputText value="Start Date (#{siteProperties.dateFormat})"/>
-	                    <o:dateChooser id="startDate" value="#{dhisDocumentBean.startDate}" pattern="#{siteProperties.dateFormat}" />
+						<h:outputText styleClass="dailyPeriod"  value="Start Date (#{siteProperties.dateFormat})" />
+						<h:inputText styleClass="dailyPeriod" id="startDate" value="#{dhisDocumentBean.startDate}" validator="#{dateValidator.validate}" required="true"/>
 	                    <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						
-						<h:outputText value="End Date (#{siteProperties.dateFormat})"/>
-	                    <o:dateChooser id="endDate" value="#{dhisDocumentBean.endDate}" pattern="#{siteProperties.dateFormat}" />
+						<h:outputText styleClass="dailyPeriod"  value="End Date (#{siteProperties.dateFormat})" />
+	                   	<h:inputText styleClass="dailyPeriod" id="endDate" value="#{dhisDocumentBean.endDate}" validator="#{dateValidator.validate}" required="true" />
 	                    <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                    
-	                    <h:outputText value="Period:"/>
-	                    <h:inputText id="period" value="#{dhisDocumentBean.period}" converter="#{defaultConverter}" required="true"/>
-	                    <h:message for="period" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-                       
+	  	                <h:outputText styleClass="yearlyPeriod" value="Year Start:" />
+	                   	<h:inputText styleClass="yearlyPeriod" id="yearStart" value="#{dhisDocumentBean.startYear}" required="true">
+	                   		<f:validateLongRange minimum="1900" />
+	                   	</h:inputText>
+	                    <h:message for="yearStart" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                    
+	                    <h:outputText styleClass="yearlyPeriod" value="Year End:" />
+	                   	<h:inputText styleClass="yearlyPeriod" id="yearEnd" value="#{dhisDocumentBean.endYear}" required="true">
+	                   		<f:validateLongRange minimum="1900" />
+	                   	</h:inputText>
+	                    <h:message for="yearEnd" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					       
+					       <h:outputText styleClass="monthlyPeriod" value="Start Month:" />
+						<h:selectOneMenu styleClass="monthlyPeriod" id="monthStartList" value="#{dhisDocumentBean.startMonth}" >
+							<f:selectItem itemValue="01" itemLabel="01" selected="true" />
+						  	<f:selectItem itemValue="02" itemLabel="02"/>
+						  	<f:selectItem itemValue="03" itemLabel="03"/>
+						  	<f:selectItem itemValue="04" itemLabel="04" />
+						  	<f:selectItem itemValue="05" itemLabel="05"/>
+						  	<f:selectItem itemValue="06" itemLabel="06"/>
+						  	<f:selectItem itemValue="07" itemLabel="07" />
+						  	<f:selectItem itemValue="08" itemLabel="08"/>
+						  	<f:selectItem itemValue="09" itemLabel="09"/>
+						  	<f:selectItem itemValue="10" itemLabel="10" />
+						  	<f:selectItem itemValue="11" itemLabel="11"/>
+						  	<f:selectItem itemValue="12" itemLabel="12"/>
+						</h:selectOneMenu>
+	                    <h:message for="monthStartList" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                    
+	                    <h:outputText styleClass="monthlyPeriod" value="End Month:" />
+	                   	<h:selectOneMenu styleClass="monthlyPeriod" id="monthEndList" value="#{dhisDocumentBean.endMonth}" >
+							<f:selectItem itemValue="01" itemLabel="01" selected="true" />
+						  	<f:selectItem itemValue="02" itemLabel="02"/>
+						  	<f:selectItem itemValue="03" itemLabel="03"/>
+						  	<f:selectItem itemValue="04" itemLabel="04" />
+						  	<f:selectItem itemValue="05" itemLabel="05"/>
+						  	<f:selectItem itemValue="06" itemLabel="06"/>
+						  	<f:selectItem itemValue="07" itemLabel="07" />
+						  	<f:selectItem itemValue="08" itemLabel="08"/>
+						  	<f:selectItem itemValue="09" itemLabel="09"/>
+						  	<f:selectItem itemValue="10" itemLabel="10" />
+						  	<f:selectItem itemValue="11" itemLabel="11"/>
+						  	<f:selectItem itemValue="12" itemLabel="12"/>
+						</h:selectOneMenu>
+	                    <h:message for="monthEndList" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>             
+                   
                     </h:panelGrid>
                     <br />
                 	<h:commandButton action="generateDHISDoc" value="#{msg.lblCreate}" />
+                	
+                	<script>
+		              //<![CDATA[
+		              
+		               function setPeriod() {     
+		               		if ($('#form\\:periodList').val() == "Daily") {
+		                    	$('.dailyPeriod').attr("disabled", false);
+		                      	$('.yearlyPeriod').attr("disabled", true);
+		                    	$('.monthlyPeriod').attr("disabled", true);
+		                    	$('.yearlyPeriod').val("");
+		                    	$('.monthlyPeriod').val("");
+		                    }
+		               		else if ($('#form\\:periodList').val() == "Monthly") {
+		                    	$('.dailyPeriod').attr("disabled", true);
+		                      	$('.yearlyPeriod').attr("disabled", false);
+		                    	$('.monthlyPeriod').attr("disabled", false);
+		                    	$('.dailyPeriod').val("");
+		                    }
+		               		else if ($('#form\\:periodList').val() == "Yearly") {
+		               			$('.dailyPeriod').attr("disabled", true);
+		                    	$('.monthlyPeriod').attr("disabled", true);
+		                      	$('.yearlyPeriod').attr("disabled", false);
+		                      	$('.dailyPeriod').val("");
+		                     	$('.monthlyPeriod').val("");
+		               		}
+		                };
+
+		                $(document).ready(function() {
+		                	setPeriod();
+						});
+		              
+		              //]]>
+           			</script>
                 </h:form>
             </ui:define>
         </ui:composition>

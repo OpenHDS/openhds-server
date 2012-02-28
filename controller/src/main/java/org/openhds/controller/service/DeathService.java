@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
+import org.openhds.controller.beans.DeathRecordGroup;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
@@ -27,6 +28,9 @@ public interface DeathService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createDeathAndSetNewHead(Death death, List<SocialGroup> groups, List<Individual> successors, HashMap<Integer, List<Membership>> memberships) throws ConstraintViolations, SQLException, Exception;
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	void setDeathsForAgeGroupsByLocation(DeathRecordGroup deathGroup, List<String> locations);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	boolean checkDuplicateIndividual(Individual indiv);

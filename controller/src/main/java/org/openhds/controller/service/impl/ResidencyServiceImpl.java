@@ -54,9 +54,11 @@ public class ResidencyServiceImpl implements ResidencyService {
         Individual indiv = candidateResidency.getIndividual();
 
         checkIndividualEligibleForNewResdency(indiv);
+        
+        Set<Residency> res = indiv.getAllResidencies();
 
         // integrity checks on previous residencies
-        for (Residency previousResidency : indiv.getAllResidencies()) {
+        for (Residency previousResidency : res) {
             // its possible that the start residency being evaluated has already been persisted
             // this case happens when the user is editing a residency
             // no need to have these checks on the same residency

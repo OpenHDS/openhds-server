@@ -2,13 +2,16 @@ package org.openhds.community.builder;
 
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-import org.dhis2.ns.schema.dxf2.ChildrenDocument.Children;
+import java.util.Map;
 import org.dhis2.ns.schema.dxf2.MetadataDocument.Metadata;
 import org.dhis2.ns.schema.dxf2.OrgUnitStructureDocument.OrgUnitStructure;
 import org.dhis2.ns.schema.dxf2.OrganisationUnitDocument.OrganisationUnit;
 import org.dhis2.ns.schema.dxf2.OrganisationUnitLevelDocument.OrganisationUnitLevel;
 import org.dhis2.ns.schema.dxf2.OrganisationUnitLevelsDocument.OrganisationUnitLevels;
+import org.dhis2.ns.schema.dxf2.OrganisationUnitRelationshipDocument.OrganisationUnitRelationship;
+import org.dhis2.ns.schema.dxf2.OrganisationUnitRelationshipsDocument.OrganisationUnitRelationships;
 import org.dhis2.ns.schema.dxf2.OrganisationUnitsDocument.OrganisationUnits;
 import org.openhds.community.beans.OrgUnitBean;
 
@@ -23,16 +26,28 @@ public class OrgUnitBuilder {
 	Calendar startDate;
 	Calendar endDate;
 	
+	OrganisationUnits orgUnits;
+	OrganisationUnitRelationships orgUnitRelationships;
+	
+	static Map<Integer, String> hierarchyCodes = new HashMap<Integer, String>();
+	
+	public static Map<Integer, String> getHierarchyCodes() {
+		return hierarchyCodes;
+	}
+	
 	public void buildOrgUnit(Metadata metadata, OrgUnitBean orgUnit, List<String> levels, Calendar startDate, Calendar endDate) {
 		
 		this.startDate = startDate;
 		this.endDate = endDate;
-		
+
 		OrgUnitStructure orgUnitStructure = metadata.addNewOrgUnitStructure();
 		buildUnitLevels(orgUnitStructure, levels);
 		
-		OrganisationUnits orgUnits = orgUnitStructure.addNewOrganisationUnits();
+		orgUnitRelationships = orgUnitStructure.addNewOrganisationUnitRelationships();
+
+		orgUnits = orgUnitStructure.addNewOrganisationUnits();
 		OrganisationUnit oUnit = orgUnits.addNewOrganisationUnit();
+		
 		buildOrgUnits(oUnit, orgUnit);
 	}
 	
@@ -41,21 +56,28 @@ public class OrgUnitBuilder {
 		oUnit.setId(count);
 		oUnit.setUuid(orgUnit.getId());
 		oUnit.setName(orgUnit.getName());
-		oUnit.setAlternativeName(orgUnit.getName());
 		oUnit.setShortName(oUnit.getName());
+		oUnit.setAlternativeName(oUnit.getName());
 		oUnit.setCode(orgUnit.getCode());
 		oUnit.setComment(orgUnit.getLevel());
 		oUnit.setActive(true);
 		oUnit.setOpeningDate(startDate);
 		oUnit.setClosedDate(endDate);
+		oUnit.setGeoCode("");
+		oUnit.setFeature("");
+		oUnit.setLastUpdated(Calendar.getInstance());
+
+		hierarchyCodes.put(count, orgUnit.getCode());
 		
 		count++;
-
-		Children children = oUnit.addNewChildren();
-		
+				
 		for (OrgUnitBean unit : orgUnit.getChildren()) {
-			OrganisationUnit childUnit = children.addNewOrganisationUnit();
-			buildOrgUnits(childUnit, unit);
+			OrganisationUnitRelationship orgUnitRelationship = orgUnitRelationships.addNewOrganisationUnitRelationship();
+			orgUnitRelationship.setChild(BigInteger.valueOf(unit.getIndex()));
+			orgUnitRelationship.setParent(BigInteger.valueOf(unit.getParent().getIndex()));
+			
+			OrganisationUnit organisationUnit = orgUnits.addNewOrganisationUnit();
+			buildOrgUnits(organisationUnit, unit);
 		}
 	}
 	
@@ -63,7 +85,7 @@ public class OrgUnitBuilder {
 
 		OrganisationUnitLevels orgUnitLevels = orgUnitStructure.addNewOrganisationUnitLevels();
 		
-		int count = 0;
+		int count = 1;
 		for (String level : levels) {
 			OrganisationUnitLevel orgUnitLevel = orgUnitLevels.addNewOrganisationUnitLevel();
 			orgUnitLevel.setLevel(BigInteger.valueOf(count));

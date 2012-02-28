@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.controller.beans.DeathRecordGroup;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.DeathService;
 import org.openhds.controller.service.EntityService;
@@ -206,6 +207,84 @@ public class DeathServiceImpl implements DeathService {
 		if (list.size() == 0)
 			return true;
 		return false;
+	}
+	
+	// this is used for output to the DHIS
+	// iterates through the deaths and categorizes them according to age group
+	public void setDeathsForAgeGroupsByLocation(DeathRecordGroup deathGroup, List<String> locations) {
+				
+		List<Death> deaths = genericDao.findAll(Death.class, true);
+		
+		for (Death death : deaths) {
+			
+			if (locations.contains(death.getVisitDeath().getVisitLocation().getExtId())) {
+
+				long ageInDays = death.getAgeAtDeath();
+				long ageInYears = (long) (ageInDays / 365.25);
+				Calendar deathDate = death.getDeathDate();
+				
+				if ((deathDate.after(deathGroup.getStart()) || deathDate.equals(deathGroup.getStart())) && 
+					(deathDate.before(deathGroup.getEnd()))) {
+				
+					// 0 to 28 days
+					if (ageInDays > 0 && ageInDays <= 28) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(0).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(0).addFemaleCount();
+						deathGroup.getDeaths().get(0).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// 29 to 11 months (334.81 days in 11 months)
+					else if (ageInDays > 28 && ageInDays <= 334.81) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(1).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(1).addFemaleCount();
+						deathGroup.getDeaths().get(1).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// 12 - 59 months 
+					else if (ageInDays > 334.81 && ageInDays <= 1826.21) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(2).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(2).addFemaleCount();
+						deathGroup.getDeaths().get(2).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// 5 to 9 years
+					else if (ageInYears > 5 && ageInYears < 10) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(3).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(3).addFemaleCount();
+						deathGroup.getDeaths().get(3).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// 10 to 19 years
+					else if (ageInYears >= 10 && ageInYears < 20) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(4).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(4).addFemaleCount();
+						deathGroup.getDeaths().get(4).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// 20 to 40 years
+					else if (ageInYears >= 20 && ageInYears < 40) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(5).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(5).addFemaleCount();
+						deathGroup.getDeaths().get(5).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+					// > 40 years
+					else if (ageInYears >= 40) {
+						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+							deathGroup.getDeaths().get(6).addMaleCount();
+						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+							deathGroup.getDeaths().get(6).addFemaleCount();
+						deathGroup.getDeaths().get(6).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
+					}
+				}
+			}
+		}
 	}
 	
 	public List<Death> getDeathsByIndividual(Individual individual) {

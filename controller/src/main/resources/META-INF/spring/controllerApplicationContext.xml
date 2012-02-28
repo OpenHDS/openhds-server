@@ -277,14 +277,20 @@
     	<constructor-arg ref="codeBookService" />
     </bean>
     
+    <bean id="dhisDocumentBean" class="org.openhds.controller.beans.DHISDocumentBean">
+   		<constructor-arg ref="siteProperties" />
+   		<constructor-arg ref="locationHierarchyService" />
+   	</bean>
+        
     <bean id="dhisController" class="org.openhds.controller.export.DHISController">
     	<constructor-arg ref="genericDao" />
     	<constructor-arg ref="locationHierarchyService" />
     	<constructor-arg ref="dhisService" />
     	<constructor-arg ref="dhisDocumentBean" />
     	<constructor-arg ref="valueConstraintService" />
+    	<constructor-arg ref="deathService" />
     </bean>
-     
+        
     <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">
  		<property name="idScheme">
       		<list>

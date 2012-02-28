@@ -14,7 +14,6 @@ import org.hibernate.annotations.CascadeType;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionIntegerConstraint;
 import org.openhds.domain.extensions.ExtensionStringConstraint;
 
 
@@ -49,9 +48,6 @@ public class Location
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
     List residencies;
-    @Description(description = "Water Source for Location")
-    @ExtensionIntegerConstraint(constraint = "locationWaterSourceConstraint", message = "Invalid Value for locationWaterSource")
-    Integer locationWaterSource;
 
     public String getExtId() {
         return extId;
@@ -91,14 +87,6 @@ public class Location
 
     public void setResidencies(List list) {
         residencies = list;
-    }
-
-    public Integer getLocationwatersource() {
-        return locationWaterSource;
-    }
-
-    public void setLocationwatersource(Integer data) {
-        locationWaterSource = data;
     }
 
 }

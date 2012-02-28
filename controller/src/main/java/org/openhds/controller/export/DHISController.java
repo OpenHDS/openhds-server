@@ -4,18 +4,24 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import org.openhds.community.beans.DHISDocumentBean;
-import org.openhds.community.beans.OrgUnitBean;
-import org.openhds.community.service.DHISService;
-import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.dao.service.GenericDao;
+import java.util.Set;
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.extensions.ExtensionStringConstraint;
-import org.openhds.domain.extensions.ValueConstraintService;
+import org.openhds.community.beans.OrgUnitBean;
+import org.openhds.community.builder.OrgUnitBuilder;
+import org.openhds.community.service.DHISService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
+import org.openhds.controller.beans.DHISDocumentBean;
+import org.openhds.controller.beans.DeathRecordBean;
+import org.openhds.controller.beans.DeathRecordGroup;
+import org.openhds.controller.beans.Period;
+import org.openhds.controller.service.DeathService;
+import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.domain.extensions.ValueConstraintService;
 
 /**
  * References:
@@ -32,38 +38,84 @@ public class DHISController {
 	LocationHierarchyService locationService;
 	DHISService dhisService;
 	DHISDocumentBean dhisDocumentBean;
+	DeathService deathService;
 	ValueConstraintService valueConstraintService;
 	
+	Period period;
+		
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
-			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService) {
+			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, DeathService deathService) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;
 		this.dhisDocumentBean = dhisDocumentBean;
 		this.valueConstraintService = valueConstraintService;
+		this.deathService = deathService;
 	}
 	
 	public String buildDHISDocument() throws ClassNotFoundException, ParseException {
+			
+		setupVariables();
 		
+		List<String> validLocations = locationService.getValidLocationsInHierarchy(dhisDocumentBean.getHierarchyExtId());
+		
+		for (DeathRecordGroup group : period.getDeathGroup()) {
+			deathService.setDeathsForAgeGroupsByLocation(group, validLocations);
+		}
+
 		dhisService.createDxfDocument();
 		
 		buildOrgUnit();
+		buildCategoryCombos();
 		buildDataElement();
+		buildPeriod();
+		buildDataValues();
 		
 		return dhisService.getDxfDocument().toString();
 	}
 		
-	private void buildOrgUnit() {
+	private void setupVariables() {
+		String periodVal = dhisDocumentBean.getPeriod();
 		
-		LocationHierarchy root = locationService.getHierarchyItemHighestLevel();
+		Calendar startDate = null;
+		Calendar endDate = null;
+		
+		if (!periodVal.equals("Yearly")) {
+			startDate = dhisDocumentBean.getsDate();
+			endDate = dhisDocumentBean.geteDate();
+		}
+		else {
+			startDate = Calendar.getInstance();
+			startDate.set(Calendar.DATE, 1);
+			startDate.set(Calendar.MONTH, 0);
+			startDate.set(Calendar.YEAR, Integer.parseInt(dhisDocumentBean.getStartYear()));
+			
+			endDate = Calendar.getInstance();
+			endDate.set(Calendar.DATE, 2);
+			endDate.set(Calendar.MONTH, 0);
+			endDate.set(Calendar.YEAR, Integer.parseInt(dhisDocumentBean.getEndYear()));
+		}
+						
+		if (startDate.after(endDate)) 
+			period = new Period(periodVal, endDate, startDate);
+		else
+			period = new Period(periodVal, startDate, endDate);
+	}
+	
+	private void buildCategoryCombos() {
+		dhisService.createDefaultCategories();
+	}
+	
+	private void buildOrgUnit() {
+		LocationHierarchy root = genericDao.findByProperty(LocationHierarchy.class, "extId", dhisDocumentBean.getHierarchyExtId());
 
 		String id = root.getUuid();
 		String level = root.getLevel().getName();
 		String code = root.getExtId();
 		String name = root.getName();
-		
-		OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level);
-		buildOrgUnitStructure(root, orgUnit);	
+				
+		OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level, 1);
+		buildOrgUnitStructure(root, orgUnit, 2);	
 		
 		List<String> levels = new ArrayList<String>();
 		List<LocationHierarchyLevel> locHLevels = locationService.getAllLevels();
@@ -75,56 +127,65 @@ public class DHISController {
 	}
 	
 	private void buildDataElement() throws ClassNotFoundException {
-		
-		// a mapping of table names with their associated ClassMetaData
-		Map<?, ?> mapping = genericDao.getClassMetaData();
 				
-		// all table names
-		Object[] keySet = mapping.keySet().toArray();
+		// just need to get age groups to make data elements
+		List<DeathRecordBean> deaths = period.getDeathGroup().get(0).getDeaths();
+		List<Integer> elementRefs = new ArrayList<Integer>();
 		
-		int count = 0;
+		int counter = 1;
+		for (DeathRecordBean record : deaths) {
+			String maleCount = Integer.toString(counter);
+			String femaleCount = Integer.toString(counter+1);
+			dhisService.createDataElement("Male Deaths : " + record.getAgeGroupName(), "", "int", maleCount);
+			dhisService.createDataElement("Female Deaths : " + record.getAgeGroupName(), "", "int", femaleCount);
+			elementRefs.add(counter);
+			elementRefs.add(counter+1);
+			counter += 2;
+		}
+		dhisService.createDataSet("Mortality Data Set", period.getType(), 1, elementRefs);
+		dhisService.createDataSetMembers(1, 1, 14);
+	}
 		
-		// iterate through all tables
-		for (int i = 0; i < keySet.length; i++) {
-			String tableName = (String) keySet[i];
-			
-			// using reflection to get the entity 
-			Class<?> clazz = Class.forName(tableName);	
-										
-			// list of all fields for the entity
-			ArrayList<Field> fieldsList = buildFieldList(clazz);
+	private void buildPeriod() {
+		
+		int counter = 1;
+		List<DeathRecordGroup> groups = period.getDeathGroup();
+		for (DeathRecordGroup group : groups) {					
+			dhisService.createPeriod(period.getType(), group.getStart(), group.getEnd(), counter);
+			counter++;
+		}
+	}
 	
-			// must iterate through all columns
-			for (int j = 0; j < fieldsList.size(); j++) {
-							
-				// the column name
-				String fieldName = fieldsList.get(j).getName();
+	private void buildDataValues() {
+		
+		int periodIndex = 1;
+		int dataElementIndex = 1;
+		
+		Map<Integer, String> hierarchyMap = OrgUnitBuilder.getHierarchyCodes();
+		Set<Integer> set = hierarchyMap.keySet();
+
+		for (Integer sourceIndex : set) {
+		
+			List<DeathRecordGroup> groupList = period.getDeathGroup();
+			for (DeathRecordGroup group : groupList) {
 				
-				// annotations from the fieldName
-				Annotation[] annotations = getAnnotationMatch(fieldName, fieldsList);
-				
-				Map<String, String> valueConstraintMap = null;
-				String constraintName = "";
-				for (Annotation a : annotations) {
-					if (a instanceof ExtensionStringConstraint) {
-						ExtensionStringConstraint ext = (ExtensionStringConstraint)a;
-						constraintName = ext.constraint();
-						valueConstraintMap = valueConstraintService.getMapForConstraint(constraintName);	
+				for (DeathRecordBean record : group.getDeaths()) {
+					
+					String code = hierarchyMap.get(sourceIndex);
+					if (record.getLocationExtId().equals(code)) {	
+						dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(record.getMaleCount()));
+						dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(record.getFemaleCount()));
 					}
+					else {
+						dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, "0");
+						dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, "0");
+					}
+					dataElementIndex += 2;
 				}
-
-				// description from annotation
-				String desc = getDescription(annotations);
-
-				String type = fieldsList.get(j).getType().getName();
-									
-				if (valueConstraintMap != null) {
-					count++;
-					String iteration = Integer.toString(count);
-					dhisService.createCategories(valueConstraintMap, fieldName, desc, count);
-					dhisService.createDataElement(fieldName, desc, type, iteration);
-				}				
+				periodIndex++;
+				dataElementIndex = 1;
 			}
+			periodIndex = 1;
 		}
 	}
 	
@@ -133,7 +194,7 @@ public class DHISController {
 	 * location hierarchy only has parent references and the org unit has children references,
 	 * it must be converted over.
 	 */
-    private void buildOrgUnitStructure(LocationHierarchy item, OrgUnitBean unit) {
+    private void buildOrgUnitStructure(LocationHierarchy item, OrgUnitBean unit, int index) {
     	
     	// find children of this locationHierarchy item
     	List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "parent", item);
@@ -145,11 +206,13 @@ public class DHISController {
 			String level = hierarchyItem.getLevel().getName();
 			String code = hierarchyItem.getExtId();
 			String name = hierarchyItem.getName();
-			
-			OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level);
+
+			OrgUnitBean orgUnit = new OrgUnitBean(id, name, code, level, index);
 			unit.getChildren().add(orgUnit);
+			orgUnit.setParent(unit);
+			index++;
 			
-			buildOrgUnitStructure(hierarchyItem, orgUnit);
+			buildOrgUnitStructure(hierarchyItem, orgUnit, index);
     	}
     }
             

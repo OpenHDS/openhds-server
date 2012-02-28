@@ -3,14 +3,12 @@ package org.openhds.webservice.mobile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.mobile.FormInstance;

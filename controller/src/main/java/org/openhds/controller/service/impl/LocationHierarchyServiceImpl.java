@@ -398,6 +398,35 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     	}
     	return genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", lowestKey);
     }
+    
+    public List<String> getValidLocationsInHierarchy(String locationHierarchyItem) {
+    	
+    	List<String> locations = new ArrayList<String>();
+    	List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "extId", locationHierarchyItem);
+    	for (LocationHierarchy item : hierarchyList) {
+    		locations = processLocationHierarchy(item, locations);
+    	}
+    	return locations;
+    }
+    
+    private List<String> processLocationHierarchy(LocationHierarchy item, List<String> locationNames) {
+    	
+    	// base case
+        if (item.getLevel().getName().equals(getLowestLevel().getName())) {
+        	  List<Location> locations = genericDao.findListByProperty(Location.class, "locationLevel", item, true);
+        	  for (Location location : locations)
+        		  locationNames.add(location.getExtId());
+        	  return locationNames;
+        }
+        
+        // find all location hierarchy items that are children, continue to recurse
+        List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "parent", item);
+       
+        for (LocationHierarchy locationHierarchy : hierarchyList)
+            processLocationHierarchy(locationHierarchy, locationNames);
+
+        return locationNames;
+    }
         
     public LocationHierarchyLevel getLevel(int level) {
     	return genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", level);
