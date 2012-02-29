@@ -188,10 +188,10 @@ public class ExtensionLoader extends AppContextAware {
 					jc = jp._class(entityName);
 					locationTemplateBuilder.buildTemplate(jc);
 				}
-				else if (entityName.equals("Individual")) {
-					jc = jp._class(entityName);
-					individualTemplateBuilder.buildTemplate(jc);
-				}
+				//else if (entityName.equals("Individual")) {
+				//	jc = jp._class(entityName);
+				//	individualTemplateBuilder.buildTemplate(jc);
+				//}
 			}
 			
 			Iterator<String> keysItr = keys.iterator();
