@@ -125,20 +125,22 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jmsLocationTypeBlock.assign(jfLocationType, jvarLocationType);
 		
 		// residencies
-		JFieldVar jfResidencies = jc.field(JMod.NONE , java.util.List.class, "residencies");
+		JClass basicListResidencies = jCodeModel.ref(java.util.List.class);
+		basicListResidencies = basicListResidencies.narrow(org.openhds.domain.model.Residency.class);
+		JFieldVar jfResidencies = jc.field(JMod.NONE , basicListResidencies, "residencies");
 		JAnnotationUse jaResidenciesTarget = jfResidencies.annotate(javax.persistence.OneToMany.class);
 		jaResidenciesTarget.param("targetEntity", org.openhds.domain.model.Residency.class);
 		JAnnotationUse jaResidenciesColumn = jfResidencies.annotate(javax.persistence.JoinColumn.class);
 		jaResidenciesColumn.param("name", "location_uuid");
 		
 		// getter
-		JMethod jmgLocationResidencies = jc.method(JMod.PUBLIC, java.util.List.class, "getResidencies");
+		JMethod jmgLocationResidencies = jc.method(JMod.PUBLIC, basicListResidencies, "getResidencies");
 		JBlock jmgLocationResidenciesBlock = jmgLocationResidencies.body();
 		jmgLocationResidenciesBlock._return(jfResidencies);
 		
 		// setter
 		JMethod jmsLocationResidencies = jc.method(JMod.PUBLIC, void.class, "setResidencies");
-		JVar jvarLocationResidencies = jmsLocationResidencies.param(java.util.List.class, "list");
+		JVar jvarLocationResidencies = jmsLocationResidencies.param(basicListResidencies, "list");
 		JBlock jmsLocationResidenciesBlock = jmsLocationResidencies.body();
 		jmsLocationResidenciesBlock.assign(jfResidencies, jvarLocationResidencies);
 	}

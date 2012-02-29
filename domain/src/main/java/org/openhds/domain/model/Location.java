@@ -47,7 +47,7 @@ public class Location
     String locationType;
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
-    List residencies;
+    List<Residency> residencies;
 
     public String getExtId() {
         return extId;
@@ -81,11 +81,11 @@ public class Location
         locationType = type;
     }
 
-    public List getResidencies() {
+    public List<Residency> getResidencies() {
         return residencies;
     }
 
-    public void setResidencies(List list) {
+    public void setResidencies(List<Residency> list) {
         residencies = list;
     }
 

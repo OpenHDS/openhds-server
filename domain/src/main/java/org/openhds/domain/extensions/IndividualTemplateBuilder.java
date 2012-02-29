@@ -10,7 +10,6 @@ import com.sun.codemodel.JConditional;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JDocComment;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
@@ -242,8 +241,11 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsDobAspectBlock.assign(jfDobAspect, jvarDobAspect);
 		
 		// residencies
-		jfResidencies = jc.field(JMod.NONE , java.util.Set.class, "allResidencies");
+		JClass basicSetResidencies = jCodeModel.ref(java.util.Set.class);
+		basicSetResidencies = basicSetResidencies.narrow(org.openhds.domain.model.Residency.class);
+		jfResidencies = jc.field(JMod.NONE , basicSetResidencies, "allResidencies");
 		JClass jResidenciesClassRef = jCodeModel.ref(java.util.HashSet.class);
+		jResidenciesClassRef = jResidenciesClassRef.narrow(org.openhds.domain.model.Residency.class);
 		jfResidencies.init(JExpr._new(jResidenciesClassRef));
 		JAnnotationUse jaResidenciesTarget = jfResidencies.annotate(javax.persistence.OneToMany.class);
 		jaResidenciesTarget.param("mappedBy", "individual");
@@ -254,19 +256,22 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaResidenciesDesc.param("description", "The set of all residencies that the individual may have.");
 		
 		// getter
-		JMethod jmgResidencies = jc.method(JMod.PUBLIC, java.util.Set.class, "getAllResidencies");
+		JMethod jmgResidencies = jc.method(JMod.PUBLIC, basicSetResidencies, "getAllResidencies");
 		JBlock jmgResidenciesBlock = jmgResidencies.body();
 		jmgResidenciesBlock._return(jfResidencies);
 		
 		// setter
 		JMethod jmsResidencies = jc.method(JMod.PUBLIC, void.class, "setAllResidencies");
-		JVar jvarResidencies = jmsResidencies.param(java.util.Set.class, "list");
+		JVar jvarResidencies = jmsResidencies.param(basicSetResidencies, "list");
 		JBlock jmsResidenciesBlock = jmsResidencies.body();
 		jmsResidenciesBlock.assign(jfResidencies, jvarResidencies);
 		
 		// allRelationships1
-		JFieldVar jfRelationships1 = jc.field(JMod.NONE , java.util.Set.class, "allRelationships1");
+		JClass basicSetRelationships1 = jCodeModel.ref(java.util.Set.class);
+		basicSetRelationships1 = basicSetRelationships1.narrow(org.openhds.domain.model.Relationship.class);
+		JFieldVar jfRelationships1 = jc.field(JMod.NONE , basicSetRelationships1, "allRelationships1");
 		JClass jRelationship1ClassRef = jCodeModel.ref(java.util.HashSet.class);
+		jRelationship1ClassRef = jRelationship1ClassRef.narrow(org.openhds.domain.model.Relationship.class);
 		jfRelationships1.init(JExpr._new(jRelationship1ClassRef));
 		JAnnotationUse jaRelationships1Target = jfRelationships1.annotate(javax.persistence.OneToMany.class);
 		jaRelationships1Target.param("mappedBy", "individualA");
@@ -275,19 +280,22 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaRelationships1Desc.param("description", "The set of all relationships that the individual may have with another individual.");
 		
 		// getter
-		JMethod jmgRelationship1 = jc.method(JMod.PUBLIC, java.util.Set.class, "getAllRelationships1");
+		JMethod jmgRelationship1 = jc.method(JMod.PUBLIC, basicSetRelationships1, "getAllRelationships1");
 		JBlock jmgRelationship1Block = jmgRelationship1.body();
 		jmgRelationship1Block._return(jfRelationships1);
 		
 		// setter
 		JMethod jmsRelationship1 = jc.method(JMod.PUBLIC, void.class, "setAllRelationships1");
-		JVar jvarRelationship1 = jmsRelationship1.param(java.util.Set.class, "list");
+		JVar jvarRelationship1 = jmsRelationship1.param(basicSetRelationships1, "list");
 		JBlock jmsRelationship1Block = jmsRelationship1.body();
 		jmsRelationship1Block.assign(jfRelationships1, jvarRelationship1);
 		
 		// allRelationships2
-		JFieldVar jfRelationships2 = jc.field(JMod.NONE , java.util.Set.class, "allRelationships2");
+		JClass basicSetRelationships2 = jCodeModel.ref(java.util.Set.class);
+		basicSetRelationships2 = basicSetRelationships2.narrow(org.openhds.domain.model.Relationship.class);
+		JFieldVar jfRelationships2 = jc.field(JMod.NONE , basicSetRelationships2, "allRelationships2");
 		JClass jRelationship2ClassRef = jCodeModel.ref(java.util.HashSet.class);
+		jRelationship2ClassRef = jRelationship2ClassRef.narrow(org.openhds.domain.model.Relationship.class);
 		jfRelationships2.init(JExpr._new(jRelationship2ClassRef));
 		JAnnotationUse jaRelationships2Target = jfRelationships2.annotate(javax.persistence.OneToMany.class);
 		jaRelationships2Target.param("mappedBy", "individualB");
@@ -296,19 +304,22 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaRelationships2Desc.param("description", "The set of all relationships where another individual may have with this individual.");
 		
 		// getter
-		JMethod jmgRelationship2 = jc.method(JMod.PUBLIC, java.util.Set.class, "getAllRelationships2");
+		JMethod jmgRelationship2 = jc.method(JMod.PUBLIC, basicSetRelationships2, "getAllRelationships2");
 		JBlock jmgRelationship2Block = jmgRelationship2.body();
 		jmgRelationship2Block._return(jfRelationships2);
 		
 		// setter
 		JMethod jmsRelationship2 = jc.method(JMod.PUBLIC, void.class, "setAllRelationships2");
-		JVar jvarRelationship2 = jmsRelationship2.param(java.util.Set.class, "list");
+		JVar jvarRelationship2 = jmsRelationship2.param(basicSetRelationships2, "list");
 		JBlock jmsRelationship2Block = jmsRelationship2.body();
 		jmsRelationship2Block.assign(jfRelationships2, jvarRelationship2);
 		
 		// allMemberships
-		JFieldVar jfMemberships = jc.field(JMod.NONE , java.util.Set.class, "allMemberships");
+		JClass basicSetMemberships = jCodeModel.ref(java.util.Set.class);
+		basicSetMemberships = basicSetMemberships.narrow(org.openhds.domain.model.Membership.class);
+		JFieldVar jfMemberships = jc.field(JMod.NONE , basicSetMemberships, "allMemberships");
 		JClass jMembershipClassRef = jCodeModel.ref(java.util.HashSet.class);
+		jMembershipClassRef = jMembershipClassRef.narrow(org.openhds.domain.model.Membership.class);
 		jfMemberships.init(JExpr._new(jMembershipClassRef));
 		JAnnotationUse jaMembershipsTarget = jfMemberships.annotate(javax.persistence.OneToMany.class);
 		jaMembershipsTarget.param("mappedBy", "individual");
@@ -317,13 +328,13 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaMembershipsDesc.param("description", "The set of all memberships the individual is participating in.");
 		
 		// getter
-		JMethod jmgMembership = jc.method(JMod.PUBLIC, java.util.Set.class, "getAllMemberships");
+		JMethod jmgMembership = jc.method(JMod.PUBLIC, basicSetMemberships, "getAllMemberships");
 		JBlock jmgMembershipBlock = jmgMembership.body();
 		jmgMembershipBlock._return(jfMemberships);
 		
 		// setter
 		JMethod jmsMembership = jc.method(JMod.PUBLIC, void.class, "setAllMemberships");
-		JVar jvarMembership = jmsMembership.param(java.util.Set.class, "list");
+		JVar jvarMembership = jmsMembership.param(basicSetMemberships, "list");
 		JBlock jmsMembershipBlock = jmsMembership.body();
 		jmsMembershipBlock.assign(jfMemberships, jvarMembership);
 	}
@@ -340,6 +351,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		
 		// iterator
 		JClass iterator = jCodeModel.ref(java.util.Iterator.class);
+		iterator = iterator.narrow(org.openhds.domain.model.Residency.class);
 		JVar jvIterator = jBlock.decl(iterator, "itr");
 		jvIterator.init(JExpr.ref(jfResidencies, "iterator()"));
 		
@@ -351,7 +363,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// while loop
 		JWhileLoop whileLoop = jBlock._while(JExpr.ref(jvIterator, "hasNext()"));
 		JBlock whileLoopBody = whileLoop.body();
-		whileLoopBody.assign(jvResidencies, JExpr.cast(residencies, JExpr.ref(jvIterator, "next()")));
+		whileLoopBody.assign(jvResidencies, JExpr.ref(jvIterator, "next()"));
 	
 		jBlock._return(jvResidencies);	
 	}
