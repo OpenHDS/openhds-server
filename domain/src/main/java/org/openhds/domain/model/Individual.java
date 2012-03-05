@@ -46,55 +46,55 @@ public class Individual
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "External Id of the individual. This id is used internally.")
-    String extId;
+    private String extId;
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "First name of the individual.")
-    String firstName;
+    private String firstName;
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Middle name of the individual.")
-    String middleName;
+    private String middleName;
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Last name of the individual.")
-    String lastName;
+    private String lastName;
     @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
     @Description(description = "The gender of the individual.")
-    String gender;
+    private String gender;
     @Past(message = "Date of birth must a date in the past")
     @Temporal(TemporalType.DATE)
     @Description(description = "Birth date of the individual.")
     @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
-    Calendar dob;
+    private Calendar dob;
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckIndividualParentAge(allowNull = true, message = "The mother is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The mother has been voided")
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's mother, identified by the external id.")
-    org.openhds.domain.model.Individual mother;
+    private org.openhds.domain.model.Individual mother;
     @CheckIndividualGenderMale(allowNull = true, message = "The father specified is not male gender")
     @CheckIndividualParentAge(allowNull = true, message = "The father is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The father has been voided")
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's father, identified by the external id.")
-    org.openhds.domain.model.Individual father;
+    private org.openhds.domain.model.Individual father;
     @ExtensionStringConstraint(constraint = "dobAspectConstraint", message = "Invalid Value for partial date", allowNull = true)
     @Description(description = "Identifer for determining if the birth date is partially known.")
-    String dobAspect;
+    private String dobAspect;
     @OneToMany(mappedBy = "individual", cascade = CascadeType.ALL)
     @OrderBy("startDate")
     @Description(description = "The set of all residencies that the individual may have.")
-    Set<Residency> allResidencies = new HashSet<Residency>();
+    private Set<Residency> allResidencies = new HashSet<Residency>();
     @OneToMany(mappedBy = "individualA", cascade = CascadeType.ALL)
     @Description(description = "The set of all relationships that the individual may have with another individual.")
-    Set<Relationship> allRelationships1 = new HashSet<Relationship>();
+    private Set<Relationship> allRelationships1 = new HashSet<Relationship>();
     @OneToMany(mappedBy = "individualB", cascade = CascadeType.ALL)
     @Description(description = "The set of all relationships where another individual may have with this individual.")
-    Set<Relationship> allRelationships2 = new HashSet<Relationship>();
+    private Set<Relationship> allRelationships2 = new HashSet<Relationship>();
     @OneToMany(mappedBy = "individual", cascade = CascadeType.ALL)
     @Description(description = "The set of all memberships the individual is participating in.")
-    Set<Membership> allMemberships = new HashSet<Membership>();
+    private Set<Membership> allMemberships = new HashSet<Membership>();
 
     public String getExtId() {
         return extId;

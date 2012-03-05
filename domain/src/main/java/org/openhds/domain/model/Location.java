@@ -34,20 +34,20 @@ public class Location
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "External Id of the location. This id is used internally.")
-    String extId;
+    private String extId;
     @CheckFieldNotBlank
     @Searchable
     @Description(description = "Name of the location.")
-    String locationName;
+    private String locationName;
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
-    LocationHierarchy locationLevel = new LocationHierarchy();
+    private LocationHierarchy locationLevel = new LocationHierarchy();
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
-    String locationType;
+    private String locationType;
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
-    List<Residency> residencies;
+    private List<Residency> residencies;
 
     public String getExtId() {
         return extId;

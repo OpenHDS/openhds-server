@@ -49,7 +49,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jfSerial.init(JExpr.lit(9058114832143454609L));
 		
 		// extId
-		JFieldVar jfExtId = jc.field(JMod.NONE , java.lang.String.class, "extId");
+		JFieldVar jfExtId = jc.field(JMod.PRIVATE , java.lang.String.class, "extId");
 		jfExtId.annotate(javax.validation.constraints.NotNull.class);
 		jfExtId.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfExtId.annotate(org.openhds.domain.constraint.Searchable.class);
@@ -68,7 +68,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsExtIdBlock.assign(jfExtId, jvarExtId);
 		
 		// first name
-		JFieldVar jfFirstName = jc.field(JMod.NONE , java.lang.String.class, "firstName");
+		JFieldVar jfFirstName = jc.field(JMod.PRIVATE , java.lang.String.class, "firstName");
 		jfFirstName.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfFirstName.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaFirstNameDesc = jfFirstName.annotate(org.openhds.domain.annotations.Description.class);
@@ -86,7 +86,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsLocationNameBlock.assign(jfFirstName, jvarFirstName);
 		
 		// middle name
-		JFieldVar jfMiddleName = jc.field(JMod.NONE , java.lang.String.class, "middleName");
+		JFieldVar jfMiddleName = jc.field(JMod.PRIVATE , java.lang.String.class, "middleName");
 		jfMiddleName.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfMiddleName.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaMiddleNameDesc = jfMiddleName.annotate(org.openhds.domain.annotations.Description.class);
@@ -104,7 +104,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsMiddleNameBlock.assign(jfMiddleName, jvarMiddleName);
 		
 		// last name
-		JFieldVar jfLastName = jc.field(JMod.NONE , java.lang.String.class, "lastName");
+		JFieldVar jfLastName = jc.field(JMod.PRIVATE , java.lang.String.class, "lastName");
 		jfLastName.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfLastName.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaLastNameDesc = jfLastName.annotate(org.openhds.domain.annotations.Description.class);
@@ -122,7 +122,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsLastNameBlock.assign(jfLastName, jvarLastName);
 		
 		// gender
-		JFieldVar jfGender = jc.field(JMod.NONE , java.lang.String.class, "gender");
+		JFieldVar jfGender = jc.field(JMod.PRIVATE , java.lang.String.class, "gender");
 		JAnnotationUse jaGender = jfGender.annotate(org.openhds.domain.extensions.ExtensionStringConstraint.class);
 		jaGender.param("constraint", "genderConstraint");
 		jaGender.param("message", "Invalid Value for gender");
@@ -142,7 +142,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsGenderBlock.assign(jfGender, jvarGender);
 		
 		// dob
-		JFieldVar jfDob = jc.field(JMod.NONE , java.util.Calendar.class, "dob");
+		JFieldVar jfDob = jc.field(JMod.PRIVATE , java.util.Calendar.class, "dob");
 		JAnnotationUse jaDob = jfDob.annotate(javax.validation.constraints.Past.class);
 		jaDob.param("message", "Date of birth must a date in the past");
 		JAnnotationUse jaTemporal = jfDob.annotate(javax.persistence.Temporal.class);
@@ -164,7 +164,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsDobBlock.assign(jfDob, jvarDob);
 		
 		// mother
-		JFieldVar jfMother = jc.field(JMod.NONE , org.openhds.domain.model.Individual.class, "mother");
+		JFieldVar jfMother = jc.field(JMod.PRIVATE , org.openhds.domain.model.Individual.class, "mother");
 		JAnnotationUse jaCheckFemale = jfMother.annotate(org.openhds.domain.constraint.CheckIndividualGenderFemale.class);
 		jaCheckFemale.param("allowNull", true);
 		jaCheckFemale.param("message", "The mother specified is not female gender");
@@ -193,7 +193,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsMotherBlock.assign(jfMother, jvarMother);
 		
 		// father
-		JFieldVar jfFather = jc.field(JMod.NONE , org.openhds.domain.model.Individual.class, "father");
+		JFieldVar jfFather = jc.field(JMod.PRIVATE , org.openhds.domain.model.Individual.class, "father");
 		JAnnotationUse jaCheckMale = jfFather.annotate(org.openhds.domain.constraint.CheckIndividualGenderMale.class);
 		jaCheckMale.param("allowNull", true);
 		jaCheckMale.param("message", "The father specified is not male gender");
@@ -221,7 +221,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jmsFatherBlock.assign(jfFather, jvarFather);
 		
 		// dobAspect
-		JFieldVar jfDobAspect = jc.field(JMod.NONE , java.lang.String.class, "dobAspect");
+		JFieldVar jfDobAspect = jc.field(JMod.PRIVATE , java.lang.String.class, "dobAspect");
 		JAnnotationUse jaDobAspect = jfDobAspect.annotate(org.openhds.domain.extensions.ExtensionStringConstraint.class);
 		jaDobAspect.param("constraint", "dobAspectConstraint");
 		jaDobAspect.param("message", "Invalid Value for partial date");
@@ -243,7 +243,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// residencies
 		JClass basicSetResidencies = jCodeModel.ref(java.util.Set.class);
 		basicSetResidencies = basicSetResidencies.narrow(org.openhds.domain.model.Residency.class);
-		jfResidencies = jc.field(JMod.NONE , basicSetResidencies, "allResidencies");
+		jfResidencies = jc.field(JMod.PRIVATE , basicSetResidencies, "allResidencies");
 		JClass jResidenciesClassRef = jCodeModel.ref(java.util.HashSet.class);
 		jResidenciesClassRef = jResidenciesClassRef.narrow(org.openhds.domain.model.Residency.class);
 		jfResidencies.init(JExpr._new(jResidenciesClassRef));
@@ -269,7 +269,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// allRelationships1
 		JClass basicSetRelationships1 = jCodeModel.ref(java.util.Set.class);
 		basicSetRelationships1 = basicSetRelationships1.narrow(org.openhds.domain.model.Relationship.class);
-		JFieldVar jfRelationships1 = jc.field(JMod.NONE , basicSetRelationships1, "allRelationships1");
+		JFieldVar jfRelationships1 = jc.field(JMod.PRIVATE , basicSetRelationships1, "allRelationships1");
 		JClass jRelationship1ClassRef = jCodeModel.ref(java.util.HashSet.class);
 		jRelationship1ClassRef = jRelationship1ClassRef.narrow(org.openhds.domain.model.Relationship.class);
 		jfRelationships1.init(JExpr._new(jRelationship1ClassRef));
@@ -293,7 +293,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// allRelationships2
 		JClass basicSetRelationships2 = jCodeModel.ref(java.util.Set.class);
 		basicSetRelationships2 = basicSetRelationships2.narrow(org.openhds.domain.model.Relationship.class);
-		JFieldVar jfRelationships2 = jc.field(JMod.NONE , basicSetRelationships2, "allRelationships2");
+		JFieldVar jfRelationships2 = jc.field(JMod.PRIVATE , basicSetRelationships2, "allRelationships2");
 		JClass jRelationship2ClassRef = jCodeModel.ref(java.util.HashSet.class);
 		jRelationship2ClassRef = jRelationship2ClassRef.narrow(org.openhds.domain.model.Relationship.class);
 		jfRelationships2.init(JExpr._new(jRelationship2ClassRef));
@@ -317,7 +317,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// allMemberships
 		JClass basicSetMemberships = jCodeModel.ref(java.util.Set.class);
 		basicSetMemberships = basicSetMemberships.narrow(org.openhds.domain.model.Membership.class);
-		JFieldVar jfMemberships = jc.field(JMod.NONE , basicSetMemberships, "allMemberships");
+		JFieldVar jfMemberships = jc.field(JMod.PRIVATE , basicSetMemberships, "allMemberships");
 		JClass jMembershipClassRef = jCodeModel.ref(java.util.HashSet.class);
 		jMembershipClassRef = jMembershipClassRef.narrow(org.openhds.domain.model.Membership.class);
 		jfMemberships.init(JExpr._new(jMembershipClassRef));

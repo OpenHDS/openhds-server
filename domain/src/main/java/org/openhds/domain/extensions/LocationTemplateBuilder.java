@@ -49,7 +49,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jfSerial.init(JExpr.lit(169551578162260199L));
 		
 		// extId
-		JFieldVar jfExtId = jc.field(JMod.NONE , java.lang.String.class, "extId");
+		JFieldVar jfExtId = jc.field(JMod.PRIVATE , java.lang.String.class, "extId");
 		jfExtId.annotate(javax.validation.constraints.NotNull.class);
 		jfExtId.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfExtId.annotate(org.openhds.domain.constraint.Searchable.class);
@@ -68,7 +68,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jmsExtIdBlock.assign(jfExtId, jvarExtId);
 		
 		// location name
-		JFieldVar jfLocationName = jc.field(JMod.NONE , java.lang.String.class, "locationName");
+		JFieldVar jfLocationName = jc.field(JMod.PRIVATE , java.lang.String.class, "locationName");
 		jfLocationName.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfLocationName.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaLocationNameDesc = jfLocationName.annotate(org.openhds.domain.annotations.Description.class);
@@ -86,7 +86,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jmsLocationNameBlock.assign(jfLocationName, jvarLocationName);
 		
 		// location level
-		JFieldVar jfLocationLevel = jc.field(JMod.NONE , org.openhds.domain.model.LocationHierarchy.class, "locationLevel");
+		JFieldVar jfLocationLevel = jc.field(JMod.PRIVATE , org.openhds.domain.model.LocationHierarchy.class, "locationLevel");
 		JClass jClassRef = jCodeModel.ref(org.openhds.domain.model.LocationHierarchy.class);
 		jfLocationLevel.init(JExpr._new(jClassRef));	
 		jfLocationLevel.annotate(javax.persistence.ManyToOne.class);
@@ -105,7 +105,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		jmsLocationLevelBlock.assign(jfLocationLevel, jvarLocationLevel);
 		
 		// location type
-		JFieldVar jfLocationType = jc.field(JMod.NONE , java.lang.String.class, "locationType");
+		JFieldVar jfLocationType = jc.field(JMod.PRIVATE , java.lang.String.class, "locationType");
 		JAnnotationUse jaLocationType = jfLocationType.annotate(org.openhds.domain.extensions.ExtensionStringConstraint.class);
 		jaLocationType.param("constraint", "locationTypeConstraint");
 		jaLocationType.param("message", "Invalid Value for location type");
@@ -127,7 +127,7 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		// residencies
 		JClass basicListResidencies = jCodeModel.ref(java.util.List.class);
 		basicListResidencies = basicListResidencies.narrow(org.openhds.domain.model.Residency.class);
-		JFieldVar jfResidencies = jc.field(JMod.NONE , basicListResidencies, "residencies");
+		JFieldVar jfResidencies = jc.field(JMod.PRIVATE , basicListResidencies, "residencies");
 		JAnnotationUse jaResidenciesTarget = jfResidencies.annotate(javax.persistence.OneToMany.class);
 		jaResidenciesTarget.param("targetEntity", org.openhds.domain.model.Residency.class);
 		JAnnotationUse jaResidenciesColumn = jfResidencies.annotate(javax.persistence.JoinColumn.class);
