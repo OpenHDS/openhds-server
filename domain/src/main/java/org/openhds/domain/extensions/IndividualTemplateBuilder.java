@@ -152,7 +152,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		
 		// getter
 		JMethod jmgDob = jc.method(JMod.PUBLIC, java.util.Calendar.class, "getDob");
-		JAnnotationUse jaXmlDob = jfDob.annotate(javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.class);
+		JAnnotationUse jaXmlDob = jmgDob.annotate(javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.class);
 		jaXmlDob.param("value", CalendarAdapter.class);
 		JBlock jmgDobBlock = jmgDob.body();
 		jmgDobBlock._return(jfDob);

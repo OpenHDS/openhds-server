@@ -65,7 +65,6 @@ public class Individual
     @Past(message = "Date of birth must a date in the past")
     @Temporal(TemporalType.DATE)
     @Description(description = "Birth date of the individual.")
-    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     private Calendar dob;
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckIndividualParentAge(allowNull = true, message = "The mother is younger than the minimum age required in order to be a parent")
@@ -136,6 +135,7 @@ public class Individual
         gender = sex;
     }
 
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
     public Calendar getDob() {
         return dob;
     }
