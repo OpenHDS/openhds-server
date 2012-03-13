@@ -75,12 +75,8 @@ public class CalculationServiceImpl implements CalculationService {
 		int daysBetween = (int) CalendarUtil.daysBetween(startDate, endDate);
 		for (int i = 1; i < reportRecords.size(); i++) {
 			ReportRecordBean record = reportRecords.get(i);
-			record.setPdoMale(record.getNumeratorMale() * daysBetween);
-			record.setPdoFemale(record.getNumeratorFemale() * daysBetween);
-			record.setPdoTotal();
-			record.calculatePyoMaleTotal();
-			record.calculatePyoFemaleTotal();
-			record.setPyoTotal();
+			record.setPdoMale(record.getDenominatorMale() * daysBetween);
+			record.setPdoFemale(record.getDenominatorFemale() * daysBetween);
 		}
 		
 		// calculate all
@@ -91,30 +87,10 @@ public class CalculationServiceImpl implements CalculationService {
 			ageGrpAll.addDenominatorMale(reportRecords.get(i).getDenominatorMale());
 			ageGrpAll.addDenominatorFemale(reportRecords.get(i).getDenominatorFemale());
 		}
-		ageGrpAll.setNumeratorTotal(ageGrpAll.getNumeratorMale() + ageGrpAll.getNumeratorFemale());
-		ageGrpAll.setDenominatorTotal(ageGrpAll.getDenominatorMale()+ ageGrpAll.getDenominatorFemale());	
 		ageGrpAll.setPdoMale(ageGrpAll.getDenominatorMale() * daysBetween);
 		ageGrpAll.setPdoFemale(ageGrpAll.getDenominatorFemale() * daysBetween);
-		ageGrpAll.setPdoTotal();
-		ageGrpAll.calculatePyoMaleTotal();
-		ageGrpAll.calculatePyoFemaleTotal();
-		ageGrpAll.setPyoTotal();
 	}
 		
-	public void setDenominatorTotals() {	
-		for (int i = 1; i < reportRecords.size(); i++) {
-			ReportRecordBean report = reportRecords.get(i);
-			report.setDenominatorTotal(report.getDenominatorMale() + report.getDenominatorFemale());
-		}
-	}
-	
-	public void setNumeratorTotals() {
-		for (int i = 1; i < reportRecords.size(); i++) {
-			ReportRecordBean report = reportRecords.get(i);
-			report.setNumeratorTotal(report.getNumeratorMale() + report.getNumeratorFemale());
-		}
-	}
-	
 	public List<Residency> getResidenciesAtMidPoint(Calendar midpoint) {
 		
 		List<Residency> residencies = genericDao.findAll(Residency.class, true);

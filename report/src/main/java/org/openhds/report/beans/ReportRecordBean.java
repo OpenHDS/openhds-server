@@ -10,16 +10,8 @@ public class ReportRecordBean {
 	int numeratorMale;
 	int numeratorFemale;
 	
-	int numeratorTotal;
-	int denominatorTotal;
-	
 	double pdoMale;
 	double pdoFemale;
-	double pdoTotal;
-	
-	double pyoMale;
-	double pyoFemale;
-	double pyoTotal;
 	
 	int min;
 	int max;
@@ -111,19 +103,11 @@ public class ReportRecordBean {
 	}
 	
 	public int getNumeratorTotal() {
-		return numeratorTotal;
-	}
-
-	public void setNumeratorTotal(int numeratorTotal) {
-		this.numeratorTotal = numeratorTotal;
+		return numeratorMale + numeratorFemale;
 	}
 
 	public int getDenominatorTotal() {
-		return denominatorTotal;
-	}
-
-	public void setDenominatorTotal(int denominatorTotal) {
-		this.denominatorTotal = denominatorTotal;
+		return denominatorMale + denominatorFemale;
 	}
 	
 	public double getPdoMale() {
@@ -142,40 +126,33 @@ public class ReportRecordBean {
 		this.pdoFemale = pdoFemale;
 	}
 	
-	public double getPdoTotal() {
-		return round(pdoTotal, 2);
-	}
-	
 	public double getPyoMale() {
-		return round(pyoMale, 2);
+		if (getPdoMale() != 0) {
+			double result = ((1000 * 365.25 * numeratorMale) / getPdoMale());
+			return round(result, 2);
+		}
+		return 0;
 	}
 
 	public double getPyoFemale() {
-		return round(pyoFemale, 2);
-	}
-
-	public void setPdoTotal() {
-		pdoTotal = ((denominatorMale + denominatorFemale) / 365.25);
-	}
-	
-	public void calculatePyoMaleTotal() {
-		if (denominatorMale != 0) 
-			pyoMale = ((1000 * 365.25 * numeratorMale) / denominatorMale);
-		else
-			pyoMale = 0;
-	}
-	
-	public void calculatePyoFemaleTotal() {
-		if (denominatorFemale != 0) 
-			 pyoFemale = ((1000 * 365.25 * numeratorFemale) / denominatorFemale);
+		if (getPdoFemale() != 0) { 
+			double result = ((1000 * 365.25 * numeratorFemale) / getPdoFemale());
+			return round(result, 2);
+		}
+		return 0;
 	}
 	
 	public double getPyoTotal() {
-		return round(pyoTotal, 2);
+		if (getPdoMale() + getPdoFemale() > 0) {
+			double result = (1000 * 365.25 * (numeratorMale + numeratorFemale)) / (getPdoMale() + getPdoFemale());
+			return round(result, 2);
+		}
+	
+		return 0;
 	}
-
-	public void setPyoTotal() {
-		pyoTotal = pyoMale + pyoFemale;
+	
+	public double getPyo() {
+		return round((getPdoMale() + getPdoFemale()) / 365.25, 2);
 	}
 	
 	public int getMax() {

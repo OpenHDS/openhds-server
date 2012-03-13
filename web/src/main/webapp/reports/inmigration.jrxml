@@ -15,7 +15,7 @@
 	<field name="pyoFemale" class="java.lang.Double"/>
 	<field name="pyoTotal" class="java.lang.Double"/>
 	<field name="ageGroupName" class="java.lang.String"/>
-	<field name="pdoTotal" class="java.lang.Double"/>
+	<field name="pyo" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -195,7 +195,7 @@
 			<textField pattern="#,##0.0">
 				<reportElement x="365" y="0" width="123" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pdoTotal}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="588" y="0" width="100" height="15"/>

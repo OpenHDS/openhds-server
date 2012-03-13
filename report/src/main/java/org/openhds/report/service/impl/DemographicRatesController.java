@@ -81,7 +81,6 @@ public class DemographicRatesController implements DemographicRatesService {
 		else {
 			residencies = calculationService.getResidenciesInBetween(startDate, endDate);
 			calculationService.setIntervalsOfResidencies(residencies, startDate, endDate);
-			calculationService.setDenominatorTotals();
 		}
 		
 		// numerator
@@ -114,7 +113,6 @@ public class DemographicRatesController implements DemographicRatesService {
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), midpoint);
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, true);
-			calculationService.setDenominatorTotals();
 		}
 	}
 	
@@ -124,7 +122,6 @@ public class DemographicRatesController implements DemographicRatesService {
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
-			calculationService.setNumeratorTotals();
 		}
 	}
 	
@@ -134,7 +131,6 @@ public class DemographicRatesController implements DemographicRatesService {
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), outmigration.getRecordedDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
-			calculationService.setNumeratorTotals();
 		}
 	}
 	
@@ -144,7 +140,6 @@ public class DemographicRatesController implements DemographicRatesService {
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), death.getDeathDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
-			calculationService.setNumeratorTotals();
 		}
 	}
 }

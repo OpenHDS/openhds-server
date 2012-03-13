@@ -22,12 +22,6 @@ public interface CalculationService {
 	void setAgeGroups(long age, Individual individual, boolean denominator); 
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setNumeratorTotals();
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setDenominatorTotals();
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void completeReportRecords(Calendar startDate, Calendar endDate);
 		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
