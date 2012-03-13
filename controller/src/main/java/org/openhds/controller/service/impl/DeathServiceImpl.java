@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.controller.beans.DeathRecordGroup;
+import org.openhds.controller.beans.RecordGroup;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.DeathService;
 import org.openhds.controller.service.EntityService;
@@ -211,13 +211,13 @@ public class DeathServiceImpl implements DeathService {
 	
 	// this is used for output to the DHIS
 	// iterates through the deaths and categorizes them according to age group
-	public void setDeathsForAgeGroupsByLocation(DeathRecordGroup deathGroup, List<String> locations) {
+	public void setDeathsForAgeGroupsByLocation(RecordGroup deathGroup, List<String> hierarchyIds) {
 				
 		List<Death> deaths = genericDao.findAll(Death.class, true);
 		
 		for (Death death : deaths) {
 			
-			if (locations.contains(death.getVisitDeath().getVisitLocation().getExtId())) {
+			if (hierarchyIds.contains(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId())) {
 
 				long ageInDays = death.getAgeAtDeath();
 				long ageInYears = (long) (ageInDays / 365.25);
@@ -227,64 +227,75 @@ public class DeathServiceImpl implements DeathService {
 					(deathDate.before(deathGroup.getEnd()))) {
 				
 					// 0 to 28 days
-					if (ageInDays > 0 && ageInDays <= 28) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(0).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(0).addFemaleCount();
-						deathGroup.getDeaths().get(0).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					if (ageInDays > 0 && ageInDays <= 28) 	
+						processGroup(deathGroup, death, 0);
 					// 29 to 11 months (334.81 days in 11 months)
-					else if (ageInDays > 28 && ageInDays <= 334.81) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(1).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(1).addFemaleCount();
-						deathGroup.getDeaths().get(1).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInDays > 28 && ageInDays <= 334.81) 
+						processGroup(deathGroup, death, 1);
 					// 12 - 59 months 
-					else if (ageInDays > 334.81 && ageInDays <= 1826.21) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(2).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(2).addFemaleCount();
-						deathGroup.getDeaths().get(2).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInDays > 334.81 && ageInDays <= 1826.21) 
+						processGroup(deathGroup, death, 2);
 					// 5 to 9 years
-					else if (ageInYears > 5 && ageInYears < 10) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(3).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(3).addFemaleCount();
-						deathGroup.getDeaths().get(3).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInYears > 5 && ageInYears < 10) 
+						processGroup(deathGroup, death, 3);
 					// 10 to 19 years
-					else if (ageInYears >= 10 && ageInYears < 20) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(4).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(4).addFemaleCount();
-						deathGroup.getDeaths().get(4).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInYears >= 10 && ageInYears < 20) 
+						processGroup(deathGroup, death, 4);
 					// 20 to 40 years
-					else if (ageInYears >= 20 && ageInYears < 40) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(5).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(5).addFemaleCount();
-						deathGroup.getDeaths().get(5).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInYears >= 20 && ageInYears < 40) 
+						processGroup(deathGroup, death, 5);
 					// > 40 years
-					else if (ageInYears >= 40) {
-						if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
-							deathGroup.getDeaths().get(6).addMaleCount();
-						else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
-							deathGroup.getDeaths().get(6).addFemaleCount();
-						deathGroup.getDeaths().get(6).setLocationExtId(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId());
-					}
+					else if (ageInYears >= 40) 
+						processGroup(deathGroup, death, 6);
+					
+					if (ageInYears >= 0 && ageInYears < 5) 
+						processGroup(deathGroup, death, 7);
+					else if (ageInYears >= 10 && ageInYears < 15) 
+						processGroup(deathGroup, death, 8);
+					else if (ageInYears >= 15 && ageInYears < 20) 
+						processGroup(deathGroup, death, 9);
+					else if (ageInYears >= 20 && ageInYears < 25) 
+						processGroup(deathGroup, death, 10);				
+					else if (ageInYears >= 25 && ageInYears < 30) 
+						processGroup(deathGroup, death, 11);			
+					else if (ageInYears >= 30 && ageInYears < 35) 
+						processGroup(deathGroup, death, 12);		
+					else if (ageInYears >= 35 && ageInYears < 40) 
+						processGroup(deathGroup, death, 13);		
+					else if (ageInYears >= 40 && ageInYears < 45) 
+						processGroup(deathGroup, death, 14);		
+					else if (ageInYears >= 45 && ageInYears < 50) 
+						processGroup(deathGroup, death, 15);	
+					else if (ageInYears >= 50 && ageInYears < 55) 
+						processGroup(deathGroup, death, 16);		
+					else if (ageInYears >= 55 && ageInYears < 60) 
+						processGroup(deathGroup, death, 17);		
+					else if (ageInYears >= 60 && ageInYears < 65) 
+						processGroup(deathGroup, death, 18);		
+					else if (ageInYears >= 65 && ageInYears < 70) 
+						processGroup(deathGroup, death, 19);		
+					else if (ageInYears >= 70 && ageInYears < 75) 
+						processGroup(deathGroup, death, 20);			
+					else if (ageInYears >= 75 && ageInYears < 80) 
+						processGroup(deathGroup, death, 21);		
+					else if (ageInYears >= 80 && ageInYears < 85) 
+						processGroup(deathGroup, death, 22);		
+					else if (ageInYears >= 85 && ageInYears < 90) 
+						processGroup(deathGroup, death, 23);		
+					else if (ageInYears >= 90 && ageInYears < 95) 
+						processGroup(deathGroup, death, 24);		
+					else if (ageInYears >= 95) 
+						processGroup(deathGroup, death, 25);
 				}
 			}
 		}
+	}
+	
+	private void processGroup(RecordGroup group, Death death, int index) {
+		if (death.getIndividual().getGender().equals(siteProperties.getMaleCode()))
+			group.getRecord().addMaleCountForLocationAndAgeGroup(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId(), index);
+		else if (death.getIndividual().getGender().equals(siteProperties.getFemaleCode()))
+			group.getRecord().addFemaleCountForLocationAndAgeGroup(death.getVisitDeath().getVisitLocation().getLocationLevel().getExtId(), index);
 	}
 	
 	public List<Death> getDeathsByIndividual(Individual individual) {

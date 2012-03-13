@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MigrationEntReconciliationServiceImpl implements MigrationEntReconciliationService {
+public class MigrationEntReconciliationController implements MigrationEntReconciliationService {
 
 	GenericDao genericDao;
 	SitePropertiesService properties;
 	CalendarUtil calendarUtil;
 	
 	@Autowired
-	public MigrationEntReconciliationServiceImpl(GenericDao genericDao, SitePropertiesService properties,
+	public MigrationEntReconciliationController(GenericDao genericDao, SitePropertiesService properties,
 			CalendarUtil calendarUtil) {
 		this.genericDao = genericDao;
 		this.properties = properties;

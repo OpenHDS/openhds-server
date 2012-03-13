@@ -6,12 +6,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import org.openhds.controller.service.DemRatesService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.Death;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.openhds.report.beans.ReportRecordBean;
 import org.openhds.report.service.CalculationService;
 
@@ -46,10 +48,10 @@ public class CalculationServiceImpl implements CalculationService {
 		this.siteProperties = siteProperties;
 		this.demRatesService = demRatesService;
 		this.genericDao = genericDao;
-		initializeGroups();
 	}
 	
-	private void initializeGroups() {
+	public void initializeGroups() {
+		reportRecords.clear();
 		reportRecords.add(new ReportRecordBean("ALL", 0, 100));
 		reportRecords.add(new ReportRecordBean("0-4", 0, 5));
 		reportRecords.add(new ReportRecordBean("5-9", 5, 10));
@@ -70,7 +72,7 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	public void completeReportRecords(Calendar startDate, Calendar endDate) {		
 		// calculate pdo's
-		int daysBetween = (int) daysBetween(startDate, endDate);
+		int daysBetween = (int) CalendarUtil.daysBetween(startDate, endDate);
 		for (int i = 1; i < reportRecords.size(); i++) {
 			ReportRecordBean record = reportRecords.get(i);
 			record.setPdoMale(record.getNumeratorMale() * daysBetween);
@@ -212,8 +214,8 @@ public class CalculationServiceImpl implements CalculationService {
 				endInterval = endDate;	
 			
 			// determine age groups at beginning and end of residency
-			int ageAtBeg = (int) (daysBetween(beginInterval, res.getIndividual().getDob()) / 365.25);
-			int ageAtEnd = (int) (daysBetween(endInterval, res.getIndividual().getDob()) / 365.25);
+			int ageAtBeg = (int) (CalendarUtil.daysBetween(res.getIndividual().getDob(), beginInterval) / 365.25);
+			int ageAtEnd = (int) (CalendarUtil.daysBetween(res.getIndividual().getDob(), endInterval) / 365.25);
 			int firstGroup = determineAgeGroup(ageAtBeg);
 			int lastGroup = determineAgeGroup(ageAtEnd);
 			
@@ -224,11 +226,9 @@ public class CalculationServiceImpl implements CalculationService {
 				
 				ReportRecordBean group = reportRecords.get(currentGroup);
 				if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
-					group.setDenominatorMale(daysBetween(beginInterval, endInterval));
+					group.setDenominatorMale((int)CalendarUtil.daysBetween(beginInterval, endInterval));
 				else 
-					group.setDenominatorFemale(daysBetween(beginInterval, endInterval));
-				
-				daysBetween(beginInterval, endInterval);
+					group.setDenominatorFemale((int)CalendarUtil.daysBetween(beginInterval, endInterval));
 			}
 			// determine where to split the residencies
 			else {
@@ -244,9 +244,9 @@ public class CalculationServiceImpl implements CalculationService {
 					groupEndDate.add(Calendar.DAY_OF_MONTH, -1); 
 					
 					if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
-						group.setDenominatorMale(daysBetween(beginInterval, groupEndDate));
+						group.setDenominatorMale((int)CalendarUtil.daysBetween(beginInterval, groupEndDate));
 					else 
-						group.setDenominatorFemale(daysBetween(beginInterval, groupEndDate));
+						group.setDenominatorFemale((int)CalendarUtil.daysBetween(beginInterval, groupEndDate));
 
 					beginInterval = groupEndDate;
 					currentGroup++;
@@ -284,23 +284,20 @@ public class CalculationServiceImpl implements CalculationService {
 		return outmigrationsInInterval;
 	}
 	
-	public Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
-		int daysBtw = (int)daysBetween(startDate, endDate);
-		Calendar midPoint = (Calendar)startDate.clone();
-		midPoint.add(Calendar.DATE, (int) (daysBtw * 0.5));
-		return midPoint;
-	}
-	
-	public int daysBetween(Calendar startDate, Calendar endDate) {  
-		Calendar date = (Calendar) startDate.clone();  
-		int daysBetween = 0;  
-		while (date.before(endDate)) {  
-			date.add(Calendar.DAY_OF_MONTH, 1);  
-		    daysBetween++;  
-		}  
-		return daysBetween;  
-	} 
+	public List<Death> getDeathsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
+		List<Death> deaths = genericDao.findAll(Death.class, true);
+		List<Death> deathsInInterval = new ArrayList<Death>();
+		
+		for (Death death : deaths) {		
+			if (death.getDeathDate().after(startDate) &&
+					death.getDeathDate().before(endDate)) {
+				deathsInInterval.add(death);
+			}
+		}
+		return deathsInInterval;
+	}
+			
 	/**
 	 * Returns the index in which age report record the age belongs.
 	 * Corresponds to the CalculationService reportRecord

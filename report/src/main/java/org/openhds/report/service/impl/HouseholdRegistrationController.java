@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HouseholdRegistrationServiceImpl implements HouseholdRegistrationService {
+public class HouseholdRegistrationController implements HouseholdRegistrationService {
 	GenericDao genericDao;
 	ResidencyService residencyService;
 	LocationHierarchyService locationService;
@@ -29,7 +29,7 @@ public class HouseholdRegistrationServiceImpl implements HouseholdRegistrationSe
 	CalendarUtil calendarUtil;
 	
 	@Autowired
-	public HouseholdRegistrationServiceImpl(GenericDao genericDao, ResidencyService residencyService, 
+	public HouseholdRegistrationController(GenericDao genericDao, ResidencyService residencyService, 
 			LocationHierarchyService locationService, SitePropertiesService properties, CalendarUtil calendarUtil) {
 		this.genericDao = genericDao;
 		this.residencyService = residencyService;

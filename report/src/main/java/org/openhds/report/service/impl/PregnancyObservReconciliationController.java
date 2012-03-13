@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class PregnancyObservReconciliationServiceImpl implements PregnancyObservReconciliationService {
+public class PregnancyObservReconciliationController implements PregnancyObservReconciliationService {
 	
 	GenericDao genericDao;
 	SitePropertiesService properties;
 	CalendarUtil calendarUtil;
 
 	@Autowired
-	public PregnancyObservReconciliationServiceImpl(GenericDao genericDao, SitePropertiesService properties,
+	public PregnancyObservReconciliationController(GenericDao genericDao, SitePropertiesService properties,
 			CalendarUtil calendarUtil) {
 		this.genericDao = genericDao;
 		this.properties = properties;

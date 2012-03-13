@@ -13,13 +13,13 @@ public class ReportRecordBean {
 	int numeratorTotal;
 	int denominatorTotal;
 	
-	long pdoMale;
-	long pdoFemale;
-	long pdoTotal;
+	double pdoMale;
+	double pdoFemale;
+	double pdoTotal;
 	
-	long pyoMale;
-	long pyoFemale;
-	long pyoTotal;
+	double pyoMale;
+	double pyoFemale;
+	double pyoTotal;
 	
 	int min;
 	int max;
@@ -46,19 +46,19 @@ public class ReportRecordBean {
 		numeratorFemale++;
 	}	
 	
-	public void addDenominatorMale(long amount) {
+	public void addDenominatorMale(double amount) {
 		denominatorMale += amount;
 	}
 	
-	public void addDenominatorFemale(long amount) {
+	public void addDenominatorFemale(double amount) {
 		denominatorFemale += amount;
 	}
 	
-	public void addNumeratorMale(long amount) {
+	public void addNumeratorMale(double amount) {
 		numeratorMale += amount;
 	}
 	
-	public void addNumeratorFemale(long amount) {
+	public void addNumeratorFemale(double amount) {
 		numeratorFemale += amount;
 	}
 	
@@ -83,7 +83,7 @@ public class ReportRecordBean {
 	}
 
 	public void setDenominatorMale(int denominatorMale) {
-		this.denominatorMale = denominatorMale;
+		this.denominatorMale += denominatorMale;
 	}
 
 	public int getDenominatorFemale() {
@@ -91,7 +91,7 @@ public class ReportRecordBean {
 	}
 
 	public void setDenominatorFemale(int denominatorFemale) {
-		this.denominatorFemale = denominatorFemale;
+		this.denominatorFemale += denominatorFemale;
 	}
 
 	public int getNumeratorMale() {
@@ -126,50 +126,52 @@ public class ReportRecordBean {
 		this.denominatorTotal = denominatorTotal;
 	}
 	
-	public long getPdoMale() {
-		return pdoMale;
+	public double getPdoMale() {
+		return round(pdoMale, 2);
 	}
 
-	public void setPdoMale(long pdoMale) {
+	public void setPdoMale(double pdoMale) {
 		this.pdoMale = pdoMale;
 	}
 
-	public long getPdoFemale() {
-		return pdoFemale;
+	public double getPdoFemale() {
+		return round(pdoFemale, 2);
 	}
 
-	public void setPdoFemale(long pdoFemale) {
+	public void setPdoFemale(double pdoFemale) {
 		this.pdoFemale = pdoFemale;
 	}
 	
-	public long getPdoTotal() {
-		return pdoTotal;
+	public double getPdoTotal() {
+		return round(pdoTotal, 2);
 	}
 	
-	public long getPyoMale() {
-		return pyoMale;
+	public double getPyoMale() {
+		return round(pyoMale, 2);
 	}
 
-	public long getPyoFemale() {
-		return pyoFemale;
+	public double getPyoFemale() {
+		return round(pyoFemale, 2);
 	}
 
 	public void setPdoTotal() {
-		pdoTotal = (long) ((pdoMale + pdoFemale) / 365.25);
+		pdoTotal = ((denominatorMale + denominatorFemale) / 365.25);
 	}
 	
 	public void calculatePyoMaleTotal() {
-		if (pdoMale != 0) 
-			pyoMale = (long) ((numeratorMale / pdoMale) * 1000 * 365.25);
+		if (denominatorMale != 0) 
+			pyoMale = ((1000 * 365.25 * numeratorMale) / denominatorMale);
+		else
+			pyoMale = 0;
 	}
 	
 	public void calculatePyoFemaleTotal() {
-		if (pdoFemale != 0) 
-			 pyoFemale = (long) ((numeratorFemale / pdoFemale) * 1000 * 365.25);
+		if (denominatorFemale != 0) 
+			 pyoFemale = ((1000 * 365.25 * numeratorFemale) / denominatorFemale);
 	}
 	
-	public long getPyoTotal() {
-		return pyoTotal;
+	public double getPyoTotal() {
+		return round(pyoTotal, 2);
 	}
 
 	public void setPyoTotal() {
@@ -183,4 +185,14 @@ public class ReportRecordBean {
 	public void setMax(int max) {
 		this.max = max;
 	}
+	
+	private double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
+	}
+
 }

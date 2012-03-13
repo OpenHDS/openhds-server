@@ -11,6 +11,13 @@ public class CalendarUtil {
 	
 	SitePropertiesService siteProperties;
 	
+	public static Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
+		int daysBtw = (int)daysBetween(startDate, endDate);
+		Calendar midPoint = (Calendar)startDate.clone();
+		midPoint.add(Calendar.DATE, (int) (daysBtw * 0.5));
+		return midPoint;
+	}
+	
 	public Calendar parseDate(String dateStr) throws ParseException {
     	DateFormat formatter = new SimpleDateFormat(siteProperties.getDateFormat());
         Date date = formatter.parse(dateStr);

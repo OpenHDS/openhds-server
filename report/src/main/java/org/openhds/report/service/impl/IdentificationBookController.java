@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class IdentificationBookServiceImpl implements IdentificationBookService {
+public class IdentificationBookController implements IdentificationBookService {
 	
 	GenericDao genericDao;
 	SitePropertiesService properties;
@@ -30,7 +30,7 @@ public class IdentificationBookServiceImpl implements IdentificationBookService 
 	CalendarUtil calendarUtil;
 	
 	@Autowired
-	public IdentificationBookServiceImpl(GenericDao genericDao, SitePropertiesService properties,  
+	public IdentificationBookController(GenericDao genericDao, SitePropertiesService properties,  
 			ResidencyService residencyService, LocationHierarchyService locationService,
 			CalendarUtil calendarUtil) {
 		this.genericDao = genericDao;

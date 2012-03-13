@@ -14,7 +14,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openhds.domain.annotations.Description;
@@ -42,8 +41,6 @@ public class Individual
 {
 
     public final static long serialVersionUID = 9058114832143454609L;
-    @NotNull
-    @CheckFieldNotBlank
     @Searchable
     @Description(description = "External Id of the individual. This id is used internally.")
     private String extId;

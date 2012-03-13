@@ -50,8 +50,6 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		
 		// extId
 		JFieldVar jfExtId = jc.field(JMod.PRIVATE , java.lang.String.class, "extId");
-		jfExtId.annotate(javax.validation.constraints.NotNull.class);
-		jfExtId.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfExtId.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaExtIdDesc = jfExtId.annotate(org.openhds.domain.annotations.Description.class);
 		jaExtIdDesc.param("description", "External Id of the individual. This id is used internally.");

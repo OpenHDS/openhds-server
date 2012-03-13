@@ -289,6 +289,8 @@
     	<constructor-arg ref="dhisDocumentBean" />
     	<constructor-arg ref="valueConstraintService" />
     	<constructor-arg ref="deathService" />
+    	<constructor-arg ref="individualService" />
+    	<constructor-arg ref="pregnancyService" />
     </bean>
         
     <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">

@@ -16,11 +16,14 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.controller.beans.DHISDocumentBean;
-import org.openhds.controller.beans.DeathRecordBean;
-import org.openhds.controller.beans.DeathRecordGroup;
+import org.openhds.controller.beans.RecordBean;
+import org.openhds.controller.beans.RecordGroup;
 import org.openhds.controller.beans.Period;
+import org.openhds.controller.beans.RecordItem;
 import org.openhds.controller.service.DeathService;
+import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.service.PregnancyService;
 import org.openhds.domain.extensions.ValueConstraintService;
 
 /**
@@ -39,31 +42,38 @@ public class DHISController {
 	DHISService dhisService;
 	DHISDocumentBean dhisDocumentBean;
 	DeathService deathService;
+	IndividualService individualService;
+	PregnancyService pregnancyService;
 	ValueConstraintService valueConstraintService;
 	
 	Period period;
 		
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
-			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, DeathService deathService) {
+			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, DeathService deathService,
+			IndividualService individualService, PregnancyService pregnancyService) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;
 		this.dhisDocumentBean = dhisDocumentBean;
 		this.valueConstraintService = valueConstraintService;
 		this.deathService = deathService;
+		this.individualService = individualService;
+		this.pregnancyService = pregnancyService;
 	}
 	
 	public String buildDHISDocument() throws ClassNotFoundException, ParseException {
 			
-		setupVariables();
-		
-		List<String> validLocations = locationService.getValidLocationsInHierarchy(dhisDocumentBean.getHierarchyExtId());
-		
-		for (DeathRecordGroup group : period.getDeathGroup()) {
-			deathService.setDeathsForAgeGroupsByLocation(group, validLocations);
-		}
-
 		dhisService.createDxfDocument();
+		
+		List<String> hierarchyIds = locationService.getValidLocationsInHierarchy(dhisDocumentBean.getHierarchyExtId());
+		setupVariables(hierarchyIds);
+		
+		for (RecordGroup group : period.findGroupsByName("Death")) 
+			deathService.setDeathsForAgeGroupsByLocation(group, hierarchyIds);
+		for (RecordGroup group : period.findGroupsByName("Population")) 
+			individualService.setPopulationForAgeGroupsByLocation(group, hierarchyIds);	
+		for (RecordGroup group : period.findGroupsByName("PregnancyOutcome")) 
+			pregnancyService.setPregnancyOutcomesByLocation(group, hierarchyIds);	
 		
 		buildOrgUnit();
 		buildCategoryCombos();
@@ -74,7 +84,7 @@ public class DHISController {
 		return dhisService.getDxfDocument().toString();
 	}
 		
-	private void setupVariables() {
+	private void setupVariables(List<String> hierarchyIds) {
 		String periodVal = dhisDocumentBean.getPeriod();
 		
 		Calendar startDate = null;
@@ -97,9 +107,9 @@ public class DHISController {
 		}
 						
 		if (startDate.after(endDate)) 
-			period = new Period(periodVal, endDate, startDate);
+			period = new Period(periodVal, endDate, startDate, hierarchyIds);
 		else
-			period = new Period(periodVal, startDate, endDate);
+			period = new Period(periodVal, startDate, endDate, hierarchyIds);
 	}
 	
 	private void buildCategoryCombos() {
@@ -129,28 +139,64 @@ public class DHISController {
 	private void buildDataElement() throws ClassNotFoundException {
 				
 		// just need to get age groups to make data elements
-		List<DeathRecordBean> deaths = period.getDeathGroup().get(0).getDeaths();
+		List<RecordItem> deaths = period.findGroupsByName("Death").get(0).getRecord().getItems().get(dhisDocumentBean.getHierarchyExtId());
+		List<RecordItem> populations = period.findGroupsByName("Population").get(0).getRecord().getItems().get(dhisDocumentBean.getHierarchyExtId());
+		List<RecordItem> pregOutcomes = period.findGroupsByName("PregnancyOutcome").get(0).getRecord().getItems().get(dhisDocumentBean.getHierarchyExtId());
 		List<Integer> elementRefs = new ArrayList<Integer>();
 		
 		int counter = 1;
-		for (DeathRecordBean record : deaths) {
+		for (RecordItem record : deaths) {
 			String maleCount = Integer.toString(counter);
 			String femaleCount = Integer.toString(counter+1);
 			dhisService.createDataElement("Male Deaths : " + record.getAgeGroupName(), "", "int", maleCount);
 			dhisService.createDataElement("Female Deaths : " + record.getAgeGroupName(), "", "int", femaleCount);
-			elementRefs.add(counter);
-			elementRefs.add(counter+1);
 			counter += 2;
 		}
 		dhisService.createDataSet("Mortality Data Set", period.getType(), 1, elementRefs);
-		dhisService.createDataSetMembers(1, 1, 14);
+		dhisService.createDataSetMembers(1, 1, 52);
+		
+		for (RecordItem record : populations) {
+			String maleCount = Integer.toString(counter);
+			String femaleCount = Integer.toString(counter+1);
+			dhisService.createDataElement("Male : " + record.getAgeGroupName(), "", "int", maleCount);
+			dhisService.createDataElement("Female : " + record.getAgeGroupName(), "", "int", femaleCount);
+			counter += 2;
+		}
+		
+		dhisService.createDataSet("Population Data Set", period.getType(), 2, elementRefs);
+		dhisService.createDataSetMembers(2, 53, 104);
+		
+		for (RecordItem record : pregOutcomes) {
+			
+			if (record.getAgeGroupName().equals("Live Birth")) {
+				String maleCount = Integer.toString(counter);
+				String femaleCount = Integer.toString(counter+1);
+				dhisService.createDataElement("Male : " + record.getAgeGroupName(), "", "int", maleCount);
+				dhisService.createDataElement("Female : " + record.getAgeGroupName(), "", "int", femaleCount);
+				elementRefs.add(counter);
+				elementRefs.add(counter+1);
+				counter += 2;
+			}
+			else {
+				dhisService.createDataElement(record.getAgeGroupName(), "", "int", Integer.toString(counter));
+				elementRefs.add(counter);
+				counter++;
+			}
+		}
+		dhisService.createDataSet("Pregnancy Outcome Data Set", period.getType(), 3, elementRefs);
+		dhisService.createDataSetMembers(3, 105, 109);
 	}
 		
 	private void buildPeriod() {
 		
 		int counter = 1;
-		List<DeathRecordGroup> groups = period.getDeathGroup();
-		for (DeathRecordGroup group : groups) {					
+		
+		// reserved period for entire interval, used in population
+		dhisService.createPeriod(period.getType(), dhisDocumentBean.getsDate(), dhisDocumentBean.geteDate(), counter);
+		
+		counter++;
+		List<RecordGroup> groups = period.findGroupsByName("Death");
+		for (RecordGroup group : groups) {					
 			dhisService.createPeriod(period.getType(), group.getStart(), group.getEnd(), counter);
 			counter++;
 		}
@@ -158,34 +204,81 @@ public class DHISController {
 	
 	private void buildDataValues() {
 		
-		int periodIndex = 1;
+		int periodIndex = 2;
 		int dataElementIndex = 1;
 		
 		Map<Integer, String> hierarchyMap = OrgUnitBuilder.getHierarchyCodes();
 		Set<Integer> set = hierarchyMap.keySet();
 
 		for (Integer sourceIndex : set) {
-		
-			List<DeathRecordGroup> groupList = period.getDeathGroup();
-			for (DeathRecordGroup group : groupList) {
-				
-				for (DeathRecordBean record : group.getDeaths()) {
-					
-					String code = hierarchyMap.get(sourceIndex);
-					if (record.getLocationExtId().equals(code)) {	
-						dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(record.getMaleCount()));
-						dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(record.getFemaleCount()));
+			List<RecordGroup> groupList = period.findGroupsByName("Death");
+			for (RecordGroup group : groupList) {
+								
+				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
+				if (items != null) {	
+					for (RecordItem item : items) {	
+						if (item.getMaleCount() > 0)
+							dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(item.getMaleCount()));
+						if (item.getFemaleCount() > 0)
+							dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(item.getFemaleCount()));		
+						dataElementIndex += 2;
 					}
-					else {
-						dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, "0");
-						dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, "0");
-					}
-					dataElementIndex += 2;
 				}
 				periodIndex++;
 				dataElementIndex = 1;
 			}
-			periodIndex = 1;
+			periodIndex = 2;
+		}
+
+		periodIndex = 1;
+		dataElementIndex = 53;
+		for (Integer sourceIndex : set) {
+			List<RecordGroup> groupList = period.findGroupsByName("Population");
+			for (RecordGroup group : groupList) {
+				
+				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
+				if (items != null) {	
+					for (RecordItem item : items) {
+						if (item.getMaleCount() > 0) {
+							dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(item.getMaleCount()));
+						}
+						if (item.getFemaleCount() > 0) {
+							dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(item.getFemaleCount()));
+						}
+						dataElementIndex += 2;
+					}
+				}
+				dataElementIndex = 53;
+			}
+		}
+		
+		periodIndex = 2;
+		dataElementIndex = 105;
+		for (Integer sourceIndex : set) {
+			List<RecordGroup> groupList = period.findGroupsByName("PregnancyOutcome");
+			for (RecordGroup group : groupList) {
+				
+				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
+				if (items != null) {	
+					for (RecordItem item : items) {	
+						if (item.getAgeGroupName().contains("Live Birth")) {
+							if (item.getMaleCount() > 0)
+								dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(item.getMaleCount()));
+							if (item.getFemaleCount() > 0)
+								dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(item.getFemaleCount()));		
+							dataElementIndex += 2;
+						}
+						else {
+							if (item.getMaleCount() > 0)
+								dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(item.getMaleCount()));
+							dataElementIndex++;
+						}
+					}
+				}
+				periodIndex++;
+				dataElementIndex = 105;
+			}
+			periodIndex = 2;
 		}
 	}
 	

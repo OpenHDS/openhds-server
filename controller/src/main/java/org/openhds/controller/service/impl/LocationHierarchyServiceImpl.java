@@ -402,6 +402,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     public List<String> getValidLocationsInHierarchy(String locationHierarchyItem) {
     	
     	List<String> locations = new ArrayList<String>();
+    	locations.add(locationHierarchyItem);
     	List<LocationHierarchy> hierarchyList = genericDao.findListByProperty(LocationHierarchy.class, "extId", locationHierarchyItem);
     	for (LocationHierarchy item : hierarchyList) {
     		locations = processLocationHierarchy(item, locations);
@@ -413,10 +414,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     	
     	// base case
         if (item.getLevel().getName().equals(getLowestLevel().getName())) {
-        	  List<Location> locations = genericDao.findListByProperty(Location.class, "locationLevel", item, true);
-        	  for (Location location : locations)
-        		  locationNames.add(location.getExtId());
-        	  return locationNames;
+        	locationNames.add(item.getExtId());
+        	return locationNames;
         }
         
         // find all location hierarchy items that are children, continue to recurse

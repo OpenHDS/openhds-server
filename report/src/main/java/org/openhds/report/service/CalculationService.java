@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.openhds.domain.annotations.Authorized;
+import org.openhds.domain.model.Death;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
@@ -13,6 +14,9 @@ import org.openhds.report.beans.ReportRecordBean;
 
 
 public interface CalculationService {
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	void initializeGroups();
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void setAgeGroups(long age, Individual individual, boolean denominator); 
@@ -25,13 +29,7 @@ public interface CalculationService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void completeReportRecords(Calendar startDate, Calendar endDate);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	int daysBetween(Calendar startDate, Calendar endDate);
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	Calendar getMidPointDate(Calendar startDate, Calendar endDate);
-	
+		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<ReportRecordBean> getReportRecords();
 		
@@ -46,6 +44,9 @@ public interface CalculationService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<OutMigration> getOutMigrationsBetweenInterval(Calendar startDate, Calendar endDate);
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<Death> getDeathsBetweenInterval(Calendar startDate, Calendar endDate);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void setIntervalsOfResidencies(List<Residency> list, Calendar startDate, Calendar endDate);

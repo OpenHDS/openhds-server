@@ -26,7 +26,7 @@
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Migrations into the Study Area]]></text>
+				<text><![CDATA[Mortality Rates Table]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="548" y="0" width="52" height="19"/>

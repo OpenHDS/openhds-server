@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.Death;
 import org.openhds.domain.model.DemRates;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
@@ -38,7 +39,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		this.calculationService = calculationService;
 	}
 	
-	@RequestMapping(value = {"/inmigration.report", "/outmigration.report"})
+	@RequestMapping(value = {"/inmigration.report", "/outmigration.report", "/mortality.report"})
 	public ModelAndView getPopulationRates(HttpServletRequest request) {
 		
 		String ratesUuid = request.getParameter("ratesUUID");
@@ -69,9 +70,11 @@ public class DemographicRatesController implements DemographicRatesService {
 			
 		List<Residency> residencies = null;
 		
+		calculationService.initializeGroups();
+		
 		// denominator
 		if (denomType.equals("Population at Midpoint")) {
-			Calendar midpoint = calculationService.getMidPointDate(startDate, endDate);
+			Calendar midpoint = CalendarUtil.getMidPointDate(startDate, endDate);
 			residencies = calculationService.getResidenciesAtMidPoint(midpoint);
 			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
 		}
@@ -90,6 +93,10 @@ public class DemographicRatesController implements DemographicRatesService {
 			List<OutMigration> outmigrations = calculationService.getOutMigrationsBetweenInterval(startDate, endDate);
 			setAgeGroupsForOutMigrations(outmigrations);
 		}
+		else if (event.equals("Mortality")) {
+			List<Death> deaths = calculationService.getDeathsBetweenInterval(startDate, endDate);
+			setAgeGroupsForDeaths(deaths);
+		}
 			
 		// call this once denominator and numerator totals have been calculated
 		calculationService.completeReportRecords(startDate, endDate);
@@ -104,7 +111,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
-			int days = calculationService.daysBetween(individual.getDob(), midpoint);
+			int days = (int) CalendarUtil.daysBetween(individual.getDob(), midpoint);
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, true);
 			calculationService.setDenominatorTotals();
@@ -114,7 +121,7 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForInMigrations(List<InMigration> inmigrations) {
 		for (InMigration inmigration : inmigrations) {
 			Individual individual = inmigration.getIndividual();
-			int days = calculationService.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
+			int days = (int) CalendarUtil.daysBetween(individual.getDob(), inmigration.getRecordedDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setNumeratorTotals();
@@ -124,7 +131,17 @@ public class DemographicRatesController implements DemographicRatesService {
 	public void setAgeGroupsForOutMigrations(List<OutMigration> outmigrations) {
 		for (OutMigration outmigration : outmigrations) {
 			Individual individual = outmigration.getIndividual();
-			int days = calculationService.daysBetween(individual.getDob(), outmigration.getRecordedDate());		
+			int days = (int) CalendarUtil.daysBetween(individual.getDob(), outmigration.getRecordedDate());		
+			long age = (long) (days / 365.25);
+			calculationService.setAgeGroups(age, individual, false);
+			calculationService.setNumeratorTotals();
+		}
+	}
+	
+	public void setAgeGroupsForDeaths(List<Death> deaths) {
+		for (Death death : deaths) {
+			Individual individual = death.getIndividual();
+			int days = (int) CalendarUtil.daysBetween(individual.getDob(), death.getDeathDate());		
 			long age = (long) (days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
 			calculationService.setNumeratorTotals();
