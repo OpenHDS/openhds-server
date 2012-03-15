@@ -41,6 +41,12 @@ public class DemographicRatesController implements DemographicRatesService {
 	
 	@RequestMapping(value = {"/inmigration.report", "/outmigration.report", "/mortality.report"})
 	public ModelAndView getPopulationRates(HttpServletRequest request) {
+		// this is called because entities are modified during this session, but the changes are
+		// not intended to be saved back to the database. Without this call, Hibernate will
+		// mark the entities are dirty, and attempt to flush them back to the database when
+		// later queries are made. Setting this to true essentially tells hibernate to ignore
+		// dirty checking
+		genericDao.getSession().setDefaultReadOnly(true);
 		
 		String ratesUuid = request.getParameter("ratesUUID");
 		DemRates dm = genericDao.findByProperty(DemRates.class, "uuid", ratesUuid);
@@ -98,7 +104,10 @@ public class DemographicRatesController implements DemographicRatesService {
 		}
 			
 		// call this once denominator and numerator totals have been calculated
-		calculationService.completeReportRecords(startDate, endDate);
+		if (denomType.equals("Population at Midpoint")) 
+			calculationService.completeReportRecordsForMidpoint(startDate, endDate);
+		else
+			calculationService.completeReportRecordsForPdo();
 		
 		List<ReportRecordBean> data = calculationService.getReportRecords();
 		modelMap.put("dataSource", data);

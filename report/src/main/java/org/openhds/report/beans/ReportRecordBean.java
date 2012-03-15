@@ -74,16 +74,8 @@ public class ReportRecordBean {
 		return denominatorMale;
 	}
 
-	public void setDenominatorMale(int denominatorMale) {
-		this.denominatorMale += denominatorMale;
-	}
-
 	public int getDenominatorFemale() {
 		return denominatorFemale;
-	}
-
-	public void setDenominatorFemale(int denominatorFemale) {
-		this.denominatorFemale += denominatorFemale;
 	}
 
 	public int getNumeratorMale() {
@@ -111,48 +103,53 @@ public class ReportRecordBean {
 	}
 	
 	public double getPdoMale() {
-		return round(pdoMale, 2);
+		return pdoMale;
 	}
 
 	public void setPdoMale(double pdoMale) {
 		this.pdoMale = pdoMale;
 	}
+	
+	public void addPdoMale(double pdoMale) {
+		this.pdoMale += pdoMale;
+	}
 
 	public double getPdoFemale() {
-		return round(pdoFemale, 2);
+		return pdoFemale;
 	}
 
 	public void setPdoFemale(double pdoFemale) {
 		this.pdoFemale = pdoFemale;
 	}
 	
+	public void addPdoFemale(double pdoFemale) {
+		this.pdoFemale += pdoFemale;
+	}
+	
 	public double getPyoMale() {
 		if (getPdoMale() != 0) {
-			double result = ((1000 * 365.25 * numeratorMale) / getPdoMale());
-			return round(result, 2);
+			return ((1000 * 365.25 * numeratorMale) / getPdoMale());
 		}
 		return 0;
 	}
 
 	public double getPyoFemale() {
 		if (getPdoFemale() != 0) { 
-			double result = ((1000 * 365.25 * numeratorFemale) / getPdoFemale());
-			return round(result, 2);
+			return ((1000 * 365.25 * numeratorFemale) / getPdoFemale());
 		}
 		return 0;
 	}
 	
 	public double getPyoTotal() {
 		if (getPdoMale() + getPdoFemale() > 0) {
-			double result = (1000 * 365.25 * (numeratorMale + numeratorFemale)) / (getPdoMale() + getPdoFemale());
-			return round(result, 2);
+			return (1000 * 365.25 * (numeratorMale + numeratorFemale)) / (getPdoMale() + getPdoFemale());
 		}
 	
 		return 0;
 	}
 	
 	public double getPyo() {
-		return round((getPdoMale() + getPdoFemale()) / 365.25, 2);
+		return (getPdoMale() + getPdoFemale()) / 365.25;
 	}
 	
 	public int getMax() {
@@ -161,15 +158,6 @@ public class ReportRecordBean {
 
 	public void setMax(int max) {
 		this.max = max;
-	}
-	
-	private double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
-
-	    long factor = (long) Math.pow(10, places);
-	    value = value * factor;
-	    long tmp = Math.round(value);
-	    return (double) tmp / factor;
 	}
 
 }

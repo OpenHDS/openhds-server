@@ -22,7 +22,7 @@ public interface CalculationService {
 	void setAgeGroups(long age, Individual individual, boolean denominator); 
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void completeReportRecords(Calendar startDate, Calendar endDate);
+	void completeReportRecordsForMidpoint(Calendar startDate, Calendar endDate);
 		
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<ReportRecordBean> getReportRecords();
@@ -44,4 +44,7 @@ public interface CalculationService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void setIntervalsOfResidencies(List<Residency> list, Calendar startDate, Calendar endDate);
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	void completeReportRecordsForPdo();
 }
