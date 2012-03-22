@@ -8,14 +8,19 @@
 	<parameter name="denomType" class="java.lang.String"/>
 	<parameter name="locations" class="java.lang.String"/>
 	<parameter name="individuals" class="java.lang.String"/>
+	<parameter name="totalFertilityRate" class="java.lang.Double"/>
+	<parameter name="maleBorn" class="java.lang.Double"/>
+	<parameter name="femaleBorn" class="java.lang.Double"/>
+	<parameter name="bornTotal" class="java.lang.Double"/>
+	<parameter name="eventRateMale" class="java.lang.Double"/>
+	<parameter name="eventRateFemale" class="java.lang.Double"/>
+	<parameter name="eventRateTotal" class="java.lang.Double"/>
 	<field name="numeratorMale" class="java.lang.Double"/>
 	<field name="numeratorFemale" class="java.lang.Double"/>
 	<field name="numeratorTotal" class="java.lang.Double"/>
-	<field name="pyoMale" class="java.lang.Double"/>
-	<field name="pyoFemale" class="java.lang.Double"/>
-	<field name="pyoTotal" class="java.lang.Double"/>
+	<field name="fertilityRate" class="java.lang.Double"/>
 	<field name="ageGroupName" class="java.lang.String"/>
-	<field name="pyo" class="java.lang.Double"/>
+	<field name="pyoForFemaleOnly" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -26,7 +31,7 @@
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Migrations into the Study Area]]></text>
+				<text><![CDATA[Birth/Fertility Table]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="548" y="0" width="52" height="19"/>
@@ -45,7 +50,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="40" splitType="Stretch">
+		<band height="150" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="100" height="20"/>
 				<textElement>
@@ -81,44 +86,135 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{individuals}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="100" y="20" width="145" height="20"/>
+				<reportElement x="155" y="129" width="127" height="20"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Number of Observations]]></text>
+				<text><![CDATA[Live Births]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="265" y="20" width="223" height="20"/>
+				<reportElement x="356" y="129" width="223" height="20"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Person Years Observed]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="488" y="20" width="236" height="20"/>
-				<textElement textAlignment="Center">
+				<reportElement x="623" y="130" width="169" height="20"/>
+				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Rate Per 1000 Person Years]]></text>
+				<text><![CDATA[Fertility Rate]]></text>
 			</staticText>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="588" y="0" width="100" height="20"/>
+				<reportElement x="0" y="89" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Fertility Rate]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="182" y="89" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{totalFertilityRate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="69" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Live Births]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="49" width="55" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Male]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="49" width="55" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Female]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="688" y="0" width="104" height="20"/>
+				<reportElement x="182" y="29" width="165" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Number of Events]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="49" width="55" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Both]]></text>
 			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="182" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{maleBorn}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="237" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{femaleBorn}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="292" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{bornTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="29" width="165" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Event Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="49" width="55" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Male]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="49" width="55" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Female]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="535" y="49" width="55" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Both]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="425" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{eventRateMale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="480" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{eventRateFemale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="535" y="69" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{eventRateTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="100" height="20"/>
 				<textElement>
@@ -127,35 +223,21 @@
 				<text><![CDATA[AGE Group]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="55" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Male]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="155" y="0" width="55" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Female]]></text>
+				<text><![CDATA[Male]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="210" y="0" width="55" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Both]]></text>
+				<text><![CDATA[Female]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="488" y="0" width="100" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Male]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="365" y="0" width="123" height="20"/>
+				<reportElement x="265" y="0" width="55" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -164,7 +246,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="100" height="15"/>
 				<textElement>
@@ -173,44 +255,34 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ageGroupName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="100" y="0" width="55" height="15"/>
+				<reportElement x="155" y="0" width="55" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{numeratorMale}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="155" y="0" width="55" height="15"/>
+				<reportElement x="210" y="0" width="55" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{numeratorFemale}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="210" y="0" width="55" height="15"/>
+				<reportElement x="265" y="0" width="55" height="15"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{numeratorTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="689" y="0" width="103" height="15"/>
+				<reportElement x="623" y="0" width="103" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyoTotal}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{fertilityRate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="365" y="0" width="123" height="15"/>
+				<reportElement x="456" y="0" width="123" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyo}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="588" y="0" width="100" height="15"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyoFemale}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="488" y="0" width="100" height="15"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyoMale}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pyoForFemaleOnly}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="15" splitType="Stretch"/>
+		<band height="19" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band splitType="Stretch"/>

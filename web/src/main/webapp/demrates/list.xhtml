@@ -22,32 +22,32 @@
 		</ui:include>	
 		
 		<div>
-		    <h:outputText escape="false" value="(No Dem Rate Items Found)" rendered="#{fn:length(demRatesCrud.pagedItems) == 0}" />
+		    <h:outputText escape="false" value="#{msg.demRatesEmpty}" rendered="#{fn:length(demRatesCrud.pagedItems) == 0}" />
 		    
 		    <h:panelGroup rendered="#{fn:length(demRatesCrud.pagedItems) > 0}">
 		        <h:dataTable value="#{demRatesCrud.pagedItems}" var="item" 
 		        	columnClasses="center,center,center,center,width3" width="100%" cellspacing="0" cellpadding="0"  >
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="Start Date"/>
+		                    <h:outputText value="#{msg.demRatesStartDate}"/>
 		                </f:facet>
 		                <h:outputText value="#{item.startDate}" converter="#{calendarConverter}"/>
 		            </h:column>
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="End Date"/>
+		                    <h:outputText value="#{msg.demRatesEndDate}"/>
 		                </f:facet>
 		                <h:outputText value="#{item.endDate}" converter="#{calendarConverter}" />
 		            </h:column>
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="Event Type"/>
+		                    <h:outputText value="#{msg.demRatesEventType}"/>
 		                </f:facet>
 		                <h:outputText value="#{item.event}" />
 		            </h:column>
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="Denominator"/>
+		                    <h:outputText value="#{msg.demRatesDenominator}"/>
 		                </f:facet>
 		                <h:outputText value="#{item.denominator}" />
 		            </h:column>
@@ -69,7 +69,7 @@
                         </h:commandLink>
                         <h:commandLink id="viewLink" action="#{demRatesCrud.redirectToReports}" target="_blank">
                             <f:param name="itemId" value="#{item.uuid}"/>
-                            <h:graphicImage style="border: 0;" title="View Report" value="../resources/icons/report.ico"/>
+                            <h:graphicImage style="border: 0;" title="view report" value="../resources/icons/report.ico"/>
                         </h:commandLink>
 		            </h:column>
 		        </h:dataTable>

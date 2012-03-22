@@ -1,5 +1,6 @@
 package org.openhds.report.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +12,11 @@ import org.openhds.domain.model.DemRates;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
+import org.openhds.domain.model.PregnancyOutcome;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.report.beans.MortalityRecordBean;
 import org.openhds.report.beans.ReportRecordBean;
 import org.openhds.report.service.CalculationService;
 import org.openhds.report.service.DemographicRatesService;
@@ -29,6 +32,9 @@ public class DemographicRatesController implements DemographicRatesService {
 	SitePropertiesService siteProperties;
 	CalculationService calculationService;
 	CalendarUtil calendarUtil;
+	
+	Calendar startDate;
+	Calendar endDate;
 		
 	@Autowired
 	public DemographicRatesController(GenericDao genericDao, SitePropertiesService siteProperties, 
@@ -39,7 +45,7 @@ public class DemographicRatesController implements DemographicRatesService {
 		this.calculationService = calculationService;
 	}
 	
-	@RequestMapping(value = {"/inmigration.report", "/outmigration.report", "/mortality.report"})
+	@RequestMapping(value = {"/inmigration.report", "/outmigration.report", "/mortality.report", "/fertility.report", "/population.report"})
 	public ModelAndView getPopulationRates(HttpServletRequest request) {
 		// this is called because entities are modified during this session, but the changes are
 		// not intended to be saved back to the database. Without this call, Hibernate will
@@ -51,8 +57,8 @@ public class DemographicRatesController implements DemographicRatesService {
 		String ratesUuid = request.getParameter("ratesUUID");
 		DemRates dm = genericDao.findByProperty(DemRates.class, "uuid", ratesUuid);
 		
-		Calendar startDate = dm.getStartDate();
-		Calendar endDate = dm.getEndDate();
+		startDate = dm.getStartDate();
+		endDate = dm.getEndDate();
 		String denomType = dm.getDenominator();
 		String event = dm.getEvent();
 		
@@ -75,14 +81,15 @@ public class DemographicRatesController implements DemographicRatesService {
 		modelMap.put("individuals", "All Individuals");
 			
 		List<Residency> residencies = null;
+		Calendar midpoint = null;
 		
-		calculationService.initializeGroups();
+		calculationService.initializeGroups(request.getServletPath());
 		
 		// denominator
 		if (denomType.equals("Population at Midpoint")) {
-			Calendar midpoint = CalendarUtil.getMidPointDate(startDate, endDate);
+			midpoint = CalendarUtil.getMidPointDate(startDate, endDate);
 			residencies = calculationService.getResidenciesAtMidPoint(midpoint);
-			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint);
+			setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint, true);
 		}
 		else {
 			residencies = calculationService.getResidenciesInBetween(startDate, endDate);
@@ -100,7 +107,49 @@ public class DemographicRatesController implements DemographicRatesService {
 		}
 		else if (event.equals("Mortality")) {
 			List<Death> deaths = calculationService.getDeathsBetweenInterval(startDate, endDate);
-			setAgeGroupsForDeaths(deaths);
+			List<MortalityRecordBean> mortalityRecords = setAgeGroupsForDeaths(deaths);
+			
+			MortalityRecordBean neoNatal = mortalityRecords.get(0);
+			MortalityRecordBean postNatal = mortalityRecords.get(1);
+			MortalityRecordBean infant = mortalityRecords.get(2);
+			
+			modelMap.put("neoNatalMale", neoNatal.getNeoNatalMale());
+			modelMap.put("neoNatalFemale", neoNatal.getNeoNatalFemale());
+			modelMap.put("neoNatalTotal", neoNatal.getNeoNatalTotal());
+			modelMap.put("neoNatalMaleRatio", neoNatal.getNeoNatalMaleRatio());
+			modelMap.put("neoNatalFemaleRatio", neoNatal.getNeoNatalFemaleRatio());
+			modelMap.put("neoNatalRatioTotal", neoNatal.getNeoNatalRatioTotal());
+			
+			modelMap.put("postNatalMale", postNatal.getPostNatalMale());
+			modelMap.put("postNatalFemale", postNatal.getPostNatalFemale());
+			modelMap.put("postNatalTotal", postNatal.getPostNatalTotal());
+			modelMap.put("postNatalMaleRatio", postNatal.getPostNatalMaleRatio());
+			modelMap.put("postNatalFemaleRatio", postNatal.getPostNatalFemaleRatio());
+			modelMap.put("postNatalRatioTotal", postNatal.getPostNatalRatioTotal());
+			
+			modelMap.put("infantMale", infant.getInfantMale());
+			modelMap.put("infantFemale", infant.getInfantFemale());
+			modelMap.put("infantTotal", infant.getInfantTotal());
+			modelMap.put("infantMaleRatio", infant.getInfantMaleRatio());
+			modelMap.put("infantFemaleRatio", infant.getInfantFemaleRatio());
+			modelMap.put("infantRatioTotal", infant.getInfantRatioTotal());
+			
+			modelMap.put("totalOutcomes", postNatal.getTotalOutcomes());
+		}
+		else if (event.equals("Fertility")) {
+			List<PregnancyOutcome> outcomes = calculationService.getPregnanciesBetweenInterval(startDate, endDate);
+			setAgeGroupsForPregnancyOutcomes(outcomes);
+			// only want intervals 15-49
+			calculationService.getReportRecords().remove(1);
+			calculationService.getReportRecords().remove(1);
+			calculationService.getReportRecords().remove(1);
+		}
+		else if (event.equals("Population")) {
+			if (denomType.equals("Person Days Observed")) {
+				calculationService.setNumeratorsForPopulation();
+			} else {
+				setAgeGroupsForResidenciesAtMidpoint(residencies, midpoint, false);
+			}
 		}
 			
 		// call this once denominator and numerator totals have been calculated
@@ -109,19 +158,39 @@ public class DemographicRatesController implements DemographicRatesService {
 		else
 			calculationService.completeReportRecordsForPdo();
 		
+		if (event.equals("Fertility")) {
+			ReportRecordBean allGroup = calculationService.getReportRecords().get(0);
+			modelMap.put("totalFertilityRate", allGroup.getTotalFertilityRate());
+			
+			modelMap.put("maleBorn", allGroup.getNumeratorMale());
+			modelMap.put("femaleBorn", allGroup.getNumeratorFemale());
+			modelMap.put("bornTotal", allGroup.getNumeratorTotal());
+			modelMap.put("eventRateMale", allGroup.getEventRateMale());
+			modelMap.put("eventRateFemale", allGroup.getEventRateFemale());
+			modelMap.put("eventRateTotal", allGroup.getEventRateTotal());
+		}
+		else if (event.equals("Population")) {
+			ReportRecordBean allGroup = calculationService.getReportRecords().get(0);
+			for (int i = 1; i < calculationService.getReportRecords().size(); i++) {
+				ReportRecordBean record = calculationService.getReportRecords().get(i);
+				record.setDenominatorMale(allGroup.getPdoMale());
+				record.setDenominatorFemale(allGroup.getPdoFemale());
+			}
+		}
+		
 		List<ReportRecordBean> data = calculationService.getReportRecords();
 		modelMap.put("dataSource", data);
-		
+				
 		String selectedReport = event.toLowerCase().concat("Report");
 		return new ModelAndView(selectedReport, modelMap);
 	}
 	
-	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint) {	
+	public void setAgeGroupsForResidenciesAtMidpoint(List<Residency> residencies, Calendar midpoint, boolean flag) {	
 		for (Residency residency : residencies) {		
 			Individual individual = residency.getIndividual();
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), midpoint);
 			long age = (long) (days / 365.25);
-			calculationService.setAgeGroups(age, individual, true);
+			calculationService.setAgeGroups(age, individual, flag);
 		}
 	}
 	
@@ -143,12 +212,32 @@ public class DemographicRatesController implements DemographicRatesService {
 		}
 	}
 	
-	public void setAgeGroupsForDeaths(List<Death> deaths) {
+	public List<MortalityRecordBean> setAgeGroupsForDeaths(List<Death> deaths) {
+		
+		List<MortalityRecordBean> mortalityRecords = new ArrayList<MortalityRecordBean>();
+		MortalityRecordBean neoNatalRecord = new MortalityRecordBean("Neo-Natal", 0, 0.079);
+		MortalityRecordBean postNatalRecord = new MortalityRecordBean("Post-Natal", 0.079, 0.916);
+		MortalityRecordBean infantRecord = new MortalityRecordBean("Infant", 0, 1);
+		
 		for (Death death : deaths) {
 			Individual individual = death.getIndividual();
 			int days = (int) CalendarUtil.daysBetween(individual.getDob(), death.getDeathDate());		
-			long age = (long) (days / 365.25);
+			double age = ((double)days / 365.25);
 			calculationService.setAgeGroups(age, individual, false);
+			calculationService.setInfantGroups(age, individual, startDate, endDate, neoNatalRecord, postNatalRecord, infantRecord);
+		}
+		mortalityRecords.add(neoNatalRecord);
+		mortalityRecords.add(postNatalRecord);
+		mortalityRecords.add(infantRecord);
+		return mortalityRecords;
+	}
+	
+	public void setAgeGroupsForPregnancyOutcomes(List<PregnancyOutcome> outcomes) {
+		for (PregnancyOutcome outcome : outcomes) {
+			Individual individual = outcome.getMother();
+			int days = (int) CalendarUtil.daysBetween(individual.getDob(), outcome.getOutcomeDate());		
+			long age = (long) (days / 365.25);
+			calculationService.setAgeGroupsForBirths(age, individual, outcome);
 		}
 	}
 }

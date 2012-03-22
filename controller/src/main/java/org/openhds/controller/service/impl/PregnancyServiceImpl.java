@@ -1,6 +1,7 @@
 package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
@@ -193,6 +194,62 @@ public class PregnancyServiceImpl implements PregnancyService {
 		}
 	}
 	
+	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {
+		
+		List<PregnancyOutcome> output = new ArrayList<PregnancyOutcome>();
+		List<PregnancyOutcome> outcomes = genericDao.findAll(PregnancyOutcome.class, true);
+		
+		for (PregnancyOutcome outcome : outcomes) {			
+			Calendar outcomeDate = outcome.getOutcomeDate();
+			if ((outcomeDate.after(startDate) || outcomeDate.equals(startDate)) && 
+					(outcomeDate.before(endDate))) {
+				
+				List<Outcome> allOutcomes = outcome.getOutcomes();
+				for (Outcome o : allOutcomes) 
+					if (o.getType().equals(siteProperties.getLiveBirthCode())) {
+						output.add(outcome);
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int findAllBirthsBetweenIntervalByGender(Calendar startDate, Calendar endDate, int flag) {
+		
+		int count = 0;
+		List<PregnancyOutcome> outcomes = genericDao.findAll(PregnancyOutcome.class, true);
+		
+		for (PregnancyOutcome outcome : outcomes) {			
+			Calendar outcomeDate = outcome.getOutcomeDate();
+			if ((outcomeDate.after(startDate) || outcomeDate.equals(startDate)) && 
+					(outcomeDate.before(endDate))) {
+				
+				List<Outcome> allOutcomes = outcome.getOutcomes();
+				for (Outcome o : allOutcomes) {		
+					if (o.getType().equals(siteProperties.getLiveBirthCode())) {
+						// male
+						if (flag == 0) {
+							if (o.getChild().getGender().equals(siteProperties.getMaleCode())) {
+								if (o.getType().equals(siteProperties.getLiveBirthCode())) {
+									count++;
+								}
+							}
+						}
+						// female
+						else {
+							if (o.getChild().getGender().equals(siteProperties.getFemaleCode())) {
+								if (o.getType().equals(siteProperties.getLiveBirthCode())) {
+									count++;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
+		
 	private ValueProperty getValueProperty(final String propertyName, final Object propertyValue) {
 		return new ValueProperty() {
 

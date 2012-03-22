@@ -1,7 +1,7 @@
 package org.openhds.controller.beans;
 
 /**
- * This is used in the DHIS export for counting up aggregate data by category.
+ * This is used in the DHIS export and rates for counting up aggregate data by category.
  * A RecordItem contains the ageGroupName it represents. For example, 0-28 days.
  * It also contains counts for both male and female that fit into that particular
  * category. Do not use this class directly, just supply the proper parameters 

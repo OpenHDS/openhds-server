@@ -48,7 +48,6 @@ public class Individual
     @Searchable
     @Description(description = "First name of the individual.")
     private String firstName;
-    @CheckFieldNotBlank
     @Searchable
     @Description(description = "Middle name of the individual.")
     private String middleName;
@@ -66,13 +65,19 @@ public class Individual
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckIndividualParentAge(allowNull = true, message = "The mother is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The mother has been voided")
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Individual.class)
+    @ManyToOne(cascade = {
+        CascadeType.MERGE,
+        CascadeType.PERSIST
+    }, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's mother, identified by the external id.")
     private org.openhds.domain.model.Individual mother;
     @CheckIndividualGenderMale(allowNull = true, message = "The father specified is not male gender")
     @CheckIndividualParentAge(allowNull = true, message = "The father is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The father has been voided")
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Individual.class)
+    @ManyToOne(cascade = {
+        CascadeType.MERGE,
+        CascadeType.PERSIST
+    }, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's father, identified by the external id.")
     private org.openhds.domain.model.Individual father;
     @ExtensionStringConstraint(constraint = "dobAspectConstraint", message = "Invalid Value for partial date", allowNull = true)

@@ -4,80 +4,123 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.openhds.controller.service.DemRatesService;
+import org.openhds.controller.service.PregnancyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
+import org.openhds.domain.model.Outcome;
+import org.openhds.domain.model.PregnancyOutcome;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.report.beans.MortalityRecordBean;
 import org.openhds.report.beans.ReportRecordBean;
 import org.openhds.report.service.CalculationService;
 
 public class CalculationServiceImpl implements CalculationService {
 
-	/**
-	 * Age Groups are as follows:
-	 * 
-	 * ageGrp1:  0-4
-	 * ageGrp2:  5-9
-	 * ageGrp3:  10-14
-	 * ageGrp4:  15-19
-	 * ageGrp5:  20-24
-	 * ageGrp6: 25-29
-	 * ageGrp7: 30-34
-	 * ageGrp8: 35-39
-	 * ageGrp9: 40-44
-	 * ageGrp10: 45-49
-	 * ageGrp11: 50-54
-	 * ageGrp12: 55-59
-	 * ageGrp13: 60-64
-	 * ageGrp14: 65+
-	 */
 	List<ReportRecordBean> reportRecords = new ArrayList<ReportRecordBean>();
 	
 	SitePropertiesService siteProperties;
-	DemRatesService demRatesService;
 	GenericDao genericDao;
+	PregnancyService pregnancyService;
 	
-	public CalculationServiceImpl(SitePropertiesService siteProperties, 
-			DemRatesService demRatesService, GenericDao genericDao) {
+	public CalculationServiceImpl(SitePropertiesService siteProperties, GenericDao genericDao,
+			PregnancyService pregnancyService) {
 		this.siteProperties = siteProperties;
-		this.demRatesService = demRatesService;
 		this.genericDao = genericDao;
+		this.pregnancyService = pregnancyService;
 	}
 	
-	public void initializeGroups() {
+	public void initializeGroups(String path) {
 		reportRecords.clear();
-		reportRecords.add(new ReportRecordBean("ALL", 0, 100));
-		reportRecords.add(new ReportRecordBean("0-4", 0, 5));
-		reportRecords.add(new ReportRecordBean("5-9", 5, 10));
-		reportRecords.add(new ReportRecordBean("10-14", 10, 15));
-		reportRecords.add(new ReportRecordBean("15-19", 15, 20));
-		reportRecords.add(new ReportRecordBean("20-24", 20, 25));
-		reportRecords.add(new ReportRecordBean("25-29", 25, 30));
-		reportRecords.add(new ReportRecordBean("30-34", 30, 35));
-		reportRecords.add(new ReportRecordBean("35-39", 35, 40));
-		reportRecords.add(new ReportRecordBean("40-44", 40, 45));
-		reportRecords.add(new ReportRecordBean("45-49", 45, 50));
-		reportRecords.add(new ReportRecordBean("50-54", 50, 55));
-		reportRecords.add(new ReportRecordBean("55-59", 55, 60));
-		reportRecords.add(new ReportRecordBean("60-64", 60, 65));
-		reportRecords.add(new ReportRecordBean("65+", 65, 100));
 		
+		if (path.equals("/outmigration.report") || path.equals("/inmigration.report")) {
+			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+			reportRecords.add(new ReportRecordBean("65+", 65, 100));
+		}
+		else if (path.equals("/mortality.report")) {
+			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+			reportRecords.add(new ReportRecordBean("< 12 months", 0, 1));
+			reportRecords.add(new ReportRecordBean("1-4", 1, 5));
+			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+			reportRecords.add(new ReportRecordBean("65-69", 65, 70));
+			reportRecords.add(new ReportRecordBean("70-74", 70, 75));
+			reportRecords.add(new ReportRecordBean("75-79", 75, 80));
+			reportRecords.add(new ReportRecordBean("80-84", 80, 85));
+			reportRecords.add(new ReportRecordBean("85+", 85, 100));
+		}
+		else if (path.equals("/fertility.report")) {
+			reportRecords.add(new ReportRecordBean("ALL", 15, 50));
+			//ignored
+			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+			//ignored
+			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+			//ignored
+			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+			reportRecords.add(new ReportRecordBean("24-29", 25, 30));
+			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+		}
+		else if (path.equals("/population.report")) {
+			reportRecords.add(new ReportRecordBean("ALL", 0, 110));
+			reportRecords.add(new ReportRecordBean("0-4", 0, 5));
+			reportRecords.add(new ReportRecordBean("5-9", 5, 10));
+			reportRecords.add(new ReportRecordBean("10-14", 10, 15));
+			reportRecords.add(new ReportRecordBean("15-19", 15, 20));
+			reportRecords.add(new ReportRecordBean("20-24", 20, 25));
+			reportRecords.add(new ReportRecordBean("25-29", 25, 30));
+			reportRecords.add(new ReportRecordBean("30-34", 30, 35));
+			reportRecords.add(new ReportRecordBean("35-39", 35, 40));
+			reportRecords.add(new ReportRecordBean("40-44", 40, 45));
+			reportRecords.add(new ReportRecordBean("45-49", 45, 50));
+			reportRecords.add(new ReportRecordBean("50-54", 50, 55));
+			reportRecords.add(new ReportRecordBean("55-59", 55, 60));
+			reportRecords.add(new ReportRecordBean("60-64", 60, 65));
+			reportRecords.add(new ReportRecordBean("65-69", 65, 70));
+			reportRecords.add(new ReportRecordBean("70-74", 70, 75));
+			reportRecords.add(new ReportRecordBean("75-79", 75, 80));
+			reportRecords.add(new ReportRecordBean("80-84", 80, 85));
+			reportRecords.add(new ReportRecordBean("85-89", 85, 90));
+			reportRecords.add(new ReportRecordBean("90-95", 90, 95));
+			reportRecords.add(new ReportRecordBean("95+", 95, 110));
+		}
 	}
 	
-	public void completeReportRecordsForMidpoint(Calendar startDate, Calendar endDate) {		
-		// calculate pdo's
+	public void completeReportRecordsForMidpoint(Calendar startDate, Calendar endDate) {	
+		
 		int daysBetween = (int) CalendarUtil.daysBetween(startDate, endDate);
-		for (int i = 1; i < reportRecords.size(); i++) {
-			ReportRecordBean record = reportRecords.get(i);
-			record.setPdoMale(record.getDenominatorMale() * daysBetween);
-			record.setPdoFemale(record.getDenominatorFemale() * daysBetween);
-		}
 		
 		// calculate all
 		ReportRecordBean ageGrpAll = reportRecords.get(0);
@@ -89,6 +132,15 @@ public class CalculationServiceImpl implements CalculationService {
 		}
 		ageGrpAll.setPdoMale(ageGrpAll.getDenominatorMale() * daysBetween);
 		ageGrpAll.setPdoFemale(ageGrpAll.getDenominatorFemale() * daysBetween);
+		ageGrpAll.setTotal(ageGrpAll.getNumeratorTotal());
+		
+		// calculate pdo's
+		for (int i = 1; i < reportRecords.size(); i++) {
+			ReportRecordBean record = reportRecords.get(i);
+			record.setPdoMale(record.getDenominatorMale() * daysBetween);
+			record.setPdoFemale(record.getDenominatorFemale() * daysBetween);
+			record.setTotal(ageGrpAll.getNumeratorTotal());
+		}
 	}
 	
 	public void completeReportRecordsForPdo() {		
@@ -100,6 +152,12 @@ public class CalculationServiceImpl implements CalculationService {
 			ageGrpAll.addPdoMale(reportRecords.get(i).getPdoMale());
 			ageGrpAll.addPdoFemale(reportRecords.get(i).getPdoFemale());
 		}
+		
+		for (int i = 1; i < reportRecords.size(); i++) {
+			ReportRecordBean record = reportRecords.get(i);
+			record.setTotal(ageGrpAll.getNumeratorTotal());
+		}
+		ageGrpAll.setTotal(ageGrpAll.getNumeratorTotal());
 	}
 		
 	public List<Residency> getResidenciesAtMidPoint(Calendar midpoint) {
@@ -212,20 +270,20 @@ public class CalculationServiceImpl implements CalculationService {
 				
 				ReportRecordBean group = reportRecords.get(currentGroup);
 				if (res.getIndividual().getGender().equals(siteProperties.getMaleCode())) 
-					group.addPdoMale((int)CalendarUtil.daysBetween(beginInterval, endInterval));
+					group.addPdoMale((double)CalendarUtil.daysBetween(beginInterval, endInterval));
 				else 
-					group.addPdoFemale((int)CalendarUtil.daysBetween(beginInterval, endInterval));
+					group.addPdoFemale((double)CalendarUtil.daysBetween(beginInterval, endInterval));
 			}
 			// determine where to split the residencies
 			else {
 				
 				do {				
 					ReportRecordBean group = reportRecords.get(currentGroup);
-					int difference = group.getMax() - ageAtBeg;
+					int difference = (int) (group.getMax() - ageAtBeg);
 					int adjustedAge = ageAtBeg + difference;
 					Calendar dob = res.getIndividual().getDob();
 					
-					Calendar groupEndDate = dob;
+					Calendar groupEndDate = (Calendar) dob.clone();
 					groupEndDate.add(Calendar.YEAR, adjustedAge);
 					groupEndDate.add(Calendar.DAY_OF_MONTH, -1);
 					
@@ -238,7 +296,7 @@ public class CalculationServiceImpl implements CalculationService {
 						group.addPdoFemale((int)CalendarUtil.daysBetween(beginInterval, groupEndDate));
 					
 					groupEndDate.add(Calendar.DAY_OF_MONTH, 1);
-					beginInterval = groupEndDate;
+					beginInterval = (Calendar) groupEndDate.clone();
 					currentGroup++;
 
 				} while (currentGroup <= lastGroup);
@@ -287,241 +345,107 @@ public class CalculationServiceImpl implements CalculationService {
 		}
 		return deathsInInterval;
 	}
+	
+	public List<PregnancyOutcome> getPregnanciesBetweenInterval(Calendar startDate, Calendar endDate) {
+		return pregnancyService.findAllLiveBirthsBetweenInterval(startDate, endDate);
+	}
 			
 	/**
 	 * Returns the index in which age report record the age belongs.
 	 * Corresponds to the CalculationService reportRecord
 	 */
 	public int determineAgeGroup(int age) {
-		if (age >= 0 && age < 5)
-			return 1;
-		else if (age >= 5 && age < 10)
-			return 2;
-		else if (age >= 10 && age < 15)
-			return 3;
-		else if (age >= 15 && age < 20)
-			return 4;
-		else if (age >= 20 && age < 25)
-			return 5;
-		else if (age >= 25 && age < 30)
-			return 6;
-		else if (age >= 30 && age < 35)
-			return 7;
-		else if (age >= 35 && age < 40)
-			return 8;
-		else if (age >= 40 && age < 45)
-			return 9;
-		else if (age >= 45 && age < 50)
-			return 10;
-		else if (age >= 50 && age < 55)
-			return 11;
-		else if (age >= 55 && age < 60)
-			return 12;
-		else if (age >= 60 && age < 65)
-			return 13;
-		else
-			return 14;
+		
+		int index = 0;
+		for (ReportRecordBean record : reportRecords) {
+			if (!record.getAgeGroupName().equals("ALL")) {
+				if (age >= record.getMin() && age < record.getMax()) 
+					break;
+			}
+			index++;
+		}
+		return index;
 	}
 		
-	public void setAgeGroups(long age, Individual individual, boolean denominator) {
-		if (age >= 0 && age < 5) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(1).addDenominatorMale();
-				else
-					reportRecords.get(1).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(1).addDenominatorFemale();
-				else
-					reportRecords.get(1).addNumeratorFemale();
-			}
-		}
-		else if (age >= 5 && age < 10) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(2).addDenominatorMale();
-				else
-					reportRecords.get(2).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(2).addDenominatorFemale();
-				else
-					reportRecords.get(2).addNumeratorFemale();
-			}
-		}
-		else if (age >= 10 && age < 15) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(3).addDenominatorMale();
-				else
-					reportRecords.get(3).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(3).addDenominatorFemale();
-				else
-					reportRecords.get(3).addNumeratorFemale();
-			}
-		}
-		else if (age >= 15 && age < 20) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(4).addDenominatorMale();
-				else
-					reportRecords.get(4).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(4).addDenominatorFemale();
-				else
-					reportRecords.get(4).addNumeratorFemale();
-			}
-		}
-		else if (age >= 20 && age < 25) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(5).addDenominatorMale();
-				else
-					reportRecords.get(5).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(5).addDenominatorFemale();
-				else
-					reportRecords.get(5).addNumeratorFemale();
-			}
-		}
-		else if (age >= 25 && age < 30) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(6).addDenominatorMale();
-				else
-					reportRecords.get(6).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(6).addDenominatorFemale();
-				else
-					reportRecords.get(6).addNumeratorFemale();
-			}
-		}
-		else if (age >= 30 && age < 35) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(7).addDenominatorMale();
-				else
-					reportRecords.get(7).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(7).addDenominatorFemale();
-				else
-					reportRecords.get(7).addNumeratorFemale();
-			}
-		}
-		else if (age >= 35 && age < 40) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(8).addDenominatorMale();
-				else
-					reportRecords.get(8).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(8).addDenominatorFemale();
-				else
-					reportRecords.get(8).addNumeratorFemale();
-			}
-		}
-		else if (age >= 40 && age < 45) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(9).addDenominatorMale();
-				else
-					reportRecords.get(9).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(9).addDenominatorFemale();
-				else
-					reportRecords.get(9).addNumeratorFemale();
-			}
-		}
-		else if (age >= 45 && age < 50) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(10).addDenominatorMale();
-				else
-					reportRecords.get(10).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(10).addDenominatorFemale();
-				else
-					reportRecords.get(10).addNumeratorFemale();
-			}
-		}
-		else if (age >= 50 && age < 55) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(11).addDenominatorMale();
-				else
-					reportRecords.get(11).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(11).addDenominatorFemale();
-				else
-					reportRecords.get(11).addNumeratorFemale();
-			}
-		}
-		else if (age >= 55 && age < 60) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(12).addDenominatorMale();
-				else
-					reportRecords.get(12).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(12).addDenominatorFemale();
-				else
-					reportRecords.get(12).addNumeratorFemale();
-			}
-		}
-		else if (age >= 60 && age < 65) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(13).addDenominatorMale();
-				else
-					reportRecords.get(13).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(13).addDenominatorFemale();
-				else
-					reportRecords.get(13).addNumeratorFemale();
-			}
-		}
-		else if (age >= 65) {
-			if (individual.getGender().equals(siteProperties.getMaleCode())) {
-				if (denominator)	
-					reportRecords.get(14).addDenominatorMale();
-				else
-					reportRecords.get(14).addNumeratorMale();
-			}
-			else {
-				if (denominator)
-					reportRecords.get(14).addDenominatorFemale();
-				else
-					reportRecords.get(14).addNumeratorFemale();
+	public void setAgeGroups(double age, Individual individual, boolean denominator) {	
+		
+		for (int i = 1; i < reportRecords.size(); i++) {
+			ReportRecordBean record = reportRecords.get(i);
+			if (age >= record.getMin() && age < record.getMax()) {
+				if (individual.getGender().equals(siteProperties.getMaleCode())) {
+					if (denominator) 
+						record.addDenominatorMale();
+					else
+						record.addNumeratorMale();
+				}
+				else {
+					if (denominator) 
+						record.addDenominatorFemale();
+					else
+						record.addNumeratorFemale();
+				}
 			}
 		}
 	}
 	
+	public void setNumeratorsForPopulation() {
+		for (int i = 1; i < reportRecords.size(); i++) {
+			ReportRecordBean record = reportRecords.get(i);
+			record.setNumeratorMale(record.getPdoMale() / 365.25);
+			record.setNumeratorFemale(record.getPdoFemale() / 365.25);
+			
+		}
+	}
+	
+	public void setAgeGroupsForBirths(double age, Individual individual, PregnancyOutcome outcome) {	
+		
+		for (int i = 1; i < reportRecords.size(); i++) {
+			ReportRecordBean record = reportRecords.get(i);
+			if (age >= record.getMin() && age < record.getMax()) {
+				for (Outcome o : outcome.getOutcomes()) {
+					if (o.getType().equals(siteProperties.getLiveBirthCode())) {
+						if (o.getChild().getGender().equals(siteProperties.getMaleCode())) 
+							record.addNumeratorMale();
+						else
+							record.addNumeratorFemale();
+					}
+				}
+			}
+		}
+	}
+	
+	public void setInfantGroups(double age, Individual individual, Calendar startDate, Calendar endDate, 
+			MortalityRecordBean neoNatalRecord, MortalityRecordBean postNatalRecord, MortalityRecordBean infantRecord) {
+			
+		if (age >= neoNatalRecord.getMin() && age < neoNatalRecord.getMax()) {
+			if (individual.getGender().equals(siteProperties.getMaleCode())) 
+				neoNatalRecord.addNeoNatalMale();
+			else 
+				neoNatalRecord.addNeoNatalFemale();
+		}
+		else if (age >= postNatalRecord.getMin() && age < postNatalRecord.getMax()) {
+			if (individual.getGender().equals(siteProperties.getMaleCode())) 
+				postNatalRecord.addPostNatalMale();
+			else
+				postNatalRecord.addPostNatalFemale();
+		}
+		
+		if (age >= infantRecord.getMin() && age < infantRecord.getMax()) {
+			if (individual.getGender().equals(siteProperties.getMaleCode())) 
+				infantRecord.addInfantMale();
+			else
+				infantRecord.addInfantFemale();
+		}
+		int maleTotal = pregnancyService.findAllBirthsBetweenIntervalByGender(startDate, endDate, 0);
+		int femaleTotal = pregnancyService.findAllBirthsBetweenIntervalByGender(startDate, endDate, 1);
+		neoNatalRecord.setTotalMaleOutcomes(maleTotal);
+		neoNatalRecord.setTotalFemaleOutcomes(femaleTotal);
+		postNatalRecord.setTotalMaleOutcomes(maleTotal);
+		postNatalRecord.setTotalFemaleOutcomes(femaleTotal);
+		infantRecord.setTotalMaleOutcomes(maleTotal);
+		infantRecord.setTotalFemaleOutcomes(femaleTotal);
+	}
+		
 	public List<ReportRecordBean> getReportRecords() {
 		return reportRecords;
 	}

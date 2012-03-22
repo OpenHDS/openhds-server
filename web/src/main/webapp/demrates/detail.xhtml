@@ -20,23 +20,23 @@
 		<ui:define name="display">
 		
 			<h:outputText value="#{navController.breadcrumbTrail}" />
-			<h1>Demographic Rates Detail</h1>
+			<h1>#{msg.demRatesDetail}</h1>
 			<h:form>
 	           	<h:panelGrid columns="2">     
-		            <h:outputText value="Start Date of analysis :"/>
+		            <h:outputText value="#{msg.demRatesStartDate}:"/>
 					<h:outputText value="#{demRatesCrud.item.startDate}" converter="#{calendarConverter}" />
-		            <h:outputText value="End Date of Analysis: "/>
+		            <h:outputText value="#{msg.demRatesEndDate}: "/>
 		            <h:outputText value="#{demRatesCrud.item.endDate}" converter="#{calendarConverter}" />
-		           	<h:outputText value="Event Type:"/>
+		           	<h:outputText value="#{msg.demRatesEventType}:"/>
 		            <h:outputText value="#{demRatesCrud.item.event}" />
-		            <h:outputText value="Denominator:"/>
+		            <h:outputText value="#{msg.demRatesDenominator}:"/>
 		            <h:outputText value="#{demRatesCrud.item.denominator}" />                      	   
 		        </h:panelGrid>
 		        <br />
 	            <h:commandButton action="#{demRatesCrud.editSetup}" value="#{msg.lblEdit}">
 	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{demRatesCrud.item.uuid}" />
 	            </h:commandButton>
-	            <h:commandButton action="#{demRatesCrud.redirectToReports}" value="View Report">
+	            <h:commandButton action="#{demRatesCrud.redirectToReports}" value="#{msg.demRatesViewReport}">
 	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{demRatesCrud.item.uuid}" />
 	            </h:commandButton>       
 	        </h:form>

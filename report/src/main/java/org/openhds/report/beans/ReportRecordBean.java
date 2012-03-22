@@ -4,19 +4,22 @@ public class ReportRecordBean {
 	
 	String ageGroupName;
 	
-	int denominatorMale;
-	int denominatorFemale;
+	double denominatorMale;
+	double denominatorFemale;
 	
-	int numeratorMale;
-	int numeratorFemale;
+	double numeratorMale;
+	double numeratorFemale;
+	
+	// this field's value is set to the AgeGroupAll's numerator total
+	double total;
 	
 	double pdoMale;
 	double pdoFemale;
 	
-	int min;
-	int max;
+	double min;
+	double max;
 	
-	public ReportRecordBean(String ageGroupName, int min, int max) {
+	public ReportRecordBean(String ageGroupName, double min, double max) {
 		this.ageGroupName = ageGroupName;
 		this.min = min;
 		this.max = max;
@@ -62,6 +65,14 @@ public class ReportRecordBean {
 		pdoFemale++;
 	}	
 	
+	public void setDenominatorMale(double denominatorMale) {
+		this.denominatorMale = denominatorMale;
+	}
+
+	public void setDenominatorFemale(double denominatorFemale) {
+		this.denominatorFemale = denominatorFemale;
+	}
+	
 	public String getAgeGroupName() {
 		return ageGroupName;
 	}
@@ -70,35 +81,35 @@ public class ReportRecordBean {
 		this.ageGroupName = ageGroupName;
 	}
 	
-	public int getDenominatorMale() {
+	public double getDenominatorMale() {
 		return denominatorMale;
 	}
 
-	public int getDenominatorFemale() {
+	public double getDenominatorFemale() {
 		return denominatorFemale;
 	}
 
-	public int getNumeratorMale() {
+	public double getNumeratorMale() {
 		return numeratorMale;
 	}
 
-	public void setNumeratorMale(int numeratorMale) {
+	public void setNumeratorMale(double numeratorMale) {
 		this.numeratorMale = numeratorMale;
 	}
 
-	public int getNumeratorFemale() {
+	public double getNumeratorFemale() {
 		return numeratorFemale;
 	}
 
-	public void setNumeratorFemale(int numeratorFemale) {
+	public void setNumeratorFemale(double numeratorFemale) {
 		this.numeratorFemale = numeratorFemale;
 	}
 	
-	public int getNumeratorTotal() {
+	public double getNumeratorTotal() {
 		return numeratorMale + numeratorFemale;
 	}
 
-	public int getDenominatorTotal() {
+	public double getDenominatorTotal() {
 		return denominatorMale + denominatorFemale;
 	}
 	
@@ -144,7 +155,6 @@ public class ReportRecordBean {
 		if (getPdoMale() + getPdoFemale() > 0) {
 			return (1000 * 365.25 * (numeratorMale + numeratorFemale)) / (getPdoMale() + getPdoFemale());
 		}
-	
 		return 0;
 	}
 	
@@ -152,12 +162,81 @@ public class ReportRecordBean {
 		return (getPdoMale() + getPdoFemale()) / 365.25;
 	}
 	
-	public int getMax() {
+	public double getPyoForFemaleOnly() {
+		return (getPdoFemale()) / 365.25;
+	}
+	
+	public double getFertilityRate() {
+		if (getPyoForFemaleOnly() > 0) {		
+			return ((1000 * 365.25 * getNumeratorTotal()) / getPdoFemale());
+		}
+		return 0;
+	}
+	
+	public double getTotalFertilityRate() {
+		if (getPdoFemale() > 0)
+			return ((getNumeratorTotal() / getPdoFemale()) * 365.24 * 5);
+		return 0;
+	}
+	
+	public double getEventRateMale() {
+		if (getPdoMale() > 0)
+			return ((getNumeratorTotal() * 1000 * 365.25) / getPdoMale());
+		return 0;
+	}
+	
+	public double getEventRateFemale() {
+		if (getPdoFemale() > 0)
+			return ((getNumeratorTotal() * 1000 * 365.25) / getPdoFemale());
+		return 0;
+	}
+	
+	public double getEventRateTotal() {
+		return getEventRateMale() + getEventRateFemale();
+	}
+	
+	public double getMalePercent() {
+		if (getDenominatorTotal() > 0) {
+			return ((100 * getNumeratorMale()) / getDenominatorTotal());
+		}
+		return 0;
+	}
+	
+	public double getFemalePercent() {
+		if (getDenominatorTotal() > 0) {
+			return ((100 * getNumeratorFemale()) / getDenominatorTotal());
+		}
+		return 0;
+	}
+	
+	public double getMaleAndFemalePercent() {
+		if (getDenominatorTotal() > 0) {
+			return ((100 * (getNumeratorTotal())) / getTotal());
+		}
+		return 0;
+	}
+	
+	public double getMax() {
 		return max;
 	}
 
-	public void setMax(int max) {
+	public void setMax(double max) {
 		this.max = max;
 	}
+	
+	public double getMin() {
+		return min;
+	}
+	
+	public void setMin(double min) {
+		this.min = min;
+	}
+	
+	public double getTotal() {
+		return total;
+	}
 
+	public void setTotal(double total) {
+		this.total = total;
+	}
 }

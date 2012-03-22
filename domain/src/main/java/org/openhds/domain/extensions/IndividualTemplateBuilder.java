@@ -2,6 +2,7 @@ package org.openhds.domain.extensions;
 
 import org.openhds.domain.util.CalendarAdapter;
 
+import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
@@ -85,7 +86,6 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		
 		// middle name
 		JFieldVar jfMiddleName = jc.field(JMod.PRIVATE , java.lang.String.class, "middleName");
-		jfMiddleName.annotate(org.openhds.domain.constraint.CheckFieldNotBlank.class);
 		jfMiddleName.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jaMiddleNameDesc = jfMiddleName.annotate(org.openhds.domain.annotations.Description.class);
 		jaMiddleNameDesc.param("description", "Middle name of the individual.");
@@ -173,7 +173,9 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaMotherNotVoided.param("allowNull", true);
 		jaMotherNotVoided.param("message", "The mother has been voided");
 		JAnnotationUse jfMotherCascade = jfMother.annotate(javax.persistence.ManyToOne.class);
-		jfMotherCascade.param("cascade", javax.persistence.CascadeType.ALL);
+		JAnnotationArrayMember motherArray = jfMotherCascade.paramArray("cascade");
+		motherArray.param(javax.persistence.CascadeType.MERGE);
+		motherArray.param(javax.persistence.CascadeType.PERSIST);
 		jfMotherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);
 		
 		JAnnotationUse jaMotherDesc = jfMother.annotate(org.openhds.domain.annotations.Description.class);
@@ -202,7 +204,9 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaFatherNotVoided.param("allowNull", true);
 		jaFatherNotVoided.param("message", "The father has been voided");
 		JAnnotationUse jfFatherCascade = jfFather.annotate(javax.persistence.ManyToOne.class);
-		jfFatherCascade.param("cascade", javax.persistence.CascadeType.ALL);
+		JAnnotationArrayMember fatherArray = jfFatherCascade.paramArray("cascade");
+		fatherArray.param(javax.persistence.CascadeType.MERGE);
+		fatherArray.param(javax.persistence.CascadeType.PERSIST);
 		jfFatherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);
 		JAnnotationUse jaFatherDesc = jfFather.annotate(org.openhds.domain.annotations.Description.class);
 		jaFatherDesc.param("description", "The individual's father, identified by the external id.");
