@@ -38,7 +38,7 @@
                			               				
                				<h:outputText value="#{msg.demRatesEvent}:" />            				 				
                				<o:selectOneRadio id="eventList" value="#{demRatesCrud.item.event}" >
-								<f:selectItem itemValue="#{msg.demRatesFertility}" itemLabel="{msg.demRatesFertility}"/>
+								<f:selectItem itemValue="#{msg.demRatesFertility}" itemLabel="#{msg.demRatesFertility}"/>
 							  	<f:selectItem itemValue="#{msg.demRatesMortality}" itemLabel="#{msg.demRatesMortality}"/>
 							  	<f:selectItem itemValue="#{msg.demRatesOutMigration}" itemLabel="#{msg.demRatesOutMigration}"/>
 							  	<f:selectItem itemValue="#{msg.demRatesInMigration}" itemLabel="#{msg.demRatesInMigration}"/>
@@ -46,10 +46,10 @@
 							</o:selectOneRadio>
 							<h:message for="eventList" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
 							
-							<h:outputText value="#{msg.demRatesDenominatorType}:" />
+							<h:outputText value="#{msg.demRatesDenominator}:" />
                				<o:selectOneRadio id="denomList" value="#{demRatesCrud.item.denominator}" >
-               					<f:selectItem itemValue="#{demRatesMidpoint}" itemLabel="#{demRatesMidpoint}"/>
-								<f:selectItem itemValue="#{demRatesPersonDaysObserved}" itemLabel="#{demRatesPersonDaysObserved}"/>
+               					<f:selectItem itemValue="#{msg.demRatesMidpoint}" itemLabel="#{msg.demRatesMidpoint}"/>
+								<f:selectItem itemValue="#{msg.demRatesPersonDaysObserved}" itemLabel="#{msg.demRatesPersonDaysObserved}"/>
 							</o:selectOneRadio>
                				<h:message for="denomList" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
                 		</h:panelGrid>	
