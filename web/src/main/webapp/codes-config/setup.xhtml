@@ -145,6 +145,10 @@
                         <h:inputText id="minAgeMarriage" value="#{sitePropertiesConfigBean.minAgeOfMarriage}" converter="#{defaultConverter}" />
                         <h:message for="minAgeMarriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         
+                        <h:outputText value="#{msg.codeMinAgeOfPregnancy}:"/>
+                        <h:inputText id="minAgePregnancy" value="#{sitePropertiesConfigBean.minAgeOfPregnancy}" converter="#{defaultConverter}" />
+                        <h:message for="minAgePregnancy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
                         <h:outputText value="#{msg.codeEarliestEnumerationDate} (#{sitePropertiesConfigBean.dateFormat})"/>
                 		<o:dateChooser id="enumDate" value="#{sitePropertiesConfigBean.dateOfEnumeration}" pattern="#{sitePropertiesConfigBean.dateFormat}" />
                 		<h:message for="enumDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

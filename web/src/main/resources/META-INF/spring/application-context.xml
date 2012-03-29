@@ -31,6 +31,7 @@
     <import resource="classpath*:/META-INF/spring/ddiApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/reportApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/webserviceApplicationContext.xml" />
+    <import resource="classpath*:/META-INF/spring/dataGenerationApplicationContext.xml" />
                                            
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
@@ -311,18 +312,7 @@
         <property name="properties" ref="siteProperties" />
         <property name="entityValidationService" ref="entityValidator" />
     </bean>
-    
-    <bean id="dataGeneratorCrud" class="org.openhds.datageneration.utils.DataGeneratorBean">
-		<constructor-arg>
-			<bean class="org.openhds.datageneration.service.impl.DataGeneratorServiceImpl">
-				<property name="dataGeneratorDao" ref="dataGeneratorDao" />
-				<property name="locationHierarchyService" ref="locationHierarchyService" />
-				<property name="entityService" ref="entityService" />
-				<property name="siteProperties" ref="siteProperties" />
-			</bean>
-		</constructor-arg>
-	</bean>
-    
+        
     <bean id="deathCrud" parent="baseCrud" class="org.openhds.web.crud.impl.DeathCrudImpl">
         <constructor-arg value="org.openhds.domain.model.Death" />
         <property name="dao" ref="deathDao" />
@@ -625,6 +615,7 @@
 	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
         <property name="minAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
         <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
+        <property name="minAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
         <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
 	 </bean>
 	 
@@ -655,6 +646,7 @@
         <property name="minimumAgeOfParents"><value>${minAgeOfParenthood}</value></property>
         <property name="minimumAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
         <property name="minimumAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
+        <property name="minimumAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
         <property name="yesResponse"><value>${yesResponse}</value></property>
         <property name="noResponse"><value>${noResponse}</value></property>
 		<property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>

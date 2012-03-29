@@ -33,6 +33,7 @@ public class SiteProperties implements SitePropertiesService {
 	int minimumAgeOfParents;
 	int minimumAgeOfHouseholdHead;
 	int minimumAgeOfMarriage;
+	int minimumAgeOfPregnancy;
 	boolean autocomplete;
 	boolean valueExtensionsForMembershipCodesEnabled;
 	
@@ -250,6 +251,14 @@ public class SiteProperties implements SitePropertiesService {
 
 	public void setMinimumAgeOfMarriage(int minimumAgeOfMarriage) {
 		this.minimumAgeOfMarriage = minimumAgeOfMarriage;
+	}
+	
+	public int getMinimumAgeOfPregnancy() {
+		return minimumAgeOfPregnancy;
+	}
+
+	public void setMinimumAgeOfPregnancy(int minimumAgeOfPregnancy) {
+		this.minimumAgeOfPregnancy = minimumAgeOfPregnancy;
 	}
 
 	public String getYesResponse() {

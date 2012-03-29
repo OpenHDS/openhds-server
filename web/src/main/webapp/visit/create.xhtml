@@ -150,8 +150,8 @@
 							       	</tr>
 						       	</c:forEach>        	
 	                       	</table>
-	                      	<h:commandButton action="#{visitCrud.addIndividualExtension}" styleClass="createBtn" value="#{msg.visitAddExtension}" id="addExtensionIndiv" />
-	                       	<h:commandButton action="#{visitCrud.clearIndividualExtensions}" styleClass="createBtn" value="#{msg.visitClearExtension}" id="clearExtensionIndiv" />
+	                      	<h:commandButton action="#{visitCrud.addIndividualExtension}" styleClass="createBtn" value="#{msg.visitExtensionAdd}" id="addExtensionIndiv" />
+	                       	<h:commandButton action="#{visitCrud.clearIndividualExtensions}" styleClass="createBtn" value="#{msg.visitExtensionClear}" id="clearExtensionIndiv" />
 					   	</h:panelGroup>
 						
 					   	<h:panelGroup rendered="#{fn:length(visitCrud.socialGroupExtensions) > 0}">
@@ -184,8 +184,8 @@
 							       	</tr>
 						       	</c:forEach>        	
 	                       	</table>
-	                       	<h:commandButton action="#{visitCrud.addSocialGroupExtension}" styleClass="createBtn" value="#{msg.visitAddExtension}" id="addExtensionSG" />
-	                       	<h:commandButton action="#{visitCrud.clearSocialGroupExtensions}" styleClass="createBtn" value="#{msg.visitClearExtensions}" id="clearExtensionSG" />
+	                       	<h:commandButton action="#{visitCrud.addSocialGroupExtension}" styleClass="createBtn" value="#{msg.visitExtensionAdd}" id="addExtensionSG" />
+	                       	<h:commandButton action="#{visitCrud.clearSocialGroupExtensions}" styleClass="createBtn" value="#{msg.visitExtensionClear}" id="clearExtensionSG" />
 				       	</h:panelGroup>
 				   	</h:panelGroup>
 					             

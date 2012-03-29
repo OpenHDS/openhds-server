@@ -23,12 +23,12 @@
       <dependency>
         <groupId>org.openhds</groupId>
         <artifactId>domain</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.openhds</groupId>
         <artifactId>controller</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
 	  <dependency>
 	    <groupId>org.codehaus.jackson</groupId>

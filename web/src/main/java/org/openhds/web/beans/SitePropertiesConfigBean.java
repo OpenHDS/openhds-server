@@ -42,6 +42,7 @@ public class SitePropertiesConfigBean {
 	Integer minAgeOfParenthood;
 	Integer minAgeOfHouseholdHead;
 	Integer minAgeOfMarriage;
+	Integer minAgeOfPregnancy;
 	
 	Date dateOfEnumeration;
 	
@@ -76,6 +77,7 @@ public class SitePropertiesConfigBean {
 		properties.put("minAgeOfParenthood", minAgeOfParenthood.toString());
 		properties.put("minAgeOfHouseholdHead", minAgeOfHouseholdHead.toString());
 		properties.put("minAgeOfMarriage", minAgeOfMarriage.toString());
+		properties.put("minAgeOfPregnancy", minAgeOfPregnancy.toString());
 		properties.put("earliestEnumerationDate", earliestEnumerationDate);
 		writePropertyFile(properties);
 	}
@@ -359,5 +361,13 @@ public class SitePropertiesConfigBean {
 
 	public void setMinAgeOfMarriage(Integer minAgeOfMarriage) {
 		this.minAgeOfMarriage = minAgeOfMarriage;
+	}
+	
+	public Integer getMinAgeOfPregnancy() {
+		return minAgeOfPregnancy;
+	}
+
+	public void setMinAgeOfPregnancy(Integer minAgeOfPregnancy) {
+		this.minAgeOfPregnancy = minAgeOfPregnancy;
 	}
 }

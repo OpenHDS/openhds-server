@@ -18,6 +18,7 @@ import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.PregnancyOutcome;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,7 +42,11 @@ public class PregnancyServiceImpl implements PregnancyService {
 	}
 	
 	public PregnancyObservation evaluatePregnancyObservation(PregnancyObservation entityItem) throws ConstraintViolations {
-    	if (!checkDuplicatePregnancyObservation(entityItem.getMother())) 
+    	
+		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getRecordedDate()) / 365.25);
+		if (age < siteProperties.getMinimumAgeOfPregnancy())
+			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Observation.");	
+		if (!checkDuplicatePregnancyObservation(entityItem.getMother())) 
     		throw new ConstraintViolations("The Mother specified already has a pending Pregnancy Observation.");	
     	if (individualService.getLatestEvent(entityItem.getMother()).equals("Death"))
     		throw new ConstraintViolations("A Pregnancy Observation cannot be created for a Mother who has a Death event.");	
@@ -80,14 +85,17 @@ public class PregnancyServiceImpl implements PregnancyService {
 	}
 
 	public PregnancyOutcome evaluatePregnancyOutcome(PregnancyOutcome entityItem) throws ConstraintViolations {
+		
+		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getOutcomeDate()) / 365.25);
+		if (age < siteProperties.getMinimumAgeOfPregnancy())
+			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Outcome.");	
     	if (individualService.getLatestEvent(entityItem.getMother()).equals("Death"))
     		throw new ConstraintViolations("A Pregnancy Outcome cannot be created for a Mother who has a Death event.");	
-    	if (entityItem.getOutcomes().size() == 0) {
+    	if (entityItem.getOutcomes().size() == 0) 
     		throw new ConstraintViolations("A Pregnancy Outcome cannot be created unless it has at least 1 outcome.");
-    	}
-		if (entityItem.getMother().getCurrentResidency() == null) {
+		if (entityItem.getMother().getCurrentResidency() == null) 
 			throw new ConstraintViolations("A Pregnancy Outcome cannot be created because a Residency record cannot be found for the mother.");
-		}
+
 		return entityItem;
 	}
 	

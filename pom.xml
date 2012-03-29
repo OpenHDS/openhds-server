@@ -25,13 +25,7 @@
     <module>dao</module>
     <module>controller</module>
     <module>web</module>
-    <module>ddi</module>
 	<module>report</module>
-    <module>community</module>
-    <module>datageneration</module>
-    <module>specialstudy</module>
-    <module>webservice</module>
-    <module>configuration</module>
   </modules>
   
   <repositories>
@@ -175,7 +169,13 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${org.springframework.version}</version>
     </dependency>
-		<dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${org.springframework.version}</version>
+        <scope>test</scope>
+    </dependency>
+	<dependency>
     	<groupId>org.springframework.webflow</groupId>
         <artifactId>spring-binding</artifactId>
         <version>${org.springframework.swf.version}</version>
@@ -280,11 +280,15 @@
         <scope>compile</scope>
     </dependency> 
 	<dependency>
-		<groupId>junit</groupId>
-	    <artifactId>junit</artifactId>
-	    <version>3.8.1</version>
-	    <scope>test</scope>
-	</dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.7</version>
+    </dependency>
+	<dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>3.0</version>
+    </dependency>
   </dependencies>
   
   <build>
