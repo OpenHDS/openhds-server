@@ -16,7 +16,6 @@ import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 import org.openhds.controller.beans.DHISDocumentBean;
-import org.openhds.controller.beans.RecordBean;
 import org.openhds.controller.beans.RecordGroup;
 import org.openhds.controller.beans.Period;
 import org.openhds.controller.beans.RecordItem;
@@ -47,6 +46,7 @@ public class DHISController {
 	ValueConstraintService valueConstraintService;
 	
 	Period period;
+	int periodTotal;
 		
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
 			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, DeathService deathService,
@@ -68,10 +68,10 @@ public class DHISController {
 		List<String> hierarchyIds = locationService.getValidLocationsInHierarchy(dhisDocumentBean.getHierarchyExtId());
 		setupVariables(hierarchyIds);
 		
+		individualService.setPopulationForAgeGroupsByLocation(period.findGroupsByName("Population"), hierarchyIds);  
+		
 		for (RecordGroup group : period.findGroupsByName("Death")) 
 			deathService.setDeathsForAgeGroupsByLocation(group, hierarchyIds);
-		for (RecordGroup group : period.findGroupsByName("Population")) 
-			individualService.setPopulationForAgeGroupsByLocation(group, hierarchyIds);	
 		for (RecordGroup group : period.findGroupsByName("PregnancyOutcome")) 
 			pregnancyService.setPregnancyOutcomesByLocation(group, hierarchyIds);	
 		
@@ -91,8 +91,8 @@ public class DHISController {
 		Calendar endDate = null;
 		
 		if (!periodVal.equals("Yearly")) {
-			startDate = dhisDocumentBean.getsDate();
-			endDate = dhisDocumentBean.geteDate();
+			startDate = (Calendar) dhisDocumentBean.getsDate().clone();
+			endDate = (Calendar) dhisDocumentBean.geteDate().clone();
 		}
 		else {
 			startDate = Calendar.getInstance();
@@ -190,21 +190,18 @@ public class DHISController {
 	private void buildPeriod() {
 		
 		int counter = 1;
-		
-		// reserved period for entire interval, used in population
-		dhisService.createPeriod(period.getType(), dhisDocumentBean.getsDate(), dhisDocumentBean.geteDate(), counter);
-		
+				
 		counter++;
 		List<RecordGroup> groups = period.findGroupsByName("Death");
 		for (RecordGroup group : groups) {					
 			dhisService.createPeriod(period.getType(), group.getStart(), group.getEnd(), counter);
 			counter++;
 		}
+		periodTotal = counter;
 	}
 	
 	private void buildDataValues() {
 		
-		int periodIndex = 2;
 		int dataElementIndex = 1;
 		
 		Map<Integer, String> hierarchyMap = OrgUnitBuilder.getHierarchyCodes();
@@ -212,6 +209,8 @@ public class DHISController {
 
 		for (Integer sourceIndex : set) {
 			List<RecordGroup> groupList = period.findGroupsByName("Death");
+			
+			int periodIndex = 1;
 			for (RecordGroup group : groupList) {
 								
 				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
@@ -227,35 +226,35 @@ public class DHISController {
 				periodIndex++;
 				dataElementIndex = 1;
 			}
-			periodIndex = 2;
 		}
 
-		periodIndex = 1;
 		dataElementIndex = 53;
 		for (Integer sourceIndex : set) {
 			List<RecordGroup> groupList = period.findGroupsByName("Population");
+			
+			int periodIndex = 1;
 			for (RecordGroup group : groupList) {
 				
 				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
 				if (items != null) {	
 					for (RecordItem item : items) {
-						if (item.getMaleCount() > 0) {
+						if (item.getMaleCount() > 0) 
 							dhisService.createDataValues(dataElementIndex, periodIndex, sourceIndex, Integer.toString(item.getMaleCount()));
-						}
-						if (item.getFemaleCount() > 0) {
+						if (item.getFemaleCount() > 0) 
 							dhisService.createDataValues(dataElementIndex+1, periodIndex, sourceIndex, Integer.toString(item.getFemaleCount()));
-						}
 						dataElementIndex += 2;
 					}
 				}
+				periodIndex++;
 				dataElementIndex = 53;
 			}
 		}
 		
-		periodIndex = 2;
 		dataElementIndex = 105;
 		for (Integer sourceIndex : set) {
 			List<RecordGroup> groupList = period.findGroupsByName("PregnancyOutcome");
+			
+			int periodIndex = 1;
 			for (RecordGroup group : groupList) {
 				
 				List<RecordItem> items = group.getRecord().getItems().get(hierarchyMap.get(sourceIndex));
@@ -278,7 +277,6 @@ public class DHISController {
 				periodIndex++;
 				dataElementIndex = 105;
 			}
-			periodIndex = 2;
 		}
 	}
 	

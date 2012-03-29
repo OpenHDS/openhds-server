@@ -41,6 +41,6 @@ public interface IndividualService {
 	Individual createTemporaryIndividualWithExtId(String extId, FieldWorker CollectedBy) throws Exception;
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setPopulationForAgeGroupsByLocation(RecordGroup populationGroup, List<String> hierarchyIds);
+	void setPopulationForAgeGroupsByLocation(List<RecordGroup> populationGroup, List<String> hierarchyIds);
 }
 
