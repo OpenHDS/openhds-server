@@ -31,7 +31,6 @@
     <import resource="classpath*:/META-INF/spring/ddiApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/reportApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/webserviceApplicationContext.xml" />
-    <import resource="classpath*:/META-INF/spring/dataGenerationApplicationContext.xml" />
                                            
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
@@ -311,6 +310,17 @@
         <property name="navMenuBean" ref="navController" />
         <property name="properties" ref="siteProperties" />
         <property name="entityValidationService" ref="entityValidator" />
+    </bean>
+    
+    <bean id="dataGeneratorCrud" class="org.openhds.datageneration.utils.DataGeneratorBean">
+   		<constructor-arg>
+			<bean class="org.openhds.datageneration.service.impl.DataGeneratorServiceImpl">
+				<property name="dataGeneratorDao" ref="dataGeneratorDao" />
+				<property name="locationHierarchyService" ref="locationHierarchyService" />
+				<property name="entityService" ref="entityService" />
+				<property name="siteProperties" ref="siteProperties" />
+			</bean>
+		</constructor-arg>
     </bean>
         
     <bean id="deathCrud" parent="baseCrud" class="org.openhds.web.crud.impl.DeathCrudImpl">
