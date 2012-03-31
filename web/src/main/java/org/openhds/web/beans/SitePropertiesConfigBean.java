@@ -37,6 +37,7 @@ public class SitePropertiesConfigBean {
 	String dataStatusClosed;
 	String dateFormat;
 	String autocomplete;
+	String locale;
 	String earliestEnumerationDate;
 
 	Integer minAgeOfParenthood;
@@ -74,6 +75,7 @@ public class SitePropertiesConfigBean {
 		properties.put("dataStatusClosed", dataStatusClosed);	
 		properties.put("dateFormat", dateFormat);
 		properties.put("autocomplete", autocomplete);
+		properties.put("locale", locale);
 		properties.put("minAgeOfParenthood", minAgeOfParenthood.toString());
 		properties.put("minAgeOfHouseholdHead", minAgeOfHouseholdHead.toString());
 		properties.put("minAgeOfMarriage", minAgeOfMarriage.toString());
@@ -321,6 +323,14 @@ public class SitePropertiesConfigBean {
 
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+	
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 	
 	public String getAutocomplete() {

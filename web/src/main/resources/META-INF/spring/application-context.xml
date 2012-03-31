@@ -52,7 +52,7 @@
     <context:component-scan base-package="org.openhds" />
 	
 	<bean id="prefLocale" class="org.openhds.web.util.Locale" >
-        <property name="locale" value="English" />
+        <property name="locale" value="#{siteProperties.locale}" />
     </bean>
 				
 	<!-- Configure Spring Security -->
@@ -620,6 +620,7 @@
 	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
 	 	<property name="yesResponse"><value>${yesResponse}</value></property>
 	 	<property name="noResponse"><value>${noResponse}</value></property>	
+	 	<property name="locale"><value>${locale}</value></property>
 	 	<property name="dateFormat"><value>${dateFormat}</value></property>
 	 	<property name="autocomplete"><value>${autocomplete}</value></property>
 	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
@@ -630,7 +631,7 @@
 	 </bean>
 	 
      <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
-    	<property name="locale"><value>${openhds.locale}</value></property>     
+    	<property name="locale"><value>${locale}</value></property>     
         <property name="dateFormat"><value>${dateFormat}</value></property>
         <property name="autocomplete"><value>${autocomplete}</value></property>
         <property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>

@@ -10,7 +10,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.event.ValueChangeEvent;
 import org.openhds.web.service.JsfService;
-import org.openhds.web.util.ScriptRunner;
+import org.openhds.controller.util.ScriptRunner;
 import org.springframework.core.io.ClassPathResource;
 import com.mysql.jdbc.Connection;
 

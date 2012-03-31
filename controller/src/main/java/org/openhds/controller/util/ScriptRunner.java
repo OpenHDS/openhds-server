@@ -1,4 +1,4 @@
-package org.openhds.web.util;
+package org.openhds.controller.util;
 
 /*
  * Slightly modified version of the com.ibatis.common.jdbc.ScriptRunner class

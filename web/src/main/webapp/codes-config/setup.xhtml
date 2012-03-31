@@ -112,6 +112,10 @@
                         <h:outputText value="#{msg.codeDataStatusClosed}:"/>
                         <h:inputText id="closed" value="#{sitePropertiesConfigBean.dataStatusClosed}" converter="#{defaultConverter}" />
                         <h:message for="closed" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+                        <h:outputText value="#{msg.codeLocale}:"/>
+                        <h:inputText id="locale" value="#{sitePropertiesConfigBean.locale}" converter="#{defaultConverter}" />
+                        <h:message for="locale" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 						<h:outputText value="#{msg.codeDateFormat}:" />
                  		<h:selectOneMenu id="format" value="#{sitePropertiesConfigBean.dateFormat}" onchange="submit()" immediate="true" >
