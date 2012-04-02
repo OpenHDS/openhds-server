@@ -13,17 +13,8 @@
         <ui:composition>
             <h:form>
                 <div class="texta">
-                    <c:if test="#{prefLocale.locale == 'English'}">
-                        <h:outputText value="English" />
-                        <h:commandLink action="#{prefLocale.setSwahili}" value=" Swahili"> </h:commandLink>
-
-                        <f:loadBundle basename="MessageResource_en" var="msg"/>
-                    </c:if>
-                    <c:if test="#{prefLocale.locale == 'Swahili'}">
-                        <h:outputText value=" Swahili" />
-                        <h:commandLink action="#{prefLocale.setEnglish}" value=" English"> </h:commandLink>
-                        <f:loadBundle basename="MessageResource_sw" var="msg"/>
-                    </c:if>
+                        <h:outputText value="#{siteProperties.locale}" />
+                        <f:loadBundle basename="MessageResource_#{siteProperties.locale}" var="msg"/>
                     <c:if test="#{currentUser.name != null}">
                         <div>
 		          			#{msg.welcome} #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="#{msg.logout}" />						
