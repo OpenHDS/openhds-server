@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.openhds.domain.util.AppContextAware;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,7 +38,7 @@ import com.sun.codemodel.JVar;
  * @author Brian
  */
 
-public class ExtensionLoader extends AppContextAware {
+public class ExtensionLoader {
 	
 	static BufferedReader input;
 	static final String STRING_TYPE = "String";
@@ -65,7 +64,13 @@ public class ExtensionLoader extends AppContextAware {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 				
 			// load the configuration file
-			File configFile = new File(System.getProperty("user.dir").concat("/src/main/resources/extension-config.xml"));
+			String currentDirectory = System.getProperty("user.dir");
+			if (!currentDirectory.endsWith("domain")) {
+				currentDirectory += File.separator + "domain";
+				
+			}
+
+			File configFile = new File(currentDirectory.concat("/src/main/resources/extension-config.xml"));
 			Document doc = builder.parse(configFile);
 			
 			processDocument(doc);
@@ -263,7 +268,12 @@ public class ExtensionLoader extends AppContextAware {
 				
 			}
 			
-			jCodeModel.build(new File("src/main/java"));
+			String currentDirectory = System.getProperty("user.dir");
+			if (currentDirectory.endsWith("domain")) {
+				jCodeModel.build(new File("src/main/java"));					
+			} else {
+				jCodeModel.build(new File("domain/src/main/java"));
+			}
 		
 		} catch (Exception e) { }	
 	}
