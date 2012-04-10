@@ -42,7 +42,15 @@ public class CalendarUtil {
 			daysBetween++;  
 		}  
 		return daysBetween;  
-	}  		
+	}  	
+	
+	public Calendar getCalendar(int month, int day, int year) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DATE, day);
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.YEAR, year);
+		return cal;
+	}
 	
 	public String formatDate(Calendar calendar) {
 		SimpleDateFormat format = new SimpleDateFormat(siteProperties.getDateFormat());

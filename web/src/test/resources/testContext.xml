@@ -312,7 +312,9 @@
     
     <bean id="facesNavigation" class="org.openhds.web.ui.FacesNavigation" />
     <bean id="navController" class="org.openhds.web.ui.NavigationMenuBean" />
-    <bean id="jsfService" class="org.openhds.web.service.impl.JsfServiceImpl" />
+    
+    <bean id="jsfService" class="org.openhds.integration.util.JsfServiceMock" />
+    
     <bean id="webFlowService" class="org.openhds.web.service.impl.WebFlowServiceImpl" />
     
     <bean id="entityService" parent="baseTransactionBean">
@@ -852,7 +854,7 @@
 	</bean>
 
 	<!-- Request scoped bean to serve as a cache for the current logged in user -->
-    <bean id="userCache" class="org.openhds.controller.util.UserCache" scope="request" />
+    <bean id="userCache" class="org.openhds.controller.util.UserCache" />
      
 	<!-- Simple bean to get current logged in user -->
     <bean id="currentUser" class="org.openhds.controller.service.impl.CurrentUserImpl" >

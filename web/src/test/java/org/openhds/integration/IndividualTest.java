@@ -1,18 +1,24 @@
 package org.openhds.integration;
 
+import static org.junit.Assert.*;
+
+import java.util.Calendar;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
-import org.openhds.web.crud.impl.EntityCrudImpl;
+import org.openhds.domain.service.SitePropertiesService;
+import org.openhds.domain.util.CalendarUtil;
+import org.openhds.web.crud.impl.IndividualCrudImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import static org.easymock.EasyMock.createMock;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -21,18 +27,45 @@ public class IndividualTest extends AbstractTransactionalJUnit4SpringContextTest
 	
 	 @Autowired
 	 @Qualifier("individualCrud")
-	 EntityCrudImpl<Individual, String> individualCrud;
-	 
+	 IndividualCrudImpl individualCrud;
+	 	 	 
 	 @Autowired
 	 SessionFactory sessionFactory;
 	 
-	 CurrentUser currentUser = createMock(CurrentUser.class);
+	 @Autowired
+	 GenericDao genericDao;
+	 
+	 @Autowired
+	 SitePropertiesService siteProperties;
+	 
+	 @Autowired
+	 CalendarUtil calendarUtil;
+	 
+	 @Autowired
+	 @Qualifier("currentUser")
+	 CurrentUser currentUser;
 	 
 	 @Test
 	 public void testIndividualCreate() {
-
+		 
+		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+		 
+		 FieldWorker fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
+	     Individual unknownIndiv = genericDao.findByProperty(Individual.class, "extId", "UNK", false);
+		 
+		 Individual mother = new Individual();
+	     mother.setFirstName("First");
+	     mother.setLastName("Last");
+	     mother.setGender(siteProperties.getFemaleCode());
+	     mother.setDobAspect("1");
+	     mother.setMother(unknownIndiv);
+	     mother.setFather(unknownIndiv);
+	     mother.setDob(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1980));
+	     mother.setCollectedBy(fieldWorker);
+	     individualCrud.setItem(mother);
+	     individualCrud.create();
+	     
+	     Individual savedIndividual = genericDao.findByProperty(Individual.class, "extId", mother.getExtId(), false);
+		 assertNotNull(savedIndividual);
 	 }
-	
-	
-
 }

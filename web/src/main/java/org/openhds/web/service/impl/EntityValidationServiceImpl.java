@@ -55,8 +55,8 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
         	 Iterator<ConstraintViolation<T>> iter = constraintViolations.iterator();
              while (iter.hasNext()) {
             	 jsfService.addError(iter.next().getMessage());   	 
-            	 return true;
-             }   	
+             }   
+        	 return true;
         }
         return false;
 	}

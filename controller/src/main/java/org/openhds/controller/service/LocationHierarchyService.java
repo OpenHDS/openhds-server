@@ -28,6 +28,9 @@ public interface LocationHierarchyService {
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	LocationHierarchy getHierarchyRoot();
 	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	LocationHierarchyLevel getLevel(int level);
+	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	boolean checkValidParentLocation(String parent);
 	
