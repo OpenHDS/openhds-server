@@ -266,6 +266,20 @@
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
 		<version>1.2.15</version>
+		<exclusions>
+			<exclusion>
+				<groupId>com.sun.jmx</groupId>
+				<artifactId>jmxri</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>com.sun.jdmk</groupId>
+				<artifactId>jmxtools</artifactId>
+			</exclusion>
+			<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+			</exclusion>
+		</exclusions>
 	</dependency>
 	<dependency>
 		<groupId>javax.el</groupId>
@@ -308,11 +322,11 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.0</version>
 				</plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.6</version>
-        </plugin>
+				<plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-eclipse-plugin</artifactId>
+				  <version>2.6</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
    </build>
