@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.beans.RecordGroup;
-import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyObservation;
@@ -99,9 +97,6 @@ public interface PregnancyService {
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	void validateGeneralPregnancyObservation(PregnancyObservation entityItem) throws ConstraintViolations;
 	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setPregnancyOutcomesByLocation(RecordGroup pregnancyGroup, List<String> hierarchyIds);
-
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate);
 	

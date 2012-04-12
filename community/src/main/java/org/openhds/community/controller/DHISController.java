@@ -1,4 +1,4 @@
-package org.openhds.controller.export;
+package org.openhds.community.controller;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -11,18 +11,16 @@ import java.util.Set;
 import org.openhds.domain.annotations.Description;
 import org.openhds.community.beans.OrgUnitBean;
 import org.openhds.community.builder.OrgUnitBuilder;
+import org.openhds.community.service.AggregateService;
 import org.openhds.community.service.DHISService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
-import org.openhds.controller.beans.DHISDocumentBean;
-import org.openhds.controller.beans.RecordGroup;
-import org.openhds.controller.beans.Period;
-import org.openhds.controller.beans.RecordItem;
-import org.openhds.controller.service.DeathService;
-import org.openhds.controller.service.IndividualService;
+import org.openhds.community.beans.DHISDocumentBean;
+import org.openhds.community.beans.RecordGroup;
+import org.openhds.community.beans.Period;
+import org.openhds.community.beans.RecordItem;
 import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.controller.service.PregnancyService;
 import org.openhds.domain.extensions.ValueConstraintService;
 
 /**
@@ -40,25 +38,21 @@ public class DHISController {
 	LocationHierarchyService locationService;
 	DHISService dhisService;
 	DHISDocumentBean dhisDocumentBean;
-	DeathService deathService;
-	IndividualService individualService;
-	PregnancyService pregnancyService;
+	AggregateService calculationService;
 	ValueConstraintService valueConstraintService;
 	
 	Period period;
 	int periodTotal;
 		
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
-			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, DeathService deathService,
-			IndividualService individualService, PregnancyService pregnancyService) {
+			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, AggregateService calculationService) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;
 		this.dhisDocumentBean = dhisDocumentBean;
 		this.valueConstraintService = valueConstraintService;
-		this.deathService = deathService;
-		this.individualService = individualService;
-		this.pregnancyService = pregnancyService;
+		this.calculationService = calculationService;
+
 	}
 	
 	public String buildDHISDocument() throws ClassNotFoundException, ParseException {
@@ -68,12 +62,12 @@ public class DHISController {
 		List<String> hierarchyIds = locationService.getValidLocationsInHierarchy(dhisDocumentBean.getHierarchyExtId());
 		setupVariables(hierarchyIds);
 		
-		individualService.setPopulationForAgeGroupsByLocation(period.findGroupsByName("Population"), hierarchyIds);  
+		calculationService.setPopulationForAgeGroupsByLocation(period.findGroupsByName("Population"), hierarchyIds);  
 		
 		for (RecordGroup group : period.findGroupsByName("Death")) 
-			deathService.setDeathsForAgeGroupsByLocation(group, hierarchyIds);
+			calculationService.setDeathsForAgeGroupsByLocation(group, hierarchyIds);
 		for (RecordGroup group : period.findGroupsByName("PregnancyOutcome")) 
-			pregnancyService.setPregnancyOutcomesByLocation(group, hierarchyIds);	
+			calculationService.setPregnancyOutcomesByLocation(group, hierarchyIds);	
 		
 		buildOrgUnit();
 		buildCategoryCombos();
@@ -190,8 +184,6 @@ public class DHISController {
 	private void buildPeriod() {
 		
 		int counter = 1;
-				
-		counter++;
 		List<RecordGroup> groups = period.findGroupsByName("Death");
 		for (RecordGroup group : groups) {					
 			dhisService.createPeriod(period.getType(), group.getStart(), group.getEnd(), counter);

@@ -1,4 +1,4 @@
-package org.openhds.controller.beans;
+package org.openhds.community.beans;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,16 +63,15 @@ public class Period {
 			
 			Calendar start = (Calendar) startDate.clone();
 			Calendar end = (Calendar) startDate.clone();
-			
-			if (name.equals("Population"))
-				groups.add(new RecordGroup(name, startDate, endDate, populationAges, hierarchyIds));
-			
+						
 			for (int i = 0; i < days; i++) {
 				end.add(Calendar.DAY_OF_MONTH, 1);
 				if (name.equals("Death"))
 					groups.add(new RecordGroup(name, start, end, deathAges, hierarchyIds));
 				if (name.equals("PregnancyOutcome"))
 					groups.add(new RecordGroup(name, start, end, pregnancyOutcomes, hierarchyIds));
+				if (name.equals("Population"))
+					groups.add(new RecordGroup(name, start, end, populationAges, hierarchyIds));
 				start.add(Calendar.DAY_OF_MONTH, 1);
 			}
 		}
@@ -82,16 +81,15 @@ public class Period {
 	
 			Calendar startIntervalCal = (Calendar) startDate.clone();
 			Calendar endIntervalCal =  (Calendar) startDate.clone();
-			
-			if (name.equals("Population"))
-				groups.add(new RecordGroup(name, startDate, endDate, populationAges, hierarchyIds));
-			
+						
 			for (int i = 0; i < months; i++) {
 				endIntervalCal.add(Calendar.MONTH, 1);	
 				if (name.equals("Death"))
 					groups.add(new RecordGroup(name, startIntervalCal, endIntervalCal, deathAges, hierarchyIds));
 				if (name.equals("PregnancyOutcome"))
 					groups.add(new RecordGroup(name, startIntervalCal, endIntervalCal, pregnancyOutcomes, hierarchyIds));
+				if (name.equals("Population"))
+					groups.add(new RecordGroup(name, startIntervalCal, endIntervalCal, populationAges, hierarchyIds));
 				startIntervalCal.add(Calendar.MONTH, 1);
 			}
 		}
@@ -100,16 +98,15 @@ public class Period {
 				
 			Calendar start = (Calendar) startDate.clone();
 			Calendar end = (Calendar) startDate.clone();
-			
-			if (name.equals("Population"))
-				groups.add(new RecordGroup(name, startDate, endDate, populationAges, hierarchyIds));
-			
+						
 			for (int i = 0; i < years; i++) {
 				end.add(Calendar.YEAR, 1);
 				if (name.equals("Death"))
 					groups.add(new RecordGroup(name, start, end, deathAges, hierarchyIds));
 				if (name.equals("PregnancyOutcome"))
 					groups.add(new RecordGroup(name, start, end, pregnancyOutcomes, hierarchyIds));
+				if (name.equals("Population"))
+					groups.add(new RecordGroup(name, start, end, populationAges, hierarchyIds));
 				start.add(Calendar.YEAR, 1);
 			}
 		}

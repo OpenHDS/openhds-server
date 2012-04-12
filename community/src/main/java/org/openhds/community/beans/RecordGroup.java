@@ -1,4 +1,4 @@
-package org.openhds.controller.beans;
+package org.openhds.community.beans;
 
 import java.util.Calendar;
 import java.util.List;

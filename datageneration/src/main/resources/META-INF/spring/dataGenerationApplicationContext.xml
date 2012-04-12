@@ -16,26 +16,24 @@
     <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
-            
-	<bean id="dhisService" class="org.openhds.community.service.impl.DHISServiceImpl" />
-	
-	<bean id="aggregateService" class="org.openhds.community.service.impl.AggregateServiceImpl">
-		<constructor-arg ref="genericDao" />
-		<constructor-arg ref="siteProperties" />
-	</bean>
-	
-	<bean id="dhisDocumentBean" class="org.openhds.community.beans.DHISDocumentBean">
-   		<constructor-arg ref="siteProperties" />
-   		<constructor-arg ref="locationHierarchyService" />
-   	</bean>
-	
-	<bean id="dhisController" class="org.openhds.community.controller.DHISController">
-    	<constructor-arg ref="genericDao" />
-    	<constructor-arg ref="locationHierarchyService" />
-    	<constructor-arg ref="dhisService" />
-    	<constructor-arg ref="dhisDocumentBean" />
-    	<constructor-arg ref="valueConstraintService" />
-    	<constructor-arg ref="aggregateService" />
+        
+    <bean id="dataGeneratorCrud" class="org.openhds.datageneration.utils.DataGeneratorBean">
+   		<constructor-arg>
+			<bean class="org.openhds.datageneration.service.impl.DataGeneratorServiceImpl">
+				<property name="dataGeneratorDao" ref="dataGeneratorDao" />
+				<property name="locationHierarchyService" ref="locationHierarchyService" />
+				<property name="entityService" ref="entityService" />
+				<property name="siteProperties" ref="siteProperties" />
+			</bean>
+		</constructor-arg>
     </bean>
-			
+    
+     <bean id="dataGeneratorDao" parent="baseTransactionBean">
+		<property name="target">
+		    <bean class="org.openhds.datageneration.service.impl.DataGeneratorDaoImpl">
+		        <property name="sessionFactory" ref="sessionFactory" />
+		    </bean>
+	    </property>
+    </bean>
+      
 </beans>

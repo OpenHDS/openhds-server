@@ -2,7 +2,6 @@ package org.openhds.controller.service;
 
 import java.util.List;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.beans.RecordGroup;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
@@ -39,8 +38,5 @@ public interface IndividualService {
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Individual createTemporaryIndividualWithExtId(String extId, FieldWorker CollectedBy) throws Exception;
-	
-	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void setPopulationForAgeGroupsByLocation(List<RecordGroup> populationGroup, List<String> hierarchyIds);
 }
 

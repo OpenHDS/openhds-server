@@ -58,13 +58,6 @@
     		</bean>
    		</property>
 	</bean>
-	
-	<security:authentication-manager>
-        <security:authentication-provider user-service-ref="userDetailsService" />
-    </security:authentication-manager>
-	
-	<!-- allows for the @secured annotation -->
-    <security:global-method-security secured-annotations="enabled" />
         
     <!-- Base service bean that includes authorization advice -->
 	<bean id="baseServiceBean" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
@@ -269,30 +262,7 @@
     <bean id="whitelistService" class="org.openhds.controller.service.impl.WhitelistServiceImpl">
     	<constructor-arg ref="genericDao" />
     </bean>
-    
-    <bean id="ddiController" class="org.openhds.controller.export.DDIController">
-    	<constructor-arg ref="genericDao" />
-    	<constructor-arg ref="appSettings" />
-    	<constructor-arg ref="studyDocBean" />
-    	<constructor-arg ref="codeBookService" />
-    </bean>
-    
-    <bean id="dhisDocumentBean" class="org.openhds.controller.beans.DHISDocumentBean">
-   		<constructor-arg ref="siteProperties" />
-   		<constructor-arg ref="locationHierarchyService" />
-   	</bean>
-        
-    <bean id="dhisController" class="org.openhds.controller.export.DHISController">
-    	<constructor-arg ref="genericDao" />
-    	<constructor-arg ref="locationHierarchyService" />
-    	<constructor-arg ref="dhisService" />
-    	<constructor-arg ref="dhisDocumentBean" />
-    	<constructor-arg ref="valueConstraintService" />
-    	<constructor-arg ref="deathService" />
-    	<constructor-arg ref="individualService" />
-    	<constructor-arg ref="pregnancyService" />
-    </bean>
-        
+                        
     <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">
  		<property name="idScheme">
       		<list>

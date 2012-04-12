@@ -1,4 +1,4 @@
-package org.openhds.controller.export;
+package org.openhds.ddi.controller;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

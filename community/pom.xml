@@ -20,6 +20,21 @@
   </properties>
   
   <dependencies>
+  	<dependency>
+   		<groupId>org.openhds</groupId>
+   		<artifactId>domain</artifactId>
+   		<version>${project.version}</version>
+	</dependency>	
+	<dependency>
+   		<groupId>org.openhds</groupId>
+   		<artifactId>dao</artifactId>
+   		<version>${project.version}</version>
+	</dependency>	
+	<dependency>
+   		<groupId>org.openhds</groupId>
+   		<artifactId>controller</artifactId>
+   		<version>${project.version}</version>
+	</dependency>	
 	<dependency>
    		<groupId>org.apache.xmlbeans</groupId>
    		<artifactId>xmlbeans</artifactId>

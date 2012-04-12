@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.List;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
-import org.openhds.controller.beans.RecordGroup;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
@@ -162,46 +161,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 		else
 			entityService.create(pregOutcome);		
 	}
-	
-	// this is used for output to the DHIS
-	// iterates through the outcomes and categorizes the live births according to gender
-	public void setPregnancyOutcomesByLocation(RecordGroup pregnancyGroup, List<String> hierarchyIds) {
-
-		List<PregnancyOutcome> outcomes = genericDao.findAll(PregnancyOutcome.class, true);
 		
-		for (PregnancyOutcome outcome : outcomes) {
-			
-			if (hierarchyIds.contains(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId())) {
-				
-				Calendar outcomeDate = outcome.getOutcomeDate();
-				if ((outcomeDate.after(pregnancyGroup.getStart()) || outcomeDate.equals(pregnancyGroup.getStart())) && 
-						(outcomeDate.before(pregnancyGroup.getEnd()))) {
-					
-					List<Outcome> allOutcomes = outcome.getOutcomes();
-					
-					for (Outcome o : allOutcomes) {
-						
-						if (o.getType().equals(siteProperties.getLiveBirthCode())) {
-							if (o.getChild().getGender().equals(siteProperties.getMaleCode())) 
-								pregnancyGroup.getRecord().addMaleCountForLocationAndAgeGroup(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId(), 0);
-							if (o.getChild().getGender().equals(siteProperties.getFemaleCode()))
-								pregnancyGroup.getRecord().addFemaleCountForLocationAndAgeGroup(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId(), 0);
-						}
-						else if (o.getType().equals(siteProperties.getStillBirthCode())) {
-							pregnancyGroup.getRecord().addMaleCountForLocationAndAgeGroup(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId(), 1);
-						}
-						else if (o.getType().equals(siteProperties.getMiscarriageCode())) {
-							pregnancyGroup.getRecord().addMaleCountForLocationAndAgeGroup(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId(), 2);
-						}
-						else if (o.getType().equals(siteProperties.getAbortionCode())) {
-							pregnancyGroup.getRecord().addMaleCountForLocationAndAgeGroup(outcome.getVisit().getVisitLocation().getLocationLevel().getExtId(), 3);
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {
 		
 		List<PregnancyOutcome> output = new ArrayList<PregnancyOutcome>();

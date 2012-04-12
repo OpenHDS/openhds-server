@@ -13,19 +13,13 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.0.xsd">
         
-        <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
-    	<import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
-    	<import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />
-        
-       	<bean id="codeBookService" class="org.openhds.ddi.service.impl.CodeBookServiceImpl" />
-       
-       	<bean id="studyDocBean" class="org.openhds.ddi.beans.StudyDocumentBean" />
-       
-       	<bean id="ddiController" class="org.openhds.ddi.controller.DDIController">
-       		<constructor-arg ref="genericDao" />
-    		<constructor-arg ref="appSettings" />
-    		<constructor-arg ref="studyDocBean" />
-    		<constructor-arg ref="codeBookService" />
-   		</bean>
-       
+    <import resource="classpath*:/META-INF/spring/controllerApplicationContext.xml" />    
+           
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailsService" />
+    </security:authentication-manager>
+    
+    <!-- allows for the @secured annotation -->
+    <security:global-method-security secured-annotations="enabled" />
+         
 </beans>

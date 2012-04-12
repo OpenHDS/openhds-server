@@ -1,4 +1,4 @@
-package org.openhds.controller.beans;
+package org.openhds.community.beans;
 
 /**
  * This is used in the DHIS export and rates for counting up aggregate data by category.

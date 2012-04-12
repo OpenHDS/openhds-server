@@ -1,4 +1,4 @@
-package org.openhds.controller.beans;
+package org.openhds.community.beans;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,7 +46,9 @@ public class DHISDocumentBean {
 			sDate = Calendar.getInstance();
 			sDate.setTime(date);
 		}
-		catch (Exception e) { }
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 	
 	public String getEndDate() {
@@ -60,7 +62,9 @@ public class DHISDocumentBean {
 			eDate = Calendar.getInstance();
 			eDate.setTime(date);
 		}
-		catch (Exception e) { }
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 	
 	public String getPeriod() {
@@ -101,7 +105,9 @@ public class DHISDocumentBean {
 			cal.set(Calendar.YEAR, Integer.parseInt(startYear));
 			sDate = cal;
 		}
-		catch (Exception e) { }
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 
 	public String getEndMonth() {
@@ -118,7 +124,9 @@ public class DHISDocumentBean {
 			cal.set(Calendar.YEAR, Integer.parseInt(endYear));
 			eDate = cal;		
 		}
-		catch (Exception e) { }
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 	
 	public String getStartYear() {

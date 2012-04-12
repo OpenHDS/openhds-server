@@ -1,4 +1,4 @@
-package org.openhds.web.beans;
+package org.openhds.datageneration.beans;
 
 import java.util.Date;
 import javax.faces.application.FacesMessage;
