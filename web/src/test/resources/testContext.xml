@@ -632,7 +632,7 @@
         <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
 	 </bean>
 	 
-     <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
+     <bean id="siteProperties" class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">   
     	<property name="locale"><value>${openhds.locale}</value></property>     
         <property name="dateFormat"><value>${dateFormat}</value></property>
         <property name="autocomplete"><value>${autocomplete}</value></property>
@@ -667,7 +667,7 @@
      </bean> 
 							        
      <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" /> 
-     <bean id="valueConstraintService" class="org.openhds.domain.extensions.ValueConstraintService" />
+     <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
     
 	 <bean id="calendarUtil" class="org.openhds.domain.util.CalendarUtil">
 		 <property name="siteProperties" ref="siteProperties" />

@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import org.openhds.domain.constaint.impl.CheckIndividualGenderMaleImpl;
+
 @Target( { METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = CheckIndividualGenderMaleImpl.class)

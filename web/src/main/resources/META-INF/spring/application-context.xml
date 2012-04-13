@@ -308,20 +308,7 @@
         <property name="properties" ref="siteProperties" />
         <property name="entityValidationService" ref="entityValidator" />
     </bean>
-    
-    <!-- 
-    <bean id="dataGeneratorCrud" class="org.openhds.datageneration.utils.DataGeneratorBean">
-   		<constructor-arg>
-			<bean class="org.openhds.datageneration.service.impl.DataGeneratorServiceImpl">
-				<property name="dataGeneratorDao" ref="dataGeneratorDao" />
-				<property name="locationHierarchyService" ref="locationHierarchyService" />
-				<property name="entityService" ref="entityService" />
-				<property name="siteProperties" ref="siteProperties" />
-			</bean>
-		</constructor-arg>
-    </bean>
-    -->
-        
+            
     <bean id="deathCrud" parent="baseCrud" class="org.openhds.web.crud.impl.DeathCrudImpl">
         <constructor-arg value="org.openhds.domain.model.Death" />
         <property name="dao" ref="deathDao" />
@@ -629,7 +616,7 @@
         <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
 	 </bean>
 	 
-     <bean id="siteProperties" class="org.openhds.domain.service.impl.SiteProperties">   
+     <bean id="siteProperties" class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">   
     	<property name="locale"><value>${locale}</value></property>     
         <property name="dateFormat"><value>${dateFormat}</value></property>
         <property name="autocomplete"><value>${autocomplete}</value></property>

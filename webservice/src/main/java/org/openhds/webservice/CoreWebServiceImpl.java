@@ -46,7 +46,7 @@ import org.openhds.domain.model.ReferencedEntity;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
-import org.openhds.domain.service.impl.SiteProperties;
+import org.openhds.domain.service.impl.SitePropertiesServiceImpl;
 
 @Produces("application/xml")
 @Consumes("application/xml")
@@ -72,7 +72,7 @@ public class CoreWebServiceImpl {
     private GenericDao genericDao;
     private WhitelistService whitelistService;
     private IdValidator idUtilities;
-    private SiteProperties siteProperties;
+    private SitePropertiesServiceImpl siteProperties;
     private IndividualGenerator indivGen;
    
     @Context
@@ -652,7 +652,7 @@ public class CoreWebServiceImpl {
         this.idUtilities = idUtilities;
     }
    
-    public void setSiteProperties(SiteProperties siteProperties) {
+    public void setSiteProperties(SitePropertiesServiceImpl siteProperties) {
         this.siteProperties = siteProperties;
     }
 

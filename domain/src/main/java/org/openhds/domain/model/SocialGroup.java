@@ -13,8 +13,8 @@ import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckHouseholdHeadAge;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
+import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionStringConstraint;
 
 @Description(description="A Social Group represents a distinct family within the " +
 		"study area. Social Groups are identified by a uniquely generated identifier " +

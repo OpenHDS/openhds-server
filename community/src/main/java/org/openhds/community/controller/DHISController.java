@@ -16,12 +16,12 @@ import org.openhds.community.service.DHISService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
+import org.openhds.domain.service.impl.ValueConstraintServiceImpl;
 import org.openhds.community.beans.DHISDocumentBean;
 import org.openhds.community.beans.RecordGroup;
 import org.openhds.community.beans.Period;
 import org.openhds.community.beans.RecordItem;
 import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.domain.extensions.ValueConstraintService;
 
 /**
  * References:
@@ -39,13 +39,13 @@ public class DHISController {
 	DHISService dhisService;
 	DHISDocumentBean dhisDocumentBean;
 	AggregateService calculationService;
-	ValueConstraintService valueConstraintService;
+	ValueConstraintServiceImpl valueConstraintService;
 	
 	Period period;
 	int periodTotal;
 		
 	public DHISController(GenericDao genericDao, LocationHierarchyService locationService, DHISService dhisService, 
-			DHISDocumentBean dhisDocumentBean, ValueConstraintService valueConstraintService, AggregateService calculationService) {
+			DHISDocumentBean dhisDocumentBean, ValueConstraintServiceImpl valueConstraintService, AggregateService calculationService) {
 		this.genericDao = genericDao;
 		this.locationService = locationService;
 		this.dhisService = dhisService;

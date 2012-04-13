@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import org.openhds.domain.constaint.impl.CheckIndividualNotUnknownImpl;
+
 /**
  * A generic constraint to check that 2 fields are not equal
  * In other words, this constraint will enforce that 2 fields

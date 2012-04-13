@@ -18,10 +18,10 @@ import org.openhds.domain.constraint.CheckGenderOfRelationship;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.CheckRelatedIndividuals;
 import org.openhds.domain.constraint.CheckRelationshipAge;
+import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.extensions.ExtensionStringConstraint;
 
 @Description(description="A Relationship is used to associate an Individual " +
 		"with another Indivual in some way. It can be identified by a uniquely " +

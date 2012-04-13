@@ -5,14 +5,14 @@ import java.util.Iterator;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import org.openhds.domain.constraint.AppContextAware;
-import org.openhds.domain.extensions.ValueConstraintService;
+import org.openhds.domain.service.impl.ValueConstraintServiceImpl;
 
 public class ValueExtensionResolver extends ELResolver {
 	
-	ValueConstraintService service;
+	ValueConstraintServiceImpl service;
 	
 	public ValueExtensionResolver() {			
-		service = AppContextAware.getContext().getBean(ValueConstraintService.class);
+		service = AppContextAware.getContext().getBean(ValueConstraintServiceImpl.class);
 	}
 
 	@Override
