@@ -85,6 +85,17 @@
     </dependency>
   </dependencies>
   
+  <profiles>
+  	<profile>
+		<id>demo</id>
+		<activation>
+			<property><name>demo</name></property>
+		</activation>
+		<properties>
+			<demo.login.credentials>To login, user name:admin password:test</demo.login.credentials>
+		</properties>
+	</profile>
+  </profiles>
   <build>
         <finalName>${project.parent.artifactId}</finalName>
         <pluginManagement>

@@ -70,6 +70,12 @@
         <security:logout logout-url="/logoutProcess" success-handler-ref="logoutSuccessHandler"/>
     </security:http>
     
+    <!-- Temporary bean that is used to display a tooltip for logging into OpenHDS -->
+    <!-- This is filtered by Maven and will be populated with text when the demo profile is activated -->
+    <bean id="demoLoginString" class="java.lang.String">
+    	<constructor-arg><value>${demo.login.credentials}</value></constructor-arg>
+    </bean> 
+    
     <bean id="calendarConverter" class="org.openhds.web.cvt.CalendarConverter">
         <property name="dateFormat" value="#{siteProperties.dateFormat}" />
     </bean>

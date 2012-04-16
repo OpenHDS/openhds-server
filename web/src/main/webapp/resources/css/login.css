@@ -36,3 +36,14 @@ html,body
     display: block;
     width: 400px;
 }
+
+.demoMessage
+{
+    background-color: #336677;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D0D0D0;
+    padding: 1px;
+    display: block;
+    width: 400px;
+}
