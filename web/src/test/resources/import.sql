@@ -60,6 +60,7 @@ INSERT INTO locationhierarchylevel(uuid,keyIdentifier,name) VALUES('HierarchyLev
 INSERT INTO locationhierarchylevel(uuid,keyIdentifier,name) VALUES('HierarchyLevel2',2,'Ward')
 INSERT INTO locationhierarchylevel(uuid,keyIdentifier,name) VALUES('HierarchyLevel3',3,'Village')
 
+INSERT INTO round (uuid,roundNumber,startDate,endDate) VALUES('ROUND 1',1,'2010-06-30 15:07:43','2010-07-31 15:07:43')
 INSERT INTO location(uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('LOCATION1','NJA001','House 3','hierarchy_root','RUR','2000-12-19 15:07:43',NULL,NULL,false,'FieldWorker1','User 1','P')
 INSERT INTO visit(uuid,extId,visitDate,status,insertDate,collectedBy_uuid,visitLocation_uuid,deleted,roundNumber,insertBy_uuid) VALUES ('visit_uuid1', 'VLOCMBI11J', '2010-07-15 15:07:43', 'P', '2010-07-20 15:07:43',  'FieldWorker1', 'LOCATION1',false,1,'User 1');
 INSERT INTO death (uuid, deleted, insertDate, status, voidDate, voidReason, deathCause, deathDate, deathPlace,collectedBy_uuid, insertBy_uuid, voidBy_uuid, individual_uuid, visitDeath_uuid) VALUES ('death1','','2010-06-09','P',NULL,NULL,'Cause','2010-06-01','Place','FieldWorker1','User 1',NULL,'Individual4','visit_uuid1');
