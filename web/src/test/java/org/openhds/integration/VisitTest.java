@@ -117,7 +117,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 	 public void testInvalidVisit() {
 						 
 		 Visit visit = new Visit();
-		 visit.setRoundNumber(1);
+		 visit.setRoundNumber(2);
 		 visit.setVisitLocation(location);
 		 visit.setVisitDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 visit.setCollectedBy(fieldWorker);
