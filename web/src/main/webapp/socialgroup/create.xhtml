@@ -59,8 +59,10 @@
 		            	document.getElementById('form:extId').focus();
 		            </script>
                     <br />
-               		<h:commandButton action="#{socialGroupCrud.create}" value="#{msg.lblCreate}"/>
+               		<h:commandButton action="#{socialGroupCrud.create}" value="#{msg.lblCreate}" rendered="#{flowScope == null}" />
                     <h:outputText value=" " />
+                    <h:commandButton id="createSocialGroup" action="createSocialGroup" value="#{msg.lblCreate}" rendered="#{flowScope != null}" />
+                    <h:outputText value=" " />              		
                		<h:commandButton value="#{msg.lblCancel}" immediate="true" action="cancel" rendered="#{flowScope != null}" />
                 </h:form>
             </ui:define>
