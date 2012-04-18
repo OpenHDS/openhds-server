@@ -40,6 +40,26 @@
 	                        <img class="clickable" onclick="O$('popupWindowForLocType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
 	                        <h:inputText id="locationType" value="#{locationCrud.item.locationType}" converter="#{defaultConverter}" />
 	                    	<h:message for="locationType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                    	
+	                    	<h:outputText value="#{msg.locationLatitude}:"/>
+	                        <h:outputText />
+	                        <h:inputText id="latitude" value="#{locationCrud.item.latitude}" converter="#{defaultConverter}" />
+	                        <h:message for="latitude" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                       
+	                       	<h:outputText value="#{msg.locationLongitude}:"/>
+	                        <h:outputText />
+	                        <h:inputText id="longitude" value="#{locationCrud.item.longitude}" converter="#{defaultConverter}" />
+	                        <h:message for="longitude" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                       
+	                       	<h:outputText value="#{msg.locationAccuracy}:"/>
+	                        <h:outputText />
+	                        <h:inputText id="accuracy" value="#{locationCrud.item.accuracy}" converter="#{defaultConverter}" />
+	                        <h:message for="accuracy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                       
+	                        <h:outputText value="#{msg.locationAltitude}:"/>
+	                        <h:outputText />
+	                        <h:inputText id="altitude" value="#{locationCrud.item.altitude}" converter="#{defaultConverter}" />
+	                        <h:message for="altitude" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                       
 	                        <h:outputText value="#{msg.fieldWorkerId}:"/>
 	                        <h:outputText />

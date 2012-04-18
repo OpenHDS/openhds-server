@@ -37,7 +37,23 @@
                	<h:outputText value="#{msg.locationType}:"/>
                	<img class="clickable" onclick="O$('popupWindowForLocType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
                 <h:outputText value="#{locationCrud.item.locationType}" />
-              	
+                
+                <h:outputText value="#{msg.locationLatitude}:"/>
+	            <h:outputText />
+	            <h:outputText value="#{locationCrud.item.latitude}" />
+	             
+	            <h:outputText value="#{msg.locationLongitude}:"/>
+	            <h:outputText />
+	            <h:outputText value="#{locationCrud.item.longitude}" />
+	                 
+	            <h:outputText value="#{msg.locationAccuracy}:"/>
+	            <h:outputText />
+	            <h:outputText value="#{locationCrud.item.accuracy}" />
+	                  
+	            <h:outputText value="#{msg.locationAltitude}:"/>
+	            <h:outputText />
+	            <h:outputText value="#{locationCrud.item.altitude}" />
+	           
               	<h:outputText value="#{msg.fieldWorkerId}:"/>
               	<h:outputText />
               	<h:outputText value="#{locationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />            	
