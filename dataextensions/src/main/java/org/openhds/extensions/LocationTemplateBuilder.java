@@ -124,6 +124,70 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		JBlock jmsLocationTypeBlock = jmsLocationType.body();
 		jmsLocationTypeBlock.assign(jfLocationType, jvarLocationType);
 		
+		// longitude
+		JFieldVar jfLongitude = jc.field(JMod.PRIVATE, java.lang.String.class, "longitude");
+		JAnnotationUse jaLongitudeDesc = jfLongitude.annotate(org.openhds.domain.annotations.Description.class);
+		jaLongitudeDesc.param("description", "The longitude for the Location");
+		
+		// getter
+		JMethod jmgLongitude = jc.method(JMod.PUBLIC, java.lang.String.class, "getLongitude");
+		JBlock jmgLongitudeBlock = jmgLongitude.body();
+		jmgLongitudeBlock._return(jfLongitude);
+		
+		// setter
+		JMethod jmsLongitude = jc.method(JMod.PUBLIC, void.class, "setLongitude");
+		JVar jvarLongitude = jmsLongitude.param(java.lang.String.class, "longi");
+		JBlock jmsLongitudeBlock = jmsLongitude.body();
+		jmsLongitudeBlock.assign(jfLongitude, jvarLongitude);
+		
+		// latitude
+		JFieldVar jfLatitude = jc.field(JMod.PRIVATE, java.lang.String.class, "latitude");
+		JAnnotationUse jaLatitudeDesc = jfLatitude.annotate(org.openhds.domain.annotations.Description.class);
+		jaLatitudeDesc.param("description", "The latitude for the Location");
+		
+		// getter
+		JMethod jmgLatitude = jc.method(JMod.PUBLIC, java.lang.String.class, "getLatitude");
+		JBlock jmgLatitudeBlock = jmgLatitude.body();
+		jmgLatitudeBlock._return(jfLatitude);
+		
+		// setter
+		JMethod jmsLatitude = jc.method(JMod.PUBLIC, void.class, "setLatitude");
+		JVar jvarLatitude = jmsLatitude.param(java.lang.String.class, "lat");
+		JBlock jmsLatitudeBlock = jmsLatitude.body();
+		jmsLatitudeBlock.assign(jfLatitude, jvarLatitude);
+		
+		// accuracy
+		JFieldVar jfAccuracy = jc.field(JMod.PRIVATE, java.lang.String.class, "accuracy");
+		JAnnotationUse jaAccuracyDesc = jfAccuracy.annotate(org.openhds.domain.annotations.Description.class);
+		jaAccuracyDesc.param("description", "How accurate are the longitude/latitude readings for the Location");
+		
+		// getter
+		JMethod jmgAccuracy = jc.method(JMod.PUBLIC, java.lang.String.class, "getAccuracy");
+		JBlock jmgAccuracyBlock = jmgAccuracy.body();
+		jmgAccuracyBlock._return(jfAccuracy);
+		
+		// setter
+		JMethod jmsAccuracy = jc.method(JMod.PUBLIC, void.class, "setAccuracy");
+		JVar jvarAccuracy = jmsAccuracy.param(java.lang.String.class, "acc");
+		JBlock jmsAccuracyBlock = jmsAccuracy.body();
+		jmsAccuracyBlock.assign(jfAccuracy, jvarAccuracy);
+		
+		// altitude
+		JFieldVar jfAltitude = jc.field(JMod.PRIVATE, java.lang.String.class, "altitude");
+		JAnnotationUse jaAltitudeDesc = jfAltitude.annotate(org.openhds.domain.annotations.Description.class);
+		jaAltitudeDesc.param("description", "The altitude for the Location");
+		
+		// getter
+		JMethod jmgAltitude = jc.method(JMod.PUBLIC, java.lang.String.class, "getAltitude");
+		JBlock jmgAltitudeBlock = jmgAltitude.body();
+		jmgAltitudeBlock._return(jfAltitude);
+		
+		// setter
+		JMethod jmsAltitude = jc.method(JMod.PUBLIC, void.class, "setAltitude");
+		JVar jvarAltitude = jmsAltitude.param(java.lang.String.class, "alt");
+		JBlock jmsAltitudeBlock = jmsAltitude.body();
+		jmsAltitudeBlock.assign(jfAltitude, jvarAltitude);
+				
 		// residencies
 		JClass basicListResidencies = jCodeModel.ref(java.util.List.class);
 		basicListResidencies = basicListResidencies.narrow(org.openhds.domain.model.Residency.class);
