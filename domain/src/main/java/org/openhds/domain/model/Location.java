@@ -45,6 +45,14 @@ public class Location
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
     private String locationType;
+    @Description(description = "The longitude for the Location")
+    private String longitude;
+    @Description(description = "The latitude for the Location")
+    private String latitude;
+    @Description(description = "How accurate are the longitude/latitude readings for the Location")
+    private String accuracy;
+    @Description(description = "The altitude for the Location")
+    private String altitude;
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies;
@@ -79,6 +87,38 @@ public class Location
 
     public void setLocationType(String type) {
         locationType = type;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longi) {
+        longitude = longi;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String lat) {
+        latitude = lat;
+    }
+
+    public String getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(String acc) {
+        accuracy = acc;
+    }
+
+    public String getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(String alt) {
+        altitude = alt;
     }
 
     public List<Residency> getResidencies() {
