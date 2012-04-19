@@ -47,10 +47,13 @@ public abstract class Generator<T> extends LuhnValidator {
 			numberGen = suffixInt.toString();
 			String temp = prefix.toString() + numberGen;
 			
-			if (checkDigit)
-				temp = temp.concat(generateCheckCharacter(temp).toString());
+			if (checkDigit) {
+				String resultChar = generateCheckCharacter(temp).toString();
+				temp = temp.concat(resultChar);
+				numberGen = numberGen.concat(resultChar);
+			}
 
-			list = genericDao.findListByProperty(classType, "extId", temp);
+			list = genericDao.findListByProperty(classType, "extId", temp);	
 		} while (list.size() > 0);
 		
 	    return numberGen;	

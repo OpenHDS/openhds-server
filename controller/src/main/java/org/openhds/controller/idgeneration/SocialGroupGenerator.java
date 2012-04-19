@@ -17,7 +17,6 @@ import org.openhds.domain.model.SocialGroup;
 
 public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public String generateId(SocialGroup entityItem) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
@@ -59,10 +58,7 @@ public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
 			sb.append(buildNumberWithBound(entityItem, scheme));
 		else
 			sb.append(buildNumber(SocialGroup.class, sb.toString(), scheme.isCheckDigit()));
-		
-		if (scheme.isCheckDigit()) 
-			sb.append(generateCheckCharacter(sb.toString()));
-		
+				
 		validateIdLength(sb.toString(), scheme);
 		
 		return sb.toString();
@@ -72,7 +68,6 @@ public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
 	public String buildNumberWithBound(SocialGroup entityItem, IdScheme scheme) throws ConstraintViolations {
 
 		SocialGroup tempSocialGroup = new SocialGroup();
-		SocialGroup sg = (SocialGroup)entityItem;
 		
 		Integer size = 1;
 		String result = "";
@@ -94,9 +89,16 @@ public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
 			}
 
 			if (extId == null)
-				tempExtId = sg.getExtId().concat(result);
+				tempExtId = entityItem.getExtId().concat(result);
 			else
 				tempExtId = tempExtId.concat(result);
+			
+			if (scheme.isCheckDigit()) {
+				String resultChar = generateCheckCharacter(tempExtId).toString();
+				result = result.concat(resultChar);
+				tempExtId = tempExtId.concat(resultChar);
+			}
+			
 			tempSocialGroup = genericDao.findByProperty(SocialGroup.class, "extId", tempExtId);
 			size++;
 		}

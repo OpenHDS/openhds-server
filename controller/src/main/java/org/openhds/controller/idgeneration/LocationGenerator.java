@@ -17,7 +17,6 @@ import org.openhds.domain.model.Location;
 
 public class LocationGenerator extends Generator<Location> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String generateId(Location location) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
@@ -69,10 +68,7 @@ public class LocationGenerator extends Generator<Location> {
 			sb.append(buildNumberWithBound(location, scheme));
 		else
 			sb.append(buildNumber(Location.class, sb.toString(), scheme.isCheckDigit()));
-			
-		if (scheme.isCheckDigit()) 
-			sb.append(generateCheckCharacter(sb.toString()));
-		
+					
 		validateIdLength(sb.toString(), scheme);
 		
 		return sb.toString();
@@ -93,18 +89,26 @@ public class LocationGenerator extends Generator<Location> {
 		while (loc != null) {
 			
 			result = "";
-			String tempExtId = "";
-			
-			if (extId != null)
-				tempExtId = extId;
-			
+			String tempExtId = extId;
+						
 			while (result.toString().length() < incBoundLength) {
 				if (result.toString().length()+ size.toString().length() < incBoundLength)
 					result += "0";
 				if (result.toString().length() + size.toString().length() == incBoundLength)
 					result = result.concat(size.toString());
 			}
-			tempExtId = tempExtId.concat(result);
+			
+			if (extId == null)
+				tempExtId = entityItem.getExtId().concat(result);
+			else
+				tempExtId = tempExtId.concat(result);
+			
+			if (scheme.isCheckDigit()) {
+				String resultChar = generateCheckCharacter(tempExtId).toString();
+				result = result.concat(resultChar);
+				tempExtId = tempExtId.concat(resultChar);
+			}
+			
 			loc = genericDao.findByProperty(Location.class, "extId", tempExtId);
 			size++;
 		}

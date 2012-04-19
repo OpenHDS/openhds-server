@@ -17,7 +17,6 @@ import org.openhds.domain.model.Individual;
 
 public class IndividualGenerator extends Generator<Individual> {
 		
-	@SuppressWarnings("unchecked")
 	@Override
 	public String generateId(Individual individual) throws ConstraintViolations  {
 		StringBuilder sb = new StringBuilder();	
@@ -93,10 +92,7 @@ public class IndividualGenerator extends Generator<Individual> {
 			sb.append(buildNumberWithBound(individual, scheme));
 		else
 			sb.append(buildNumber(Individual.class, sb.toString(), scheme.isCheckDigit()));
-		
-		if (scheme.isCheckDigit()) 
-			sb.append(generateCheckCharacter(sb.toString()));
-		
+				
 		validateIdLength(sb.toString(), scheme);
 		
 		return sb.toString();
@@ -130,6 +126,13 @@ public class IndividualGenerator extends Generator<Individual> {
 				tempExtId = entityItem.getExtId().concat(result);
 			else
 				tempExtId = tempExtId.concat(result);
+			
+			if (scheme.isCheckDigit()) {
+				String resultChar = generateCheckCharacter(tempExtId).toString();
+				result = result.concat(resultChar);
+				tempExtId = tempExtId.concat(resultChar);
+			}
+
 			tempIndividual = genericDao.findByProperty(Individual.class, "extId", tempExtId);
 			size++;
 		}

@@ -63,10 +63,7 @@ public class VisitGenerator extends Generator<Visit> {
 			sb.append(buildNumberWithBound(entityItem, scheme));
 		else
 			sb.append(buildNumber(Visit.class, sb.toString(), scheme.isCheckDigit()));
-		
-		if (scheme.isCheckDigit()) 
-			sb.append(generateCheckCharacter(sb.toString()));
-		
+				
 		validateIdLength(sb.toString(), scheme);
 				
 		return sb.toString();
@@ -86,18 +83,26 @@ public class VisitGenerator extends Generator<Visit> {
 		while (visit != null) {
 			
 			result = "";
-			String tempExtId = "";
-			
-			if (extId != null)
-				tempExtId = extId;
-			
+			String tempExtId = extId;
+						
 			while (result.toString().length() < incBoundLength) {
 				if (result.toString().length()+ size.toString().length() < incBoundLength)
 					result += "0";
 				if (result.toString().length() + size.toString().length() == incBoundLength)
 					result = result.concat(size.toString());
 			}
-			tempExtId = tempExtId.concat(result);
+			
+			if (extId == null)
+				tempExtId = entityItem.getExtId().concat(result);
+			else
+				tempExtId = tempExtId.concat(result);
+			
+			if (scheme.isCheckDigit()) {
+				String resultChar = generateCheckCharacter(tempExtId).toString();
+				result = result.concat(resultChar);
+				tempExtId = tempExtId.concat(resultChar);
+			}
+			
 			visit = genericDao.findByProperty(Visit.class, "extId", tempExtId);
 			size++;
 		}
