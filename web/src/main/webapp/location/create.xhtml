@@ -26,6 +26,14 @@
 	            <tr>
 	                <td>
 	                    <h:panelGrid columns="4">
+	                    
+	                    	<c:if test="#{locationIdGenerator.generated == false}" >
+			                	<h:outputText value="#{msg.locationId}:" />
+			                	<h:outputText />
+			                 	<h:inputText id="extId" value="#{locationCrud.item.extId}" converter="#{defaultConverter}" />
+								<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+			                </c:if>
+	                    
 	                        <h:outputText value="#{locationHierarchyService.lowestLevel.name}:"/>
 	                        <h:outputText />
 	                        <h:inputText styleClass="locationName" autocomplete="off" name="level" id="level" value="#{locationCrud.item.locationLevel.extId}"/>
@@ -69,7 +77,10 @@
 	                </td>
 	           	</tr>
 	        </table>
-	        <script>document.getElementById('form:level').focus();</script> 
+	        <script>
+	        	document.getElementById('form:level').focus();
+	        	document.getElementById('form:extId').focus();
+	        </script> 
 	        <br />
 	        <c:choose>
 	            <c:when test="#{flowScope != null}">
