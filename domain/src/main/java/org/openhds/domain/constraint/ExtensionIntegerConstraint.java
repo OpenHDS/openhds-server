@@ -25,4 +25,6 @@ public @interface ExtensionIntegerConstraint {
 	Class<? extends Payload>[] payload() default {};
 	
 	String constraint();
+	
+    boolean allowNull() default true;
 }

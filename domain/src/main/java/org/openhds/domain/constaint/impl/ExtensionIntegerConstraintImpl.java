@@ -13,13 +13,20 @@ public class ExtensionIntegerConstraintImpl extends AppContextAware implements C
 
 	private String constraint;
 	private ValueConstraintServiceImpl service;
+    private boolean allowNull;
 
 	public void initialize(ExtensionIntegerConstraint arg0) {
 		service = (ValueConstraintServiceImpl)context.getBean("valueConstraintService");
 		this.constraint = arg0.constraint();
+		this.allowNull = arg0.allowNull();
 	}
 
 	public boolean isValid(Integer arg0, ConstraintValidatorContext arg1) {
+		
+        if (allowNull && arg0 == null) {
+            return true;
+        }
+		
 		Map<String, String> map = service.getMapForConstraint(constraint);
 		Set<String> keys = map.keySet();
 		

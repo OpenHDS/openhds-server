@@ -1,13 +1,10 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
@@ -23,9 +20,6 @@ public class LocationHierarchyLevel implements Serializable {
 	private static final long serialVersionUID = -1070569257732332545L;
 
 	@Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(length=32)
 	String uuid;
 	
 	@Description(description="A key to identify this level, assign 1, 2, 3, ... etc")

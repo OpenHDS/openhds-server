@@ -36,7 +36,7 @@ public class ValueConstraintServiceImpl {
 		List list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
 			Element ele = (Element)list.get(i);
-			if (ele.getAttribute("id").getValue().equals(constraintName)) 
+			if (ele.getAttribute("id").getValue().toLowerCase().equals(constraintName.toLowerCase())) 
 				return ele;
 		}
 		return null;
@@ -46,7 +46,7 @@ public class ValueConstraintServiceImpl {
 		List list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
 			Element ele = (Element)list.get(i);
-			if (ele.getAttribute("id").getValue().equals(constraintName)) {
+			if (ele.getAttribute("id").getValue().toLowerCase().equals(constraintName.toLowerCase())) {
 				List children = ele.getChildren();
 				for (int j = 0; j < children.size(); j++) {
 					Element ele2 = (Element)children.get(j);

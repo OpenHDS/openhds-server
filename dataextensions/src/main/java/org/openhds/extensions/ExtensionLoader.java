@@ -200,6 +200,7 @@ public class ExtensionLoader {
 					JAnnotationUse ja = jf.annotate(org.openhds.domain.constraint.ExtensionIntegerConstraint.class);
 					ja.param("constraint", constraint);
 					ja.param("message", "Invalid Value for " + attribute);
+					ja.param("allowNull", true);
 				}
 
 				// getters
