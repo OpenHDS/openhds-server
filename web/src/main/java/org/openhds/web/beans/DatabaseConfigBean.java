@@ -32,7 +32,7 @@ public class DatabaseConfigBean {
 		Properties props = readDatabaseProperties();
 		this.dbType = props.getProperty("dbType");
 		
-		if (dbType.equals("HSQL"))
+		if (dbType.equals("H2"))
 			this.hibernateExport = "create";
 		else
 			this.hibernateExport = "update";
@@ -41,11 +41,10 @@ public class DatabaseConfigBean {
 	public void updateType(ValueChangeEvent event) {
 		dbType = event.getNewValue().toString();
 		
-		if (dbType.equals("HSQL")) {
-			dbUrl = "jdbc:hsqldb:mem:openhds";
-			dbDialect = "org.hibernate.dialect.HSQLDialect";
-			dbDriver = "org.hsqldb.jdbcDriver";
-			dbType = "HSQL";
+		if (dbType.equals("H2")) {
+			dbUrl = "jdbc:h2:mem:openhds";
+			dbDriver = "org.h2.Driver";
+			dbType = "H2";
 			hibernateExport = "create";
 		}
 		else if (dbType.equals("MYSQL")) {
@@ -53,13 +52,6 @@ public class DatabaseConfigBean {
 			dbDialect = "org.hibernate.dialect.MySQL5InnoDBDialect";
 			dbDriver = "com.mysql.jdbc.Driver";
 			dbType="MYSQL";
-			hibernateExport = "update";
-		}
-		else if (dbType.equals("POSTGRES")) {
-			dbUrl = "jdbc:postgresql://localhost/openhds";
-			dbDialect = "org.hibernate.dialect.PostgreSQLDialect";
-			dbDriver = "org.postgres.Driver";
-			dbType="POSTGRES";
 			hibernateExport = "update";
 		}
 	}

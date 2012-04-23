@@ -28,9 +28,8 @@
                        
                         <h:outputText value="#{msg.dbType}:"/>
                  		<h:selectOneRadio id="type" value="#{databaseConfig.dbType}" onchange="submit()" immediate="true" valueChangeListener="#{databaseConfig.updateType}">
-   							<f:selectItem itemValue="HSQL" itemLabel="HSQL" />
+   							<f:selectItem itemValue="H2" itemLabel="H2" />
 						   	<f:selectItem itemValue="MYSQL" itemLabel="MYSQL" />
-						   	<f:selectItem itemValue="POSTGRES" itemLabel="POSTGRES" />
 						</h:selectOneRadio>
 						<h:message for="type" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						<h:outputText />
@@ -54,12 +53,7 @@
                         <h:inputText id="driver" value="#{databaseConfig.dbDriver}" converter="#{defaultConverter}" disabled="true" size="50" />
                         <h:message for="driver" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText />
-                        
-                        <h:outputText value="#{msg.dbDialect}:"/>
-                        <h:inputText id="dialect" value="#{databaseConfig.dbDialect}" converter="#{defaultConverter}" disabled="true" size="50" />
-                        <h:message for="dialect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-                        <h:outputText /> 
-                          
+                                                  
                     </h:panelGrid>
                     <br />
                     <h:commandButton styleClass="config" action="#{databaseConfig.create}" value="#{msg.lblCreate}" />

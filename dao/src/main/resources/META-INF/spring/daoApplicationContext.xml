@@ -23,6 +23,8 @@
 		<property name="url" value="${dbUrl}"/>
 		<property name="username" value="${dbUser}"/>
 		<property name="password" value="${dbPass}"/>
+		<property name="validationQuery" value="SELECT 1" />
+    	<property name="testOnBorrow" value="true" />
 	 </bean>
 	                      
 	 <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -63,7 +65,6 @@
 		</property>
 		<property name="hibernateProperties">
 	        <props>
-	            <prop key="hibernate.dialect">${hibernateDialect}</prop>
 	            <prop key="hibernate.show_sql">${hibernateShowSql}</prop>
 	            <prop key="hibernate.hbm2ddl.auto">${hibernateExport}</prop>        
 	            <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop> 
