@@ -152,6 +152,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>gettingStarted</from-outcome>
+			<to-view-id>/getting-started/index.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>individualHistory_flow</from-outcome>
 			<to-view-id>/individualHistory.flow</to-view-id>
 			<redirect />

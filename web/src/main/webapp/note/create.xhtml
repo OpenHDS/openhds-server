@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<head>
@@ -30,6 +31,10 @@
                         <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{noteCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
                         <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>       
                     
+                    	<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})"/>
+                		<o:dateChooser id="observationDate" value="#{noteCrud.observationDate}" pattern="#{siteProperties.dateFormat}" />
+                		<h:message for="observationDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
                     	<h:outputText value="#{msg.noteDescription}:"/>
                         <h:inputTextarea id="notes" value="#{noteCrud.item.description}" rows="5" cols="17" converter="#{defaultConverter}" />
                         <h:message for="notes" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

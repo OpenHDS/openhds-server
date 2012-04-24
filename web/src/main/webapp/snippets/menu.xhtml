@@ -14,6 +14,11 @@
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
+	        <li>
+		        <h:commandLink action="gettingStarted" value="#{msg.navBarGettingStarted}" >
+		        	<f:setPropertyActionListener target="#{navController.showGettingStarted}" value="true" /> 
+		        </h:commandLink>
+			</li>
 	        <sec:ifAllGranted roles="ACCESS_BASELINE">
 		   		<li>
 		   			<h:commandLink action="baseline_flow" value="#{msg.navBarBaseline}" >
@@ -30,7 +35,7 @@
 	    	</sec:ifAllGranted>
 	        <sec:ifAllGranted roles="ACCESS_AMENDMENT_FORMS">
 		        <li>
-		            <h:commandLink value="#{msg.navBarAmendments}" >
+		            <h:commandLink value="#{msg.navBarAmendments}" action="demowelcome" >
 		            	<f:setPropertyActionListener target="#{navController.showAmendments}" value="true" /> 
 		            </h:commandLink>
 		            <c:if test="#{navController.showAmendments}" >
@@ -53,7 +58,7 @@
 	    	</sec:ifAllGranted>
 			<sec:ifAllGranted roles="ACCESS_REPORTS">
 		    	<li>
-		        	<h:commandLink value="#{msg.navBarReports}" >
+		        	<h:commandLink value="#{msg.navBarReports}" action="demowelcome" >
 		        		<f:setPropertyActionListener target="#{navController.showReports}" value="true" /> 
 		            </h:commandLink>
 		        	<c:if test="#{navController.showReports}" >
@@ -69,7 +74,7 @@
 	    	</sec:ifAllGranted>
 	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
 			    <li>
-			        <h:commandLink value="UTILITY ROUTINES" >
+			        <h:commandLink value="UTILITY ROUTINES" action="demowelcome" >
 			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showUtilities}" >
@@ -96,7 +101,7 @@
 		    </sec:ifAllGranted>
 		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
 			    <li>
-			        <h:commandLink value="CONFIGURATION" >
+			        <h:commandLink value="CONFIGURATION" action="demowelcome">
 			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >

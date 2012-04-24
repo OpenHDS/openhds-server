@@ -388,7 +388,7 @@
         <property name="service" ref="membershipService" />
     </bean>
     
-    <bean id="noteCrud" parent="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl">
+    <bean id="noteCrud" parent="baseCrud" class="org.openhds.web.crud.impl.NoteCrudImpl">
     	<constructor-arg value="org.openhds.domain.model.Note" />
     	<property name="dao" ref="noteDao" />
     	<property name="converter" ref="noteConverter" />

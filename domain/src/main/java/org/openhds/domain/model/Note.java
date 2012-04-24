@@ -1,8 +1,11 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 
@@ -18,7 +21,11 @@ public class Note extends AuditableCollectedEntity implements Serializable {
     
     @CheckFieldNotBlank
     @Description(description="The note description.")
-    String description;
+    private String description;
+    
+    @Temporal(TemporalType.DATE)
+    @Description(description = "Date of observation.")
+    private Calendar observationDate;
 
 	public String getDescription() {
 		return description;
@@ -26,5 +33,13 @@ public class Note extends AuditableCollectedEntity implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Calendar getObservationDate() {
+		return observationDate;
+	}
+
+	public void setObservationDate(Calendar observationDate) {
+		this.observationDate = observationDate;
 	}
 }

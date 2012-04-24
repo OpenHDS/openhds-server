@@ -24,12 +24,18 @@
 			<h:outputText escape="false" value="#{msg.noteEmpty}" rendered="#{noteCrud.pager.totalCount == 0}" />
             <h:panelGroup rendered="#{fn:length(noteCrud.pagedItems) > 0}">
             	<h:dataTable value="#{noteCrud.pagedItems}" var="item"
-                               width="100%" columnClasses="center,center,width3">
+                               width="100%" columnClasses="center,center,center,width3">
                 	<h:column headerClass="width1">
                     	<f:facet name="header">
                         	<h:outputText value="#{msg.noteDescription}" />
                         </f:facet>
                         <h:outputText value="#{item.description}" />
+                    </h:column>
+                    <h:column headerClass="width1">
+                    	<f:facet name="header">
+                        	<h:outputText value="#{msg.noteObservationDate}" />
+                        </f:facet>
+                        <h:outputText value="#{item.observationDate}" converter="#{calendarConverter}" />
                     </h:column>
                     <h:column headerClass="width1">
                     	<f:facet name="header">
@@ -48,6 +54,10 @@
                         </h:commandLink>
                         <h:commandLink  action="#{noteCrud.editSetup}">
                         	<h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                        	<f:param name="itemId" value="#{item.uuid}"/>
+                    	</h:commandLink>
+                    	<h:commandLink  action="#{noteCrud.delete}">
+                        	<h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
                         	<f:param name="itemId" value="#{item.uuid}"/>
                     	</h:commandLink>
                     </h:column>

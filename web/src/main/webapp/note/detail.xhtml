@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<head>
@@ -28,6 +29,8 @@
 		            <h:panelGrid columns="2"> 
 		           		<h:outputText value="#{msg.fieldWorkerId}:"/>
 		                <h:outputText value="#{noteCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
+		           		<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})"/>
+                		<h:outputText value="#{noteCrud.item.observationDate}" converter="#{calendarConverter}" />
 		           		<h:outputText value="#{msg.insertDate}:"/>
 		                <h:outputText value="#{noteCrud.item.insertDate}" converter="#{calendarConverter}" />
 		                <h:outputText value="#{msg.dataStatus}:"/>
