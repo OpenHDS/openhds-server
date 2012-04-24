@@ -166,12 +166,12 @@ public class Main {
 		extensionPanel.add(lblAttributeType);
 		
 		attrTypeComboBox = new JComboBox();
-		attrTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"String", "Boolean", "Integer", "Float"}));
+		attrTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"String", "Boolean", "Integer"}));
 		attrTypeComboBox.setBounds(169, 32, 113, 20);
 		attrTypeComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				JComboBox comboBox = (JComboBox)event.getSource();
-				if (comboBox.getSelectedItem().toString().equals("Boolean") || comboBox.getSelectedItem().toString().equals("Float")) {
+				if (comboBox.getSelectedItem().toString().equals("Boolean")) {
 					constraintTextField.setText("");
 					constraintTextField.disable();
 				}

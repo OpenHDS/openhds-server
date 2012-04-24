@@ -58,18 +58,12 @@ public class ExtensionService {
 				String name =  element.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
 				String type = element.getElementsByTagName("type").item(0).getChildNodes().item(0).getNodeValue();
 				String description = element.getElementsByTagName("description").item(0).getChildNodes().item(0).getNodeValue();
+				String constraint = element.getElementsByTagName("constraint").item(0).getChildNodes().item(0).getNodeValue();
 				
-				// constraints are optional attributes
-				String constraint = "None";
-				if (type.equals("String"))
-					constraint = element.getElementsByTagName("constraint").item(0).getChildNodes().item(0).getNodeValue();
-					
 				map.put("name", name);
 				map.put("type", type);
 				map.put("description", description);
-				
-				if (type.equals("String") && !constraint.equals("None")) 
-					map.put("constraint", constraint);
+				map.put("constraint", constraint);
 				
 				listMap.add(map);				
 			}
