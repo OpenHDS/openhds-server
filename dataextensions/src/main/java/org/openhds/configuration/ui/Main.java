@@ -170,16 +170,7 @@ public class Main {
 		attrTypeComboBox.setBounds(169, 32, 113, 20);
 		attrTypeComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				JComboBox comboBox = (JComboBox)event.getSource();
-				if (comboBox.getSelectedItem().toString().equals("Boolean")) {
-					constraintTextField.setText("");
-					constraintTextField.disable();
-				}
-				else {
-					constraintTextField.enable();
-				}
 			}
-			
 		});
 		extensionPanel.add(attrTypeComboBox);
 		
@@ -193,20 +184,20 @@ public class Main {
 		attrNameTextField.setColumns(10);
 		
 		JLabel lblAttributeDescription = new JLabel("Attribute Description:");
-		lblAttributeDescription.setBounds(34, 85, 110, 14);
+		lblAttributeDescription.setBounds(34, 105, 110, 14);
 		extensionPanel.add(lblAttributeDescription);
 		
 		attrDescTextField = new JTextField();
-		attrDescTextField.setBounds(169, 82, 165, 20);
+		attrDescTextField.setBounds(169, 102, 165, 20);
 		extensionPanel.add(attrDescTextField);
 		attrDescTextField.setColumns(10);
 		
 		JLabel lblConstraint = new JLabel("Constraint:");
-		lblConstraint.setBounds(34, 110, 78, 14);
+		lblConstraint.setBounds(34, 130, 78, 14);
 		extensionPanel.add(lblConstraint);
 		
 		constraintTextField = new JTextField();
-		constraintTextField.setBounds(169, 107, 165, 20);
+		constraintTextField.setBounds(169, 127, 165, 20);
 		extensionPanel.add(constraintTextField);
 		constraintTextField.setColumns(10);
 	}
@@ -308,7 +299,7 @@ public class Main {
 				String type = attrTypeComboBox.getSelectedItem().toString();
 				String constraint = constraintTextField.getText();
 				
-				if (type.equals("String") && !constraint.equals("none")) {
+				if (!constraint.equals("none")) {
 					List<String> names = valueConstraintService.getAllConstraintNames();
 					
 					if (!names.contains(constraint)) {
@@ -340,7 +331,7 @@ public class Main {
 				}
 			}
 		});
-		extensionCreateBtn.setBounds(34, 135, 78, 23);
+		extensionCreateBtn.setBounds(34, 176, 78, 23);
 		extensionPanel.add(extensionCreateBtn);
 		
 		JButton extensionClearBtn = new JButton("Clear");
@@ -353,7 +344,7 @@ public class Main {
 				attrTypeComboBox.setSelectedIndex(0);
 			}
 		});
-		extensionClearBtn.setBounds(123, 135, 73, 23);
+		extensionClearBtn.setBounds(123, 176, 73, 23);
 		extensionPanel.add(extensionClearBtn);
 		
 		JButton extensionDeleteBtn = new JButton("Delete");
@@ -447,7 +438,7 @@ public class Main {
 		extensionTop = new DefaultMutableTreeNode("Extensions");
 		
 		JScrollPane extensionScrollPane = new JScrollPane();
-		extensionScrollPane.setBounds(34, 169, 300, 276);
+		extensionScrollPane.setBounds(34, 210, 300, 236);
 		extensionPanel.add(extensionScrollPane);
 		
 		extensionService = new ExtensionService();
@@ -534,5 +525,13 @@ public class Main {
 		});
 		btnNewButton.setBounds(123, 454, 126, 23);
 		extensionPanel.add(btnNewButton);
+		
+		JLabel lblifNoneEnter = new JLabel("(if none: enter 'none')");
+		lblifNoneEnter.setBounds(34, 144, 110, 14);
+		extensionPanel.add(lblifNoneEnter);
+		
+		JLabel lblnoSpaces = new JLabel("(no spaces)");
+		lblnoSpaces.setBounds(34, 74, 113, 14);
+		extensionPanel.add(lblnoSpaces);
 	}
 }

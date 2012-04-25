@@ -139,6 +139,8 @@ public class ExtensionLoader {
 			
 			LocationTemplateBuilder locationTemplateBuilder = new LocationTemplateBuilder(jCodeModel);
 			IndividualTemplateBuilder individualTemplateBuilder = new IndividualTemplateBuilder(jCodeModel);
+			VisitTemplateBuilder visitTemplateBuilder = new VisitTemplateBuilder(jCodeModel);
+			SocialGroupTemplateBuilder socialGroupTemplateBuilder = new SocialGroupTemplateBuilder(jCodeModel);
 			
 			JPackage jp = jCodeModel._package("org.openhds.domain.model");					
 			JDefinedClass jc = null;
@@ -153,6 +155,14 @@ public class ExtensionLoader {
 				else if (entityName.equals("Individual")) {
 					jc = jp._class(entityName);
 					individualTemplateBuilder.buildTemplate(jc);
+				}
+				else if (entityName.equals("Visit")) {
+					jc = jp._class(entityName);
+					visitTemplateBuilder.buildTemplate(jc);
+				}
+				else if (entityName.equals("SocialGroup")) {
+					jc = jp._class(entityName);
+					socialGroupTemplateBuilder.buildTemplate(jc);
 				}
 			}
 			
@@ -179,6 +189,10 @@ public class ExtensionLoader {
 					locationTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("Individual") && individualTemplateBuilder.individualTemplateBuilt == false)
 					individualTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("Visit") && visitTemplateBuilder.visitTemplateBuilt == false)
+					visitTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("SocialGroup") && socialGroupTemplateBuilder.socialGroupTemplateBuilt == false)
+					socialGroupTemplateBuilder.buildTemplate(jc);
 				
 				// build extended fields
 				JFieldVar jf = jc.field(JMod.PRIVATE , 			

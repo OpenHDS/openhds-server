@@ -131,6 +131,11 @@ public class XMLWriter {
 					constraintElement.appendChild(extensionDoc.createTextNode(constraint));
 					element.appendChild(constraintElement);
 				}
+				else {
+					Element constraintElement = extensionDoc.createElement("constraint");
+					constraintElement.appendChild(extensionDoc.createTextNode("none"));
+					element.appendChild(constraintElement);
+				}
 				
 				element.appendChild(nameElement);
 				element.appendChild(descriptionElement);

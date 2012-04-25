@@ -176,8 +176,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		JAnnotationArrayMember motherArray = jfMotherCascade.paramArray("cascade");
 		motherArray.param(javax.persistence.CascadeType.MERGE);
 		motherArray.param(javax.persistence.CascadeType.PERSIST);
-		jfMotherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);
-		
+		jfMotherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);		
 		JAnnotationUse jaMotherDesc = jfMother.annotate(org.openhds.domain.annotations.Description.class);
 		jaMotherDesc.param("description", "The individual's mother, identified by the external id.");
 		
