@@ -14,10 +14,30 @@
             <ui:define name="display">
                         
             	<h:outputText value="#{navController.breadcrumbTrail}" />
-            	            
+            	     
                 <h1>#{msg.mnGettingStarted}</h1>
                 
                 <h:form>
+                
+                	<fieldset style="width:25%">
+                		<legend>Documentation</legend>
+						<h:outputLink value="database-configuration.pdf">
+			   		    	<h:outputText value="How to configure the Database" />
+			   		    </h:outputLink><br />
+						<h:outputLink value="location-level-configuration.pdf">
+			   		    	<h:outputText value="How to configure Location Levels" />
+			   		    </h:outputLink><br />
+						<h:outputLink value="codes-parameters-configuration.pdf">
+			   		    	<h:outputText value="How to configure Codes and Parameters" />
+			   		    </h:outputLink><br />
+						<h:outputLink value="internationalization-configuration.pdf">
+			   		    	<h:outputText value="How to configurare for Internationalization support" />
+			   		    </h:outputLink><br />
+						<h:outputLink value="location-hierarchy-configuration.pdf">
+			   		    	<h:outputText value="How to configure a Location Hierarchy" />
+			   		    </h:outputLink><br />
+                	</fieldset>
+                	                
 	               	<p>
 						<h:outputLink value="/openhds/database-config">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
