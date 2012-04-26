@@ -12,7 +12,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.openhds.web.service.JsfService;
 import org.openhds.controller.util.ScriptRunner;
 import org.springframework.core.io.ClassPathResource;
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 
 public class DatabaseConfigBean {
 
@@ -128,6 +128,31 @@ public class DatabaseConfigBean {
 				return false;
 			}
 		}
+		return true;
+	}
+	
+	public boolean executeTestScript() {
+		
+		if (dbType.equals("H2")) {
+			try {
+				Class.forName("org.h2.Driver");
+				Connection conn = (Connection) DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+
+				ScriptRunner runner = new ScriptRunner(conn, false, true);
+				runner.runScript(new BufferedReader(
+					      new InputStreamReader(
+					      new ClassPathResource("testing-data.sql").getInputStream())));
+			}
+			catch (Exception e) {
+				jsfService.addMessage("Error executing script. Exception : " + e.getMessage());
+				return false;
+			}
+		}
+		else {
+			jsfService.addMessage("To run the test data script, the database must be the default in-memory H2.");
+			return false;
+		}
+		jsfService.addMessage("Test data loaded successfully.");
 		return true;
 	}
 

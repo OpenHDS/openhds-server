@@ -16,10 +16,11 @@
             	<h:outputText value="#{navController.breadcrumbTrail}" />
             	     
                 <h1>#{msg.mnGettingStarted}</h1>
+                <h:messages id="info" globalOnly="true" />
                 
                 <h:form>
                 
-                	<fieldset style="width:25%">
+                	<fieldset style="width:35%">
                 		<legend>Documentation</legend>
 						<h:outputLink value="database-configuration.pdf">
 			   		    	<h:outputText value="How to configure the Database" />
@@ -37,42 +38,112 @@
 			   		    	<h:outputText value="How to configure a Location Hierarchy" />
 			   		    </h:outputLink><br />
                 	</fieldset>
-                	                
-	               	<p>
-						<h:outputLink value="/openhds/database-config">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
-			   		    </h:outputLink>
-	                </p>
-	                <p>
-	                	<h:outputLink value="/openhds/location-levels">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
-			   		    </h:outputLink>
-	                </p>
-	                <p>
-	                	<h:outputLink value="/openhds/codes-config">
-			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
-			   		    </h:outputLink>
-	                </p>
-	                 <p>
-	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
-	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-	                	</h:commandLink>
-	                </p>
-	                <p>
-	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
-	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-	                	</h:commandLink>
-	                </p>
-	                <p>
-	                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
-	                           <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
-	                       </h:commandLink> - #{msg.mnBaselineDescription} 
-	                </p>
-					<p>
-	                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
-	                           <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
-	                       </h:commandLink> - #{msg.mnUpdateDescription}
-	                </p>
+                	   
+                	<fieldset style="width:35%">  
+                	<legend>Steps for Configuration</legend>           
+		               	<p>
+							<h:outputLink value="/openhds/database-config">
+				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
+				   		    </h:outputLink>
+		                </p>
+		                <p>
+		                	<h:outputLink value="/openhds/location-levels">
+				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
+				   		    </h:outputLink>
+		                </p>
+		                <p>
+		                	<h:outputLink value="/openhds/codes-config">
+				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
+				   		    </h:outputLink>
+		                </p>
+		                 <p>
+		                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
+		                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+		                	</h:commandLink>
+		                </p>
+		                <p>
+		                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
+		                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+		                	</h:commandLink>
+		                </p>
+		                <p>
+		                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
+		                           <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
+		                       </h:commandLink> - #{msg.mnBaselineDescription} 
+		                </p>
+						<p>
+		                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
+		                           <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
+		                   </h:commandLink> - #{msg.mnUpdateDescription}
+		                </p>
+		            </fieldset>
+	                
+	                <fieldset style="width:35%">
+                		<legend>Test Data</legend>
+						For demonstration purposes, test data can be loaded into the system.<br />
+						Requirements: The database must be the defualt H2. <br /><br />
+						
+						The following entities with Ids will be created: <br />
+						<table style="text-align:center">
+							<tr>
+								<td><b>Individual</b></td>
+								<td><b>Location</b></td>
+								<td><b>Social Group</b></td>
+								<td><b>Visit</b></td>
+							</tr>
+							<tr>
+								<td>BRHA1U</td>
+								<td>MBI01</td>
+								<td>SG01</td>
+								<td>VMBI01</td>
+							</tr>
+							<tr>
+								<td>CHHA12</td>
+								<td>MBI02</td>
+								<td>SG02</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>SAR01E</td>
+								<td>MBI03</td>
+								<td>SG03</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>JEMA1H</td>
+								<td>MBI04</td>
+								<td>SG04</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>TOMA1M</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>HEMA1L</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>ABHA1C</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>PEBA1R</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+			   		    <br />
+			   		    <h:commandButton styleClass="config" action="#{databaseConfig.executeTestScript}" value="Load Test Data" />
+                	</fieldset>
+	              
 	            </h:form>
             </ui:define>
         </ui:composition>
