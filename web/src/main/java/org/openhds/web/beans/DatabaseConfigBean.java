@@ -132,30 +132,25 @@ public class DatabaseConfigBean {
 	}
 	
 	public boolean executeTestScript() {
-		
-		if (dbType.equals("H2")) {
-			try {
-				Class.forName("org.h2.Driver");
-				Connection conn = (Connection) DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+	
+		try {
+			Class.forName(dbDriver);
+			Connection conn = (Connection) DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 
-				ScriptRunner runner = new ScriptRunner(conn, false, true);
-				runner.runScript(new BufferedReader(
-					      new InputStreamReader(
-					      new ClassPathResource("testing-data.sql").getInputStream())));
-			}
-			catch (Exception e) {
-				jsfService.addMessage("Error executing script. Exception : " + e.getMessage());
-				return false;
-			}
+			ScriptRunner runner = new ScriptRunner(conn, false, true);
+			runner.runScript(new BufferedReader(
+				      new InputStreamReader(
+				      new ClassPathResource("testing-data.sql").getInputStream())));
 		}
-		else {
-			jsfService.addMessage("To run the test data script, the database must be the default in-memory H2.");
+		catch (Exception e) {
+			jsfService.addMessage("Error executing script. Exception : " + e.getMessage());
 			return false;
 		}
+		
 		jsfService.addMessage("Test data loaded successfully.");
 		return true;
 	}
-
+	
 	public String getDbUsername() {
 		return dbUsername;
 	}
