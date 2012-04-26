@@ -40,7 +40,7 @@
                     	<h:outputText />
                     
                     	<h:outputText value="#{msg.password}:"/>
-                        <h:inputText id="password" value="#{databaseConfig.dbPassword}" converter="#{defaultConverter}" />
+                        <h:inputSecret redisplay="true" id="password" value="#{databaseConfig.dbPassword}" converter="#{defaultConverter}" />
                         <h:message for="password" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText />
                         
