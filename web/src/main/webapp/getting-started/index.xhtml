@@ -20,63 +20,51 @@
                 
                 <h:form>
                 
-                	<fieldset style="width:35%">
-                		<legend>Documentation</legend>
+                	<h:panelGrid columns="1">
+	                	<legend>Documentation</legend>
 						<h:outputLink value="/openhds/database-configuration.pdf">
 			   		    	<h:outputText value="How to configure the Database" />
-			   		    </h:outputLink><br />
+			   		    </h:outputLink>
 						<h:outputLink value="/openhds/location-level-configuration.pdf">
 			   		    	<h:outputText value="How to configure Location Levels" />
-			   		    </h:outputLink><br />
+			   		    </h:outputLink>
 						<h:outputLink value="/openhds/codes-parameters-configuration.pdf">
 			   		    	<h:outputText value="How to configure Codes and Parameters" />
-			   		    </h:outputLink><br />
+			   		    </h:outputLink>
 						<h:outputLink value="/openhds/internationalization-configuration.pdf">
 			   		    	<h:outputText value="How to configurare for Internationalization support" />
-			   		    </h:outputLink><br />
+			   		    </h:outputLink>
 						<h:outputLink value="/openhds/location-hierarchy-configuration.pdf">
 			   		    	<h:outputText value="How to configure a Location Hierarchy" />
-			   		    </h:outputLink><br />
-                	</fieldset>
+			   		    </h:outputLink>
+                	</h:panelGrid>
+                	<br />
                 	   
-                	<fieldset style="width:35%">  
-                	<legend>Steps for Configuration</legend>           
-		               	<p>
-							<h:outputLink value="/openhds/database-config">
-				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
-				   		    </h:outputLink>
-		                </p>
-		                <p>
-		                	<h:outputLink value="/openhds/location-levels">
-				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
-				   		    </h:outputLink>
-		                </p>
-		                <p>
-		                	<h:outputLink value="/openhds/codes-config">
-				   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
-				   		    </h:outputLink>
-		                </p>
-		                 <p>
-		                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
-		                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-		                	</h:commandLink>
-		                </p>
-		                <p>
-		                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
-		                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
-		                	</h:commandLink>
-		                </p>
-		                <p>
-		                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
-		                           <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
-		                       </h:commandLink> - #{msg.mnBaselineDescription} 
-		                </p>
-						<p>
-		                   <h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
-		                           <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
-		                   </h:commandLink> - #{msg.mnUpdateDescription}
-		                </p>
-		            </fieldset>
+                	<h:panelGrid columns="1">
+                		<legend>Steps for Configuration</legend>           
+						<h:outputLink value="/openhds/database-config">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
+			   		    </h:outputLink>
+	                	<h:outputLink value="/openhds/location-levels">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
+			   		    </h:outputLink>
+	                	<h:outputLink value="/openhds/codes-config">
+			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
+			   		    </h:outputLink>
+	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">
+	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+	                	</h:commandLink>
+	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnFieldWorkers}" action="#{fieldWorkerCrud.createSetup}">
+	                		<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
+	                	</h:commandLink>
+	                	<h:commandLink styleClass="welcome-link" action="baseline_flow" value="#{msg.mnBaseline}" >
+	                        <f:setPropertyActionListener target="#{navController.showBaseline}" value="true" /> 
+	                    </h:commandLink> 
+	                   	<h:commandLink styleClass="welcome-link" action="update_flow" value="#{msg.mnUpdate}" >
+	                        <f:setPropertyActionListener target="#{navController.showUpdate}" value="true" /> 
+	                   	</h:commandLink> 
+                	</h:panelGrid>
+                	<br />
 	                
 	                <fieldset style="width:35%">
                 		<legend>Test Data</legend>
