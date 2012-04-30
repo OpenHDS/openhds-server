@@ -104,6 +104,9 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
+                        <nonFilteredFileExtensions>
+                        	<nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+          				</nonFilteredFileExtensions>
                         <webResources>
                             <resource>
                                 <directory>src/main/webapp</directory>
