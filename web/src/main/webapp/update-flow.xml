@@ -346,9 +346,7 @@
             <set name="outMigrationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
         	<evaluate expression="navController.addItemToTrail('OutMigration Create')" />
         </on-entry>
-        <transition on="outmigration_list" to="home" >
-            <evaluate expression="updateBean.removeIndividualFromResidentList()" />
-        </transition>
+        <transition on="outmigration_list" to="home" />
         <transition on="outmigration_detail" to="outmigration_detail" />
         <transition on="outmigration_edit" to="outmigration_edit" />
         <transition on="outmigration_create" to="outmigration" />

@@ -237,17 +237,6 @@ public class UpdateBean implements Serializable {
 		
 	}
 	
-	/**
-	 * Called when an out migration event has occurred. The rules
-	 * currently remove the individual immediately after an out migration
-	 * event has been saved. This may change in the future depending
-	 * on the rules
-	 */
-	public void removeIndividualFromResidentList() {
-		residentIndividuals.remove(currentIndividual);
-		clearSelectedIndividual(null);
-	}
-	
 	public String getLocationName() {
 		if (currentVisit == null) {
 			return "";
