@@ -8,6 +8,8 @@ NOTE: This module is for testing purposes only. It will generate test data for e
       	<artifactId>datageneration</artifactId>
       	<version>${project.version}</version>
     </dependency>
+	
+	Then rebuild the web module using the 'mvn clean install' command.
 
 2. Go to the OpenHDS Core's web module's application-context file (openhds-core\web\src\main\resources\META-INF\spring\application-context.xml)
    and add the following snippet to import all of the Data Generation module's resources:

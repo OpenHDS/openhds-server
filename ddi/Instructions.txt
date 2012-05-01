@@ -8,6 +8,8 @@ NOTE: This module hasn't been properly tested against the DDI specification.
       	<artifactId>ddi</artifactId>
       	<version>${project.version}</version>
     </dependency>
+	
+	Then rebuild the web module using the 'mvn clean install' command.
 
 2. Go to the OpenHDS Core's web module's application-context file (openhds-core\web\src\main\resources\META-INF\spring\application-context.xml)
    and add the following snippet to import all of the DDI module's resources:
