@@ -74,7 +74,7 @@
 	    	</sec:ifAllGranted>
 	    	<sec:ifAllGranted roles="ACESSS_UTILITY_ROUTINES">
 			    <li>
-			        <h:commandLink value="UTILITY ROUTINES" action="demowelcome" >
+			        <h:commandLink value="#{msg.navBarUtilityRoutine}" action="demowelcome" >
 			        	<f:setPropertyActionListener target="#{navController.showUtilities}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showUtilities}" >
@@ -101,7 +101,7 @@
 		    </sec:ifAllGranted>
 		    <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
 			    <li>
-			        <h:commandLink value="CONFIGURATION" action="demowelcome">
+			        <h:commandLink value="#{msg.navBarConfiguration}" action="demowelcome">
 			        	<f:setPropertyActionListener target="#{navController.showConfiguration}" value="true" /> 
 			        </h:commandLink>
 			        <c:if test="#{navController.showConfiguration}" >

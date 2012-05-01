@@ -27,6 +27,7 @@ public class DatabaseConfigBean {
 	JsfService jsfService;
 	
 	UIInput inputText = null;
+	boolean testDataEnabled = false;
 	
 	public DatabaseConfigBean() {
 		Properties props = readDatabaseProperties();
@@ -142,6 +143,8 @@ public class DatabaseConfigBean {
 				runner.runScript(new BufferedReader(
 					      new InputStreamReader(
 					      new ClassPathResource("testing-data.sql").getInputStream())));
+				
+				testDataEnabled = true;
 			}
 			catch (Exception e) {
 				jsfService.addMessage("Error executing script. Exception : " + e.getMessage());
@@ -154,6 +157,14 @@ public class DatabaseConfigBean {
 		}
 		jsfService.addMessage("Test data loaded successfully.");
 		return true;
+	}
+	
+	public boolean isTestDataEnabled() {
+		return testDataEnabled;
+	}
+
+	public void setTestDataEnabled(boolean testDataEnabled) {
+		this.testDataEnabled = testDataEnabled;
 	}
 
 	public String getDbUsername() {

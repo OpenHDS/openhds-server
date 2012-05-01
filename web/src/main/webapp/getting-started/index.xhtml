@@ -23,25 +23,25 @@
                 	<h:panelGrid columns="1">
 	                	<legend>Documentation</legend>
 						<h:outputLink value="/openhds/getting-started/database-configuration.pdf">
-			   		    	<h:outputText value="How to configure the Database" />
+			   		    	<h:outputText value="#{msg.gettingStartedConfigureDatabase}" />
 			   		    </h:outputLink>
 						<h:outputLink value="/openhds/getting-started/location-level-configuration.pdf">
-			   		    	<h:outputText value="How to configure Location Levels" />
+			   		    	<h:outputText value="#{msg.gettingStartedConfigureLocationLevels}" />
 			   		    </h:outputLink>
 						<h:outputLink value="/openhds/getting-started/codes-parameters-configuration.pdf">
-			   		    	<h:outputText value="How to configure Codes and Parameters" />
+			   		    	<h:outputText value="#{msg.gettingStartedConfigureCodesAndParams}" />
 			   		    </h:outputLink>
 						<h:outputLink value="/openhds/getting-started/internationalization-configuration.pdf">
-			   		    	<h:outputText value="How to configurare for Internationalization support" />
+			   		    	<h:outputText value="#{msg.gettingStartedConfigureInternationalization}" />
 			   		    </h:outputLink>
 						<h:outputLink value="/openhds/getting-started/location-hierarchy-configuration.pdf">
-			   		    	<h:outputText value="How to configure a Location Hierarchy" />
+			   		    	<h:outputText value="#{msg.gettingStartedConfigurateLocationHierarchy}" />
 			   		    </h:outputLink>
                 	</h:panelGrid>
                 	<br />
                 	   
                 	<h:panelGrid columns="1">
-                		<legend>Steps for Configuration</legend>           
+                		<legend>#{msg.gettingStartedSteps}</legend>           
 						<h:outputLink value="/openhds/database-config">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
 			   		    </h:outputLink>
@@ -67,17 +67,17 @@
                 	<br />
 	                
 	                <fieldset style="width:35%">
-                		<legend>Test Data</legend>
-                		<b>This will add new sample test data to the application.</b><br />
-						Requirements: The database must be the defualt H2. <br /><br />
+                		<legend>#{msg.gettingStartedTestData}</legend>
+                		<b>#{msg.gettingStartedSampleTestData}</b><br />
+						#{msg.gettingStartedSampleTestDataRequirements}<br /><br />
 						
-						The following entities with Ids will be created: <br />
+						#{msg.gettingStartedEntityIds}:<br />
 						<table style="text-align:center">
 							<tr>
-								<td><b>Individual</b></td>
-								<td><b>Location</b></td>
-								<td><b>Social Group</b></td>
-								<td><b>Visit</b></td>
+								<td><b>#{msg.navBarIndividual}</b></td>
+								<td><b>#{msg.navBarLocation}</b></td>
+								<td><b>#{msg.navBarSocialGroup}</b></td>
+								<td><b>#{navBarVisit}</b></td>
 							</tr>
 							<tr>
 								<td>BRHA1U</td>
@@ -129,7 +129,7 @@
 							</tr>
 						</table>
 			   		    <br />
-			   		    <h:commandButton styleClass="config" action="#{databaseConfig.executeTestScript}" value="Load Test Data" />
+			   		    <h:commandButton styleClass="config" action="#{databaseConfig.executeTestScript}" value="#{msg.gettingStartedLoadTestData}" disabled="#{databaseConfig.testDataEnabled}" />
                 	</fieldset>
 	              
 	            </h:form>
