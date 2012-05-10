@@ -30,66 +30,9 @@
   
   <repositories>
 		<repository>
-			<id>nexus-repo</id>
-			<name>Nexus Repository</name>
-			<url>http://maven.alfresco.com/nexus/content/repositories/public</url>
-		</repository>
-		<repository>
-			<id>jboss-repo</id>
-			<name>JBoss Maven2 Repository</name>
-			<url>https://repository.jboss.org/nexus/content/repositories/central</url>
-		</repository>
-		<repository>
-			<id>jboss-repo-maven</id>
-			<name>JBoss Maven2 Repository 2</name>
-			<url>https://repository.jboss.org/nexus/content/reposotories/oracle-releases</url>
-		</repository>
-        <repository>
-            <id>java.net</id>
-            <url>http://download.java.net/maven/1/</url>
-            <layout>legacy</layout>
-        </repository>		
-		<repository>
-            <id>openxdata</id>
-            <url>http://nexus.openxdata.org/content/repositories/thirdparty/</url>
-        </repository>
-        <repository>
-            <id>openqa-releases</id>
-            <name>Openqa Release Repository</name>
-            <url>http://nexus.openqa.org/content/repositories/releases</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>openqa-thirdparty</id>
-            <name>OpenQA Third Party</name>
-            <url>http://nexus.openqa.org/content/repositories/thirdparty</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-		<repository>
-		  <id>org.openfaces</id>
-		  <url>http://repository.openfaces.org/repository</url>
-		</repository>
-		 <repository>  
-		     <id>prime-repo</id>  
-		     <name>Prime Technology Maven Repository</name>  
-		     <url>http://repository.primefaces.org/</url>  
-		     <layout>default</layout>  
-		</repository>
-		<repository>
-			<id>facelet-security-taglibs</id>
-			<name>Taglibs for Spring Security used within Facelets</name>
-			<url>http://spring-security-facelets-taglib.googlecode.com/svn/repo/</url>
+			<id>openhds-repo</id>
+			<name>OpenHDS Repository</name>
+			<url>http://openhds.rcg.usm.maine.edu/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 
