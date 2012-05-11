@@ -25,12 +25,18 @@ public class XMLWriter {
 	public XMLWriter() {
 		
 		try {
+		
+			File currentDirectory = new File("");
+			String path = currentDirectory.getAbsolutePath();
+			
+			path = path.replace("dataextensions", "");
+		
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder constraintDocBuilder = docFactory.newDocumentBuilder();
-			constraintDoc = constraintDocBuilder.parse("../domain/src/main/resources/value-constraint.xml");
+			constraintDoc = constraintDocBuilder.parse(path + "/domain/src/main/resources/value-constraint.xml");
 			
 			DocumentBuilder extensionDocBuilder = docFactory.newDocumentBuilder();
-			extensionDoc = extensionDocBuilder.parse("../domain/src/main/resources/extension-config.xml");
+			extensionDoc = extensionDocBuilder.parse(path + "/domain/src/main/resources/extension-config.xml");
 		} 
 		catch (Exception e) { 
 			e.printStackTrace();

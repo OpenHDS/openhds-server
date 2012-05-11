@@ -20,11 +20,6 @@
   </properties>
   
   <dependencies>
-     <dependency>
-		<groupId>org.jdom</groupId>
-		<artifactId>jdom</artifactId>
-		<version>1.1</version>
-	</dependency>
 	<dependency>
 		<groupId>com.sun.codemodel</groupId>
 		<artifactId>codemodel</artifactId>
@@ -36,4 +31,34 @@
 		<version>${project.version}</version>
 	</dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+		 <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                    <manifest>
+					  <addClasspath>true</addClasspath>
+                      <mainClass>org.openhds.configuration.ui.Main</mainClass>
+                    </manifest>
+              </archive>
+            </configuration>
+            </plugin>
+        <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+            <archive>
+	            <manifest>
+	              <mainClass>org.openhds.configuration.ui.Main</mainClass>
+	            </manifest>
+          	</archive>
+              <descriptorRefs>
+                   <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
 </project>

@@ -1,7 +1,7 @@
 package org.openhds.configuration.util;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 public class ValueConstraintService {
@@ -19,13 +18,16 @@ public class ValueConstraintService {
 	public ValueConstraintService() {
 		SAXBuilder builder = new SAXBuilder();
 		try {	
+			File currentDirectory = new File("");
+			String path = currentDirectory.getAbsolutePath();
+			
+			path = path.replace("dataextensions", "");
+			
 			InputStream is = new FileInputStream("../domain/src/main/resources/value-constraint.xml");
 			doc = builder.build(is);
-		} catch (JDOMException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public boolean isConstraintDefined(String constraintName) {

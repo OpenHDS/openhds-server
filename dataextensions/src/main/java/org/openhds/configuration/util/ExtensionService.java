@@ -17,10 +17,16 @@ public class ExtensionService {
 	public ExtensionService() {
 		
 		try {
+		
+			File currentDirectory = new File("");
+			String path = currentDirectory.getAbsolutePath();
+			
+			path = path.replace("dataextensions", "");
+			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	
-			File configFile = new File("../domain/src/main/resources/extension-config.xml");
+			File configFile = new File(path + "/domain/src/main/resources/extension-config.xml");
 			doc = builder.parse(configFile);
 		}
 		catch (Exception e) {
