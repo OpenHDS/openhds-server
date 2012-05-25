@@ -144,8 +144,8 @@
           </text>
         </translation>
       </itext>
-      <bind nodeset="/data/motherId" type="string" required="true()" constraint="(regex(., '^[A-Za-z]{4}[0-9]{3}[A-Z-a-z0-9]$'))"/>
-      <bind nodeset="/data/fatherId" type="string" required="true()" constraint="(regex(., '^([Uu][Nn][Kk]|[A-Za-z]{4}[0-9]{3}[A-Z-a-z0-9])$'))"/>
+      <bind nodeset="/data/motherId" type="string" required="true()" constraint="(regex(., '^[A-Za-z]{4}[0-9]{3}[A-Za-z0-9]$'))"/>
+      <bind nodeset="/data/fatherId" type="string" required="true()" constraint="(regex(., '^([Uu][Nn][Kk]|[A-Za-z]{4}[0-9]{3}[A-Za-z0-9])$'))"/>
       <bind nodeset="/data/recordedDate" type="date" required="true()" constraint="(. &lt;= today())"/>
       <bind nodeset="/data/fieldWorkerId" type="string" required="true()" constraint="(regex(., '^[Ff][Ww][A-Za-z]{2}[0-9]{1}$'))"/>
       <bind nodeset="/data/outcomeType" type="select1" required="true()"/>
