@@ -41,10 +41,6 @@
     	<property name="currentUser" ref="currentUser" />
     </bean>
     
-    <bean id="mobileWebService" class="org.openhds.webservice.mobile.MobileWebService">
-        <property name="genericDao" ref="genericDao" />
-    </bean>
-    
     <jaxrs:server id="openhdsCoreWebService" address="/corewebservice">
         <jaxrs:serviceBeans>
             <ref bean="coreWebService" />
@@ -57,15 +53,6 @@
     <jaxrs:server id="openhdsSpecialStudyWebService" address="/specialstudywebservice">
         <jaxrs:serviceBeans>
             <ref bean="specialStudyWebService" />
-        </jaxrs:serviceBeans>
-        <jaxrs:extensionMappings>
-            <entry key="xml" value="application/xml" />
-        </jaxrs:extensionMappings>
-    </jaxrs:server>
-    
-    <jaxrs:server id="openhdsMobileWebService" address="/mobile">
-        <jaxrs:serviceBeans>
-            <ref bean="mobileWebService" />
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="xml" value="application/xml" />

@@ -62,8 +62,6 @@
 				<value>org.openhds.domain.model.User</value>
 				<value>org.openhds.domain.model.Visit</value>
 				<value>org.openhds.domain.model.Whitelist</value>
-				<value>org.openhds.domain.mobile.FormInstance</value>
-				<value>org.openhds.domain.mobile.ValidationMessage</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
