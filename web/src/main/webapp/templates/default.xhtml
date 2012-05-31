@@ -256,7 +256,22 @@
 				<li>#{siteProperties.abortionCode} - #{msg.pregnancyOutcomeAbortion}</li>
 			</ul>
     	</div>
-	</o:popupLayer>		
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForPeriods"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForPeriods').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Valid values:</h3>
+			<ul>
+				<li>#{msg.dhisDaily}</li>	
+				<li>#{msg.dhisMonthly}</li>	
+				<li>#{msg.dhisYearly}</li>	
+			</ul>
+    	</div>
+	</o:popupLayer>	
 	<o:popupLayer id="popupWindowForDataStatus"
             width="30%"
             height="30%">

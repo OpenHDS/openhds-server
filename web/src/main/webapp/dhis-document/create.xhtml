@@ -27,41 +27,44 @@
                 <h:messages id="errors" globalOnly="true" />
                 <h:form id="form">
                                 
-                	<h:panelGrid columns="3">
+                	<h:panelGrid columns="4">
                 	
                 		<h:outputText value="#{msg.locationHierarchyId}:" />
+                		<h:outputText />
 						<h:inputText id="hierarchy" value="#{dhisDocumentBean.hierarchyExtId}" required="true"/>
 	                    <h:message for="hierarchy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						
                 	 	<h:outputText value="#{msg.dhisPeriod}:"/>
-                    	<h:selectOneMenu id="periodList" value="#{dhisDocumentBean.period}" onchange="setPeriod()" >
-							<f:selectItem itemValue="#{msg.dhisDaily}" itemLabel="#{msg.dhisDaily}" selected="true" />
-						  	<f:selectItem itemValue="#{msg.dhisMonthly}" itemLabel="#{msg.dhisMonthly}"/>
-						  	<f:selectItem itemValue="#{msg.dhisYearly}" itemLabel="#{msg.dhisYearly}"/>
-						</h:selectOneMenu>
+                	 	<img class="clickable" onclick="O$('popupWindowForPeriods').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+                    	<h:inputText id="periodList" value="#{dhisDocumentBean.period}" onchange="setPeriod()" converter="#{defaultConverter}" />
 	                    <h:message for="period" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 						<h:outputText styleClass="dailyPeriod"  value="#{msg.dhisStartDate} (#{siteProperties.dateFormat})" />
+						<h:outputText />
 						<h:inputText styleClass="dailyPeriod" id="startDate" value="#{dhisDocumentBean.startDate}" validator="#{dateValidator.validate}" required="true"/>
 	                    <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						
 						<h:outputText styleClass="dailyPeriod"  value="#{msg.dhisEndDate} (#{siteProperties.dateFormat})" />
+	                   	<h:outputText />
 	                   	<h:inputText styleClass="dailyPeriod" id="endDate" value="#{dhisDocumentBean.endDate}" validator="#{dateValidator.validate}" required="true" />
 	                    <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                    
 	  	                <h:outputText styleClass="yearlyPeriod" value="#{msg.dhisYearStart}:" />
+	                   	<h:outputText />
 	                   	<h:inputText styleClass="yearlyPeriod" id="yearStart" value="#{dhisDocumentBean.startYear}" required="true">
 	                   		<f:validateLongRange minimum="1900" />
 	                   	</h:inputText>
 	                    <h:message for="yearStart" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                    
 	                    <h:outputText styleClass="yearlyPeriod" value="#{msg.dhisYearEnd}:" />
+	                   	<h:outputText />
 	                   	<h:inputText styleClass="yearlyPeriod" id="yearEnd" value="#{dhisDocumentBean.endYear}" required="true">
 	                   		<f:validateLongRange minimum="1900" />
 	                   	</h:inputText>
 	                    <h:message for="yearEnd" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 					       
 					    <h:outputText styleClass="monthlyPeriod" value="#{msg.dhisStartMonth}:" />
+						<h:outputText />
 						<h:selectOneMenu styleClass="monthlyPeriod" id="monthStartList" value="#{dhisDocumentBean.startMonth}" >
 							<f:selectItem itemValue="01" itemLabel="01" selected="true" />
 						  	<f:selectItem itemValue="02" itemLabel="02"/>
@@ -79,6 +82,7 @@
 	                    <h:message for="monthStartList" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                    
 	                    <h:outputText styleClass="monthlyPeriod" value="#{msg.dhisEndMonth}:" />
+	                   	<h:outputText />
 	                   	<h:selectOneMenu styleClass="monthlyPeriod" id="monthEndList" value="#{dhisDocumentBean.endMonth}" >
 							<f:selectItem itemValue="01" itemLabel="01" selected="true" />
 						  	<f:selectItem itemValue="02" itemLabel="02"/>
