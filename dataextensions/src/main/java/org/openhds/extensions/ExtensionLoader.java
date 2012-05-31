@@ -143,9 +143,9 @@ public class ExtensionLoader {
 			IndividualTemplateBuilder individualTemplateBuilder = new IndividualTemplateBuilder(jCodeModel);
 			VisitTemplateBuilder visitTemplateBuilder = new VisitTemplateBuilder(jCodeModel);
 			SocialGroupTemplateBuilder socialGroupTemplateBuilder = new SocialGroupTemplateBuilder(jCodeModel);
+			VaccinationTemplateBuilder vaccinationTemplateBuilder = new VaccinationTemplateBuilder(jCodeModel);
 			AdultVPMTemplateBuilder adultVPMTemplateBuilder = new AdultVPMTemplateBuilder(jCodeModel);
 			NeoNatalVPMTemplateBuilder neoNatalVPMTemplateBuilder = new NeoNatalVPMTemplateBuilder(jCodeModel);
-			
 			
 			JPackage jp = jCodeModel._package("org.openhds.domain.model");					
 			JDefinedClass jc = null;
@@ -162,6 +162,8 @@ public class ExtensionLoader {
 					visitTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("SocialGroup")) 
 					socialGroupTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("Vaccination"))
+					vaccinationTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("AdultVPM")) 
 					adultVPMTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("NeoNatalVPM")) 
@@ -195,6 +197,8 @@ public class ExtensionLoader {
 					visitTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("SocialGroup") && socialGroupTemplateBuilder.socialGroupTemplateBuilt == false)
 					socialGroupTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("Vaccination") && vaccinationTemplateBuilder.templateBuilt == false)
+					vaccinationTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("AdultVPM") && adultVPMTemplateBuilder.templateBuilt == false)
 					adultVPMTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("NeoNatalVPM") && neoNatalVPMTemplateBuilder.templateBuilt == false)
