@@ -15,6 +15,22 @@
 		<attributes>
 		</attributes>
 	</entity>
+	<entity name="Death">
+		<attributes>
+		</attributes>
+	</entity>
+		<entity name="PregnancyObservation">
+		<attributes>
+		</attributes>
+	</entity>
+	<entity name="InMigration">
+		<attributes>
+		</attributes>
+	</entity>
+	<entity name="OutMigration">
+		<attributes>
+		</attributes>
+	</entity>
 	<entity name="Vaccination">
 		<attributes>
 		</attributes>

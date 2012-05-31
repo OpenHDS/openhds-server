@@ -42,10 +42,6 @@ public class AdultVPM
     private Individual individual;
     @Searchable
     @ManyToOne
-    @Description(description = "Location of the deceased individual.")
-    private Location location;
-    @Searchable
-    @ManyToOne
     @Description(description = "Visit that is associated with the verbal autopsy, identified by the external id.")
     private Visit visit;
     @Past
@@ -59,14 +55,6 @@ public class AdultVPM
 
     public void setIndividual(Individual indiv) {
         individual = indiv;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location loc) {
-        location = loc;
     }
 
     public Visit getVisit() {

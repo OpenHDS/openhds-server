@@ -65,25 +65,7 @@ public class NeoNatalVPMTemplateBuilder implements ExtensionTemplate {
 		JVar jvarIndividual = jmsIndividual.param(org.openhds.domain.model.Individual.class, "indiv");
 		JBlock jmsIndividualBlock = jmsIndividual.body();
 		jmsIndividualBlock.assign(jfIndividual, jvarIndividual);
-		
-		// location
-		JFieldVar jfLocation = jc.field(JMod.PRIVATE , org.openhds.domain.model.Location.class, "location");
-		jfLocation.annotate(org.openhds.domain.constraint.Searchable.class);
-		jfLocation.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationUse jaLocationDesc = jfLocation.annotate(org.openhds.domain.annotations.Description.class);
-		jaLocationDesc.param("description", "Location of the deceased individual.");
-		
-		// getter
-		JMethod jmgLocation = jc.method(JMod.PUBLIC, org.openhds.domain.model.Location.class, "getLocation");
-		JBlock jmgLocationBlock = jmgLocation.body();
-		jmgLocationBlock._return(jfLocation);
-		
-		// setter
-		JMethod jmsLocation = jc.method(JMod.PUBLIC, void.class, "setLocation");
-		JVar jvarLocation = jmsLocation.param(org.openhds.domain.model.Location.class, "loc");
-		JBlock jmsLocationBlock = jmsLocation.body();
-		jmsLocationBlock.assign(jfLocation, jvarLocation);
-		
+				
 		// visit
 		JFieldVar jfVisit = jc.field(JMod.PRIVATE , org.openhds.domain.model.Visit.class, "visit");
 		jfVisit.annotate(org.openhds.domain.constraint.Searchable.class);

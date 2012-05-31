@@ -33,11 +33,6 @@
 	            		<h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{neonatalVPMCrud.item.individual}" converter="#{individualExtIdConverter}" />
 	            		<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                     	
-                    	<h:outputText value="#{msg.locationId}:"/>
-		        		<h:outputText />
-		        		<h:inputText styleClass="location" id="loc" value="#{neonatalVPMCrud.item.location}" converter="#{locationExtIdConverter}" autocomplete="off"/>
-		        		<h:message for="houseId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-					
                     	<h:outputText value="#{msg.visitId}:" />
                 		<h:outputText />
                 		<h:inputText styleClass="visit" autocomplete="off" id="visit" value="#{neonatalVPMCrud.item.visit}" converter="#{visitExtIdConverter}" />

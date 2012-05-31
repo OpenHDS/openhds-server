@@ -143,6 +143,10 @@ public class ExtensionLoader {
 			IndividualTemplateBuilder individualTemplateBuilder = new IndividualTemplateBuilder(jCodeModel);
 			VisitTemplateBuilder visitTemplateBuilder = new VisitTemplateBuilder(jCodeModel);
 			SocialGroupTemplateBuilder socialGroupTemplateBuilder = new SocialGroupTemplateBuilder(jCodeModel);
+			DeathTemplateBuilder deathTemplateBuilder = new DeathTemplateBuilder(jCodeModel);
+			PregnancyObservationTemplateBuilder pregnancyObservationTemplateBuilder = new PregnancyObservationTemplateBuilder(jCodeModel);
+			InMigrationTemplateBuilder inMigrationTemplateBuilder = new InMigrationTemplateBuilder(jCodeModel);
+			OutMigrationTemplateBuilder outMigrationTemplateBuilder = new OutMigrationTemplateBuilder(jCodeModel);
 			VaccinationTemplateBuilder vaccinationTemplateBuilder = new VaccinationTemplateBuilder(jCodeModel);
 			AdultVPMTemplateBuilder adultVPMTemplateBuilder = new AdultVPMTemplateBuilder(jCodeModel);
 			NeoNatalVPMTemplateBuilder neoNatalVPMTemplateBuilder = new NeoNatalVPMTemplateBuilder(jCodeModel);
@@ -162,6 +166,14 @@ public class ExtensionLoader {
 					visitTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("SocialGroup")) 
 					socialGroupTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("Death"))
+					deathTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("PregnancyObservation"))
+					pregnancyObservationTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("InMigration"))
+					inMigrationTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("OutMigration"))
+					outMigrationTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("Vaccination"))
 					vaccinationTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("AdultVPM")) 
@@ -197,6 +209,14 @@ public class ExtensionLoader {
 					visitTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("SocialGroup") && socialGroupTemplateBuilder.socialGroupTemplateBuilt == false)
 					socialGroupTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("Death") && deathTemplateBuilder.templateBuilt == false)
+					deathTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("PregnancyObservation") && pregnancyObservationTemplateBuilder.templateBuilt == false)
+					pregnancyObservationTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("InMigration") && inMigrationTemplateBuilder.templateBuilt == false)
+					inMigrationTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("OutMigration") && outMigrationTemplateBuilder.templateBuilt == false)
+					outMigrationTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("Vaccination") && vaccinationTemplateBuilder.templateBuilt == false)
 					vaccinationTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("AdultVPM") && adultVPMTemplateBuilder.templateBuilt == false)
