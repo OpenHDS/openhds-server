@@ -144,6 +144,7 @@ public class ExtensionLoader {
 			VisitTemplateBuilder visitTemplateBuilder = new VisitTemplateBuilder(jCodeModel);
 			SocialGroupTemplateBuilder socialGroupTemplateBuilder = new SocialGroupTemplateBuilder(jCodeModel);
 			AdultVPMTemplateBuilder adultVPMTemplateBuilder = new AdultVPMTemplateBuilder(jCodeModel);
+			NeoNatalVPMTemplateBuilder neoNatalVPMTemplateBuilder = new NeoNatalVPMTemplateBuilder(jCodeModel);
 			
 			
 			JPackage jp = jCodeModel._package("org.openhds.domain.model");					
@@ -163,6 +164,8 @@ public class ExtensionLoader {
 					socialGroupTemplateBuilder.buildTemplate(jc);
 				else if (entityName.equals("AdultVPM")) 
 					adultVPMTemplateBuilder.buildTemplate(jc);
+				else if (entityName.equals("NeoNatalVPM")) 
+					neoNatalVPMTemplateBuilder.buildTemplate(jc);
 			}
 			
 			Iterator<String> keysItr = keys.iterator();
@@ -194,6 +197,8 @@ public class ExtensionLoader {
 					socialGroupTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("AdultVPM") && adultVPMTemplateBuilder.templateBuilt == false)
 					adultVPMTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("NeoNatalVPM") && neoNatalVPMTemplateBuilder.templateBuilt == false)
+					neoNatalVPMTemplateBuilder.buildTemplate(jc);
 				
 				// build extended fields
 				JFieldVar jf = jc.field(JMod.PRIVATE , 			
