@@ -13,6 +13,16 @@
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
+			<from-outcome>adultvpm_create</from-outcome>
+			<to-view-id>/adultvpm/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>adultvpm_edit</from-outcome>
+			<to-view-id>/adultvpm/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>demreports</from-outcome>
 			<to-view-id>/demographic.report</to-view-id>
 			<redirect />

@@ -40,6 +40,7 @@
 		            </h:commandLink>
 		            <c:if test="#{navController.showAmendments}" >
 			        <ul>
+			        	<li><h:commandLink value="#{msg.navBarAdultVPM}" action="#{adultVPMCrud.createSetup}" /></li>
 				        <li><h:commandLink value="#{msg.navBarLocation}" action="#{locationCrud.createSetup}" /></li>
 				        <li><h:commandLink value="#{msg.navBarIndividual}" action="#{individualCrud.createSetup}" /></li>
 				        <li><h:commandLink value="#{msg.navBarPregOutcome}" action="pregnancy-outcome_flow" /></li>

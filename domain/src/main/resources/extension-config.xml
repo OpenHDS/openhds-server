@@ -15,4 +15,12 @@
 		<attributes>
 		</attributes>
 	</entity>
+	<entity name="AdultVPM">
+		<attributes>
+		</attributes>
+	</entity>
+	<entity name="NeoNatalVPM">
+		<attributes>
+		</attributes>
+	</entity>
 </config>

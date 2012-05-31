@@ -2,7 +2,12 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
                xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.1.0
                                    http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.1.0.xsd">
-
+	
+	<url-mapping id="adultvpmDetail">
+		<pattern value="/amendment/adultvpm/details/#{itemId}" />
+		<view-id>/adultvpm/detail.xhtml</view-id>
+		<action onPostback="false">#{adultVPMCrud.detailSetup}</action>
+	</url-mapping>
 	
 	<url-mapping id="locationDetail" >
 		<pattern value="/amendment/location/details/#{itemId}" />
@@ -93,6 +98,11 @@
 	<!-- This is a workaround so that when an entity that is being edited is saved, it gets properly -->
 	<!-- redirected back to the details page. At the time of writing, there didn't appear to be any -->
 	<!-- other way around this problem -->
+	
+	<url-mapping id="adultvpmEdit" >
+		<pattern value="/amendment/adultvpm/details/#{itemId: adultVPMCrud.item.uuid}" />
+		<view-id>/adultvpm/detail.xhtml</view-id> 
+	</url-mapping>
 			
 	<url-mapping id="deathEdit" >
 		<pattern value="/amendment/death/details/#{itemId: deathCrud.item.uuid}" />

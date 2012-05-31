@@ -43,6 +43,10 @@
 		                <h:outputText />
 		                <h:outputText value= "#{deathCrud.item.deathDate}" converter="#{calendarConverter}" />
 	           			
+	           			<h:outputText value="#{msg.fieldWorkerId}:" />
+                        <h:outputText />
+                        <h:outputText value="#{deathCrud.item.collectedBy}" conveter="#{fieldWorkerExtIdConverter}" />
+                        
 	           			<h:outputText value="#{msg.visitId}:"/>
 		                <h:outputText />
 		                <h:outputText value="#{deathCrud.item.visitDeath}" converter="#{visitExtIdConverter}"/>
