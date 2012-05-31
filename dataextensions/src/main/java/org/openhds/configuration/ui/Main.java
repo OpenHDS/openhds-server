@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 
 public class Main {
 
@@ -58,6 +59,7 @@ public class Main {
 	private JTextField constraintTextField;
 	private JComboBox entityTypeComboBox;
 	private JComboBox attrTypeComboBox;
+	private JCheckBox pastCheckBox;
 	
 	private HashMap<String, ArrayList<Map<String, String>>> extensionMap;
 	private ExtensionService extensionService;
@@ -157,7 +159,7 @@ public class Main {
 		extensionPanel.add(lblEntityType);
 		
 		entityTypeComboBox = new JComboBox();
-		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "SocialGroup", "Visit"}));
+		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "SocialGroup", "Visit", "AdultVPM"}));
 		entityTypeComboBox.setBounds(169, 8, 113, 20);
 		extensionPanel.add(entityTypeComboBox);
 		
@@ -166,10 +168,21 @@ public class Main {
 		extensionPanel.add(lblAttributeType);
 		
 		attrTypeComboBox = new JComboBox();
-		attrTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"String", "Boolean", "Integer"}));
+		attrTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"String", "Boolean", "Integer", "Calendar"}));
 		attrTypeComboBox.setBounds(169, 32, 113, 20);
 		attrTypeComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				if (attrTypeComboBox.getSelectedItem().toString().equals("Calendar")) {
+					pastCheckBox.setVisible(true);
+					pastCheckBox.setSelected(false);
+					constraintTextField.setText("");
+					constraintTextField.setEditable(false);
+				}
+				else {
+					pastCheckBox.setVisible(false);
+					pastCheckBox.setSelected(false);
+					constraintTextField.setEditable(true);
+				}
 			}
 		});
 		extensionPanel.add(attrTypeComboBox);
@@ -200,6 +213,11 @@ public class Main {
 		constraintTextField.setBounds(169, 127, 165, 20);
 		extensionPanel.add(constraintTextField);
 		constraintTextField.setColumns(10);
+		
+		pastCheckBox = new JCheckBox("Enforce Past Constraint");
+		pastCheckBox.setBounds(195, 154, 165, 23);
+		pastCheckBox.setVisible(false);
+		extensionPanel.add(pastCheckBox);
 	}
 	
 	public void initializeBtns() {
@@ -297,9 +315,19 @@ public class Main {
 				String attributeName = attrNameTextField.getText();
 				String description = attrDescTextField.getText();
 				String type = attrTypeComboBox.getSelectedItem().toString();
-				String constraint = constraintTextField.getText();
 				
-				if (!constraint.equals("none")) {
+				String constraint;
+				if (!type.equals("Calendar")) 
+					constraint = constraintTextField.getText();
+				else {
+					if (pastCheckBox.isSelected()) 
+						constraint = "past";
+					else {
+						constraint = "none";
+					}
+				}
+
+				if (!constraint.equals("none") && !constraint.equals("past")) {
 					List<String> names = valueConstraintService.getAllConstraintNames();
 					
 					if (!names.contains(constraint)) {
@@ -326,8 +354,6 @@ public class Main {
 					attrNameTextField.setText("");
 					attrDescTextField.setText("");
 					constraintTextField.setText("");
-					entityTypeComboBox.setSelectedIndex(0);
-					attrTypeComboBox.setSelectedIndex(0);
 				}
 			}
 		});
@@ -344,7 +370,7 @@ public class Main {
 				attrTypeComboBox.setSelectedIndex(0);
 			}
 		});
-		extensionClearBtn.setBounds(123, 176, 73, 23);
+		extensionClearBtn.setBounds(122, 176, 73, 23);
 		extensionPanel.add(extensionClearBtn);
 		
 		JButton extensionDeleteBtn = new JButton("Delete");
@@ -495,6 +521,9 @@ public class Main {
 							constraintTextField.setText(attrs.get("constraint"));
 							entityTypeComboBox.setSelectedItem(entityType);
 							attrTypeComboBox.setSelectedItem(attrs.get("type"));
+							
+							if (attrs.get("constraint").equals("past"))
+								pastCheckBox.setSelected(true);
 						}
 					}	
 				}

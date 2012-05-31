@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.openhds.domain.util.CalendarAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -141,6 +143,8 @@ public class ExtensionLoader {
 			IndividualTemplateBuilder individualTemplateBuilder = new IndividualTemplateBuilder(jCodeModel);
 			VisitTemplateBuilder visitTemplateBuilder = new VisitTemplateBuilder(jCodeModel);
 			SocialGroupTemplateBuilder socialGroupTemplateBuilder = new SocialGroupTemplateBuilder(jCodeModel);
+			AdultVPMTemplateBuilder adultVPMTemplateBuilder = new AdultVPMTemplateBuilder(jCodeModel);
+			
 			
 			JPackage jp = jCodeModel._package("org.openhds.domain.model");					
 			JDefinedClass jc = null;
@@ -148,22 +152,17 @@ public class ExtensionLoader {
 			Set<String> keys = map.keySet();
 			
 			if (keys.size() == 0) {
-				if (entityName.equals("Location")) {
-					jc = jp._class(entityName);
+				jc = jp._class(entityName);
+				if (entityName.equals("Location")) 
 					locationTemplateBuilder.buildTemplate(jc);
-				}
-				else if (entityName.equals("Individual")) {
-					jc = jp._class(entityName);
+				else if (entityName.equals("Individual")) 
 					individualTemplateBuilder.buildTemplate(jc);
-				}
-				else if (entityName.equals("Visit")) {
-					jc = jp._class(entityName);
+				else if (entityName.equals("Visit")) 
 					visitTemplateBuilder.buildTemplate(jc);
-				}
-				else if (entityName.equals("SocialGroup")) {
-					jc = jp._class(entityName);
+				else if (entityName.equals("SocialGroup")) 
 					socialGroupTemplateBuilder.buildTemplate(jc);
-				}
+				else if (entityName.equals("AdultVPM")) 
+					adultVPMTemplateBuilder.buildTemplate(jc);
 			}
 			
 			Iterator<String> keysItr = keys.iterator();
@@ -193,12 +192,15 @@ public class ExtensionLoader {
 					visitTemplateBuilder.buildTemplate(jc);
 				else if (entity.equals("SocialGroup") && socialGroupTemplateBuilder.socialGroupTemplateBuilt == false)
 					socialGroupTemplateBuilder.buildTemplate(jc);
+				else if (entity.equals("AdultVPM") && adultVPMTemplateBuilder.templateBuilt == false)
+					adultVPMTemplateBuilder.buildTemplate(jc);
 				
 				// build extended fields
 				JFieldVar jf = jc.field(JMod.PRIVATE , 			
 					(type.equals("String") ? java.lang.String.class :
 					type.equals("Integer") ? java.lang.Integer.class :
 					type.equals("Boolean") ? java.lang.Boolean.class :
+					type.equals("Calendar") ? java.util.Calendar.class :
 					java.lang.Float.class), attribute);
 				JAnnotationUse jaDesc = jf.annotate(org.openhds.domain.annotations.Description.class);
 				jaDesc.param("description", desc);	
@@ -216,14 +218,32 @@ public class ExtensionLoader {
 					ja.param("message", "Invalid Value for " + attribute);
 					ja.param("allowNull", true);
 				}
+				else if (type.equals("Calendar")) {
+					JAnnotationUse jaTemporal = jf.annotate(javax.persistence.Temporal.class);
+					jaTemporal.param("value", javax.persistence.TemporalType.DATE);
+					if (constraint.equals("past"))
+						jf.annotate(javax.validation.constraints.Past.class);
+				}
 
 				// getters
-				String methodGetName = "get" + formattedAttr;
+				String methodGetName;
+				if (type.equals("Boolean"))
+					methodGetName = "is" + formattedAttr;
+				else
+					methodGetName = "get" + formattedAttr;
+				
 				JMethod jmg = jc.method(JMod.PUBLIC, 
 					(type.equals("String") ? java.lang.String.class :
 					type.equals("Integer") ? java.lang.Integer.class :
 					type.equals("Boolean") ? java.lang.Boolean.class :
+					type.equals("Calendar") ? java.util.Calendar.class :
 					java.lang.Float.class), methodGetName);
+				
+				if (type.equals("Calendar")) {
+					JAnnotationUse jaXmlDob = jmg.annotate(javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.class);
+					jaXmlDob.param("value", CalendarAdapter.class);
+				}
+				
 				JBlock jmgBlock = jmg.body();
 				jmgBlock._return(jf);
 				
@@ -234,6 +254,7 @@ public class ExtensionLoader {
 					(type.equals("String") ? java.lang.String.class :
 					type.equals("Integer") ? java.lang.Integer.class :
 					type.equals("Boolean") ? java.lang.Boolean.class :
+					type.equals("Calendar") ? java.util.Calendar.class :
 					java.lang.Float.class), "data");
 				JBlock jmsBlock = jms.body();
 				jmsBlock.assign(jf, jvar);
