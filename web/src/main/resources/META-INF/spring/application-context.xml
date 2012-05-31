@@ -277,6 +277,12 @@
         <constructor-arg value="java.lang.String" />
     </bean>
     
+    <bean id="vaccinationConverter" class="org.openhds.web.cvt.EntityConverterImpl">
+        <constructor-arg ref="vaccinationDao" />
+        <constructor-arg value="org.openhds.domain.model.Vaccination" />
+        <constructor-arg value="java.lang.String" />
+    </bean>
+    
     <bean id="visitConverter" class="org.openhds.web.cvt.EntityConverterImpl">
         <constructor-arg ref="visitDao" />
         <constructor-arg value="org.openhds.domain.model.Visit" />
@@ -487,6 +493,12 @@
         <property name="dao" ref="userDao" />
         <property name="converter" ref="userConverter" />
         <property name="service" ref="userService" />
+    </bean>
+    
+    <bean id="vaccinationCrud" parent="baseCrud" class="org.openhds.web.crud.impl.VaccinationCrudImpl">
+        <constructor-arg value="org.openhds.domain.model.Vaccination" />
+        <property name="dao" ref="vaccinationDao" />
+        <property name="converter" ref="vaccinationConverter" />
     </bean>
     
     <bean id="visitCrud" parent="baseCrud" class="org.openhds.web.crud.impl.VisitCrudImpl">

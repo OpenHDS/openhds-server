@@ -59,6 +59,7 @@
 				<value>org.openhds.domain.model.Round</value>
 				<value>org.openhds.domain.model.SocialGroup</value>
 				<value>org.openhds.domain.model.User</value>
+				<value>org.openhds.domain.model.Vaccination</value>
 				<value>org.openhds.domain.model.Visit</value>
 				<value>org.openhds.domain.model.Whitelist</value>
 			</list>
@@ -206,6 +207,10 @@
 
     <bean id="socialGroupDao" parent="baseDao">
         <constructor-arg value="org.openhds.domain.model.SocialGroup" />
+    </bean>
+    
+    <bean id="vaccinationDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.Vaccination" />
     </bean>
         
     <bean id="visitDao" parent="baseDao">

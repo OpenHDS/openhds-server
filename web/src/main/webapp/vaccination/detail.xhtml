@@ -1,0 +1,88 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:o="http://openfaces.org/"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core">
+				
+ 	<ui:define name="title">OpenHDS - Vaccination Details</ui:define>
+
+	<ui:param name="crud" value="#{vaccinationCrud}" />
+	
+	<ui:define name="listing">
+		<ui:include src="list.xhtml" />
+	</ui:define>
+	<ui:define name="display">
+	
+    	<h:outputText value="#{navController.breadcrumbTrail}" />	
+	
+        <h1>#{msg.vaccinationDetail}</h1>
+        <h:form>
+        
+        	<h:outputText styleClass="error" value="#{vaccinationCrud.item.statusMessage}" />
+        
+            <h:panelGrid columns="3">
+            	<h:outputText value="#{msg.vaccinationChild}:"/>
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.child}" converter="#{individualExtIdConverter}" title="#{msg.tipIndivExtId}" />
+                     
+			 	<h:outputText value="#{msg.fieldWorkerId}:"  />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" title="collected by" />
+                  	  
+				<h:outputText value="#{msg.vaccinationBCG}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.bcg}" converter="#{calendarConverter}" />
+                 	
+                <h:outputText value="#{msg.vaccinationPolio1}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.polio1}" converter="#{calendarConverter}" />
+                  	
+                <h:outputText value="#{msg.vaccinationPolio2}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.polio2}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationPolio3}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.polio3}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationPolio4}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.polio4}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationDpt1}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.dpt1}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationDpt2}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.dpt2}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationDpt3}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.dpt3}" converter="#{calendarConverter}" />
+                      
+                <h:outputText value="#{msg.vaccinationMeasels}: (#{siteProperties.dateFormat})" />
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.measels}" converter="#{calendarConverter}" />
+
+			    <h:outputText value="#{msg.insertDate}"/>
+                <h:outputText />
+                <h:outputText value="#{vaccinationCrud.item.insertDate}" converter="#{calendarConverter}" />
+				
+				<h:outputText value="#{msg.insertBy}"/>
+				<h:outputText />
+				<h:outputText value="#{vaccinationCrud.item.insertBy.fullName}" />
+				
+				<h:outputText value="#{msg.dataStatus}"/>
+	    		<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+				<h:outputText value="#{vaccinationCrud.item.status}" />	
+			</h:panelGrid>
+			<br />
+           <h:commandButton action="#{vaccinationCrud.editSetup}" value="#{msg.lblEdit}">
+               <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{vaccomatopmCrud.item.uuid}" />
+           </h:commandButton>
+        </h:form>
+	</ui:define>		
+</ui:composition>

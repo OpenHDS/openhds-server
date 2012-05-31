@@ -467,6 +467,16 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>vaccination_create</from-outcome>
+			<to-view-id>/vaccination/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>vaccination_edit</from-outcome>
+			<to-view-id>/vaccination/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>visit_list</from-outcome>
 			<to-view-id>/visit/create.faces</to-view-id>
 			<redirect />

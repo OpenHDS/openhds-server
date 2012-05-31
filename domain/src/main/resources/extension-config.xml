@@ -15,6 +15,10 @@
 		<attributes>
 		</attributes>
 	</entity>
+	<entity name="Vaccination">
+		<attributes>
+		</attributes>
+	</entity>
 	<entity name="AdultVPM">
 		<attributes>
 		</attributes>
