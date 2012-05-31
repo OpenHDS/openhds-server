@@ -46,6 +46,7 @@
 				<value>org.openhds.domain.model.LocationHierarchyLevel</value>
 				<value>org.openhds.domain.model.Membership</value>
 				<value>org.openhds.domain.model.MigrationType</value>
+				<value>org.openhds.domain.model.NeoNatalVPM</value>
 				<value>org.openhds.domain.model.Note</value>
 				<value>org.openhds.domain.model.Outcome</value>
 				<value>org.openhds.domain.model.OutMigration</value>
@@ -169,6 +170,10 @@
 
     <bean id="membershipDao" parent="baseDao">
         <constructor-arg value="org.openhds.domain.model.Membership" />
+    </bean>
+    
+    <bean id="neoNatalVPMDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.NeoNatalVPM" />
     </bean>
     
     <bean id="outMigrationDao" parent="baseDao">

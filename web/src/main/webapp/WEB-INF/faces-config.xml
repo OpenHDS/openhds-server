@@ -297,6 +297,16 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>neonatalvpm_create</from-outcome>
+			<to-view-id>/neonatalvpm/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>neonatalvpm_edit</from-outcome>
+			<to-view-id>/neonatalvpm/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>note_create</from-outcome>
 			<to-view-id>/note/create.faces</to-view-id>
 			<redirect />

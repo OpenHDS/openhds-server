@@ -33,6 +33,12 @@
 		<action onPostback="false">#{membershipCrud.detailSetup}</action>
 	</url-mapping>
 	
+	<url-mapping id="neonatalvpmDetail" >
+		<pattern value="/amendment/neonatalvpm/details/#{itemId}" />
+		<view-id>/neonatalvpm/detail.xhtml</view-id> 
+		<action onPostback="false">#{neonatalVPMCrud.detailSetup}</action>
+	</url-mapping>
+	
 	<url-mapping id="outmigrationDetail" >
 		<pattern value="/amendment/outmigration/details/#{itemId}" />
 		<view-id>/outmigration/detail.xhtml</view-id> 
@@ -122,6 +128,11 @@
 	<url-mapping id="membershipEdit" >
 		<pattern value="/amendment/membership/details/#{itemId : membershipCrud.item.uuid}" />
 		<view-id>/membership/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="neonatalvpmEdit" >
+		<pattern value="/amendment/neonatalvpm/details/#{itemId: neonatalVPMCrud.item.uuid}" />
+		<view-id>/neonatalvpm/detail.xhtml</view-id> 
 	</url-mapping>
 		
 	<url-mapping id="pregnancyoutcomeEdit" >
