@@ -159,7 +159,7 @@ public class Main {
 		extensionPanel.add(lblEntityType);
 		
 		entityTypeComboBox = new JComboBox();
-		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "SocialGroup", "Visit", "Death", "PregnancyObservation", "InMigration", "OutMigration", "Vaccination", "AdultVPM", "NeoNatalVPM"}));
+		entityTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Individual", "Location", "SocialGroup", "Visit", "Death", "PregnancyObservation", "InMigration", "OutMigration", "Vaccination", "AdultVPM", "NeoNatalVPM", "PostNeoNatalVPM"}));
 		entityTypeComboBox.setBounds(169, 8, 113, 20);
 		extensionPanel.add(entityTypeComboBox);
 		

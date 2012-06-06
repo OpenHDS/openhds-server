@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,6 +22,7 @@ public class XMLWriter {
 	
 	private Document constraintDoc;
 	private Document extensionDoc;
+	private Transformer transformer;
 	
 	public XMLWriter() {
 		
@@ -37,6 +39,12 @@ public class XMLWriter {
 			
 			DocumentBuilder extensionDocBuilder = docFactory.newDocumentBuilder();
 			extensionDoc = extensionDocBuilder.parse(path + "/domain/src/main/resources/extension-config.xml");
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		} 
 		catch (Exception e) { 
 			e.printStackTrace();
@@ -67,11 +75,8 @@ public class XMLWriter {
 		}
 		
 		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(constraintDoc);
-			StreamResult result = new StreamResult(new File("../domain/src/main/resources/value-constraint.xml"));
-			
+			StreamResult result = new StreamResult(new File("../domain/src/main/resources/value-constraint.xml"));		
 			transformer.transform(source, result);
 		}
 		catch (Exception e) {
@@ -96,11 +101,8 @@ public class XMLWriter {
 		constraintDoc.getFirstChild().removeChild(nodeToRemove);
 			
 		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(constraintDoc);
 			StreamResult result = new StreamResult(new File("../domain/src/main/resources/value-constraint.xml"));
-			
 			transformer.transform(source, result);
 		}
 		catch (Exception e) {
@@ -149,8 +151,6 @@ public class XMLWriter {
 			}		
 		}
 		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(extensionDoc);
 			StreamResult result = new StreamResult(new File("../domain/src/main/resources/extension-config.xml"));
 			
@@ -196,11 +196,8 @@ public class XMLWriter {
 		parent.removeChild(nodeToRemove);
 		
 		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(extensionDoc);
-			StreamResult result = new StreamResult(new File("../domain/src/main/resources/extension-config.xml"));
-			
+			StreamResult result = new StreamResult(new File("../domain/src/main/resources/extension-config.xml"));	
 			transformer.transform(source, result);
 		}
 		catch (Exception e) {
