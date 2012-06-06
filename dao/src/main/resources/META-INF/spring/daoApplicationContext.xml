@@ -50,6 +50,7 @@
 				<value>org.openhds.domain.model.Note</value>
 				<value>org.openhds.domain.model.Outcome</value>
 				<value>org.openhds.domain.model.OutMigration</value>
+				<value>org.openhds.domain.model.PostNeoNatalVPM</value>
 				<value>org.openhds.domain.model.PregnancyObservation</value>
 				<value>org.openhds.domain.model.PregnancyOutcome</value>
 				<value>org.openhds.domain.model.Privilege</value>
@@ -177,8 +178,16 @@
         <constructor-arg value="org.openhds.domain.model.NeoNatalVPM" />
     </bean>
     
+    <bean id="noteDao" parent="baseDao" >
+    	<constructor-arg value="org.openhds.domain.model.Note" />
+    </bean>
+    
     <bean id="outMigrationDao" parent="baseDao">
         <constructor-arg value="org.openhds.domain.model.OutMigration" />
+    </bean>
+    
+    <bean id="postNeoNatalVPMDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.PostNeoNatalVPM" />
     </bean>
 
     <bean id="pregnancyDao" parent="baseDao">
@@ -220,9 +229,5 @@
     <bean id="whitelistDao" parent="baseDao" >
     	<constructor-arg value="org.openhds.domain.model.Whitelist" />
     </bean>
-    
-    <bean id="noteDao" parent="baseDao" >
-    	<constructor-arg value="org.openhds.domain.model.Note" />
-    </bean>
-
+   
 </beans>

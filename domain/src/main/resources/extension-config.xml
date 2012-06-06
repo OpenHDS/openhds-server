@@ -43,4 +43,8 @@
 		<attributes>
 		</attributes>
 	</entity>
+	<entity name="PostNeoNatalVPM">
+		<attributes>
+		</attributes>
+	</entity>
 </config>

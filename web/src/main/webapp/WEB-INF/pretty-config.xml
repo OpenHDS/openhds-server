@@ -45,6 +45,12 @@
 		<action onPostback="false">#{outMigrationCrud.detailSetup}</action>
 	</url-mapping>
 	
+	<url-mapping id="postneonatalvpmDetail" >
+		<pattern value="/amendment/postneonatalvpm/details/#{itemId}" />
+		<view-id>/postneonatalvpm/detail.xhtml</view-id> 
+		<action onPostback="false">#{postneonatalVPMCrud.detailSetup}</action>
+	</url-mapping>
+	
 	<url-mapping id="pregnancyobservationDetail" >
 		<pattern value="/amendment/pregnancyobservation/details/#{itemId}" />
 		<view-id>/pregnancyobservation/detail.xhtml</view-id> 
@@ -139,6 +145,11 @@
 	<url-mapping id="neonatalvpmEdit" >
 		<pattern value="/amendment/neonatalvpm/details/#{itemId: neonatalVPMCrud.item.uuid}" />
 		<view-id>/neonatalvpm/detail.xhtml</view-id> 
+	</url-mapping>
+	
+	<url-mapping id="postneonatalvpmEdit" >
+		<pattern value="/amendment/postneonatalvpm/details/#{itemId: postneonatalVPMCrud.item.uuid}" />
+		<view-id>/postneonatalvpm/detail.xhtml</view-id> 
 	</url-mapping>
 		
 	<url-mapping id="pregnancyoutcomeEdit" >
