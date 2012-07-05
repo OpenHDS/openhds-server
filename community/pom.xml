@@ -6,12 +6,12 @@
   <parent>
     <artifactId>openhds</artifactId>
     <groupId>org.openhds</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   
   <groupId>org.openhds</groupId>
   <artifactId>community</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${parent.version}</version>
   <name>OpenHDS Community</name>
   <url>http://maven.apache.org</url>
   
@@ -23,17 +23,17 @@
   	<dependency>
    		<groupId>org.openhds</groupId>
    		<artifactId>domain</artifactId>
-   		<version>${project.version}</version>
+   		<version>${parent.version}</version>
 	</dependency>	
 	<dependency>
    		<groupId>org.openhds</groupId>
    		<artifactId>dao</artifactId>
-   		<version>${project.version}</version>
+   		<version>${parent.version}</version>
 	</dependency>	
 	<dependency>
    		<groupId>org.openhds</groupId>
    		<artifactId>controller</artifactId>
-   		<version>${project.version}</version>
+   		<version>${parent.version}</version>
 	</dependency>	
 	<dependency>
    		<groupId>org.apache.xmlbeans</groupId>

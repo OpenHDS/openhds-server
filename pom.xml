@@ -5,7 +5,7 @@
 
   <groupId>org.openhds</groupId>
   <artifactId>openhds</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>OpenHDS Core</name>
   <url>http://maven.apache.org</url>
