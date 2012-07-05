@@ -1,5 +1,6 @@
 package org.openhds.web.crud.impl;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,9 +29,14 @@ public class OutMigrationCrudImpl extends EntityCrudImpl<OutMigration, String> {
     	
     	try {
 			service.evaluateOutMigration(entityItem);		
-	        return super.create();
+	        service.createOutMigration(entityItem);
+	        return listSetup();
     	}		
     	catch(ConstraintViolations e) {
+    		jsfService.addError(e.getMessage());
+    	} catch (IllegalArgumentException e) {
+    		jsfService.addError(e.getMessage());
+    	} catch (SQLException e) {
     		jsfService.addError(e.getMessage());
     	}	  	
     	return null;
