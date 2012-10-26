@@ -3,11 +3,12 @@ package org.openhds.controller.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
-import org.openhds.dao.service.GenericDao.ValueProperty;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.VisitGenerator;
 import org.openhds.controller.service.VisitService;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.Extension;

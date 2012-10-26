@@ -1,11 +1,12 @@
 package org.openhds.controller.service.impl;
 
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
-import org.openhds.dao.service.RoleDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.RoleService;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.dao.service.RoleDao;
 import org.openhds.domain.model.Privilege;
 import org.openhds.domain.model.Role;
 import org.openhds.domain.model.User;

@@ -3,8 +3,10 @@ package org.openhds.controller.service;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
-import org.openhds.domain.annotations.Authorized;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.PregnancyOutcome;

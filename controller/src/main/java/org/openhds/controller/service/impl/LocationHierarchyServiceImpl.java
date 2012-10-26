@@ -3,10 +3,11 @@ package org.openhds.controller.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;

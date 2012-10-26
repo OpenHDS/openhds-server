@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import org.openhds.dao.service.UserDao;
 import org.openhds.domain.model.Privilege;
 import org.openhds.domain.model.Role;

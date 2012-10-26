@@ -3,8 +3,9 @@ package org.openhds.controller.idgeneration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.dao.service.GenericDao;
 
 /**
  * @author Brian

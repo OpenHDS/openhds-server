@@ -3,8 +3,8 @@ package org.openhds.controller.idgeneration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
 
 /**

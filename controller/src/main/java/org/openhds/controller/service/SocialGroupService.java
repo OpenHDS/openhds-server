@@ -2,9 +2,9 @@ package org.openhds.controller.service;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
-import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.PrivilegeConstants;

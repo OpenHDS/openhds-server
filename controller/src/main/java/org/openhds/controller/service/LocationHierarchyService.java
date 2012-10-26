@@ -1,8 +1,9 @@
 package org.openhds.controller.service;
 
 import java.util.List;
-import org.openhds.domain.annotations.Authorized;
+
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;

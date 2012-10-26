@@ -3,8 +3,9 @@ package org.openhds.controller.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import org.openhds.domain.annotations.Authorized;
+
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;

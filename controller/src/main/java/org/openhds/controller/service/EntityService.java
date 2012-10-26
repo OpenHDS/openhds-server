@@ -1,6 +1,8 @@
 package org.openhds.controller.service;
 
 import java.sql.SQLException;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.PrivilegeConstants;

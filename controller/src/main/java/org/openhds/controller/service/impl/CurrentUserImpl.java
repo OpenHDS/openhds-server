@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import org.openhds.dao.service.Dao;
-import org.openhds.dao.service.UserDao;
-import org.openhds.domain.model.Privilege;
+
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.util.UserCache;
+import org.openhds.dao.service.Dao;
+import org.openhds.domain.model.Privilege;
+import org.openhds.domain.model.User;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -16,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 /**
  * Simple bean that provides access to the current logged in user

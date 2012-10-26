@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.idgeneration.SocialGroupGenerator;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;

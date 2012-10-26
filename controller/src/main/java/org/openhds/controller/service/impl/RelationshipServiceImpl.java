@@ -1,10 +1,11 @@
 package org.openhds.controller.service.impl;
 
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.RelationshipService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;

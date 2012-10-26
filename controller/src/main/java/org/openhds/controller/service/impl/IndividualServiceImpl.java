@@ -1,23 +1,22 @@
 package org.openhds.controller.service.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
-import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.idgeneration.IdScheme;
 import org.openhds.controller.idgeneration.IdSchemeResource;
 import org.openhds.controller.idgeneration.IndividualGenerator;
+import org.openhds.controller.service.EntityService;
+import org.openhds.controller.service.IndividualService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.service.SitePropertiesService;
-import org.openhds.domain.util.CalendarUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("unchecked")

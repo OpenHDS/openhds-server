@@ -4,11 +4,13 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
-import org.apache.log4j.Logger;
-import org.openhds.domain.annotations.Authorized;
+
 import org.openhds.controller.exception.AuthorizationException;
-import org.openhds.domain.model.Privilege;
 import org.openhds.controller.service.CurrentUser;
+import org.openhds.domain.annotations.Authorized;
+import org.openhds.domain.model.Privilege;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.MethodBeforeAdvice;
 
 /**
@@ -23,7 +25,7 @@ public class AuthorizationAdvice implements MethodBeforeAdvice {
 	
 	CurrentUser currentUser;
 	
-	private final static Logger log = Logger.getLogger(AuthorizationAdvice.class);
+	private final static Logger log = LoggerFactory.getLogger(AuthorizationAdvice.class);
 
 	public void before(Method method, Object[] args, Object target) throws Throwable {
 		// grab the privileges the method is annotated with

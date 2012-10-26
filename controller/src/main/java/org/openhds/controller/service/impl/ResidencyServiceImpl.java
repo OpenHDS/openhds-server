@@ -8,23 +8,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
-import org.openhds.dao.service.GenericDao;
-import org.openhds.dao.service.GenericDao.ValueProperty;
+
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.ResidencyService;
-import org.openhds.domain.model.AuditableCollectedEntity;
-import org.openhds.domain.model.Death;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
-import org.openhds.domain.model.OutMigration;
-import org.openhds.domain.model.PregnancyOutcome;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
-import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the ResidencySerivce
@@ -36,7 +30,7 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     private GenericDao genericDao;
     private SitePropertiesService siteProperties;
-    static Logger log = Logger.getLogger(ResidencyServiceImpl.class);
+    static Logger log = LoggerFactory.getLogger(ResidencyServiceImpl.class);
 
     public ResidencyServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties) {
         this.genericDao = genericDao;

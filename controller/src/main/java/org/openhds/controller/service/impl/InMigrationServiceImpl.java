@@ -2,18 +2,20 @@ package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
-import org.apache.log4j.Logger;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.InMigrationService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.ResidencyService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.MigrationType;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -24,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class InMigrationServiceImpl implements InMigrationService {
 	
-	private static Logger log = Logger.getLogger(InMigrationServiceImpl.class);
+	private static Logger log = LoggerFactory.getLogger(InMigrationServiceImpl.class);
 	
 	private ResidencyService residencyService;
 	private EntityService entityService;

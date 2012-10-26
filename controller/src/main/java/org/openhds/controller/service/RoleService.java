@@ -1,6 +1,7 @@
 package org.openhds.controller.service;
 
 import java.util.List;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Privilege;
 import org.openhds.domain.model.Role;

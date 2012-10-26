@@ -2,12 +2,13 @@ package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
-import org.openhds.dao.service.GenericDao;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.OutMigrationService;
 import org.openhds.controller.service.ResidencyService;
+import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
