@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -186,5 +187,23 @@ public class GenericDaoImpl implements GenericDao {
     @SuppressWarnings("unchecked")
     public <T> Map<T,T> getClassMetaData() {
     	return getSession().getSessionFactory().getAllClassMetadata();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit,
+            boolean filterDeleted) {
+        Criteria crit = getSession().createCriteria(entityType);
+        if (filterDeleted) {
+            crit = crit.add(Restrictions.eq("deleted", false));
+        }
+        
+        crit.addOrder(Order.asc(property));
+        
+        if (limit > 0) {
+            crit = crit.setMaxResults(limit);
+        }
+
+        return (List<T>) crit.add(Restrictions.like(property, value, MatchMode.START)).list();
     }
 }

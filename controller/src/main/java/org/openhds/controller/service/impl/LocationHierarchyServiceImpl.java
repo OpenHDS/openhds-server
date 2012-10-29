@@ -317,15 +317,12 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
      * Used in performing autocomplete.
      */
     public List<String> getLocationExtIds(String term) {
-    	List<String> ids = new ArrayList<String>();
-    	List<Location> locs = genericDao.findAll(Location.class, true);
-    	Iterator<Location> itr = locs.iterator();
-    	while(itr.hasNext()) {
-    		Location location = itr.next();
-    		if (location.getExtId().toLowerCase().contains(term.toLowerCase())) 
-    			ids.add(location.getExtId());
-    	}
-    	return ids;
+        List<String> ids = new ArrayList<String>();
+        List<Location> locs = genericDao.findListByPropertyPrefix(Location.class, "extId", term, 10, true);
+        for (Location loc : locs) {
+            ids.add(loc.getExtId());
+        }
+        return ids;
     }
     
     /**
@@ -333,17 +330,20 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
      * Used in performing autocomplete.
      */
     public List<String> getLocationNames(String term) {
-    	List<String> names = new ArrayList<String>();
-    	List<LocationHierarchy> list = genericDao.findAll(LocationHierarchy.class, false);
-    	Iterator<LocationHierarchy> itr = list.iterator();
-    	while(itr.hasNext()) {
-    		LocationHierarchy item = itr.next();	
-    		if (!item.getExtId().equals("HIERARCHY_ROOT")) {
-	    		if (item.getLevel().equals(getLowestLevel()) && item.getName().toLowerCase().contains(term.toLowerCase()) && !names.contains(item.getExtId()))
-	    			names.add(item.getExtId());
-    		}
-    	}
-    	return names;
+        List<String> names = new ArrayList<String>();
+        List<LocationHierarchy> list = genericDao.findListByPropertyPrefix(LocationHierarchy.class, "name", term, 10,
+                true);
+        Iterator<LocationHierarchy> itr = list.iterator();
+        while (itr.hasNext()) {
+            LocationHierarchy item = itr.next();
+            if (!item.getExtId().equals("HIERARCHY_ROOT")) {
+                if (item.getLevel().equals(getLowestLevel())
+                        && item.getName().toLowerCase().contains(term.toLowerCase())
+                        && !names.contains(item.getExtId()))
+                    names.add(item.getExtId());
+            }
+        }
+        return names;
     }
     
     public Location findLocationById(String locationId, String msg) throws Exception {

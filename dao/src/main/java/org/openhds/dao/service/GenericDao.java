@@ -3,6 +3,7 @@ package org.openhds.dao.service;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
+import org.openhds.domain.model.Location;
 
 /**
  * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
@@ -73,4 +74,6 @@ public interface GenericDao {
     <T> Map<T,T> getClassMetaData();
     
     Session getSession();
+
+    <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit, boolean filteredDeleted);
 }

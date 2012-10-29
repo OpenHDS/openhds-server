@@ -86,15 +86,13 @@ public class IndividualServiceImpl implements IndividualService {
      * Used in performing autocomplete.
      */
     public List<String> getIndividualExtIds(String term) {
-    	List<String> ids = new ArrayList<String>();
-    	List<Individual> list = genericDao.findAll(Individual.class, true);
-    	Iterator<Individual> itr = list.iterator();
-    	while(itr.hasNext()) {
-    		Individual item = itr.next();
-    		if (item.getExtId().toLowerCase().contains(term.toLowerCase())) 
-    			ids.add(item.getExtId());
-    	}
-    	return ids;
+        List<String> ids = new ArrayList<String>();
+        List<Individual> list = genericDao.findListByPropertyPrefix(Individual.class, "extId", term, 10, true);
+        for (Individual indiv : list) {
+            ids.add(indiv.getExtId());
+        }
+
+        return ids;
     }
     
     public Individual findIndivById(String indivExtId, String msg) throws Exception {
