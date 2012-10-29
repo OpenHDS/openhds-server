@@ -10,6 +10,36 @@
     <packaging>pom</packaging>
     <name>OpenHDS Core</name>
 
+    <repositories>
+        <repository>
+            <id>openhds-repo</id>
+            <name>OpenHDS Repository</name>
+            <url>http://openhds.rcg.usm.maine.edu/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>nexus</id>
+            <name>OpenHDS Release Repository</name>
+            <url>http://openhds.rcg.usm.maine.edu/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>nexus</id>
+            <name>OpenHDS Snapshot Repository</name>
+            <url>http://openhds.rcg.usm.maine.edu/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <scm>
+        <connection>scm:git:https://code.google.com/p/openhds/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/openhds/</developerConnection>
+        <url>http://code.google.com/p/openhds/source/browse/</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>3.0.3.RELEASE</org.springframework.version>
