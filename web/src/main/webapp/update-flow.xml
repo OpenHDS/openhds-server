@@ -399,9 +399,9 @@
     <!-- Internal In Migration -->
     <view-state id="migrationInternal" view="migration/migration.xhtml">
         <on-entry>
-            <evaluate expression="inMigrationCrud.getItem().setLocation(updateBean.getCurrentVisit().getVisitLocation())" />
-            <evaluate expression="inMigrationCrud.getItem().setVisitId(updateBean.getCurrentVisit())" />
-            <evaluate expression="inMigrationCrud.getItem().setCollectedBy(updateBean.getCurrentVisit().getCollectedBy())" />
+            <set name="inMigrationCrud.item.visit" value="updateBean.currentVisit" />
+            <set name="inMigrationCrud.item.residency.location" value="updateBean.currentVisit.visitLocation" />
+            <set name="inMigrationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
         </on-entry>
 
         <!-- Successfully created an in migration -->
