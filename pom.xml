@@ -59,14 +59,6 @@
         <module>webservice</module>
     </modules>
 
-    <repositories>
-        <repository>
-            <id>openhds-repo</id>
-            <name>OpenHDS Repository</name>
-            <url>http://openhds.rcg.usm.maine.edu/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
