@@ -332,7 +332,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     public List<String> getLocationNames(String term) {
         List<String> names = new ArrayList<String>();
         List<LocationHierarchy> list = genericDao.findListByPropertyPrefix(LocationHierarchy.class, "name", term, 10,
-                true);
+                false);
         Iterator<LocationHierarchy> itr = list.iterator();
         while (itr.hasNext()) {
             LocationHierarchy item = itr.next();
