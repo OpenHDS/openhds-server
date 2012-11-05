@@ -76,4 +76,6 @@ public interface GenericDao {
     Session getSession();
 
     <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit, boolean filteredDeleted);
+
+	<T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value);
 }

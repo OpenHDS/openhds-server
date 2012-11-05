@@ -78,10 +78,18 @@ public interface LocationHierarchyService {
 	Location generateId(Location entityItem) throws ConstraintViolations;
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-    Location findLocationById(String locationId, String msg) throws Exception;
+    Location findLocationById(String locationId);
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception; 
-	
+	LocationHierarchy findLocationHierarchyById(String locationHierarchyId, String msg) throws Exception;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    List<Location> getAllLocations();
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+    void createLocation(Location location) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<LocationHierarchy> getAllLocationHierarchies(); 
 }
 

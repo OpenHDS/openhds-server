@@ -3,12 +3,15 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.openhds.domain.annotations.Description;
@@ -24,6 +27,7 @@ import org.openhds.domain.constraint.Searchable;
 @Description(description = "All distinct Locations within the area of study are represented here. A Location is identified by a uniquely generated identifier that the system uses internally. Each Location has a name associated with it and resides at a particular level within the Location Hierarchy.")
 @Entity
 @Table(name = "location")
+@XmlRootElement
 public class Location
     extends AuditableCollectedEntity
     implements Serializable

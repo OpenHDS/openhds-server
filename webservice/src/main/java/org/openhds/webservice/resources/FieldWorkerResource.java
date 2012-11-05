@@ -1,0 +1,64 @@
+package org.openhds.webservice.resources;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.openhds.controller.service.FieldWorkerService;
+import org.openhds.domain.model.FieldWorker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping("/fieldworkers")
+public class FieldWorkerResource {
+
+	private FieldWorkerService fieldWorkerService;
+
+	@Autowired
+	public FieldWorkerResource(FieldWorkerService fieldWorkerService) {
+		this.fieldWorkerService = fieldWorkerService;
+	}
+
+	@XmlRootElement(name = "fieldworkers")
+	public static class FieldWorkers {
+
+		private List<FieldWorker> fieldWorkers;
+
+		@XmlElement(name = "fieldworker")
+		public List<FieldWorker> getFieldWorkers() {
+			return fieldWorkers;
+		}
+
+		public void setFieldWorkers(List<FieldWorker> fieldWorkers) {
+			this.fieldWorkers = fieldWorkers;
+		}
+
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public FieldWorkers getAllFieldWorkers() {
+		List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();
+		List<FieldWorker> copies = new ArrayList<FieldWorker>();
+		for (FieldWorker fw : allFieldWorkers) {
+			FieldWorker copy = new FieldWorker();
+			copy.setExtId(fw.getExtId());
+			copy.setFirstName(fw.getFirstName());
+			copy.setLastName(fw.getLastName());
+			copy.setUuid(fw.getUuid());
+
+			copies.add(copy);
+		}
+
+		FieldWorkers fws = new FieldWorkers();
+		fws.setFieldWorkers(copies);
+
+		return fws;
+	}
+}

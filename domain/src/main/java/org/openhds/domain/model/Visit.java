@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckInteger;
@@ -28,6 +29,7 @@ import org.openhds.domain.constraint.Searchable;
 @Description(description = "A Visit represents a Field Worker's observation of a specific Location within the study area at a particular date. It can be identified by a uniquely generated identifier which the system uses internally.")
 @Entity
 @Table(name = "visit")
+@XmlRootElement
 public class Visit
     extends AuditableCollectedEntity
     implements Serializable

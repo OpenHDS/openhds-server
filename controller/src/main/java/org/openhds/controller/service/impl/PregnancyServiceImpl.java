@@ -108,7 +108,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws IllegalArgumentException, ConstraintViolations, SQLException {
+	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {
 		// the algorithm for completing a pregnancy outcome is as follows:
 		// (Please note, this may change in the future)
 		// If pregnancy outcome has live births
@@ -137,7 +137,12 @@ public class PregnancyServiceImpl implements PregnancyService {
 			}
 			
 			// create individual
-			entityService.create(outcome.getChild());
+			try {
+                entityService.create(outcome.getChild());
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating child individual in the database");
+            }
 			
 			// use mothers location for the residency
 			Residency residency = new Residency();
@@ -147,20 +152,40 @@ public class PregnancyServiceImpl implements PregnancyService {
 			residency.setLocation( motherLocation );
 			residency.setCollectedBy(pregOutcome.getCollectedBy());
 			residency.setEndType(siteProperties.getNotApplicableCode());
-			entityService.create(residency);
+			try {
+                entityService.create(residency);
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating residency for child in database");
+            }
 			
 			// create membership
-			entityService.create(outcome.getChildMembership());
+			try {
+                entityService.create(outcome.getChildMembership());
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating membership for child in database");
+            }
 		}
 		
 		// close any pregnancy observation
 		closePregnancyObservation(pregOutcome.getMother());
 		
-		if (persistedPO != null)
-			entityService.save(persistedPO);
+		if (persistedPO != null) {
+			try {
+                entityService.save(persistedPO);
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem saving pregnancy outcome to database");
+            }
 		// finally create the pregnancy outcome
-		else
-			entityService.create(pregOutcome);		
+		} else {
+			try {
+                entityService.create(pregOutcome);
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating pregnancy outcome in the database");
+            }
+		}
 	}
 		
 	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {
@@ -231,4 +256,17 @@ public class PregnancyServiceImpl implements PregnancyService {
             }
         };		
 	}
+
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public void createPregnancyObservation(PregnancyObservation pregObs) throws ConstraintViolations {
+        evaluatePregnancyObservation(pregObs);
+        
+        try {
+            entityService.create(pregObs);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem saving the pregnancy observation to the database");
+        }
+    }
 }

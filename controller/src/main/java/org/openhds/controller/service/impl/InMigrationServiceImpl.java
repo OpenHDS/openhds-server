@@ -83,16 +83,33 @@ public class InMigrationServiceImpl implements InMigrationService {
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
-	public void createInMigration(InMigration inMigration) throws ConstraintViolations, SQLException, Exception {
+	public void createInMigration(InMigration inMigration) throws ConstraintViolations {
 		setResidencyFieldsFromInMigration(inMigration);
 		checkValidIndividual(inMigration);
 
 		residencyService.evaluateResidency(inMigration.getResidency());
 		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
-			entityService.create(inMigration.getIndividual());
+			try {
+                entityService.create(inMigration.getIndividual());
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("There was a problem creating the individual for the in migration in the database");
+            }
 		}
-		entityService.create(inMigration.getResidency());
-		entityService.create(inMigration);
+		
+		try {
+            entityService.create(inMigration.getResidency());
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem creating the residency for the in migration in the database");
+        }
+		
+		try {
+            entityService.create(inMigration);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem creating the in migration in the database");
+        }
 	}
 
 	private void checkValidIndividual(InMigration inMigration) throws ConstraintViolations {

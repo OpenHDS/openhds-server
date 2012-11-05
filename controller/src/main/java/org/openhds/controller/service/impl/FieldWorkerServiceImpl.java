@@ -9,6 +9,7 @@ import org.openhds.controller.idgeneration.FieldWorkerGenerator;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 
 @SuppressWarnings("unchecked")
@@ -67,5 +68,10 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 	public FieldWorker findFieldWorkerById(String fieldWorkerId) throws ConstraintViolations {
 		 FieldWorker fw = genericDao.findByProperty(FieldWorker.class, "extId", fieldWorkerId);
 		 return fw;
+	}
+
+	@Override
+	public List<FieldWorker> getAllFieldWorkers() {
+		return genericDao.findAll(FieldWorker.class, true);
 	}
 }

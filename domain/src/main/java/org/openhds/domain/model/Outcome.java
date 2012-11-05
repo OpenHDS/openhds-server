@@ -27,21 +27,21 @@ public class Outcome implements Serializable {
 	@Id @GeneratedValue(generator="system-uuid")
 	@GenericGenerator(name="system-uuid", strategy = "uuid")
 	@Column(length=32)
-	String uuid;
+	private String uuid;
 	
 	@CheckFieldNotBlank
 	@Description(description="Pregnancy outcome type.")
-	public String type;
+	private String type;
 	
 	@OneToOne(cascade = {CascadeType.ALL})
 	@CheckEntityNotVoided(allowNull=true)
     @CheckIndividualNotUnknown
 	@Description(description="The child that of the pregnancy, identified by external id.")
-	Individual child;
+	private Individual child;
 	
 	@OneToOne
 	@Description(description="Membership of the child, which is obtained from the mother at birth.")
-	Membership childMembership;
+	private Membership childMembership;
 
 	public String getUuid() {
 		return uuid;

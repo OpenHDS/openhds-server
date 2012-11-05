@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
 
@@ -71,6 +73,7 @@ public abstract class AuditableEntity implements Serializable {
 		this.voidReason = voidReason;
 	}
 
+	@XmlTransient
 	public boolean isDeleted() {
 		return deleted;
 	}

@@ -39,5 +39,8 @@ public interface IndividualService {
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	Individual createTemporaryIndividualWithExtId(String extId, FieldWorker CollectedBy) throws Exception;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    List<Individual> getAllIndividuals();
 }
 

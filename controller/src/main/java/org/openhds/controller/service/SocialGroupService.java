@@ -43,5 +43,11 @@ public interface SocialGroupService {
 	SocialGroup findSocialGroupById(String socialGroupId, String msg) throws Exception; 
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	SocialGroup getSocialGroupForIndividualByType(Individual individual, String groupType); 
+	SocialGroup getSocialGroupForIndividualByType(Individual individual, String groupType);
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<SocialGroup> getAllSocialGroups();
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations; 
 }

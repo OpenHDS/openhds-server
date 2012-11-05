@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -11,10 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
-//import javax.xml.bind.annotation.XmlElement;
-//import javax.xml.bind.annotation.XmlElementWrapper;
-//import javax.xml.bind.annotation.XmlRootElement;
-//import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckIndividualGenderFemale;
@@ -22,6 +24,7 @@ import org.openhds.domain.constraint.CheckIndividualGenderMale;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.CheckInteger;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Pregnancy Outcome represents the results of the " +
 		"pregnancy. It contains information about the Visit that is associated, " +
@@ -29,26 +32,27 @@ import org.openhds.domain.constraint.Searchable;
 		"can have multiple Outcomes. ")
 @Entity
 @Table(name="pregnancyoutcome")
+@XmlRootElement(name = "pregnancyoutcome")
 public class PregnancyOutcome extends AuditableCollectedEntity implements Serializable {
 
     private static final long serialVersionUID = -8901037436653805795L;
         
     @ManyToOne
     @Description(description="Visit that is associated with the pregnancy outcome, identified by the external id.")
-    Visit visit;
+    private Visit visit;
    
     @CheckInteger
     @Description(description="Total number of children born, including live and still births.")
-    public Integer childEverBorn = 0;
+    private Integer childEverBorn = 0;
    
     @CheckInteger
     @Description(description="Total number of live births.")
-    public Integer numberOfLiveBirths = 0;
+    private Integer numberOfLiveBirths = 0;
    
     @Temporal(javax.persistence.TemporalType.DATE)
     @Past
     @Description(description="Date of the pregnancy outcome.")
-    Calendar outcomeDate;
+    private Calendar outcomeDate;
    
     @Searchable
     @ManyToOne
@@ -56,18 +60,18 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
     @CheckIndividualNotUnknown
     @CheckEntityNotVoided
     @Description(description="Mother of the pregnancy outcome.")
-    Individual mother;
+    private Individual mother;
     
     @Searchable
     @ManyToOne
     @CheckIndividualGenderMale(allowNull = false)
     @CheckEntityNotVoided
     @Description(description="Father of the pregnancy outcome.")
-    Individual father;
+    private Individual father;
    
     @OneToMany(cascade = CascadeType.ALL)
     @Description(description="List of all outcomes for the pregnancy.")
-    List<Outcome> outcomes = new ArrayList<Outcome>();
+    private List<Outcome> outcomes = new ArrayList<Outcome>();
 
     public Integer getChildEverBorn() {
         return childEverBorn;
@@ -109,8 +113,8 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
         this.father = father;
     }
 
-    //@XmlElement(name="outcome")
-    //@XmlElementWrapper(name="outcomes")
+    @XmlElement(name="outcome")
+    @XmlElementWrapper(name="outcomes")
     public List<Outcome> getOutcomes() {
         return outcomes;
     }
@@ -119,7 +123,7 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
         this.outcomes = outcomes;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getOutcomeDate() {
         return outcomeDate;
     }

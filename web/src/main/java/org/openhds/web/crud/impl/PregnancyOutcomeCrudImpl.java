@@ -61,10 +61,6 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
             return listSetup();
         } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            jsfService.addError(e.getMessage());
-        } catch (SQLException e) {
-            jsfService.addError(e.getMessage());
         } catch (AuthorizationException e) {
         	jsfService.addError(e.getMessage());
         }

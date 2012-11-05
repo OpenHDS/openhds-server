@@ -1,11 +1,13 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.idgeneration.Generator;
+import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Location;
@@ -18,9 +20,11 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	private GenericDao genericDao;
 	private Generator locationGenerator;
 	private Generator locationHierarchyGenerator;
+    private EntityService entityService;
 	
-	public LocationHierarchyServiceImpl(GenericDao genericDao, Generator locationGenerator, Generator locationHierarchyGenerator) {
+	public LocationHierarchyServiceImpl(GenericDao genericDao, EntityService entityService, Generator locationGenerator, Generator locationHierarchyGenerator) {
 		this.genericDao = genericDao;
+		this.entityService = entityService;
 		this.locationGenerator = locationGenerator;
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
@@ -346,13 +350,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         return names;
     }
     
-    public Location findLocationById(String locationId, String msg) throws Exception {
-        Location location = genericDao.findByProperty(Location.class, "extId", locationId);
-        if (location == null) {
-            throw new Exception(msg);
-        }
-
-        return location;
+    public Location findLocationById(String locationId) {
+        return genericDao.findByProperty(Location.class, "extId", locationId);
     }
     
     /**
@@ -439,5 +438,26 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	public void setLocationHierarchyGenerator(Generator locationHierarchyGenerator) {
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
-		
+
+    @Override
+    public List<Location> getAllLocations() {
+        return genericDao.findAll(Location.class, true);
+    }
+
+    @Override
+    public void createLocation(Location location) throws ConstraintViolations {
+        evaluateLocation(location);
+        try {
+            entityService.create(location);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem saving the location to the database");
+        }
+    }
+
+	@Override
+	public List<LocationHierarchy> getAllLocationHierarchies() {
+		return genericDao.findAllWithoutProperty(LocationHierarchy.class, "extId", "HIERARCHY_ROOT");
+	}
+
 }

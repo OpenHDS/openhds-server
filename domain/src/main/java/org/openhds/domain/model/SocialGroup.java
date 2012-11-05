@@ -3,11 +3,14 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -24,6 +27,7 @@ import org.openhds.domain.constraint.Searchable;
 @Description(description = "A Social Group represents a distinct family within the study area. Social Groups are identified by a uniquely generated identifier which the system uses internally. A Social Group has one head of house which all Membership relationships are based on.")
 @Entity
 @Table(name = "socialgroup")
+@XmlRootElement(name = "socialgroup")
 public class SocialGroup
     extends AuditableCollectedEntity
     implements Serializable

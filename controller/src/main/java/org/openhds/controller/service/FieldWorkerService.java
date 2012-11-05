@@ -20,4 +20,7 @@ public interface FieldWorkerService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	FieldWorker findFieldWorkerById(String fieldWorkerId) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<FieldWorker> getAllFieldWorkers();
 }

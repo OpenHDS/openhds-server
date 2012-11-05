@@ -36,5 +36,11 @@ public interface VisitService {
 	List<ClassExtension> getExtensionsByEntityClassAndRoundNumber(EntityType entityType, int roundNum);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	void validateGeneralVisit(Visit visit) throws ConstraintViolations; 
+	void validateGeneralVisit(Visit visit) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+    void createVisit(Visit visit) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    List<Visit> getAllVisits(); 
 }

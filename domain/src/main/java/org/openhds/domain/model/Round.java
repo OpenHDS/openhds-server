@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
@@ -60,6 +62,7 @@ public class Round implements Serializable, GenericStartEndDateConstraint {
 		this.roundNumber = roundNumber;
 	}
 
+	@XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
 	public Calendar getStartDate() {
 		return startDate;
 	}
@@ -68,6 +71,7 @@ public class Round implements Serializable, GenericStartEndDateConstraint {
 		this.startDate = startDate;
 	}
 
+	@XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
 	public Calendar getEndDate() {
 		return endDate;
 	}

@@ -2,6 +2,7 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -9,6 +10,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateAndEndEventType;
 import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
@@ -22,6 +26,7 @@ import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Relationship is used to associate an Individual " +
 		"with another Indivual in some way. It can be identified by a uniquely " +
@@ -34,6 +39,7 @@ import org.openhds.domain.constraint.Searchable;
 @CheckEndDateGreaterThanStartDate(allowNull=true)
 @CheckEndDateAndEndEventType
 @Table(name="relationship")
+@XmlRootElement
 public class Relationship extends AuditableCollectedEntity implements GenericEndDateEndEventConstraint, GenericStartEndDateConstraint, Serializable {
     static final long serialVersionUID = 19L;
         
@@ -84,7 +90,7 @@ public class Relationship extends AuditableCollectedEntity implements GenericEnd
         this.individualB = individualB;
     }
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getStartDate() {
         return startDate;
     }

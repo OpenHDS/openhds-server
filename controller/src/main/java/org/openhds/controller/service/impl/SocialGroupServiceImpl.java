@@ -13,6 +13,7 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;
@@ -171,5 +172,22 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     public SocialGroup findSocialGroupById(String sgExtId) {
         SocialGroup sg = genericDao.findByProperty(SocialGroup.class, "extId", sgExtId);
         return sg;
-    }  
+    }
+
+	@Override
+	public List<SocialGroup> getAllSocialGroups() {
+		return genericDao.findAll(SocialGroup.class, true);
+	}
+
+	@Override
+	public void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations {
+		evaluateSocialGroup(socialGroup);
+		
+		try {
+			service.create(socialGroup);
+		} catch (IllegalArgumentException e) {
+		} catch (SQLException e) {
+			throw new ConstraintViolations("There was a problem saving the social group to the database");
+		}
+	}  
 }

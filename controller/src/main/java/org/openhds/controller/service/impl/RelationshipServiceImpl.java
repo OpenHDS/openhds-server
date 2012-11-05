@@ -1,8 +1,10 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.RelationshipService;
 import org.openhds.dao.service.GenericDao;
@@ -11,15 +13,18 @@ import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.service.SitePropertiesService;
+import org.springframework.transaction.annotation.Transactional;
 
 public class RelationshipServiceImpl implements RelationshipService {
 	
 	private IndividualService individualService;
 	private GenericDao genericDao;
 	private SitePropertiesService siteProperties;
+	private EntityService entityService;
 
-	public RelationshipServiceImpl(GenericDao genericDao, IndividualService individualService, SitePropertiesService siteProperties) {
+	public RelationshipServiceImpl(GenericDao genericDao, EntityService entityService, IndividualService individualService, SitePropertiesService siteProperties) {
 		this.genericDao = genericDao;
+		this.entityService = entityService;
 		this.individualService = individualService;
 		this.siteProperties = siteProperties;
 	}
@@ -168,5 +173,27 @@ public class RelationshipServiceImpl implements RelationshipService {
 	        	}
 		 }	
 		 return itemsA;
+	}
+
+	@Override
+	public List<Relationship> getAllRelationships() {
+		return genericDao.findAll(Relationship.class, true);
+	}
+
+	@Override
+	@Transactional
+	public void createRelationship(Relationship relationship) throws ConstraintViolations {
+		if (relationship.getEndType() == null) {
+			relationship.setEndType(siteProperties.getNotApplicableCode());
+		}
+		
+		evaluateRelationship(relationship);
+		
+		try {
+			entityService.create(relationship);
+		} catch (IllegalArgumentException e) {
+		} catch (SQLException e) {
+			throw new ConstraintViolations("There was a problem saving the relationship to the database");
+		}
 	}
 }

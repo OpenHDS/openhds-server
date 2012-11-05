@@ -57,7 +57,7 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public void createOutMigration(OutMigration outMigration) throws ConstraintViolations, IllegalArgumentException, SQLException {
+	public void createOutMigration(OutMigration outMigration) throws ConstraintViolations {
 		Residency currentResidence = outMigration.getIndividual().getCurrentResidency();
 		
 		// configure out migration
@@ -68,7 +68,18 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 		// run the residency through the residency service which provides additional integrity constraints
 		residencyService.evaluateResidency(currentResidence);
 		
-		entityService.save(currentResidence);
-		entityService.create(outMigration);
+        try {
+            entityService.save(currentResidence);
+        } catch (SQLException e) {
+            throw new ConstraintViolations(
+                    "There as a problem updating the database with the residency associated with the out migration");
+        }
+
+        try {
+            entityService.create(outMigration);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem creating a new out migration in the database");
+        }
 	}
 }

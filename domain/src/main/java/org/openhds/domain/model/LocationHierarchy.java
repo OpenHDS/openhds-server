@@ -1,6 +1,7 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -25,6 +28,7 @@ import org.openhds.domain.constraint.Searchable;
 		"field must reference a valid location name from this configured hierarchy.")
 @Entity
 @Table(name="locationhierarchy")
+@XmlRootElement
 public class LocationHierarchy implements Serializable {
 	
 	private static final long serialVersionUID = -5334850119671675888L;

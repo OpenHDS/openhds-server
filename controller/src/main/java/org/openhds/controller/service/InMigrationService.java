@@ -62,5 +62,5 @@ public interface InMigrationService {
 	 * @throws Exception any other type of exception that might occur
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createInMigration(InMigration inMigration) throws ConstraintViolations, SQLException, Exception;
+	void createInMigration(InMigration inMigration) throws ConstraintViolations;
 }

@@ -163,6 +163,7 @@
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.LocationHierarchyServiceImpl">		    
 		        <constructor-arg ref="genericDao" />
+                <constructor-arg ref="entityService" />
 		        <constructor-arg ref="locationIdGenerator" />
 		        <constructor-arg ref="locationHierarchyIdGenerator" />
 		    </bean>
@@ -206,6 +207,7 @@
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.RelationshipServiceImpl">
 		        <constructor-arg ref="genericDao" />
+                <constructor-arg ref="entityService" />
     			<constructor-arg ref="individualService" />   
     			<constructor-arg ref="siteProperties" /> 		
     		</bean>
@@ -235,6 +237,7 @@
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.RoundServiceImpl">
 		        <constructor-arg ref="genericDao" />
+                <constructor-arg ref="entityService" />
 		    </bean>
 	    </property>
     </bean>
@@ -253,8 +256,10 @@
     <bean id="visitService" parent="baseServiceBean">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.VisitServiceImpl">
-		        <constructor-arg ref="genericDao" />
+		        <constructor-arg ref="entityService" />
+                <constructor-arg ref="genericDao" />
 		        <constructor-arg ref="visitIdGenerator" />
+                <constructor-arg ref="siteProperties" />
 		    </bean>
 	    </property>
     </bean>

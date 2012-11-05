@@ -206,4 +206,13 @@ public class GenericDaoImpl implements GenericDao {
 
         return (List<T>) crit.add(Restrictions.like(property, value, MatchMode.START)).list();
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value) {
+		Criteria crit = getSession().createCriteria(entityType);
+		crit.add(Restrictions.ne(property, value));
+		
+		return (List<T>) crit.list();
+	}
 }

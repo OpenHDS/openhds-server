@@ -57,7 +57,7 @@ public interface PregnancyService {
 	 * @throws SQLException
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createPregnancyOutcome(PregnancyOutcome outcome) throws IllegalArgumentException, ConstraintViolations, SQLException;
+	void createPregnancyOutcome(PregnancyOutcome outcome) throws ConstraintViolations;
 	
 	/**
 	 * Verify a pregnancy outcome is valid
@@ -104,4 +104,7 @@ public interface PregnancyService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	int findAllBirthsBetweenIntervalByGender(Calendar startDate, Calendar endDate, int flag);
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+    void createPregnancyObservation(PregnancyObservation pregObs) throws ConstraintViolations;
 }

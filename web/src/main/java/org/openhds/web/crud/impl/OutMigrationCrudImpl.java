@@ -34,11 +34,8 @@ public class OutMigrationCrudImpl extends EntityCrudImpl<OutMigration, String> {
     	}		
     	catch(ConstraintViolations e) {
     		jsfService.addError(e.getMessage());
-    	} catch (IllegalArgumentException e) {
-    		jsfService.addError(e.getMessage());
-    	} catch (SQLException e) {
-    		jsfService.addError(e.getMessage());
-    	}	  	
+    	}
+    	
     	return null;
     }
     

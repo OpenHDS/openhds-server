@@ -11,6 +11,7 @@ import org.openhds.controller.idgeneration.IndividualGenerator;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.InMigration;
@@ -161,4 +162,9 @@ public class IndividualServiceImpl implements IndividualService {
 		entityService.create(head);
 		return head;
 	}
+
+    @Override
+    public List<Individual> getAllIndividuals() {
+        return genericDao.findAll(Individual.class, true);
+    }
 }
