@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.AuditableEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -210,8 +211,12 @@ public class GenericDaoImpl implements GenericDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value) {
-		Criteria crit = getSession().createCriteria(entityType);
+	    Criteria crit = getSession().createCriteria(entityType);
 		crit.add(Restrictions.ne(property, value));
+		
+        if (AuditableEntity.class.isAssignableFrom(entityType)) {
+            crit.add(Restrictions.eq("deleted", false));
+        }
 		
 		return (List<T>) crit.list();
 	}

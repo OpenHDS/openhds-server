@@ -165,6 +165,6 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Override
     public List<Individual> getAllIndividuals() {
-        return genericDao.findAll(Individual.class, true);
+        return genericDao.findAllWithoutProperty(Individual.class, "extId", "UNK");
     }
 }

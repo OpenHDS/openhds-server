@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -174,6 +176,8 @@ public class Individual
         dobAspect = aspect;
     }
 
+    @XmlElementWrapper(name = "residencies")
+    @XmlElement(name = "residency")
     public Set<Residency> getAllResidencies() {
         return allResidencies;
     }
@@ -198,6 +202,8 @@ public class Individual
         allRelationships2 = list;
     }
 
+    @XmlElementWrapper(name = "memberships")
+    @XmlElement(name = "membership")
     public Set<Membership> getAllMemberships() {
         return allMemberships;
     }

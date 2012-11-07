@@ -81,23 +81,32 @@ public class LocationResource {
 
     protected Location copyLocation(Location loc) {
         Location copy = new Location();
-        copy.setAccuracy(loc.getAccuracy());
-        copy.setAltitude(loc.getAltitude());
-        copy.setExtId(loc.getExtId());
-        copy.setLatitude(loc.getLatitude());
-
+        
+        copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
+        copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
+        copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
+        copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
+        
         LocationHierarchy level = new LocationHierarchy();
         level.setExtId(loc.getLocationLevel().getExtId());
         copy.setLocationLevel(level);
 
+        copy.setExtId(loc.getExtId());
         copy.setLocationName(loc.getLocationName());
         copy.setLocationType(loc.getLocationType());
-        copy.setLongitude(loc.getLongitude());
 
         FieldWorker fw = new FieldWorker();
         fw.setExtId(loc.getCollectedBy().getExtId());
         copy.setCollectedBy(fw);
         return copy;
+    }
+
+    private String getEmptyStringIfBlank(String accuracy) {
+        if (accuracy == null || accuracy.trim().isEmpty()) {
+            return "";
+        }
+        
+        return accuracy;
     }
 
     @RequestMapping(method = RequestMethod.POST)
