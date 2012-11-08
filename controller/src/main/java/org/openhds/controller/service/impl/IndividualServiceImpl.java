@@ -1,5 +1,6 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,9 +39,6 @@ public class IndividualServiceImpl implements IndividualService {
 	}
 	
 	public Individual evaluateIndividual(Individual entityItem) throws ConstraintViolations {	
-		if (indivGen.generated)	
-			return generateId(entityItem);
-		
 		if (findIndivById(entityItem.getExtId()) != null)
 			throw new ConstraintViolations("The Id specified already exists");
 				
@@ -49,7 +47,25 @@ public class IndividualServiceImpl implements IndividualService {
 		return entityItem;
 	}
 	
-	public Individual validateIdLength(Individual entityItem) throws ConstraintViolations {
+    @Transactional
+    public void createIndividual(Individual individual) throws ConstraintViolations {
+        assignId(individual);
+        evaluateIndividual(individual);
+        try {
+            entityService.create(individual);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+        }
+    }
+
+    private void assignId(Individual individual) throws ConstraintViolations {
+        String id = individual.getExtId() == null ? "" : individual.getExtId();
+        if (id.trim().isEmpty() && indivGen.generated) {
+            generateId(individual);
+        }
+    }
+
+    public Individual validateIdLength(Individual entityItem) throws ConstraintViolations {
 		indivGen.validateIdLength(entityItem.getExtId(), indivGen.getIdScheme());
 		return entityItem;
 	}

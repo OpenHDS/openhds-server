@@ -25,8 +25,8 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     public String create() {
         try {
             if (entityValidator.checkConstraints(entityItem) == false) {
-                service.evaluateIndividual(entityItem);   
-                super.create();
+                service.createIndividual(entityItem);   
+                return onCreateComplete();
             }
         } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
@@ -63,8 +63,8 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     @Override
     public boolean commit(MessageContext messageContext) {
         try {
-            service.evaluateIndividual(entityItem);
-            return super.commit(messageContext);
+            service.createIndividual(entityItem);
+            return true;
         } catch (ConstraintViolations e) {
             webFlowService.createMessage(messageContext, e.getMessage());
         }
