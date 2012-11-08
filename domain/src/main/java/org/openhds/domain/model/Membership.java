@@ -2,12 +2,14 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-//import javax.xml.bind.annotation.XmlRootElement;
-//import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateAndEndEventType;
 import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
@@ -19,6 +21,7 @@ import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Membership represents an Individual's association with a " +
 		"particular Social Group. Memberships are identified by a uniquely generated " +
@@ -30,7 +33,7 @@ import org.openhds.domain.constraint.Searchable;
 @CheckStartDateGreaterThanBirthDate
 @CheckEndDateAndEndEventType
 @Table(name="membership")
-//@XmlRootElement(name = "membership")
+@XmlRootElement(name = "membership")
 public class Membership extends AuditableCollectedEntity implements GenericEndDateEndEventConstraint, GenericStartEndDateConstraint, Serializable {
 	
 	private static final long serialVersionUID = 6200055042380700627L;
@@ -82,7 +85,7 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
 		this.socialGroup = socialGroup;
 	}
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
 	public Calendar getStartDate() {
 		return startDate;
 	}
@@ -99,7 +102,7 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
 		this.startType = startType;
 	}
 
-    //@XmlJavaTypeAdapter(value=CalendarAdapter.class) 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
 	public Calendar getEndDate() {
 		return endDate;
 	}

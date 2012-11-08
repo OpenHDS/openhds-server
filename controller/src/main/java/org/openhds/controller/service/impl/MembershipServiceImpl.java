@@ -1,10 +1,12 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.MembershipService;
 import org.openhds.dao.service.GenericDao;
@@ -13,22 +15,24 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.service.SitePropertiesService;
+import org.springframework.transaction.annotation.Transactional;
 
 public class MembershipServiceImpl implements MembershipService {
 	
 	private IndividualService individualService;
 	private GenericDao genericDao;
 	private SitePropertiesService siteProperties;
+    private EntityService entityService;
 
-	public MembershipServiceImpl(GenericDao genericDao, IndividualService individualService, SitePropertiesService siteProperties) {
+	public MembershipServiceImpl(GenericDao genericDao, EntityService entityService, IndividualService individualService, SitePropertiesService siteProperties) {
 		this.genericDao = genericDao;
+		this.entityService = entityService;
 		this.individualService = individualService;
 		this.siteProperties = siteProperties;
 	}
 	
 	public Membership evaluateMembership(Membership entityItem) throws ConstraintViolations {
-		
-		if (!checkDuplicateMembership(entityItem.getIndividual(), entityItem.getSocialGroup())) 
+	    if (!checkDuplicateMembership(entityItem.getIndividual(), entityItem.getSocialGroup())) 
     		throw new ConstraintViolations("A Membership for the specified Social Group already exists.");	
     	if (individualService.getLatestEvent(entityItem.getIndividual()).equals("Death"))
     		throw new ConstraintViolations("A Membership cannot be created for an Individual who has a Death event.");
@@ -135,4 +139,24 @@ public class MembershipServiceImpl implements MembershipService {
 	private boolean individualIsHeadOfSocialGroup(Individual individual, SocialGroup socialGroup) {
 		return socialGroup.getGroupHead().getExtId().equals(individual.getExtId());
 	}
+
+    @Override
+    @Transactional
+    public void createMembership(Membership item) throws ConstraintViolations {
+        // assume a default start type of in migration
+        if (item.getStartType() == null) {
+            item.setStartType(siteProperties.getInmigrationCode());
+        }
+        
+        if (item.getEndType() == null) {
+            item.setEndType(siteProperties.getNotApplicableCode());
+        }
+        
+        evaluateMembership(item);
+        try {
+            entityService.create(item);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+        }
+    }
 }

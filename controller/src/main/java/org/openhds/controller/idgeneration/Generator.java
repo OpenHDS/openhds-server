@@ -67,7 +67,7 @@ public abstract class Generator<T> extends LuhnValidator {
 		
 		String substring = string.substring(0, filter);
 		
-		Pattern pattern = Pattern.compile("[a-zA-Z]+");   
+		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+");   
 	    Matcher matcher = pattern.matcher(substring);
 	  
 		if (!matcher.matches())

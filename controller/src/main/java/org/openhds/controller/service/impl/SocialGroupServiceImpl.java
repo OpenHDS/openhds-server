@@ -25,9 +25,9 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 	private EntityService service;
 	private GenericDao genericDao;
 	private IndividualService individualService;
-	private Generator generator;
+	private SocialGroupGenerator generator;
 	
-	public SocialGroupServiceImpl(GenericDao genericDao, IndividualService individualService, EntityService service, Generator generator) {
+	public SocialGroupServiceImpl(GenericDao genericDao, IndividualService individualService, EntityService service, SocialGroupGenerator generator) {
 		this.genericDao = genericDao;
 		this.individualService = individualService;
 		this.service = service;
@@ -35,22 +35,16 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 	}
 	
 	public SocialGroup evaluateSocialGroup(SocialGroup entityItem) throws ConstraintViolations {
-		
-		SocialGroupGenerator sgGen = (SocialGroupGenerator)generator;
-	
 		if (entityItem.getGroupHead().getExtId() == null) 
 			entityItem.setGroupHead(null);
 		
 	    if (individualService.getLatestEvent(entityItem.getGroupHead()).equals("Death"))
 	    	throw new ConstraintViolations("A Social Group cannot be created for an Individual who has a Death event.");	
 	        	
-    	if (sgGen.generated)	
-			return generateId(entityItem);
-		
 		if (findSocialGroupById(entityItem.getExtId()) != null)
 			throw new ConstraintViolations("The Id specified already exists");	
 		
-		generator.validateIdLength(entityItem.getExtId(), sgGen.getIdScheme());
+		generator.validateIdLength(entityItem.getExtId(), generator.getIdScheme());
 		
 		return entityItem;
 	}
@@ -181,7 +175,8 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 
 	@Override
 	public void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations {
-		evaluateSocialGroup(socialGroup);
+		assignId(socialGroup);
+	    evaluateSocialGroup(socialGroup);
 		
 		try {
 			service.create(socialGroup);
@@ -189,5 +184,12 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 		} catch (SQLException e) {
 			throw new ConstraintViolations("There was a problem saving the social group to the database");
 		}
-	}  
+	}
+
+    private void assignId(SocialGroup socialGroup) throws ConstraintViolations {
+        String id = socialGroup.getExtId() == null ? "" : socialGroup.getExtId();
+        if (id.trim().isEmpty() && generator.generated) {
+            generateId(socialGroup);
+        }
+    }
 }

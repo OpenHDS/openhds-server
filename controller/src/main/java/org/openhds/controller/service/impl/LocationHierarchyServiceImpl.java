@@ -149,7 +149,6 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	}
 		
 	public Location evaluateLocation(Location entityItem) throws ConstraintViolations {
-		
 		if (!checkValidLocationEntry(entityItem.getLocationLevel().getExtId())) 
     		throw new ConstraintViolations("The " + getLowestLevel().getName() + 
     		" specified is not the lowest level in the Location Hierarchy.");
@@ -157,8 +156,6 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getLocationLevel().getExtId());
 		entityItem.setLocationLevel(item);
 		
-		if (locationGenerator.generated)
-			return generateId(entityItem);
 		
 		return entityItem;
 	}	
@@ -446,6 +443,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
     @Override
     public void createLocation(Location location) throws ConstraintViolations {
+        assignId(location);
         evaluateLocation(location);
         try {
             entityService.create(location);
@@ -455,7 +453,14 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
         }
     }
 
-	@Override
+	private void assignId(Location location) throws ConstraintViolations {
+	    String id = location.getExtId() == null ? "" : location.getExtId();
+	    if (id.trim().isEmpty() && locationGenerator.generated) {
+	        generateId(location);
+	    }
+    }
+
+    @Override
 	public List<LocationHierarchy> getAllLocationHierarchies() {
 		return genericDao.findAllWithoutProperty(LocationHierarchy.class, "extId", "HIERARCHY_ROOT");
 	}

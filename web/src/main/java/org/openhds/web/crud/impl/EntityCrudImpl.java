@@ -235,7 +235,11 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 			return null;
 		}
 
-		showListing = true;
+		return onCreateComplete();
+    }
+
+    protected String onCreateComplete() {
+        showListing = true;
         return listSetup();
     }
 
@@ -312,8 +316,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 			return null;
 		}
 
-		showListing = true;
-        return listSetup();
+		return onCreateComplete();
     }
 
     @SuppressWarnings("unchecked")

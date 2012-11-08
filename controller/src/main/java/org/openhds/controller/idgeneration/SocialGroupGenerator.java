@@ -16,7 +16,7 @@ import org.openhds.domain.model.SocialGroup;
  * the id. 
  */
 
-public class SocialGroupGenerator<T> extends Generator<SocialGroup> {
+public class SocialGroupGenerator extends Generator<SocialGroup> {
 	
 	@Override
 	public String generateId(SocialGroup entityItem) throws ConstraintViolations  {

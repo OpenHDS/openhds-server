@@ -35,5 +35,8 @@ public interface MembershipService {
 	Membership createMembershipForPregnancyOutcome(Calendar startDate, Individual individual, SocialGroup sg, FieldWorker fw, String relationToGroupHead);
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void validateGeneralMembership(Membership membership) throws ConstraintViolations; 
+	void validateGeneralMembership(Membership membership) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+    void createMembership(Membership item) throws ConstraintViolations; 
 }

@@ -34,16 +34,10 @@ public class VisitServiceImpl implements VisitService {
     }
 
     public Visit evaluateVisit(Visit entityItem) throws ConstraintViolations {
-
-        VisitGenerator visitGen = (VisitGenerator) generator;
-
         if (!checkValidRoundNumber(entityItem.getRoundNumber()))
             throw new ConstraintViolations("The Round Number specified is not a valid Round Number.");
 
-        if (generator.isGenerated())
-            return generateId(entityItem);
-
-        generator.validateIdLength(entityItem.getExtId(), visitGen.getIdScheme());
+        generator.validateIdLength(entityItem.getExtId(), generator.getIdScheme());
 
         return entityItem;
     }
@@ -157,6 +151,7 @@ public class VisitServiceImpl implements VisitService {
 
     @Transactional
     public void createVisit(Visit visit) throws ConstraintViolations {
+        assignId(visit);
         evaluateVisit(visit);
         visit.setStatus(siteProperties.getDataStatusValidCode());
 
@@ -166,6 +161,13 @@ public class VisitServiceImpl implements VisitService {
             // should never happen
         } catch (SQLException e) {
             throw new ConstraintViolations("There was a problem saving the visit to the database");
+        }
+    }
+
+    private void assignId(Visit visit) throws ConstraintViolations {
+        String id = visit.getExtId() == null ? "" : visit.getExtId();
+        if (id.trim().isEmpty() && generator.isGenerated()) {
+            generateId(visit); 
         }
     }
 

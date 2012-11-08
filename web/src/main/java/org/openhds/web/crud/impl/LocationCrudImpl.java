@@ -21,8 +21,8 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
     public String create() {
 
         try {
-            service.evaluateLocation(entityItem);
-            super.create();
+            service.createLocation(entityItem);
+            return onCreateComplete();
         } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
         } catch(AuthorizationException e) {
@@ -58,8 +58,8 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
     @Override
     public boolean commit(MessageContext messageContext) {
         try {
-            service.evaluateLocation(entityItem);
-            return super.commit(messageContext);
+            service.createLocation(entityItem);
+            return true;
         } catch (ConstraintViolations e) {
             webFlowService.createMessage(messageContext, e.getMessage());
         }

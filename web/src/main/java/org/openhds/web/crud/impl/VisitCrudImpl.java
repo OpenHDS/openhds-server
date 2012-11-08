@@ -187,9 +187,8 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
     public String create() {
 
         try {
-            service.evaluateVisit(entityItem);
-            extensionService.evaluateExtensions(entityItem);
-            return super.create();
+            service.createVisit(entityItem);
+            return onCreateComplete();
         } catch (ConstraintViolations e) {
             jsfService.addError(e.getMessage());
         } catch(AuthorizationException e) {
@@ -220,9 +219,8 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
     @Override
     public boolean commit(MessageContext messageContext) {
         try {
-            service.evaluateVisit(entityItem);
-            extensionService.evaluateExtensions(entityItem);
-            return super.commit(messageContext);
+            service.createVisit(entityItem);
+            return true;
         } catch (ConstraintViolations e) {
             webFlowService.createMessage(messageContext, e.getMessage());
         } 

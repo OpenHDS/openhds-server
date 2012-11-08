@@ -22,8 +22,8 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     public String create() {
     	
     	try {
-    		socialGroupService.evaluateSocialGroup(entityItem);		
-	        return super.create();
+    		socialGroupService.createSocialGroup(entityItem);		
+	        return onCreateComplete();
     	}		
     	catch(ConstraintViolations e) {
     		jsfService.addError(e.getMessage());
@@ -73,8 +73,8 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     @Override
     public boolean commit(MessageContext messageContext) {
     	try {
-    		socialGroupService.evaluateSocialGroup(entityItem);
-    		return super.commit(messageContext);
+    		socialGroupService.createSocialGroup(entityItem);
+    		return true;
     	} catch(ConstraintViolations e) {
     		webFlowService.createMessage(messageContext, e.getMessage());
     	}
