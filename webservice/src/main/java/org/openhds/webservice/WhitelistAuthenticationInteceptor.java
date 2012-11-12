@@ -25,7 +25,13 @@ public class WhitelistAuthenticationInteceptor extends HandlerInterceptorAdapter
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		boolean hasAccess = whitelistService.isHostIpAddressWhitelisted(request.getRemoteAddr());
+		// allowing GET requests so that the tablet app can download data
+	    // TODO: possibly incorporate a way the tablet can identify itself so it is more secure
+	    if (request.getMethod().equalsIgnoreCase("GET")) {
+		    return true;
+		}
+		
+	    boolean hasAccess = whitelistService.isHostIpAddressWhitelisted(request.getRemoteAddr());
 		if (!hasAccess) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			return false;

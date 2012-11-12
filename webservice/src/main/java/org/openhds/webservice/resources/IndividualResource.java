@@ -82,7 +82,8 @@ public class IndividualResource {
         copy.setFirstName(individual.getFirstName());
         copy.setGender(individual.getGender());
         copy.setLastName(individual.getLastName());
-        copy.setMiddleName(individual.getMiddleName());
+        String middleName = individual.getMiddleName() == null ? "" : individual.getMiddleName();
+        copy.setMiddleName(middleName);
         copy.setMother(copyExtId(individual.getMother()));
 
         for (Membership membership : individual.getAllMemberships()) {

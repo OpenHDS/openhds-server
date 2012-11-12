@@ -53,7 +53,9 @@ public class PregnancyOutcomeResource extends AbstractResource<PregnancyOutcome>
 
         for (Outcome outcome : item.getOutcomes()) {
             Outcome copyOutcome = new Outcome();
-            copyOutcome.setChild(copyIndividual(outcome.getChild()));
+            if (siteProperties.getLiveBirthCode().equals(outcome.getType())) {
+                copyOutcome.setChild(copyIndividual(outcome.getChild()));
+            }
             copyOutcome.setType(outcome.getType());
             copy.addOutcome(copyOutcome);
         }
@@ -69,15 +71,15 @@ public class PregnancyOutcomeResource extends AbstractResource<PregnancyOutcome>
     @Override
     protected void setReferencedFields(PregnancyOutcome item, ConstraintViolations cv) {
         item.setVisit(fieldBuilder.referenceField(item.getVisit(), cv));
-        
+
         FieldWorker fw = fieldBuilder.referenceField(item.getCollectedBy(), cv);
         item.setCollectedBy(fw);
-        
+
         Individual father = fieldBuilder.referenceField(item.getFather(), cv, "Invalid father id");
         item.setFather(father);
         Individual mother = fieldBuilder.referenceField(item.getMother(), cv, "Invalid mother id");
         item.setMother(mother);
-        
+
         for (Outcome outcome : item.getOutcomes()) {
             if (outcome.getChild() != null) {
                 outcome.getChild().setFather(father);
@@ -89,7 +91,7 @@ public class PregnancyOutcomeResource extends AbstractResource<PregnancyOutcome>
                     cv.addViolations("All children must specify a membership");
                     return;
                 }
-                
+
                 SocialGroup sg = fieldBuilder.referenceField(membership.getSocialGroup(), cv);
                 membership.setCollectedBy(fw);
                 membership.setIndividual(outcome.getChild());

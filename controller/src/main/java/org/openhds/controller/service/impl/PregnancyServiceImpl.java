@@ -108,15 +108,7 @@ public class PregnancyServiceImpl implements PregnancyService {
 	}
 
 	@Transactional(rollbackFor=Exception.class)
-	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {
-		// the algorithm for completing a pregnancy outcome is as follows:
-		// (Please note, this may change in the future)
-		// If pregnancy outcome has live births
-		// for each child:
-		// - create the new child
-		// - create new residency for child and set the location to the mothers current residency location
-		// - create a membership to the mothers social group for which the social group is of type family 
-		
+	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {	
 		Location motherLocation = pregOutcome.getMother().getCurrentResidency().getLocation();
 		
 		List<PregnancyOutcome> persistedPOList = genericDao.findListByMultiProperty(PregnancyOutcome.class, 
@@ -126,18 +118,24 @@ public class PregnancyServiceImpl implements PregnancyService {
 		PregnancyOutcome persistedPO = null;
 		if (!persistedPOList.isEmpty())
 			persistedPO = persistedPOList.get(0);
+		
+		int totalEverBorn = 0;
+		int liveBirths = 0;
 
 		for(Outcome outcome : pregOutcome.getOutcomes()) {
 			if (persistedPO != null)
 				persistedPO.addOutcome(outcome);
 			
+			totalEverBorn++;
 			if (!outcome.getType().equals(siteProperties.getLiveBirthCode())) {
 				// not a live birth so individual, residency and membership not needed
 				continue;
 			}
 			
+			liveBirths++;
 			// create individual
 			try {
+			    outcome.getChild().setDob(pregOutcome.getOutcomeDate());
                 entityService.create(outcome.getChild());
             } catch (IllegalArgumentException e) {
             } catch (SQLException e) {
@@ -146,12 +144,13 @@ public class PregnancyServiceImpl implements PregnancyService {
 			
 			// use mothers location for the residency
 			Residency residency = new Residency();
-			residency.setStartDate( pregOutcome.getOutcomeDate() );
+			residency.setStartDate(pregOutcome.getOutcomeDate());
 			residency.setIndividual(outcome.getChild());
 			residency.setStartType(siteProperties.getBirthCode());
 			residency.setLocation( motherLocation );
 			residency.setCollectedBy(pregOutcome.getCollectedBy());
 			residency.setEndType(siteProperties.getNotApplicableCode());
+			
 			try {
                 entityService.create(residency);
             } catch (IllegalArgumentException e) {
@@ -167,6 +166,9 @@ public class PregnancyServiceImpl implements PregnancyService {
                 throw new ConstraintViolations("Problem creating membership for child in database");
             }
 		}
+		
+		pregOutcome.setChildEverBorn(totalEverBorn);
+		pregOutcome.setNumberOfLiveBirths(liveBirths);
 		
 		// close any pregnancy observation
 		closePregnancyObservation(pregOutcome.getMother());
