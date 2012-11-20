@@ -57,7 +57,7 @@
            		<h:outputText value="#{navController.breadcrumbTrail} > #{msg.validationRoutineName}" />
            		
            		<div id="loading-div">
-					<img src="/openhds/resources/images/ajax-loader.gif" /> #{msg.working}
+					<img src="#{request.contextPath}/resources/images/ajax-loader.gif" /> #{msg.working}
 				</div>
            
                 <h1>#{msg.validationRoutineName}</h1>
@@ -108,7 +108,7 @@
 		                        <h:column>
 		                            <h:dataTable value="#{values.value}" var="num" >
 		                                <h:column>
-		                                    <h:outputLink id="viewLink" value="/openhds/amendment/#{num}" >
+		                                    <h:outputLink id="viewLink" value="#{request.contextPath}/amendment/#{num}" >
 		       									<h:outputText value="#{msg.view}"/>   
 											</h:outputLink>
 		                                </h:column>

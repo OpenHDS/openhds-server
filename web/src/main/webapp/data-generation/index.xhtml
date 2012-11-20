@@ -167,7 +167,7 @@
 			</fieldset>
 			<br />
 			<h:commandButton id="generateData" action="#{dataGeneratorCrud.generateData}" value="Generate Data" />
-			<span id="loadSpan" style="visibility:hidden"><img src="/openhds/resources/images/ajax-loader-black-transparent.gif" /> Working, please wait <span id="periods">...</span></span>
+			<span id="loadSpan" style="visibility:hidden"><img src="#{request.contextPath}/resources/images/ajax-loader-black-transparent.gif" /> Working, please wait <span id="periods">...</span></span>
 		</h:form>
 		<script>
 			(function() {

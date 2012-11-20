@@ -85,8 +85,8 @@
                     <h:commandButton value="#{msg.lblCancel}" immediate="true" action="cancel" rendered="#{flowScope != null}" />
                 </h:form>
                 <script>
-					$(".individual").autocomplete({source:"/openhds/individual.autocomplete"});
-					$(".collectedBy").autocomplete({source:"/openhds/collectedBy.autocomplete"});
+					$(".individual").autocomplete({source:"#{request.contextPath}/individual.autocomplete"});
+					$(".collectedBy").autocomplete({source:"#{request.contextPath}/collectedBy.autocomplete"});
 				</script>
             </ui:define>
         </ui:composition>

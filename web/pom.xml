@@ -305,7 +305,7 @@
                     <systemPropertyVariables>
                         <org.mortbay.jetty.Request.maxFormContentSize>10000000</org.mortbay.jetty.Request.maxFormContentSize>
                     </systemPropertyVariables>
-                    <contextPath>/${project.parent.artifactId}</contextPath>
+                    <contextPath>/${project.parent.artifactId}2</contextPath>
                 </configuration>
             </plugin>
         </plugins>

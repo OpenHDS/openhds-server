@@ -68,10 +68,10 @@
 		        	<c:if test="#{navController.showReports}" >
 		        	<ul>
 			            <li><h:commandLink value="Demographic Rates" action="#{demRatesCrud.createSetup}" /></li>
-			            <li><a href="/openhds/household-register.report" target="_blank">Household Register</a></li>
-			            <li><a href="/openhds/migration-ent-reconciliation.report" target="_blank">Migration Ent Reconciliation</a></li>
-			            <li><a href="/openhds/pregnancy-observ-reconciliation.report" target="_blank">Preg Observ Reconciliation</a></li>
-			        	<li><a href="/openhds/identification-book.report" target="_blank">Identification Book</a></li>
+			            <li><a href="#{request.contextPath}/household-register.report" target="_blank">Household Register</a></li>
+			            <li><a href="#{request.contextPath}/migration-ent-reconciliation.report" target="_blank">Migration Ent Reconciliation</a></li>
+			            <li><a href="#{request.contextPath}/pregnancy-observ-reconciliation.report" target="_blank">Preg Observ Reconciliation</a></li>
+			        	<li><a href="#{request.contextPath}/identification-book.report" target="_blank">Identification Book</a></li>
 			        </ul>
 			        </c:if>
 		    	</li>
@@ -95,7 +95,7 @@
 			            <li><h:commandLink value="DHIS Document" action="dhisDocument_create" /></li>
 			   		    <li><h:commandLink value="#{msg.navBarStudyDocument}" action="studyDocument_create" /></li>
 			    		  <li>
-			   		    	<h:outputLink value="/openhds/validationRoutine">
+			   		    	<h:outputLink value="#{request.contextPath}/validationRoutine">
 			   		    		<h:outputText value="#{msg.validationRoutineName}" />
 			   		    	</h:outputLink>
 			   		    </li>
@@ -111,17 +111,17 @@
 			        <c:if test="#{navController.showConfiguration}" >
 		        	<ul>
 		        		<li>
-			   		    	<h:outputLink value="/openhds/codes-config">
+			   		    	<h:outputLink value="#{request.contextPath}/codes-config">
 			   		    		<h:outputText value="#{msg.codeName}" />
 			   		    	</h:outputLink>
 			   		    </li>
 			    		<li>
-			   		    	<h:outputLink value="/openhds/database-config">
+			   		    	<h:outputLink value="#{request.contextPath}/database-config">
 			   		    		<h:outputText value="#{msg.dbName}" />
 			   		    	</h:outputLink>
 			   		    </li>
 			   		    <li>
-			   		    	<h:outputLink value="/openhds/location-levels">
+			   		    	<h:outputLink value="#{request.contextPath}/location-levels">
 			   		    		<h:outputText value="#{msg.locationLevelsName}" />
 			   		    	</h:outputLink>
 			   		    </li>

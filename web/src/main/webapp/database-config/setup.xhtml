@@ -13,7 +13,7 @@
             <ui:define name="display">
             
                 <div id="loading-div">
-					<img src="/openhds/resources/images/ajax-loader.gif" /> #{msg.working}
+					<img src="#{request.contextPath}/resources/images/ajax-loader.gif" /> #{msg.working}
 				</div>
             
             	<h:outputText value="#{msg.dbConfigName} > #{msg.dbName}" />

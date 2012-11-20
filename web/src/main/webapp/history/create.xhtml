@@ -103,7 +103,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="memViewLink" value="/openhds/amendment/membership/details/#{membership.uuid}" >
+							<h:outputLink  id="memViewLink" value="#{request.contextPath}/amendment/membership/details/#{membership.uuid}" >
 		       					<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -145,7 +145,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="relViewLink" value="/openhds/amendment/relationship/details/#{relationship.uuid}" >
+							<h:outputLink  id="relViewLink" value="#{request.contextPath}/amendment/relationship/details/#{relationship.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -184,7 +184,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="socialGroupViewLink" value="/openhds/amendment/socialgroup/details/#{socialGroup.uuid}" >
+							<h:outputLink  id="socialGroupViewLink" value="#{request.contextPath}/amendment/socialgroup/details/#{socialGroup.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -223,7 +223,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink id="residencyViewLink" value="/openhds/amendment/residency/details/#{residency.uuid}" >
+							<h:outputLink id="residencyViewLink" value="#{request.contextPath}/amendment/residency/details/#{residency.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -262,7 +262,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="inMigViewLink" value="/openhds/amendment/inmigration/details/#{inMigration.uuid}" >
+							<h:outputLink  id="inMigViewLink" value="#{request.contextPath}/amendment/inmigration/details/#{inMigration.uuid}" >
 	       						<f:param id="itemId" value="#{inMigration.uuid}" />
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
@@ -302,7 +302,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink id="outMigViewLink" value="/openhds/amendment/outmigration/details/#{outMigration.uuid}" >
+							<h:outputLink id="outMigViewLink" value="#{request.contextPath}/amendment/outmigration/details/#{outMigration.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -347,7 +347,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="pregOutcomeViewLink" value="/openhds/amendment/pregnancy-outcome/details/#{pregOutcome.uuid}" >
+							<h:outputLink  id="pregOutcomeViewLink" value="#{request.contextPath}/amendment/pregnancy-outcome/details/#{pregOutcome.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -380,7 +380,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="pregObservViewLink" value="/openhds/amendment/pregnancyobservation/details/#{pregObserv.uuid}" >
+							<h:outputLink  id="pregObservViewLink" value="#{request.contextPath}/amendment/pregnancyobservation/details/#{pregObserv.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>
@@ -419,7 +419,7 @@
 	                        <f:facet name="header">
 	                        	<h:outputText escape="false" value=""/>
 	                        </f:facet> 
-							<h:outputLink  id="deathViewLink" value="/openhds/amendment/death/details/#{death.uuid}" >
+							<h:outputLink  id="deathViewLink" value="#{request.contextPath}/amendment/death/details/#{death.uuid}" >
 	       						<h:outputText value="#{msg.view}"/>   
 							</h:outputLink>
 						</h:column>

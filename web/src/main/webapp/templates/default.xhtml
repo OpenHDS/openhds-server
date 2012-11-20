@@ -12,24 +12,24 @@
 
         <title><ui:insert name="title"/></title>
         
-        <link type="text/css" href="/openhds/resources/css/jquery.ui.all.css" rel="stylesheet" />
-        <link type="text/css" href="/openhds/resources/css/demos.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/default.css"/>
-        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/menuStyle.css"/>
-        <link rel="stylesheet" type="text/css" href="/openhds/resources/css/jquery.ui.base.css"/>
+        <link type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.all.css" rel="stylesheet" />
+        <link type="text/css" href="#{request.contextPath}/resources/css/demos.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/default.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/menuStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.base.css"/>
 
- 		<script type="text/javascript" src="/openhds/resources/scripts/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="/openhds/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
+ 		<script type="text/javascript" src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
 
 		<script>
 			$(function() {
 				<c:if test="#{siteProperties.autocomplete}">
-					$(".visit").autocomplete({source:"/openhds/visit.autocomplete"});
-					$(".collectedBy").autocomplete({source:"/openhds/collectedBy.autocomplete"});
-					$(".location").autocomplete({source:"/openhds/location.autocomplete"});
-					$(".locationName").autocomplete({source:"/openhds/locationName.autocomplete"});
-					$(".socialGroup").autocomplete({source:"/openhds/socialGroup.autocomplete"});
-					$(".individual").autocomplete({source:"/openhds/individual.autocomplete"});
+					$(".visit").autocomplete({source:"#{request.contextPath}/visit.autocomplete"});
+					$(".collectedBy").autocomplete({source:"#{request.contextPath}/collectedBy.autocomplete"});
+					$(".location").autocomplete({source:"#{request.contextPath}/location.autocomplete"});
+					$(".locationName").autocomplete({source:"#{request.contextPath}/locationName.autocomplete"});
+					$(".socialGroup").autocomplete({source:"#{request.contextPath}/socialGroup.autocomplete"});
+					$(".individual").autocomplete({source:"#{request.contextPath}/individual.autocomplete"});
 				</c:if>
 			});
 		</script>

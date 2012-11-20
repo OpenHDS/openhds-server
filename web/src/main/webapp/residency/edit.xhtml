@@ -57,7 +57,7 @@
                     <h:commandButton disabled="true" action="#{residencyCrud.edit}" value="#{msg.lblSave}"/>
                 </h:form>
 			    <script>
-					$(".individual").autocomplete({source:"/openhds/individual.autocomplete"});
+					$(".individual").autocomplete({source:"#{request.contextPath}/individual.autocomplete"});
 				</script>
 		</ui:define>
 	</ui:composition>

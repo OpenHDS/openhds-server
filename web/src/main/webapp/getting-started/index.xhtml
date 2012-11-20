@@ -22,22 +22,22 @@
                 
                 	<h:panelGrid columns="1">
 	                	<legend>Documentation</legend>
-						<h:outputLink value="/openhds/getting-started/database-configuration.pdf">
+						<h:outputLink value="#{request.contextPath}/getting-started/database-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureDatabase}" />
 			   		    </h:outputLink>
-						<h:outputLink value="/openhds/getting-started/location-level-configuration.pdf">
+						<h:outputLink value="#{request.contextPath}/getting-started/location-level-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureLocationLevels}" />
 			   		    </h:outputLink>
-						<h:outputLink value="/openhds/getting-started/codes-parameters-configuration.pdf">
+						<h:outputLink value="#{request.contextPath}/getting-started/codes-parameters-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureCodesAndParams}" />
 			   		    </h:outputLink>
-						<h:outputLink value="/openhds/getting-started/internationalization-configuration.pdf">
+						<h:outputLink value="#{request.contextPath}/getting-started/internationalization-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureInternationalization}" />
 			   		    </h:outputLink>
-						<h:outputLink value="/openhds/getting-started/location-hierarchy-configuration.pdf">
+						<h:outputLink value="#{request.contextPath}/getting-started/location-hierarchy-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigurateLocationHierarchy}" />
 			   		    </h:outputLink>
-			   		    <h:outputLink value="/openhds/getting-started/security-configuration.pdf">
+			   		    <h:outputLink value="#{request.contextPath}/getting-started/security-configuration.pdf">
 			   		    	<h:outputText value="#{msg.gettingStartedConfigureSecurity}" />
 			   		    </h:outputLink>
                 	</h:panelGrid>
@@ -45,13 +45,13 @@
                 	   
                 	<h:panelGrid columns="1">
                 		<legend>#{msg.gettingStartedSteps}</legend>           
-						<h:outputLink value="/openhds/database-config">
+						<h:outputLink value="#{request.contextPath}/database-config">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnDatabase}" />
 			   		    </h:outputLink>
-	                	<h:outputLink value="/openhds/location-levels">
+	                	<h:outputLink value="#{request.contextPath}/location-levels">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnLocationLevelsConfig}" />
 			   		    </h:outputLink>
-	                	<h:outputLink value="/openhds/codes-config">
+	                	<h:outputLink value="#{request.contextPath}/codes-config">
 			   		    	<h:outputText styleClass="welcome-link" value="#{msg.mnCodesConfig}" />
 			   		    </h:outputLink>
 	                	<h:commandLink styleClass="welcome-link" value="#{msg.mnLocationHierarchy}" action="#{locationHierarchyCrud.createSetup}">

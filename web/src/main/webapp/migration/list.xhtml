@@ -55,11 +55,11 @@
                            <f:facet name="header">
                                <h:outputText escape="false" value=""/>
                            </f:facet>
-                           <h:outputLink value="/openhds/amendment/inmigration/details/#{item.uuid}" >
+                           <h:outputLink value="#{request.contextPath}/amendment/inmigration/details/#{item.uuid}" >
                            		<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
                            </h:outputLink>
                            <h:outputText value=" "/>
-                           <h:outputLink value="/openhds/amendment/inmigration/edit/#{item.uuid}" >
+                           <h:outputLink value="#{request.contextPath}/amendment/inmigration/edit/#{item.uuid}" >
                            		<h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
                            </h:outputLink>
                            <h:outputText value=" "/>  
