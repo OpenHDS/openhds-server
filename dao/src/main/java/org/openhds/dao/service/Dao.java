@@ -2,7 +2,6 @@ package org.openhds.dao.service;
 
 import java.io.Serializable;
 import java.util.List;
-import org.hibernate.Session;
 
 /**
  * From the article http://www.ibm.com/developerworks/java/library/j-genericdao.html
@@ -45,19 +44,10 @@ public interface Dao<T, PK extends Serializable> {
     /** Retrieve a list of all objects of the DAO's entityType */
     List<T> findAll(boolean filterDeleted);
     
-    /** Closes current session */
-    void closeCurrentSession();
-    
     public <S> S merge(S newInstance);
-    
-    public <S> void createEntity(S entity);
    
     public void saveOrUpdate(T newInstance);
    
-    public void flush();    
-    
-    public Session getSession();
-    
     /** Retrieve a list of all objects of the DAO's entityType and also
      * limit the number or results returned specified by the index of
      * firstResult and the amount of maxResults */

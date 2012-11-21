@@ -61,10 +61,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
     	getSession().saveOrUpdate(newInstance);
     }    
 
-    public void flush(){
-    	getSession().flush();
-    }
-
     /** Retrieve an object that was previously persisted to the
      * database using the indicated <code>id</code> as primary key */
     public T read(PK id) {
@@ -230,10 +226,6 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
         return crit.list();
     }
 
-	public <S> void createEntity(S entity) {
-		getSession().save(entity);
-	}
-
 	public long getCountByProperty(String propertyName, Object value) {
 		Criteria criteria = getSession().createCriteria(entityType).add(Restrictions.eq(propertyName, value));	
     	if (AuditableEntity.class.isAssignableFrom(entityType)) {
@@ -250,12 +242,8 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
 		this.sessFact = sessFact;
 	}
 
-    public Session getSession() {
+    protected Session getSession() {
     	return sessFact.getCurrentSession();
-    }
-    
-    public void closeCurrentSession(){
-    	sessFact.getCurrentSession().close();
     }
     
     public NamingStrategy getNamingStrategy() {
