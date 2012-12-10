@@ -183,4 +183,17 @@ public class IndividualServiceImpl implements IndividualService {
     public List<Individual> getAllIndividuals() {
         return genericDao.findAllWithoutProperty(Individual.class, "extId", "UNK");
     }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalIndividualCount() {
+        // subtracting 1 for the Unknown Individual
+        return genericDao.getTotalCount(Individual.class) - 1;
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Individual> getAllIndividualsInRange(int start, int size) {
+        return genericDao.findPaged(Individual.class, "extId", start, size);
+    }
 }

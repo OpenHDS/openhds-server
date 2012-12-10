@@ -49,5 +49,11 @@ public interface SocialGroupService {
 	List<SocialGroup> getAllSocialGroups();
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations; 
+	void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    long getTotalSocialGroupCount(); 
 }

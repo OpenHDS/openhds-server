@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.idgeneration.SocialGroupGenerator;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
@@ -19,7 +18,6 @@ import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;
 import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("unchecked")
 public class SocialGroupServiceImpl implements SocialGroupService {
 
 	private EntityService service;
@@ -191,5 +189,17 @@ public class SocialGroupServiceImpl implements SocialGroupService {
         if (id.trim().isEmpty() && generator.generated) {
             generateId(socialGroup);
         }
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize) {
+        return genericDao.findPaged(SocialGroup.class, "extId", i, pageSize);
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalSocialGroupCount() {
+        return genericDao.getTotalCount(SocialGroup.class);
     }
 }

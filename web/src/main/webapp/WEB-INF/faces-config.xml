@@ -471,6 +471,11 @@
 			<to-view-id>/study-document/create.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+        <navigation-case>
+            <from-outcome>task</from-outcome>
+            <to-view-id>/task/index.faces</to-view-id>
+            <redirect />
+        </navigation-case>
 		<navigation-case>
 			<from-outcome>update_flow</from-outcome>
 			<to-view-id>/update.flow</to-view-id>

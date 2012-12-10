@@ -1,18 +1,23 @@
 package org.openhds.webservice.resources;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.RelationshipService;
-import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Relationship;
+import org.openhds.domain.model.wrappers.Relationships;
+import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.support.FileResolver;
+import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,83 +30,65 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/relationships")
 public class RelationshipResource {
+    private static final Logger logger = LoggerFactory.getLogger(RelationshipResource.class);
 
-	private RelationshipService relationshipService;
-	private FieldBuilder fieldBuilder;
+    private RelationshipService relationshipService;
+    private FieldBuilder fieldBuilder;
+    private FileResolver fileResolver;
 
-	@Autowired
-	public RelationshipResource(RelationshipService relationshipService, FieldBuilder fieldBuilder) {
-		this.relationshipService = relationshipService;
-		this.fieldBuilder = fieldBuilder;
-	}
+    @Autowired
+    public RelationshipResource(RelationshipService relationshipService, FieldBuilder fieldBuilder,
+            FileResolver fileResolver) {
+        this.relationshipService = relationshipService;
+        this.fieldBuilder = fieldBuilder;
+        this.fileResolver = fileResolver;
+    }
 
-	@XmlRootElement
-	private static class Relationships {
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public Relationships getAllRelationships() {
+        List<Relationship> allRelationships = relationshipService.getAllRelationships();
+        List<Relationship> copies = new ArrayList<Relationship>();
 
-		private List<Relationship> relationships;
+        for (Relationship relationship : allRelationships) {
+            Relationship copy = ShallowCopier.copyRelationship(relationship);
+            copies.add(copy);
+        }
 
-		@XmlElement(name = "relationship")
-		public List<Relationship> getRelationships() {
-			return relationships;
-		}
+        Relationships relationships = new Relationships();
+        relationships.setRelationships(copies);
 
-		public void setRelationships(List<Relationship> copies) {
-			this.relationships = copies;
-		}
-	}
+        return relationships;
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	@ResponseBody
-	public Relationships getAllRelationships() {
-		List<Relationship> allRelationships = relationshipService.getAllRelationships();
-		List<Relationship> copies = new ArrayList<Relationship>();
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<? extends Serializable> insert(@RequestBody Relationship relationship) {
+        ConstraintViolations cv = new ConstraintViolations();
+        relationship.setIndividualA(fieldBuilder.referenceField(relationship.getIndividualA(), cv,
+                "Invalid external id for individual A"));
+        relationship.setIndividualB(fieldBuilder.referenceField(relationship.getIndividualB(), cv,
+                "Invalid external id for individual B"));
+        relationship.setCollectedBy(fieldBuilder.referenceField(relationship.getCollectedBy(), cv));
 
-		for (Relationship relationship : allRelationships) {
-			Relationship copy = copyRelationship(relationship);
-			copies.add(copy);
-		}
+        if (cv.hasViolations()) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        }
 
-		Relationships relationships = new Relationships();
-		relationships.setRelationships(copies);
+        try {
+            relationshipService.createRelationship(relationship);
+        } catch (ConstraintViolations e) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        }
 
-		return relationships;
-	}
+        return new ResponseEntity<Relationship>(ShallowCopier.copyRelationship(relationship), HttpStatus.CREATED);
+    }
 
-	private Relationship copyRelationship(Relationship relationship) {
-		Relationship copy = new Relationship();
-		copy.setaIsToB(relationship.getaIsToB());
-
-		Individual individual = new Individual();
-		individual.setExtId(relationship.getIndividualA().getExtId());
-		copy.setIndividualA(individual);
-
-		individual = new Individual();
-		individual.setExtId(relationship.getIndividualB().getExtId());
-		copy.setIndividualB(individual);
-
-		copy.setStartDate(relationship.getStartDate());
-		return copy;
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<? extends Serializable> insert(@RequestBody Relationship relationship) {
-		ConstraintViolations cv = new ConstraintViolations();
-		relationship.setIndividualA(fieldBuilder.referenceField(relationship.getIndividualA(), cv,
-				"Invalid external id for individual A"));
-		relationship.setIndividualB(fieldBuilder.referenceField(relationship.getIndividualB(), cv,
-				"Invalid external id for individual B"));
-		relationship.setCollectedBy(fieldBuilder.referenceField(relationship.getCollectedBy(), cv));
-
-		if (cv.hasViolations()) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
-		}
-
-		try {
-			relationshipService.createRelationship(relationship);
-		} catch (ConstraintViolations e) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
-		}
-
-		return new ResponseEntity<Relationship>(copyRelationship(relationship), HttpStatus.CREATED);
-	}
+    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    public void getCachedRelationships(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveRelationshipXmlFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing relationship xml file: " + e.getMessage());
+        }
+    }
 }

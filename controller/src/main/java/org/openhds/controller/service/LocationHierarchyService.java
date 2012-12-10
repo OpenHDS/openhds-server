@@ -90,6 +90,12 @@ public interface LocationHierarchyService {
     void createLocation(Location location) throws ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-	List<LocationHierarchy> getAllLocationHierarchies(); 
+	List<LocationHierarchy> getAllLocationHierarchies();
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<Location> getAllLocationsInRange(int i, int pageSize);
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    long getTotalLocationCount(); 
 }
 

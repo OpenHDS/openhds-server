@@ -208,3 +208,21 @@ a.amendment-tab-unselected {
     border-right:1px solid #555;
     visibility:hidden;
 }
+
+.openhds-table {
+    border-collapse: collapse;
+    width:100%;
+    font-size:1em;
+}
+
+.openhds-table th {
+    background-color: #A7C942;
+    text-align:left;
+    color: white;
+    padding:5px 7px 4px;
+}
+
+.openhds-table td {
+    border:1px solid #98BF21;
+    padding:5px 5px 5px;
+}

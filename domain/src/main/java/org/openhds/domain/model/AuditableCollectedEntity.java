@@ -1,6 +1,8 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -20,7 +22,7 @@ public abstract class AuditableCollectedEntity extends AuditableEntity implement
     protected String status;
     
     @NotNull
-    @ManyToOne(targetEntity=FieldWorker.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity=FieldWorker.class)
     @Description(description="The field worker who collected the data, identified by external id.")
     protected FieldWorker collectedBy;
     

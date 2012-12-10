@@ -8,6 +8,7 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.RelationshipService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
@@ -196,4 +197,16 @@ public class RelationshipServiceImpl implements RelationshipService {
 			throw new ConstraintViolations("There was a problem saving the relationship to the database");
 		}
 	}
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Relationship> getAllRelationshipInRange(int i, int pageSize) {
+        return genericDao.findPaged(Relationship.class, "individualA", i, pageSize);
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalRelationshipCount() {
+        return genericDao.getTotalCount(Relationship.class);
+    }
 }

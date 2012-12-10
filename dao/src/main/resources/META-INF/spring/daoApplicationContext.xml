@@ -32,7 +32,8 @@
 		<property name="annotatedClasses">
 			<list>				      
 				<value>org.openhds.domain.model.AdultVPM</value>
-				<value>org.openhds.domain.model.AuditableCollectedEntity</value>
+				<value>org.openhds.domain.model.AsyncTask</value>
+                <value>org.openhds.domain.model.AuditableCollectedEntity</value>
 				<value>org.openhds.domain.model.AuditableEntity</value>
 				<value>org.openhds.domain.model.ClassExtension</value>
 				<value>org.openhds.domain.model.Death</value>
@@ -216,6 +217,10 @@
 
     <bean id="socialGroupDao" parent="baseDao">
         <constructor-arg value="org.openhds.domain.model.SocialGroup" />
+    </bean>
+
+    <bean id="taskDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.AsyncTask" />
     </bean>
     
     <bean id="vaccinationDao" parent="baseDao">

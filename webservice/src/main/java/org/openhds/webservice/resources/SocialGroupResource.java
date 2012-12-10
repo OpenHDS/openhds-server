@@ -1,18 +1,23 @@
 package org.openhds.webservice.resources;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.SocialGroupService;
-import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.SocialGroup;
+import org.openhds.domain.model.wrappers.SocialGroups;
+import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.support.FileResolver;
+import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +30,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/socialgroups")
 public class SocialGroupResource {
+    private static final Logger logger = LoggerFactory.getLogger(SocialGroupResource.class);
 
     private SocialGroupService socialGroupService;
     private FieldBuilder fieldBuilder;
+    private FileResolver fileResolver;
 
     @Autowired
-    public SocialGroupResource(SocialGroupService socialGroupService, FieldBuilder fieldBuilder) {
+    public SocialGroupResource(SocialGroupService socialGroupService, FieldBuilder fieldBuilder,
+            FileResolver fileResolver) {
         this.socialGroupService = socialGroupService;
         this.fieldBuilder = fieldBuilder;
-    }
-
-    @XmlRootElement
-    public static class SocialGroups {
-
-        private List<SocialGroup> socialGroups;
-
-        @XmlElement(name = "socialgroup")
-        public List<SocialGroup> getSocialGroups() {
-            return socialGroups;
-        }
-
-        public void setSocialGroups(List<SocialGroup> socialGroups) {
-            this.socialGroups = socialGroups;
-        }
-
+        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -58,7 +51,7 @@ public class SocialGroupResource {
         List<SocialGroup> copies = new ArrayList<SocialGroup>();
 
         for (SocialGroup sg : allSocialGroups) {
-            SocialGroup copy = copySocialGroup(sg);
+            SocialGroup copy = ShallowCopier.copySocialGroup(sg);
             copies.add(copy);
         }
 
@@ -66,17 +59,6 @@ public class SocialGroupResource {
         sgs.setSocialGroups(copies);
 
         return sgs;
-    }
-
-    private SocialGroup copySocialGroup(SocialGroup sg) {
-        SocialGroup copy = new SocialGroup();
-        copy.setExtId(sg.getExtId());
-
-        Individual groupHead = new Individual();
-        groupHead.setExtId(sg.getGroupHead().getExtId());
-        copy.setGroupHead(groupHead);
-        copy.setGroupName(sg.getGroupName());
-        return copy;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -97,7 +79,16 @@ public class SocialGroupResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SocialGroup>(copySocialGroup(socialGroup), HttpStatus.CREATED);
+        return new ResponseEntity<SocialGroup>(ShallowCopier.copySocialGroup(socialGroup), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    public void getCachedSocialGroups(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupXmlFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing social group xml file: " + e.getMessage());
+        }
     }
 
 }

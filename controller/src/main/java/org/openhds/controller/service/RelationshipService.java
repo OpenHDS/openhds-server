@@ -34,4 +34,10 @@ public interface RelationshipService {
 
 	@Authorized({ PrivilegeConstants.CREATE_ENTITY })
 	void createRelationship(Relationship relationship) throws ConstraintViolations;
+
+	@Authorized({ PrivilegeConstants.VIEW_ENTITY })
+	List<Relationship> getAllRelationshipInRange(int i, int pageSize);
+
+	@Authorized({ PrivilegeConstants.VIEW_ENTITY })
+    long getTotalRelationshipCount();
 }

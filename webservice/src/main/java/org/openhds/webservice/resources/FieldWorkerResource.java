@@ -3,11 +3,9 @@ package org.openhds.webservice.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
+import org.openhds.domain.model.wrappers.FieldWorkers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,22 +21,6 @@ public class FieldWorkerResource {
 	@Autowired
 	public FieldWorkerResource(FieldWorkerService fieldWorkerService) {
 		this.fieldWorkerService = fieldWorkerService;
-	}
-
-	@XmlRootElement(name = "fieldworkers")
-	public static class FieldWorkers {
-
-		private List<FieldWorker> fieldWorkers;
-
-		@XmlElement(name = "fieldworker")
-		public List<FieldWorker> getFieldWorkers() {
-			return fieldWorkers;
-		}
-
-		public void setFieldWorkers(List<FieldWorker> fieldWorkers) {
-			this.fieldWorkers = fieldWorkers;
-		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

@@ -15,9 +15,22 @@
         <constructor-arg ref="whitelistService" />
     </bean>
 
-    <mvc:annotation-driven />
-
     <mvc:interceptors>
         <bean class="org.openhds.webservice.WhitelistAuthenticationInteceptor" />
     </mvc:interceptors>
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <array>
+                <ref bean="marshallingHttpMessageConverter" />
+            </array>
+        </property>
+    </bean>
+
+    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" />
+    </bean>
+    
+    <mvc:annotation-driven/>
 </beans>

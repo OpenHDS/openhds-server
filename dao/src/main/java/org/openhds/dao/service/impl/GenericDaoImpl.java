@@ -12,6 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
+import org.openhds.domain.model.Individual;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -220,4 +221,36 @@ public class GenericDaoImpl implements GenericDao {
 		
 		return (List<T>) crit.list();
 	}
+
+    @Override
+    public <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size) {
+        Criteria crit = getSession().createCriteria(entityType);
+        
+        if (Individual.class.isAssignableFrom(entityType)) {
+            crit.add(Restrictions.ne("extId", "UNK"));
+        }
+        
+        crit.add(Restrictions.eq("deleted", false));
+        crit.addOrder(Order.asc(orderProperty));
+        crit.setFirstResult(start).setMaxResults(size);
+        return (List<T>) crit.list();
+    }
+
+    @Override
+    public <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty,
+            Object filterValue, int start, int size) {
+        Criteria crit = getSession().createCriteria(entityType);
+
+        crit.add(Restrictions.eq(filterProperty, filterValue));
+        crit.add(Restrictions.eq("deleted", false));
+        crit.addOrder(Order.asc(orderProperty));
+        crit.setFirstResult(start).setMaxResults(size);
+        return (List<T>) crit.list();
+    }
+
+    @Override
+    public <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue) {
+        return (Long) getSession().createCriteria(entityType).add(Restrictions.eq(filterProperty, filterValue))
+                .setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

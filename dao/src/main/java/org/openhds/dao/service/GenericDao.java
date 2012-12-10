@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
 import org.openhds.domain.model.Location;
+import org.openhds.domain.model.Visit;
 
 /**
  * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
@@ -78,4 +79,10 @@ public interface GenericDao {
     <T> List<T> findListByPropertyPrefix(Class<T> entityType, String property, String value, int limit, boolean filteredDeleted);
 
 	<T> List<T> findAllWithoutProperty(Class<T> entityType, String property, String value);
+
+    <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size);
+    
+    <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
+
+    <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);
 }

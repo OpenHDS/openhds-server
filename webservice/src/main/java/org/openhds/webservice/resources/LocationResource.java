@@ -1,19 +1,23 @@
 package org.openhds.webservice.resources;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
-import org.openhds.domain.model.LocationHierarchy;
+import org.openhds.domain.model.wrappers.Locations;
+import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.support.FileResolver;
+import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,30 +31,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/locations")
 public class LocationResource {
+    private static final Logger logger = LoggerFactory.getLogger(LocationResource.class);
 
     private final FieldBuilder fieldBuilder;
     private final LocationHierarchyService locationHierarchyService;
+    private final FileResolver fileResolver;
 
     @Autowired
-    public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder) {
+    public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
+            FileResolver fileResolver) {
         this.locationHierarchyService = locationHierarchyService;
         this.fieldBuilder = fieldBuilder;
-    }
-
-    @XmlRootElement
-    private static class Locations {
-
-        private List<Location> locations;
-
-        @XmlElement(name = "location")
-        public List<Location> getLocations() {
-            return locations;
-        }
-
-        public void setLocations(List<Location> locations) {
-            this.locations = locations;
-        }
-
+        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(value = "/{extId}", method = RequestMethod.GET)
@@ -60,7 +52,7 @@ public class LocationResource {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Location>(copyLocation(location), HttpStatus.OK);
+        return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -70,7 +62,7 @@ public class LocationResource {
         List<Location> copies = new ArrayList<Location>(locations.size());
 
         for (Location loc : locations) {
-            Location copy = copyLocation(loc);
+            Location copy = ShallowCopier.copyLocation(loc);
             copies.add(copy);
         }
 
@@ -79,34 +71,13 @@ public class LocationResource {
         return allLocations;
     }
 
-    protected Location copyLocation(Location loc) {
-        Location copy = new Location();
-        
-        copy.setAccuracy(getEmptyStringIfBlank(loc.getAccuracy()));
-        copy.setAltitude(getEmptyStringIfBlank(loc.getAltitude()));
-        copy.setLatitude(getEmptyStringIfBlank(loc.getLatitude()));
-        copy.setLongitude(getEmptyStringIfBlank(loc.getLongitude()));
-        
-        LocationHierarchy level = new LocationHierarchy();
-        level.setExtId(loc.getLocationLevel().getExtId());
-        copy.setLocationLevel(level);
-
-        copy.setExtId(loc.getExtId());
-        copy.setLocationName(loc.getLocationName());
-        copy.setLocationType(loc.getLocationType());
-
-        FieldWorker fw = new FieldWorker();
-        fw.setExtId(loc.getCollectedBy().getExtId());
-        copy.setCollectedBy(fw);
-        return copy;
-    }
-
-    private String getEmptyStringIfBlank(String accuracy) {
-        if (accuracy == null || accuracy.trim().isEmpty()) {
-            return "";
+    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    public void getAllCachedLocations(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing location xml file: " + e.getMessage());
         }
-        
-        return accuracy;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -125,6 +96,6 @@ public class LocationResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Location>(copyLocation(location), HttpStatus.CREATED);
+        return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.CREATED);
     }
 }

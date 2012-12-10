@@ -45,5 +45,11 @@ public interface IndividualService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createIndividual(Individual individual) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+    long getTotalIndividualCount();
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<Individual> getAllIndividualsInRange(int start, int size);
 }
 

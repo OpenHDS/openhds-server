@@ -10,6 +10,7 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.Extension;
@@ -175,5 +176,17 @@ public class VisitServiceImpl implements VisitService {
     public List<Visit> getAllVisits() {
         List<Visit> visits = genericDao.findAll(Visit.class, true);
         return visits;
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Visit> getAllVisitsForRoundInRange(int round, int i, int pageSize) {
+        return genericDao.findPagedFiltered(Visit.class, "extId", "roundNumber", round, i, pageSize);
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalVisitCountForRound(int roundNumber) {
+        return genericDao.getTotalCountWithFilter(Visit.class, "roundNumber", roundNumber);
     }
 }

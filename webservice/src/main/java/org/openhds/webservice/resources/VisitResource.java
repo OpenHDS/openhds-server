@@ -1,20 +1,24 @@
 package org.openhds.webservice.resources;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletResponse;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
-import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
+import org.openhds.domain.model.wrappers.Visits;
+import org.openhds.domain.util.ShallowCopier;
+import org.openhds.task.support.FileResolver;
+import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,28 +31,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/visits")
 public class VisitResource {
+    private static final Logger logger = LoggerFactory.getLogger(VisitResource.class);
 
     private final VisitService visitService;
     private final FieldBuilder fieldBuilder;
+    private final FileResolver fileResolver;
 
     @Autowired
-    public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService) {
+    public VisitResource(VisitService visitService, FieldBuilder fieldBuilder, EntityService entityService,
+            FileResolver fileResolver) {
         this.visitService = visitService;
         this.fieldBuilder = fieldBuilder;
-    }
-
-    @XmlRootElement
-    private static class Visits {
-        private List<Visit> visits;
-
-        @XmlElement(name = "visit")
-        public List<Visit> getVisits() {
-            return visits;
-        }
-
-        public void setVisits(List<Visit> visits) {
-            this.visits = visits;
-        }
+        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -58,7 +52,7 @@ public class VisitResource {
         List<Visit> copies = new ArrayList<Visit>(allVisits.size());
 
         for (Visit visit : allVisits) {
-            Visit copy = buildCopyOfVisit(visit);
+            Visit copy = ShallowCopier.copyVisit(visit);
 
             copies.add(copy);
         }
@@ -67,23 +61,6 @@ public class VisitResource {
         visits.setVisits(copies);
 
         return visits;
-    }
-
-    protected Visit buildCopyOfVisit(Visit visit) {
-        FieldWorker fw = new FieldWorker();
-        fw.setExtId(visit.getCollectedBy().getExtId());
-
-        Location location = new Location();
-        location.setLocationLevel(null);
-        location.setExtId(visit.getVisitLocation().getExtId());
-
-        Visit copy = new Visit();
-        copy.setCollectedBy(fw);
-        copy.setVisitLocation(location);
-        copy.setExtId(visit.getExtId());
-        copy.setRoundNumber(visit.getRoundNumber());
-        copy.setVisitDate(visit.getVisitDate());
-        return copy;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -102,6 +79,15 @@ public class VisitResource {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Visit>(buildCopyOfVisit(visit), HttpStatus.CREATED);
+        return new ResponseEntity<Visit>(ShallowCopier.copyVisit(visit), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    public void getCachedVisits(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing visit xml file: " + e.getMessage());
+        }
     }
 }

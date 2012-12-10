@@ -22,6 +22,7 @@ import org.openhds.controller.service.EntityValidationService;
 import org.openhds.dao.service.Dao;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.model.AuditableCollectedEntity;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.crud.EntityCrud;
 import org.openhds.web.service.JsfService;
@@ -254,7 +255,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     	showListing = false;
         navMenuBean.setNextItem(entityClass.getSimpleName());
     	navMenuBean.addCrumb(entityClass.getSimpleName() + " Edit");
-    	return scalarSetup(outcomePrefix + "_edit");
+    	String result = scalarSetup(outcomePrefix + "_edit");
+    	if (AuditableCollectedEntity.class.isAssignableFrom(entityClass)) {
+    	    // load field worker to avoid lazy load exeptions
+    	    ((AuditableCollectedEntity)entityItem).getCollectedBy().getExtId();
+    	}
+    	return result;
     }
 
     /**

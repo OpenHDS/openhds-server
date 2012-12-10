@@ -28,6 +28,7 @@
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/controllerSecurityContext.xml" />
     <import resource="classpath*:/META-INF/spring/reportApplicationContext.xml" />
+    <import resource="classpath:/META-INF/spring/taskContext.xml" />
                                            
     <bean id="authSuccessHandler" parent="baseTransactionBean">
     	<property name="target">
@@ -78,6 +79,10 @@
     
     <bean id="calendarConverter" class="org.openhds.web.cvt.CalendarConverter">
         <property name="dateFormat" value="#{siteProperties.dateFormat}" />
+    </bean>
+    
+    <bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
+        <constructor-arg value="#{siteProperties.dateFormat}" />
     </bean>
     
     <!-- jsf validators -->
@@ -535,6 +540,11 @@
         <property name="genericDao" ref="genericDao" />
         <property name="webFlowService" ref="webFlowService" />
         <property name="jsfService" ref="jsfService" />
+    </bean>
+    
+    <bean id="taskBean" class="org.openhds.web.beans.TaskBean">
+        <constructor-arg ref="openhdsTaskExecutor" />
+        <constructor-arg ref="asyncTaskServiceImpl" />
     </bean>
     
     <bean id="baselineFlowBean" class="org.openhds.web.beans.BaselineFlowBean" scope="session">

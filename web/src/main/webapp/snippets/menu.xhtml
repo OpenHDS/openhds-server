@@ -83,6 +83,7 @@
 			        </h:commandLink>
 			        <c:if test="#{navController.showUtilities}" >
 		        	<ul>
+		        		<li><h:commandLink value="Tasks" action="task" /></li>
 		        	    <li><h:commandLink value="#{msg.navBarDataExtensions}" action="#{extensionCrud.createSetup}" /></li>
 			        	<li><h:commandLink value="#{msg.navBarIndivHistory}" action="individualHistory_flow" /></li>
 			        	<li><h:commandLink value="#{msg.navBarModifyGroupHead}" action="modifyHOH_flow" /></li>

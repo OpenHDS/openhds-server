@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<locations>
+    <location>
+        <collectedBy>
+            <extId>FWAD1</extId>
+        </collectedBy>
+        <accuracy>0</accuracy>
+        <altitude>0</altitude>
+        <extId>IFA0001</extId>
+        <latitude>0</latitude>
+        <locationLevel>
+            <extId>IFA</extId>
+        </locationLevel>
+        <locationName>Test</locationName>
+        <locationType>RUR</locationType>
+        <longitude>0</longitude>
+    </location>
+</locations>

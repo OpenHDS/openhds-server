@@ -44,6 +44,16 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	
     	return null;
     }
+    
+    @Override
+    public String editSetup() {
+        // load lazily loaded fields to avoid exception
+        String result = super.editSetup();
+        entityItem.getFather().getExtId();
+        entityItem.getMother().getExtId();
+        
+        return result;
+    }
         
     public Date getDateOfBirth() {
     	

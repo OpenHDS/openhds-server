@@ -15,7 +15,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class CalendarAdapter extends XmlAdapter<String, Calendar> {
 	
 	private final String SQL_DATE_FORMAT = "yyyy-MM-dd";
-	private static CalendarUtil calendarUtil;
+	private CalendarUtil calendarUtil;
+	
+	public CalendarAdapter(CalendarUtil calendarUtil) {
+	    this.calendarUtil = calendarUtil;
+	}
 		
 	public String marshal(Calendar v) throws Exception {
 		return calendarUtil.formatDate(v);
@@ -32,9 +36,5 @@ public class CalendarAdapter extends XmlAdapter<String, Calendar> {
 		} catch(Exception e) {}
 		
 		return calendarUtil.parseDate(v);
-	}
-
-	public void setCalendarUtil(CalendarUtil calendarUtil) {
-		this.calendarUtil = calendarUtil;
 	}
 }

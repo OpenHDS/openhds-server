@@ -3,12 +3,10 @@ package org.openhds.webservice.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
+import org.openhds.domain.model.wrappers.LocationHierarchies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,22 +22,6 @@ public class LocationHierarchyResource {
 	@Autowired
 	public LocationHierarchyResource(LocationHierarchyService locationHierarchyService) {
 		this.locationHierarchyService = locationHierarchyService;
-	}
-
-	@XmlRootElement
-	private static class LocationHierarchies {
-
-		private List<LocationHierarchy> locationHierarchies;
-
-		@XmlElement(name = "hierarchy")
-		public List<LocationHierarchy> getLocationHierarchies() {
-			return locationHierarchies;
-		}
-
-		public void setLocationHierarchies(List<LocationHierarchy> locationHierarchies) {
-			this.locationHierarchies = locationHierarchies;
-		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

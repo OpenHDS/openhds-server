@@ -76,6 +76,10 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
     public void delete(T persistentObject) {
         getSession().delete(persistentObject);
     }
+    
+    public void evict(T persistentObject) {
+        getSession().evict(persistentObject);
+    }
 
     /** Retrieve an entity with the specified <code>propertyName</code>
      * with the associated <code>value</code> */

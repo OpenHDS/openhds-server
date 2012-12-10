@@ -33,6 +33,8 @@ public interface Dao<T, PK extends Serializable> {
 
     /** Remove an object from persistent storage in the database */
     void delete(T persistentObject);
+    
+    void evict(T persistentObject);
 
     /** Retrieve the total number of unique entities in the database */
     long getTotalCount();

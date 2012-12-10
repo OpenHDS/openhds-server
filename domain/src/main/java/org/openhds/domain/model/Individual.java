@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -71,35 +72,29 @@ public class Individual
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckIndividualParentAge(allowNull = true, message = "The mother is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The mother has been voided")
-    @ManyToOne(cascade = {
-        CascadeType.MERGE,
-        CascadeType.PERSIST
-    }, targetEntity = org.openhds.domain.model.Individual.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's mother, identified by the external id.")
     private org.openhds.domain.model.Individual mother;
     @CheckIndividualGenderMale(allowNull = true, message = "The father specified is not male gender")
     @CheckIndividualParentAge(allowNull = true, message = "The father is younger than the minimum age required in order to be a parent")
     @CheckEntityNotVoided(allowNull = true, message = "The father has been voided")
-    @ManyToOne(cascade = {
-        CascadeType.MERGE,
-        CascadeType.PERSIST
-    }, targetEntity = org.openhds.domain.model.Individual.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The individual's father, identified by the external id.")
     private org.openhds.domain.model.Individual father;
     @ExtensionStringConstraint(constraint = "dobAspectConstraint", message = "Invalid Value for partial date", allowNull = true)
     @Description(description = "Identifer for determining if the birth date is partially known.")
     private String dobAspect;
-    @OneToMany(mappedBy = "individual", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "individual", cascade = {CascadeType.ALL})
     @OrderBy("startDate")
     @Description(description = "The set of all residencies that the individual may have.")
     private Set<Residency> allResidencies = new HashSet<Residency>();
-    @OneToMany(mappedBy = "individualA", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "individualA")
     @Description(description = "The set of all relationships that the individual may have with another individual.")
     private Set<Relationship> allRelationships1 = new HashSet<Relationship>();
-    @OneToMany(mappedBy = "individualB", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "individualB")
     @Description(description = "The set of all relationships where another individual may have with this individual.")
     private Set<Relationship> allRelationships2 = new HashSet<Relationship>();
-    @OneToMany(mappedBy = "individual", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "individual")
     @Description(description = "The set of all memberships the individual is participating in.")
     private Set<Membership> allMemberships = new HashSet<Membership>();
 

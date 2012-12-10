@@ -10,6 +10,7 @@ import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
@@ -464,5 +465,17 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	public List<LocationHierarchy> getAllLocationHierarchies() {
 		return genericDao.findAllWithoutProperty(LocationHierarchy.class, "extId", "HIERARCHY_ROOT");
 	}
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public List<Location> getAllLocationsInRange(int i, int pageSize) {
+        return genericDao.findPaged(Location.class, "extId", i, pageSize);
+    }
+
+    @Override
+    @Authorized("VIEW_ENTITY")
+    public long getTotalLocationCount() {
+        return genericDao.getTotalCount(Location.class);
+    }
 
 }
