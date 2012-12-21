@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openhds</groupId>
         <artifactId>openhds</artifactId>
-        <version>1.0-M4-SNAPSHOT</version>
+        <version>1.0-M4</version>
     </parent>
 
     <groupId>org.openhds</groupId>

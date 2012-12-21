@@ -5,7 +5,7 @@
 
     <groupId>org.openhds</groupId>
     <artifactId>openhds</artifactId>
-    <version>1.0-M4-SNAPSHOT</version>
+    <version>1.0-M4</version>
     <packaging>pom</packaging>
     <name>OpenHDS Core</name>
 
@@ -36,7 +36,7 @@
         <connection>scm:git:https://code.google.com/p/openhds/</connection>
         <developerConnection>scm:git:https://code.google.com/p/openhds/</developerConnection>
         <url>http://code.google.com/p/openhds/source/browse/</url>
-        <tag>HEAD</tag>
+        <tag>openhds-1.0-M4</tag>
     </scm>
 
     <properties>
