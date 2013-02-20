@@ -1,6 +1,8 @@
 package org.openhds.domain.constaint.impl;
 
 import java.util.Calendar;
+import java.util.Date;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -15,6 +17,8 @@ public class CheckStartDateGreaterThanBirthDateImpl implements ConstraintValidat
             ConstraintValidatorContext arg1) {
 
         Calendar startDate = arg0.getStartDate();
+        java.util.Date sDate = startDate.getTime();
+        String sDateString = sDate.toString();
         Calendar dob = arg0.getIndividual().getDob();
 
         try {

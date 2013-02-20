@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 
 /**
  * @author Brian
@@ -17,6 +18,11 @@ import org.openhds.domain.model.Individual;
  */
 
 public class IndividualGenerator extends Generator<Individual> {
+	private Location location;
+	
+	public void setLocation(Location location){
+		this.location = location;
+	}
 		
 	@Override
 	public String generateId(Individual individual) throws ConstraintViolations  {
@@ -34,57 +40,25 @@ public class IndividualGenerator extends Generator<Individual> {
 			
 			if (filter != null) {
 			
-				if (key.equals(IdGeneratedFields.INDIVIDUAL_FNAME.toString())) {
-					String fname = individual.getFirstName();
+				if (key.equals(IdGeneratedFields.LOCATION_PREFIX.toString())) {
+					//String fname = individual.getFirstName();
+					String extId = location.getExtId();
 					
-					if (fname.length() >= filter) {
+					if (extId.length() >= filter) {
 						
-						if (filter > 0 && fname.length() >= filter) 
-							sb.append(formatProperString(fname, filter));
-						else if (filter == 0 || fname.length() < filter) 
-							sb.append(formatProperString(fname, fname.length()));
+						if (filter > 0 && extId.length() >= filter) 
+							sb.append(formatProperString(extId, filter));
+						else if (filter == 0 || extId.length() < filter) 
+							sb.append(formatProperString(extId, extId.length()));
 						else
 							throw new ConstraintViolations("An error occurred while attempting to generate " +
-									"the id on the field specified as '" + fname + "'");
+									"the id on the field specified as '" + extId + "'");
 					}
 					else
 						throw new ConstraintViolations("Unable to generate the id. Make sure the First Name field is of the required length " +
 						"specified in the id configuration.");
 				}
-				else if (key.equals(IdGeneratedFields.INDIVIDUAL_MNAME.toString())) {
-					String mname = individual.getMiddleName();
-					
-					if (mname.length() >= filter) {
-					
-						if (filter > 0 && mname.length() >= filter) 			
-							sb.append(formatProperString(mname, filter));
-						else if (filter == 0 || mname.length() < filter)
-							sb.append(formatProperString(mname, mname.length()));
-						else
-							throw new ConstraintViolations("An error occurred while attempting to generate " +
-									"the id on the field specified as '" + mname + "'");
-					}
-					else
-						throw new ConstraintViolations("Unable to generate the id. Make sure the Middle Name field is of the required length " +
-						"specified in the id configuration.");
-				}
-				else if (key.equals(IdGeneratedFields.INDIVIDUAL_LNAME.toString())) {
-					String lname = individual.getLastName();
-					
-					if (lname.length() >= filter) {
-					
-						if (filter > 0 && lname.length() >= filter) 			
-							sb.append(formatProperString(lname, filter));
-						else if (filter == 0 || lname.length() < filter)
-							sb.append(formatProperString(lname, lname.length()));
-						else
-							throw new ConstraintViolations("An error occurred while attempting to generate " +
-									"the id on the field specified as '" + lname + "'");
-					}
-					else
-						throw new ConstraintViolations("Unable to generate the id. Make sure the Last Name field is of the required length " +
-						"specified in the id configuration.");
-				}
+				
 			}
 		}
 		

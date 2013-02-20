@@ -39,6 +39,8 @@ public class IndividualServiceImpl implements IndividualService {
 	}
 	
 	public Individual evaluateIndividual(Individual entityItem) throws ConstraintViolations {	
+		if(entityItem.getExtId()==null)
+			assignId(entityItem);
 		if (findIndivById(entityItem.getExtId()) != null)
 			throw new ConstraintViolations("The Id specified already exists");
 				

@@ -15,7 +15,7 @@ INSERT INTO `locationhierarchy` VALUES ('hierarchy3','IFB','IFB','hierarchyLevel
 INSERT INTO `locationhierarchy` VALUES ('hierarchy4','IFC','IFC','hierarchyLevelId4','hierarchy3');
 INSERT INTO `locationhierarchy` VALUES ('hierarchy5','MBI','MBI','hierarchyLevelId5','hierarchy4');
 
-INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location1','MBI01','Harolds House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
+INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location1','MBI000001','Harolds House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
 INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location2','MBI02','Ross House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
 INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location3','MBI03','Marsh House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
 INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location4','MBI04','Bash House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
@@ -42,6 +42,5 @@ INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST4', '141.114.156.167')
 
 INSERT INTO `inmigration` (uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid,unknownIndividual) VALUES ('Inmigration1',false,'2012-04-17','2011-01-05',NULL,NULL,'P','origin','reason','INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1',false);
 INSERT INTO `outmigration`(uuid,deleted,insertDate,voidDate,voidReason,status,destination,reason,recordedDate,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Outmigration1',false,'2012-04-17',NULL,NULL,'P','destination','reason','1997-05-05','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1');
-
 
 

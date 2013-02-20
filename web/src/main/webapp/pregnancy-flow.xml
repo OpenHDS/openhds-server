@@ -55,6 +55,7 @@
         <!-- User wants to add an outcome to this pregnancy outcome -->
         <transition on="addOutcome" to="addOutcomeAction">
         	<evaluate expression="pregnancyOutcomeCrud.validateEntity(pregnancyOutcomeCrud.item, messageContext)" />
+        	<!--  <evaluate expression="pregnancyOutcomeCrud.setEvaluated(true)" />-->
             <!-- Set flag so user must now confirm to navigate away -->
             <set name="flowScope.pregStarted" value="true" />
         </transition>
@@ -101,6 +102,7 @@
             <evaluate expression="individualCrud.item.setMother(pregnancyOutcomeCrud.item.getMother())" />
             <evaluate expression="individualCrud.item.setFather(pregnancyOutcomeCrud.item.getFather())" />
             <evaluate expression="individualCrud.item.setDob(pregnancyOutcomeCrud.item.getOutcomeDate())" />
+            <evaluate expression="individualIdGenerator.setLocation(pregnancyOutcomeCrud.item.visit.visitLocation)" />
             <evaluate expression="individualCrud.item.setCollectedBy(pregnancyOutcomeCrud.item.collectedBy)" />
 			<evaluate expression="navController.addItemToTrail('Individual Create')" />
 

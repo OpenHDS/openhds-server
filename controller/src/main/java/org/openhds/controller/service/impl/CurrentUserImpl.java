@@ -65,8 +65,8 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
 	 */
     public String getName() {
         Object obj = getSpringSecurityUser();
-        if (obj instanceof User) {
-            return ((User) obj).getUsername();
+        if (obj instanceof org.springframework.security.core.userdetails.User) {
+            return ((org.springframework.security.core.userdetails.User) obj).getUsername();
         }
 
         return null;

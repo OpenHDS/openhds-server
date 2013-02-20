@@ -358,9 +358,9 @@
     	<property name="length"><value>${openhds.individualIdLength}</value></property>
     	<property name="fields">
     		<map>
-				<entry key="INDIVIDUAL_FNAME"><value>${openhds.individualFirstNameLength}</value></entry>
-				<entry key="INDIVIDUAL_MNAME"><value>${openhds.individualMiddleNameLength}</value></entry>
-				<entry key="INDIVIDUAL_LNAME"><value>${openhds.individualLastNameLength}</value></entry>
+				<entry key="LOCATION_PREFIX"><value>${openhds.locationIdLength}</value></entry>
+				<!-- <entry key="INDIVIDUAL_MNAME"><value>${openhds.individualMiddleNameLength}</value></entry>
+				<entry key="INDIVIDUAL_LNAME"><value>${openhds.individualLastNameLength}</value></entry> -->
     		</map>
     	</property>
     </bean>

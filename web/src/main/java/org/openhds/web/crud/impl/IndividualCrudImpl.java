@@ -6,6 +6,7 @@ import java.util.Date;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.controller.service.IndividualService;
 import org.springframework.binding.message.MessageContext;
 
@@ -13,9 +14,15 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
 
     EntityValidationService<Individual> entityValidator;
  	IndividualService service;
+ 	Location location;
     
     // used for manual conversion between Date and Calendar since the openFaces Calendar doesn't support JSF Converters
     Date dateOfBirth;
+    
+    public void setLocation(Location location){
+    	this.location = location;
+    	String extId = location.getExtId();
+    }
 
     public IndividualCrudImpl(Class<Individual> entityClass) {
         super(entityClass);
