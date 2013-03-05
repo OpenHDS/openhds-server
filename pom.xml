@@ -35,7 +35,7 @@
     <scm>
         <connection>scm:git:https://code.google.com/p/ihi-openhds/</connection>
         <developerConnection>scm:git:https://code.google.com/p/ihi-openhds/</developerConnection>
-        <url>http://code.google.com/p/openhds/source/browse/</url>
+        <url>http://code.google.com/p/ihi-openhds/source/browse/</url>
         <tag>HEAD</tag>
     </scm>
 
