@@ -150,10 +150,11 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	}
 		
 	public Location evaluateLocation(Location entityItem) throws ConstraintViolations {
-		if (!checkValidLocationEntry(entityItem.getLocationLevel().getExtId())) 
+		if (!checkValidLocationEntry(entityItem.getLocationLevel().getExtId())) {
+			entityItem.setExtId(null);
     		throw new ConstraintViolations("The " + getLowestLevel().getName() + 
     		" specified is not the lowest level in the Location Hierarchy.");
-		
+		}
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getLocationLevel().getExtId());
 		entityItem.setLocationLevel(item);
 		

@@ -336,7 +336,7 @@
 	    </property>
     </bean>
     
-    <bean id="baseCrud" class="org.openhds.web.crud.EntityCrudImpl" scope="session" abstract="true">
+    <bean id="baseCrud" scope="session" abstract="true">
         <property name="jsfService" ref="jsfService" />
         <property name="webFlowService" ref="webFlowService" />
         <property name="entityService" ref="entityService" />

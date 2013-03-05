@@ -11,7 +11,6 @@ public class LocationLevelsSetterImpl implements LocationLevelsSetter {
 	
 	public void setLocationLevels(Properties p) {
 		
-		int counter = 1;
     	for (Object o : p.keySet()) {		
     		Integer i = Integer.parseInt(o.toString());
     		String s = p.get(o).toString();		
@@ -19,11 +18,10 @@ public class LocationLevelsSetterImpl implements LocationLevelsSetter {
         		LocationHierarchyLevel item = genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", i);
         		if (item == null) {
         			LocationHierarchyLevel entity = new LocationHierarchyLevel();
-        			entity.setUuid("hierarchyLevelId" + Integer.toString(counter));
+        			entity.setUuid("hierarchyLevelId" + i);
         			entity.setKeyIdentifier(i);
         			entity.setName(s);
             		genericDao.create(entity);
-            		counter++;
         		}
         		else {
         			item.setName(s);

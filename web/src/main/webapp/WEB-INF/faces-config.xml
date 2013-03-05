@@ -258,7 +258,7 @@
 		</navigation-case>	
 		<navigation-case>
 			<from-outcome>logoutLnk</from-outcome>
-			<to-view-id>/openhds/logoutProcess</to-view-id>
+			<to-view-id>/logoutProcess</to-view-id>
 			<redirect />	
 		</navigation-case>
 		<navigation-case>

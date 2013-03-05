@@ -66,6 +66,7 @@
 			<!-- This is required because the individual is not actually saved when the user presses -->
 			<!-- create. Rather, the individual is saved in the same transaction that the in migration -->
 			<!-- is created. -->
+			<evaluate expression="individualIdGenerator.setLocation(inMigrationCrud.item.residency.location)" />
 			<evaluate expression="individualCrud.validateEntity(individualCrud.item, messageContext)" />
 			<!-- Validation that uses the individual service -->
 			<evaluate expression="individualCrud.validateIndividual(messageContext)" />

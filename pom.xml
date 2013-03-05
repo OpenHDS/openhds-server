@@ -5,7 +5,7 @@
 
     <groupId>org.openhds</groupId>
     <artifactId>openhds</artifactId>
-    <version>1.0-M3-SNAPSHOT</version>
+    <version>1.0-M5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>OpenHDS Core</name>
 

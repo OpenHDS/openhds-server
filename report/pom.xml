@@ -5,7 +5,7 @@
     <parent>
         <artifactId>openhds</artifactId>
         <groupId>org.openhds</groupId>
-        <version>1.0-M3-SNAPSHOT</version>
+        <version>1.0-M5-SNAPSHOT</version>
     </parent>
 
     <groupId>org.openhds</groupId>

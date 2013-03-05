@@ -26,7 +26,10 @@ import org.openhds.controller.service.SocialGroupService;
 public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, String> {
 
     PregnancyService service;
-    SocialGroupService sgService;
+    SocialGroupService sgService;    
+
+	//flag checking whether a pregoutcome has been evaluated
+    boolean evaluated;
     
 	// this is binded to the outcome type select field within the jsf page
     // its value will be the current outcome selected by the user
@@ -42,6 +45,14 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
 	
     // used for manual conversion between Date and Calendar since the openFaces Calendar doesn't support JSF Converters
     Date recordedDate;
+    
+    public boolean isEvaluated() {
+		return evaluated;
+	}
+
+	public void setEvaluated(boolean evaluated) {
+		this.evaluated = evaluated;
+	}
 
     public PregnancyOutcomeCrudImpl(Class<PregnancyOutcome> entityClass) {
         super(entityClass);
@@ -52,7 +63,8 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
     public String create() {
         try {
             // verify integrity constraints
-            service.evaluatePregnancyOutcome(entityItem);
+        	if(!evaluated)
+        		service.evaluatePregnancyOutcome(entityItem);
             // create the pregnancy outcome
             // NOTE: this crud never explicity calls the super.create
             // because the service class will persist the pregnancy outcome
@@ -97,6 +109,7 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
      */
     public void addChild(Individual individual) {
         currentOutcome.setChild(individual);
+        entityItem.setOutcomeDate(individual.getDob());
     }
     
     /**
@@ -138,7 +151,7 @@ public class PregnancyOutcomeCrudImpl extends EntityCrudImpl<PregnancyOutcome, S
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(recordedDate);
-		entityItem.setOutcomeDate(cal);
+//		entityItem.setOutcomeDate(cal);
 	}
 
     public PregnancyService getService() {

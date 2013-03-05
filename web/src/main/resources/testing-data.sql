@@ -9,16 +9,18 @@ INSERT INTO `individual` (uuid,extId,firstName,middleName,lastName,gender,dob,mo
 INSERT INTO `individual` (uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Indiv 7','MBI01007','Abby','','Harold','F','2011-04-15','Unknown Individual','Unknown Individual','User 1','2012-03-22','A',NULL,NULL,NULL,false,'UnknownFieldWorker');
 INSERT INTO `individual` (uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Indiv 8','MBI01008','Peter','','Bash','M','2009-01-01','Unknown Individual','Unknown Individual','User 1','2012-04-17','A',NULL,NULL,NULL,false,'UnknownFieldWorker');
 
-INSERT INTO `locationhierarchy` VALUES ('hierarchy1','TAN','TAN','hierarchyLevelId3','hierarchy_root');
+INSERT INTO `locationhierarchy` VALUES ('hierarchy1','TAN','TAN','hierarchyLevelId1','hierarchy_root');
 INSERT INTO `locationhierarchy` VALUES ('hierarchy2','IFA','IFA','hierarchyLevelId2','hierarchy1');
-INSERT INTO `locationhierarchy` VALUES ('hierarchy3','MBI','MBI','hierarchyLevelId1','hierarchy2');
+INSERT INTO `locationhierarchy` VALUES ('hierarchy3','IFB','IFB','hierarchyLevelId3','hierarchy2');
+INSERT INTO `locationhierarchy` VALUES ('hierarchy4','IFC','IFC','hierarchyLevelId4','hierarchy3');
+INSERT INTO `locationhierarchy` VALUES ('hierarchy5','MBI','MBI','hierarchyLevelId5','hierarchy4');
 
-INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location1','MBI01','Harolds House','hierarchy3','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
-INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location2','MBI02','Ross House','hierarchy3','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
-INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location3','MBI03','Marsh House','hierarchy3','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
-INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location4','MBI04','Bash House','hierarchy3','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
+INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location1','MBI000001','Harolds House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
+INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location2','MBI02','Ross House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
+INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location3','MBI03','Marsh House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
+INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location4','MBI04','Bash House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
 
-INSERT INTO `round` (uuid,roundNumber,startDate,endDate) VALUES('ROUND 1',1,'2010-06-30','2010-07-31');
+INSERT INTO `round` (uuid,roundNumber,startDate,endDate,remarks) VALUES('ROUND 1',1,'2010-06-30','2010-07-31', 'Test Round');
 INSERT INTO `visit` (uuid,extId,visitDate,status,insertDate,collectedBy_uuid,visitLocation_uuid,deleted,roundNumber,insertBy_uuid) VALUES ('Visit1','VMBI0111','2012-02-28','P','2012-03-28','FieldWorker1','Location1',false,1,'User 1');
 
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency1','Location1','Indiv 2','1989-02-21','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
@@ -40,6 +42,5 @@ INSERT INTO `whitelist` (uuid, address) VALUES ('LOCALHOST4', '141.114.156.167')
 
 INSERT INTO `inmigration` (uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid,unknownIndividual) VALUES ('Inmigration1',false,'2012-04-17','2011-01-05',NULL,NULL,'P','origin','reason','INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1',false);
 INSERT INTO `outmigration`(uuid,deleted,insertDate,voidDate,voidReason,status,destination,reason,recordedDate,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Outmigration1',false,'2012-04-17',NULL,NULL,'P','destination','reason','1997-05-05','User 1',NULL,'FieldWorker1','Indiv 5','Residency6','Visit1');
-
 
 
