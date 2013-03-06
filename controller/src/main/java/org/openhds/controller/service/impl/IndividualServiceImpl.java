@@ -2,7 +2,6 @@ package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -21,7 +20,6 @@ import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("unchecked")
 public class IndividualServiceImpl implements IndividualService {
 	
 	private GenericDao genericDao;

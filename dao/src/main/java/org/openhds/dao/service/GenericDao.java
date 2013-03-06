@@ -3,8 +3,6 @@ package org.openhds.dao.service;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.Visit;
 
 /**
  * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
