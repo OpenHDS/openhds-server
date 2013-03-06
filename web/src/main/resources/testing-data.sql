@@ -29,6 +29,9 @@ INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency4','Location1','Indiv 7','2012-04-15','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency5','Location1','Indiv 8','2009-01-01','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency6','Location1','Indiv 5','1993-02-01','ENU',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
+INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency7','Location1','Indiv 1','2009-01-01','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
+INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency8','Location1','Indiv 6','1993-02-01','ENU',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
+
 
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup1','MBI0101',false,'2012-04-17','Harold','FieldWorker1','User 1','Indiv 1','FAM','P');
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup2','MBI0102',false,'2012-04-17','Marsh','FieldWorker1','User 1','Indiv 5','FAM','P');
