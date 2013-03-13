@@ -204,7 +204,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public String createSetup() {
         reset(false, true);
-        showListing = false;
+        showListing = true;
         entityItem = newInstance();
         navMenuBean.setNextItem(entityClass.getSimpleName());
         navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
