@@ -41,7 +41,11 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
     public String createSetup() {
     	extensionsInitialized = false;
         reset(false, true);
-        showListing = true;
+        if(isFlow){
+        showListing = false;
+        }else{
+        	showListing = true;
+        }
         entityItem = newInstance();
         navMenuBean.setNextItem(entityClass.getSimpleName());
         navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");

@@ -24,7 +24,10 @@
 
     <on-start>
         <!-- Initialize the crud -->
-        <evaluate expression="pregnancyOutcomeCrud.initFlow()" />
+       
+        <evaluate expression="pregnancyOutcomeCrud.initFlow(true)" />
+        
+        
 
         <!-- in cases where a visit/mother are supplied, set these -->
         <!-- values in the crud. If they are not supplied, the fields will be set to null -->
@@ -95,7 +98,7 @@
     <view-state id="indivFormCreate" view="individual/create.xhtml">
         <on-entry>
             <!-- Init the individual form (clear out any old data values) -->
-            <evaluate expression="individualCrud.initFlow()" />
+            <evaluate expression="individualCrud.initFlow(true)" />
 
             <!-- Pre-populate fields based on the pregnancy form -->
             <evaluate expression="navController.setCurrentItem('PregnancyOutcome')" />
@@ -143,7 +146,7 @@
     <view-state id="addMember" view="membership/create.xhtml" >
     	<!-- Configure membership form -->
         <on-entry>
-            <evaluate expression="membershipCrud.initFlow()" />
+            <evaluate expression="membershipCrud.initFlow(true)" />
             <evaluate expression="membershipCrud.item.setStartDate(individualCrud.getItem().getDob())" />
             <evaluate expression="membershipCrud.item.setIndividual(individualCrud.getItem())" />
             <evaluate expression="membershipCrud.item.setSocialGroup(pregnancyOutcomeCrud.getMothersSocialGroupForCurrentIndividual())" />

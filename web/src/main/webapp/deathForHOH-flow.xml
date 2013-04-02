@@ -26,7 +26,7 @@
         </on-entry>
         <transition on="setGroup">
            	<evaluate expression="deathHOHBean.checkValidHOH(messageContext)" />
-        	<evaluate expression="deathCrud.initFlow()" />
+        	<evaluate expression="deathCrud.initFlow(true)" />
         	<set name="flowScope.showNavMenu" value="false"></set>
           	<set name="flowScope.deathHOH" value="true"></set>
         	<set name="flowScope.step" value="1"></set>
@@ -43,7 +43,7 @@
 		 <transition on="newMembership" to="membership" >
 		 	<evaluate expression="deathHOHBean.determineValidMembershipToCreate(messageContext)" />
 		 	<evaluate expression="deathHOHBean.determineValidSuccessorBeforeCreatingMembership(messageContext, flowScope.successorSet)" />
-		 	<evaluate expression="membershipCrud.initFlow()" />
+		 	<evaluate expression="membershipCrud.initFlow(true)" />
         </transition>
 		<transition on="create" to="home">
 			 <evaluate expression="deathHOHBean.checkValidSuccessor(messageContext)" />

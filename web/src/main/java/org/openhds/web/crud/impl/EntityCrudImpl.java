@@ -30,6 +30,9 @@ import org.openhds.web.service.WebFlowService;
 import org.openhds.web.ui.NavigationMenuBean;
 import org.openhds.web.ui.PagingState;
 import org.springframework.binding.message.MessageContext;
+import org.springframework.webflow.action.AbstractAction;
+import org.springframework.webflow.execution.Event;
+import org.springframework.webflow.execution.RequestContext;
 
 /**
  * Generic implementation of the EntityCrud interface
@@ -49,6 +52,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     protected Class<T> entityClass;
     
     String outcomePrefix;
+    
     
     // The current entity (or "backing bean") being worked on
     // wired from the applicationContext.xml file
@@ -71,6 +75,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     String searchString;
     List<SelectItem> searchableFieldsList;
     Boolean isSearch = false;
+    Boolean isFlow = false;
 
 	// used to convert an entity from a string to object, or
     // object to a string
@@ -183,8 +188,9 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     }
 
     public String listSetup() {
-        reset(true, true);
+        reset(true, true);        
         return outcomePrefix + "_list";
+        
     }
 
     public void validateCreate(FacesContext facesContext,
@@ -204,7 +210,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 
     public String createSetup() {
         reset(false, true);
-        showListing = true;
+        if(isFlow){
+        	showListing=false;
+        }else{
+        	showListing=true;
+        }
+        //showListing=false;
         entityItem = newInstance();
         navMenuBean.setNextItem(entityClass.getSimpleName());
         navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
@@ -235,6 +246,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 			jsfService.addError(e.getMessage());
 			return null;
 		}
+    	
 
 		return onCreateComplete();
     }
@@ -378,7 +390,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
         
         // user has performed a search, so only grab a subset of those records
         else if (isSearch) 
-        	pagedItems = generateSearchResults();
+        	pagedItems = generateSearchResults();       
 
     	return pagedItems;
     }
@@ -552,7 +564,8 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 	 * This should be called when a flow is started
 	 * @return
 	 */
-	public boolean initFlow() {
+	public boolean initFlow(boolean isFlow) {
+		this.isFlow = isFlow;
 		this.createSetup();	
 		return true;
 	}
@@ -601,6 +614,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
 		}
 		
 		return entityFilter.getFilteredEntityList(entityItem);
+		//return getPagedItems();
 	}
 	
 	public EntityService getEntityService() {

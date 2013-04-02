@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.InMigration;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Residency;
 import org.openhds.controller.service.InMigrationService;
 
@@ -26,8 +27,7 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
     
     @Override
     public String createSetup() {
-    	String outcome = super.createSetup();
-    	
+    	String outcome = super.createSetup(); 
     	return outcome.replace("inmigration", "migration");
     }
 
@@ -99,11 +99,11 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
 	private class InMigrationEntityFilter implements EntityFilter<InMigration> {
 
 		public List<InMigration> getFilteredEntityList(InMigration entityItem) {
-			if (entityItem.getIndividual() != null && entityItem.getIndividual().getUuid() != null) {
+			if (entityItem.getIndividual() != null && entityItem.getIndividual().getUuid() != null) {				
 				// its possible for an in migration to have an individual that is not persisted
 				// yet during an external in migration. If an individual that is not yet persisted
 				// is passed to this service, a TransientObjectException will be thrown
-				return service.getInMigrationsByIndividual(entityItem.getIndividual());
+				return service.getInMigrationsByIndividual(entityItem.getIndividual());				
 			}
 			
 			return new ArrayList<InMigration>();
