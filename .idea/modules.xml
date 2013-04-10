@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/controller/controller.iml" filepath="$PROJECT_DIR$/controller/controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dao/dao.iml" filepath="$PROJECT_DIR$/dao/dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/domain/domain.iml" filepath="$PROJECT_DIR$/domain/domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openhds.iml" filepath="$PROJECT_DIR$/openhds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/report/report.iml" filepath="$PROJECT_DIR$/report/report.iml" />
+      <module fileurl="file://$PROJECT_DIR$/task/task.iml" filepath="$PROJECT_DIR$/task/task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webservice/webservice.iml" filepath="$PROJECT_DIR$/webservice/webservice.iml" />
+    </modules>
+  </component>
+</project>
+
