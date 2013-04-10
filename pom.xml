@@ -252,6 +252,11 @@
                         <downloadJavadocs>true</downloadJavadocs>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>7.6.8.v20121106</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
