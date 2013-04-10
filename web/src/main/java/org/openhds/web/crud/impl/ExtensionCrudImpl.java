@@ -35,6 +35,8 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
         super(entityClass);
     }
 	
+	
+	
     @Override
     public String create() {
     	entityItem.setAnswers(answerList);
@@ -100,10 +102,17 @@ public class ExtensionCrudImpl extends EntityCrudImpl<ClassExtension, String> {
     @Override
     public String createSetup() {
     	// needed to refresh the state of the crud
+    	showListing=false;
     	multipleChoice = false;
     	answer = answerList = "";
-    	return super.createSetup();
-    }
+    	
+    	reset(false, true);
+        
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }    
     
     public void addAnswer() {
     	answerList += answer + ", ";
