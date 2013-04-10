@@ -44,6 +44,7 @@ public class ShallowCopier {
 
             if (individual.getCurrentResidency() != null) {
                 Residency resCopy = new Residency();
+                resCopy.setEndType(individual.getCurrentResidency().getEndType());
                 Location locCopy = new Location();
                 locCopy.setLocationLevel(null);
                 locCopy.setExtId(individual.getCurrentResidency().getLocation().getExtId());

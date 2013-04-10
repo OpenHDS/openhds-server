@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
@@ -21,6 +23,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @CheckEndDateGreaterThanStartDate(allowNull=true)
 @Table(name="residency")
+@XmlRootElement
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
 	private static final long serialVersionUID = -4666666231598767965L;
     
@@ -94,7 +97,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
 	public String getEndType() {
 		return endType;
 	}
-
+  
 	public void setEndType(String endType) {
 		this.endType = endType;
 	}
