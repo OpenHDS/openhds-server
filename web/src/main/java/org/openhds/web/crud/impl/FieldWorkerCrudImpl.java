@@ -12,6 +12,17 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 	public FieldWorkerCrudImpl(Class<FieldWorker> entityClass) {
         super(entityClass);
     }
+	
+	@Override
+	public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
+
 
     @Override
     public String create() {

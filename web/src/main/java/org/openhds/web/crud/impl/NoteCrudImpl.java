@@ -19,6 +19,17 @@ public class NoteCrudImpl extends EntityCrudImpl<Note, String> {
     		return new Date();
     	return entityItem.getObservationDate().getTime();
 	}
+    
+    @Override
+	public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
+
 
 	public void setObservationDate(Date observationDate) throws ParseException {
 		Calendar cal = Calendar.getInstance();

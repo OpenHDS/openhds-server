@@ -33,11 +33,11 @@
             <set name="flowScope.step" value="3"></set>
         </transition>
         <transition on="newLocation" to="location">
-            <evaluate expression="locationCrud.initFlow()" />
+            <evaluate expression="locationCrud.initFlow(true)" />
         </transition>
         <transition on="newSocialGroup" to="newIndividual">
             <set name="flowScope.baselineAddSG" value="true"></set>
-            <evaluate expression="individualCrud.initFlow()" />
+            <evaluate expression="individualCrud.initFlow(true)" />
         </transition>
         <transition on="setIndividual">
             <evaluate expression="baselineFlowBean.setSelectedIndividual(requestParameters.indivId)" />
@@ -45,7 +45,7 @@
         <transition on="addIndividual" to="newIndividual">
             <set name="flowScope.baselineAddSG" value="false"></set>
             <set name="flowScope.baselineAddIndiv" value="true"></set>
-            <evaluate expression="individualCrud.initFlow()" />
+            <evaluate expression="individualCrud.initFlow(true)" />
         </transition>
         <transition on="clearIndividual">
             <evaluate expression="baselineFlowBean.setSelectedIndividual(null)" />
@@ -53,7 +53,7 @@
         <transition on="addMembership" to="newMembership">
             <evaluate expression="baselineFlowBean.checkBean(messageContext)" />
             <set name="flowScope.currentView" value="'newMembership'"></set>
-            <evaluate expression="membershipCrud.initFlow()" />
+            <evaluate expression="membershipCrud.initFlow(true)" />
         </transition>
         <transition on="finish" to="resetForm" />
     </view-state>
@@ -137,14 +137,14 @@
         <transition on="addPerson" to="socialGroup">
             <evaluate expression="individualCrud.validateIndividual(messageContext)" />
             <evaluate expression="individualCrud.validateEntity(individualCrud.getItem(), messageContext)" />
-            <evaluate expression="socialGroupCrud.initFlow()" />
+            <evaluate expression="socialGroupCrud.initFlow(true)" />
             <set name="socialGroupCrud.getItem().groupHead" value="individualCrud.getItem()" />
             <set name="flowScope.updating" value="true" />
         </transition>
         <transition on="addMember" to="newMembershipForIndividual">
             <evaluate expression="individualCrud.validateIndividual(messageContext)" />
             <evaluate expression="individualCrud.validateEntity(individualCrud.getItem(), messageContext)" />
-            <evaluate expression="membershipCrud.initFlow()" />
+            <evaluate expression="membershipCrud.initFlow(true)" />
         </transition>
         <transition on="cancel" to="home">
             <evaluate expression="navController.removeLastCrumb()" />

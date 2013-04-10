@@ -16,7 +16,7 @@
 	
 	<on-start>
 		<!-- Initialize the crud -->
-		<evaluate expression="inMigrationCrud.initFlow()" />
+		<evaluate expression="inMigrationCrud.initFlow(true)" />
 
 		<!-- set values that are possibly supplied when this flow is used as a sub flow -->
 		<set name="inMigrationCrud.item.visit" value="visit" />
@@ -50,7 +50,7 @@
 	<view-state id="newIndivForm" view="individual/create.xhtml">
 		<on-entry>
 			<!-- Initialize the individual crud -->
-			<evaluate expression="individualCrud.initFlow()" />
+			<evaluate expression="individualCrud.initFlow(true)" />
 			<!-- Auto-fill field worker if inside the update flow -->
 			<set name="individualCrud.item.collectedBy" value="fieldWorker" />
 			<!-- Set flag which will show the create button on individual form -->

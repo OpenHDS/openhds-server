@@ -70,6 +70,7 @@ public class InMigration
     private Boolean unknownIndividual = false;
 
     public Individual getIndividual() {
+    	//String extId=individual.getExtId();
         return individual;
     }
 

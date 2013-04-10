@@ -23,6 +23,17 @@ public class RoleCrudImpl extends EntityCrudImpl<Role, String> {
         usersAndRoles = new ArrayList<UserAndRole>();
     }
 	
+	@Override
+	public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
+
+	
 	/**
 	 * Helper class that is used primarily to bind
 	 * the role list box to a value

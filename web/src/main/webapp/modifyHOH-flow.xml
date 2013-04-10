@@ -41,7 +41,7 @@
 		 <transition on="newMembership" to="membership" >
 		 	<evaluate expression="modifyHOHBean.determineValidMembershipToCreate(messageContext)" />
 		 <evaluate expression="modifyHOHBean.determineValidSuccessorBeforeCreatingMembership(messageContext, flowScope.successorSet)" />
-		 	<evaluate expression="membershipCrud.initFlow()" />
+		 	<evaluate expression="membershipCrud.initFlow(true)" />
         </transition>
 		<transition on="create" to="home">
 			 <evaluate expression="modifyHOHBean.checkValidSuccessor(messageContext)" />

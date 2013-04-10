@@ -33,7 +33,8 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
         	if (entityValidator.checkConstraints(entityItem) == false) {	
 	        	service.evaluateDeath(entityItem);
 	        	service.createDeath(entityItem);
-	        	super.create();
+	        	return listSetup();
+	        	//super.create();
         	}
         } 
         catch(ConstraintViolations e) {
@@ -121,7 +122,11 @@ public class DeathCrudImpl extends EntityCrudImpl<Death, String> {
 	private class DeathEntityFilter implements EntityFilter<Death> {
 
 		public List<Death> getFilteredEntityList(Death entityItem) {
-			List<Death> deaths = service.getDeathsByIndividual(entityItem.getIndividual());
+			List<Death> deaths=null;
+			if(entityItem!=null){
+				deaths = service.getDeathsByIndividual(entityItem.getIndividual());
+			}
+			
 			Iterator<Death> itr = deaths.iterator();
 			while(itr.hasNext()) {
 				if (itr.next().isDeleted()) {

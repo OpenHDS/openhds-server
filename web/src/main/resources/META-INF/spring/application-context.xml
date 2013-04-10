@@ -527,7 +527,7 @@
         <property name="siteProperties" ref="siteProperties"></property>
     </bean>
     
-    <bean id="whitelistCrud" parent="baseCrud" class="org.openhds.web.crud.impl.EntityCrudImpl">
+    <bean id="whitelistCrud" parent="baseCrud" class="org.openhds.web.crud.impl.WhitelistCrudImpl">
     	<constructor-arg value="org.openhds.domain.model.Whitelist" />
         <property name="dao" ref="whitelistDao" />
         <property name="converter" ref="whitelistConverter" />

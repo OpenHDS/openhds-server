@@ -52,8 +52,16 @@ public class VisitGenerator extends Generator<Visit> {
 			}
 			else if (key.equals(IdGeneratedFields.VISIT_ROUND.toString())) {	
 				if (filter > 0) {	
-					String round = entityItem.getRoundNumber().toString();	
-					sb.append(round);
+					String round = entityItem.getRoundNumber().toString();
+					if(round.length()==1){
+						sb.append("00"+round);
+					}
+					if(round.length()==2){
+						sb.append("0"+round);
+					}
+					if(round.length()==3){
+						sb.append(round);
+					}
 				}
 			}
 		}
@@ -61,10 +69,14 @@ public class VisitGenerator extends Generator<Visit> {
 		extId = sb.toString();
 		if (scheme.getIncrementBound() > 0) 
 			sb.append(buildNumberWithBound(entityItem, scheme));
-		else
-			sb.append(buildNumber(Visit.class, sb.toString(), scheme.isCheckDigit()));
+		//else
+			//sb.append(buildNumber(Visit.class, sb.toString(), scheme.isCheckDigit()));
 				
 		validateIdLength(sb.toString(), scheme);
+		
+		if(genericDao.findListByProperty(Visit.class, "extId", sb.toString()).size() > 0){
+			throw new ConstraintViolations("A visit to this household has already been recorded in this round.");
+		}
 				
 		return sb.toString();
 	}

@@ -122,7 +122,7 @@
     <view-state id="relationship" view="relationship/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'relationship'"></set>
-            <evaluate expression="relationshipCrud.initFlow()" />
+            <evaluate expression="relationshipCrud.initFlow(true)" />
             <evaluate expression="relationshipCrud.getItem().setIndividualA(updateBean.getCurrentIndividual())" />
             <evaluate expression="relationshipCrud.getItem().setCollectedBy(updateBean.getCurrentVisit().getCollectedBy())" />
             <evaluate expression="navController.addItemToTrail('Relationship Create')" />
@@ -183,7 +183,7 @@
     <view-state id="membership" view="membership/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'membership'"></set>
-            <evaluate expression="membershipCrud.initFlow()"></evaluate>
+            <evaluate expression="membershipCrud.initFlow(true)"></evaluate>
             <evaluate expression="membershipCrud.getItem().setIndividual(updateBean.getCurrentIndividual())"></evaluate>
             <evaluate expression="membershipCrud.getItem().setStartDate(updateBean.getCurrentVisit().visitDate)"></evaluate>
             <evaluate expression="membershipCrud.getItem().setCollectedBy(updateBean.getCurrentVisit().collectedBy)"></evaluate>
@@ -245,7 +245,7 @@
     <view-state id="pregnancyObservation" view="pregnancyobservation/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'pregnancyObservation'"></set>
-            <evaluate expression="pregnancyObservationCrud.initFlow()"></evaluate>
+            <evaluate expression="pregnancyObservationCrud.initFlow(true)"></evaluate>
             <set name="pregnancyObservationCrud.item.mother" value="updateBean.currentIndividual" />
             <set name="pregnancyObservationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
             <set name="pregnancyObservationCrud.item.visit" value="updateBean.currentVisit" />
@@ -283,7 +283,7 @@
 
     <view-state id="visit" view="visit/create.xhtml">
         <on-entry>
-            <evaluate expression="visitCrud.initFlow()" />
+            <evaluate expression="visitCrud.initFlow(true)" />
             <set name="flowScope.currentView" value="'visit'"></set>
             <evaluate expression="navController.addItemToTrail('Visit Create')" />
         </on-entry>
@@ -294,14 +294,29 @@
             <set name="flowScope.showNavMenu" value="false" />
         </transition>
     </view-state>
+    
+    <view-state id="location" view="location/create.xhtml">
+        <on-entry>
+            <evaluate expression="locationCrud.initFlow(true)" />
+            <set name="flowScope.currentView" value="'visit'"></set>
+            <evaluate expression="navController.addItemToTrail('Location Create')" />
+        </on-entry>
+        <transition on="createLocation" to="home">
+            <evaluate expression="locationCrud.commit(messageContext)" />
+            <set name="flowScope.updating" value="true" />
+            <!-- <set name="updateBean.currentVisit" value="visitCrud.getItem()" /> -->
+            <set name="flowScope.showNavMenu" value="false" />
+        </transition>
+    </view-state>
 
     <view-state id="death" view="death/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'death'"></set>
-            <evaluate expression="deathCrud.initFlow()"></evaluate>
+            <evaluate expression="deathCrud.initFlow(true)"></evaluate>
             <evaluate expression="deathCrud.getItem().setIndividual(updateBean.getCurrentIndividual())"></evaluate>
             <evaluate expression="deathCrud.getItem().setVisitDeath(updateBean.getCurrentVisit())"></evaluate>
             <evaluate expression="navController.addItemToTrail('Death Create')" />
+            
         </on-entry>
         <transition on="cancel" to="home" />
         <transition on="death_list" to="home">
@@ -339,7 +354,7 @@
     <view-state id="outmigration" view="outmigration/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'outmigration'" />
-            <evaluate expression="outMigrationCrud.initFlow()" />
+            <evaluate expression="outMigrationCrud.initFlow(true)" />
             <set name="outMigrationCrud.item.individual" value="updateBean.currentIndividual" />
             <set name="outMigrationCrud.item.visit" value="updateBean.currentVisit" />
             <set name="outMigrationCrud.item.collectedBy" value="updateBean.currentVisit.collectedBy" />
@@ -377,7 +392,7 @@
 
     <view-state id="inmigration" view="migration/create.xhtml">
         <on-entry>
-            <evaluate expression="inMigrationCrud.initFlow()" />
+            <evaluate expression="inMigrationCrud.initFlow(true)" />
             <evaluate expression="navController.addItemToTrail('InMigration Create')" />
         </on-entry>
 
