@@ -6,14 +6,7 @@ import org.hibernate.Session;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Visit;
 
-/**
- * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
- * This class differs from the Dao/BaseDaoImpl in that it is not have
- * generic parameters. Instead it uses generic methods so that only one instance
- * of this class needs to be created and can be shared by any entity
- * 
- * @author dave
- *
+/** Interface for GenericDaoImpl.
  */
 public interface GenericDao {
 
