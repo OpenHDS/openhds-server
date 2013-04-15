@@ -5,3 +5,4 @@ target
 *.log
 generated-xml
 .idea/workspace.xml
+.directory
