@@ -19,7 +19,14 @@
     <context-param>
         <param-name>facelets.SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
-    </context-param>    
+    </context-param>
+    
+    <!-- Without this, I get a warning. It is suggested this is dangerous, so disable:
+     http://stackoverflow.com/questions/3889393/how-to-resolve-this-facelets-warning-message -->
+    <context-param>
+        <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+        <param-value>false</param-value>
+    </context-param>
     
     <context-param>
     	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -30,16 +37,15 @@
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
 	</context-param>
-	
-	<context-param>
+
+    <!-- description>
+            Comma separated list of URIs of additional faces files.
+            (e.g. /WEB-INF/my-config.xml) Attention: /WEB-INF/faces.config.xml is added automatically.
+    </description -->
+	<!-- context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>
-        </param-value>
-        <!-- description>
-                Comma separated list of URIs of additional faces files.
-                (e.g. /WEB-INF/my-config.xml) Attention: /WEB-INF/faces.config.xml is added automatically.
-        </description -->
-    </context-param>
+        <param-value></param-value>
+    </context-param -->
 	
 	<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
