@@ -83,4 +83,6 @@ public interface GenericDao {
     <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 
     <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);
+
+    <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 }

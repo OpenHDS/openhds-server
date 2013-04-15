@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -45,15 +45,16 @@ public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
         try {
             IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService,
                     calendarUtil);
-         //   when(individualService.getTotalIndividualCount()).thenReturn(1L);
+            when(individualService.getTotalIndividualCount()).thenReturn(1L);
            // when(individualService.getAllIndividualsInRange(0, 100)).thenReturn(Arrays.asList(createIndividual()));
             when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
 
             task.writeXml(new TaskContext(individualFile, securityContext));
 
-            ClassPathResource expected = new ClassPathResource("xml/individuals.xml");
+            @SuppressWarnings("unused")
+			ClassPathResource expected = new ClassPathResource("xml/individuals.xml");
 
-            //compareXmlDocuments(expected.getFile(), individualFile);
+          //  compareXmlDocuments(expected.getFile(), individualFile);
         } catch (Exception e) {
             fail();
         } finally {
@@ -63,20 +64,9 @@ public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
         }
     }
 
- /*   private List<Individual> getIndividualAlive() {
-    	Individual indiv;
-    	List<Individual> indivList= individualService.getAllIndividualsInRange(0, 100);
-    	Iterator<Individual> it = indivList.iterator();
-    	while (it.hasNext()) {
-			indiv = (Individual) it;
-			if (indiv.getCurrentResidency().getEndType().equals("DTH")) {
-				indivList.remove(indiv);
-			}		
-		}
- 	
-		return indivList;
-	}*/
 
+
+	@SuppressWarnings("unused")
 	private Individual createIndividual() {
         Individual individual = new Individual();
         Calendar dob = Calendar.getInstance();
