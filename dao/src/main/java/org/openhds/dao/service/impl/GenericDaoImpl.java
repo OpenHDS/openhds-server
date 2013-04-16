@@ -231,7 +231,8 @@ public class GenericDaoImpl implements GenericDao {
 		return (List<T>) crit.list();
 	}
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size) {
         Criteria crit = getSession().createCriteria(entityType);
         
@@ -245,7 +246,8 @@ public class GenericDaoImpl implements GenericDao {
         return (List<T>) crit.list();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty,
             Object filterValue, int start, int size) {
         Criteria crit = getSession().createCriteria(entityType);
@@ -256,10 +258,25 @@ public class GenericDaoImpl implements GenericDao {
         crit.setFirstResult(start).setMaxResults(size);
         return (List<T>) crit.list();
     }
+    
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty,
+            Object filterValue, int start, int size) {
+        Criteria crit = getSession().createCriteria(entityType);
+
+        crit.add(Restrictions.ge(filterProperty, filterValue));
+        crit.add(Restrictions.eq("deleted", false));
+        crit.addOrder(Order.asc(orderProperty));
+        crit.setFirstResult(start).setMaxResults(size);
+        return (List<T>) crit.list();
+    }
 
     @Override
     public <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue) {
-        return (Long) getSession().createCriteria(entityType).add(Restrictions.eq(filterProperty, filterValue))
+        long total =(Long) getSession().createCriteria(entityType).add(Restrictions.ge(filterProperty, filterValue))
                 .setProjection(Projections.rowCount()).uniqueResult();
+        return total;
     }
 }

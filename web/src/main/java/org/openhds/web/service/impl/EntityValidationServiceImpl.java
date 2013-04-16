@@ -61,6 +61,7 @@ public class EntityValidationServiceImpl<T> implements EntityValidationService<T
         return false;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public <S> List validateType(S entity) {
 		List<String> violations = new ArrayList<String>();
 

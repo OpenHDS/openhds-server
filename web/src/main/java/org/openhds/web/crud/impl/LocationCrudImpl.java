@@ -16,7 +16,17 @@ public class LocationCrudImpl extends EntityCrudImpl<Location, String> {
 	public LocationCrudImpl(Class<Location> entityClass) {
         super(entityClass);
     }
-    
+
+	@Override
+	public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
+	
     @Override
     public String create() {
 

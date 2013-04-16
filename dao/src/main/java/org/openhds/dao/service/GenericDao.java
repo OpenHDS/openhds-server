@@ -3,8 +3,6 @@ package org.openhds.dao.service;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.Visit;
 
 /** Interface for GenericDaoImpl.
  */
@@ -78,4 +76,6 @@ public interface GenericDao {
     <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 
     <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);
+
+    <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 }

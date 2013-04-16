@@ -1,6 +1,5 @@
 package org.openhds.task;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.domain.util.CalendarUtil;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**

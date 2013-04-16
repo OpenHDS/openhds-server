@@ -37,9 +37,10 @@ public abstract class Generator<T> extends LuhnValidator {
 		
 	/**
 	 * Builds the number portion of the id and ensures that it's unique.
+	 * @throws ConstraintViolations 
 	 */
 	public String buildNumber(Class<T> classType, String prefix, boolean checkDigit) {
-		
+					
 		Integer suffixInt = 0;
 		String numberGen;
 		List<T> list = null;  

@@ -19,6 +19,16 @@ public class RoundCrudImpl extends EntityCrudImpl<Round, String> {
 		super(entityClass);
 	}
 	
+	@Override 
+	public String createSetup() {
+	        reset(false, true);
+	        showListing=false;
+	        entityItem = newInstance();
+	        navMenuBean.setNextItem(entityClass.getSimpleName());
+	        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+	        return outcomePrefix + "_create";
+	    }
+	
 	@Override
 	public String create() {
 		try {

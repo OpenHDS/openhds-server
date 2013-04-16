@@ -2,7 +2,9 @@ package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -17,11 +19,14 @@ import org.openhds.domain.model.Death;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.OutMigration;
+import org.openhds.domain.model.PregnancyObservation;
+import org.openhds.domain.model.PregnancyOutcome;
+import org.openhds.domain.model.Relationship;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("unchecked")
 public class IndividualServiceImpl implements IndividualService {
 	
 	private GenericDao genericDao;
@@ -126,7 +131,17 @@ public class IndividualServiceImpl implements IndividualService {
     public Individual findIndivById(String indivExtId) {
         Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId);
         return indiv;
-    }    
+    }  
+    
+    private class LastEvent{
+    	String eventType;
+    	Calendar eventDate;
+    	
+    	public LastEvent(String eventType,Calendar eventDate){
+    		this.eventType=eventType;
+    		this.eventDate=eventDate;
+    	}
+    }
 	
     @Transactional(readOnly=true)
 	public String getLatestEvent(Individual individual) {
@@ -146,24 +161,57 @@ public class IndividualServiceImpl implements IndividualService {
 		// otherwise determine latest event
 		OutMigration om = genericDao.findUniqueByPropertyWithOrder(OutMigration.class, "individual", individual, "recordedDate", false);
 		InMigration in = genericDao.findUniqueByPropertyWithOrder(InMigration.class, "individual", individual, "recordedDate", false);
+		PregnancyOutcome po = genericDao.findUniqueByPropertyWithOrder(PregnancyOutcome.class, "mother", individual, "outcomeDate", false);
+		PregnancyObservation pregObs = genericDao.findUniqueByPropertyWithOrder(PregnancyObservation.class, "mother", individual, "recordedDate", false);
+		Relationship relationship = genericDao.findUniqueByPropertyWithOrder(Relationship.class, "individualA", individual, "startDate", false);
+		Relationship relationship2 = genericDao.findUniqueByPropertyWithOrder(Relationship.class, "individualB", individual, "startDate", false);
+		Membership membership = genericDao.findUniqueByPropertyWithOrder(Membership.class, "individual", individual, "startDate", false);
 		
-		if (om == null && in == null) {
-			return "";
-		}
 		
-		if (om != null && in == null) {
-			return "Out Migration";
-		}
+		List<LastEvent> events= new ArrayList<LastEvent>();
 		
-		if (in != null && om == null) {
-			return "In Migration";
-		}
+		events.add(new LastEvent("Birth. Create membership for this individual ",individual.getDob()));
 		
-		if (in.getRecordedDate().compareTo(om.getRecordedDate()) >= 0) {
-			return "In Migration";
-		}
+		if(om!=null)
+			events.add(new LastEvent("Out Migration",om.getRecordedDate()));
+		if(in!=null)
+			events.add(new LastEvent("In Migration. Create membership for this individual",in.getRecordedDate()));
+		if(po!=null)
+			events.add(new LastEvent("Pregnancy Outcome",po.getOutcomeDate()));
+		if(pregObs!=null)
+			events.add(new LastEvent("Pregnancy Observation",pregObs.getRecordedDate()));
+		if(relationship!=null)
+			events.add(new LastEvent("Relationship",relationship.getStartDate()));
+		if(relationship2!=null)
+			events.add(new LastEvent("Relationship",relationship2.getStartDate()));
+		if(membership!=null)
+			events.add(new LastEvent("Membership",membership.getStartDate()));
 		
-		return "Out Migration";
+		Collections.sort(events, new Comparator<LastEvent>() {
+			  public int compare(LastEvent o1, LastEvent o2) {
+			      if (o1.eventDate == null || o2.eventDate == null)
+			        return 0;
+			      return o1.eventDate.compareTo(o2.eventDate);
+			  }
+			});
+		
+		LastEvent le = new LastEvent(null,null);
+		LastEvent equallyLastEvent = new LastEvent(null,null);
+		if(!events.isEmpty() &&events.size()>1){
+			le = events.get(events.size()-1);
+			equallyLastEvent = events.get(events.size()-2);
+			if(le.eventType=="In Migration. Create membership for this individual" &&
+					equallyLastEvent.eventType=="Membership"
+					&& le.eventDate==equallyLastEvent.eventDate){
+				le = equallyLastEvent;
+			}
+			
+		}else if (events.size()==1)
+			le = events.get(0);
+		
+		
+		return le.eventType==null ? "" : le.eventType;
+		
 	}
 
 	@Transactional(rollbackFor=Exception.class)

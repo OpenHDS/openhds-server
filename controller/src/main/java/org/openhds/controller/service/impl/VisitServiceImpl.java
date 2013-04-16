@@ -181,7 +181,7 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Authorized("VIEW_ENTITY")
     public List<Visit> getAllVisitsForRoundInRange(int round, int i, int pageSize) {
-        return genericDao.findPagedFiltered(Visit.class, "extId", "roundNumber", round, i, pageSize);
+        return genericDao.findPagedFilteredgt(Visit.class, "extId", "roundNumber", round, i, pageSize);
     }
 
     @Override
