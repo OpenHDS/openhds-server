@@ -21,7 +21,7 @@ public class NavigationMenuBean {
 	String currentItem;
 	
 	/**
-	 * Outputs the breadcrumb trail
+	 * Returns the breadcrumb trail
 	 */
 	public String getBreadcrumbTrail() {
 		String result = "";
