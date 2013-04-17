@@ -72,6 +72,14 @@
             	padding:0;
             	list-style-position:inside;
             }
+            
+            .update-menu-buttons {
+                vertical-align: top;
+                /* Using fixed position works fine if the browser view is wide
+                 enough, but not otherwise. Better might be to use JavaScript
+                 to reposition vertically but not horizontally. */
+                /*position: fixed;*/
+            }
         </style>
 		<sec:ifNotGranted roles="CREATE_ENTITY">
 			<h1>#{msg.accessDenied}</h1>
@@ -90,11 +98,14 @@
                   <tr>
                       <td>#{msg.visitId}:</td>
                       <td>
-                          <h:inputText styleClass="visit" autocomplete="off" id="visitId" disabled="#{updateBean.currentVisit != null}" value="#{updateBean.currentVisit}" converter="#{visitExtIdConverter}" />
+                          <h:inputText styleClass="visit" autocomplete="off" id="visitId"
+                                       disabled="#{updateBean.currentVisit != null}"
+                                       value="#{updateBean.currentVisit}" converter="#{visitExtIdConverter}" />
                       </td>
                       <td colspan="3">
                           <h:commandButton rendered="#{updateBean.currentVisit == null}" action="setVisit" value="#{msg.lblSelect}" />
-                          <h:commandButton rendered="#{updateBean.currentVisit == null}" immediate="true" value="#{msg.lblCreate}" action="newVisit" />
+                          <h:commandButton rendered="#{updateBean.currentVisit == null}"
+                                           immediate="true" value="#{msg.lblCreate}" action="newVisit" />
                       </td>
                   </tr>
                   <tr>
@@ -126,7 +137,7 @@
                   <h3>#{msg.updateListIndividuals}</h3>
                   <table class="list-individual-operation-table">
                       <tr style="height:50px">
-                          <td rowspan="6" style="width:60%" valign="top">
+                          <td style="width:60%" valign="top">
                               <c:if test="#{updateBean.individualsAtLocation != null}">
                                   <h:dataTable styleClass="update-individual-table" value="#{updateBean.individualsAtLocation}"
                                                var="indiv" width="100%" rowClasses=",alt" columnClasses=",,,,,select-col">
@@ -164,7 +175,8 @@
                                           <f:facet name="header">
 
                                           </f:facet>
-                                          <h:commandLink immediate="true" actionListener="#{updateBean.changeIndividual}" value="#{msg.lblSelect}" action="setIndividual">
+                                          <h:commandLink immediate="true" actionListener="#{updateBean.changeIndividual}"
+                                                         value="#{msg.lblSelect}" action="setIndividual">
                                               <f:param name="indivId" value="#{indiv.uuid}" />
                                               <f:param name="indivExtId" value="#{indiv.extId}" />
                                           </h:commandLink>
@@ -172,32 +184,40 @@
                                   </h:dataTable>
                               </c:if>
                           </td>
-                          <td colspan="2" class="selectBtnCell">
-							#{msg.updateSelectedIndividual} <h:inputText id="selectedIndiv" binding="#{updateBean.selectedIndivInput}" />
-							<div style="display:inline-block">
-								<h:commandButton id="selectBtn" styleClass="selectIndivBtn" immediate="true" actionListener="#{updateBean.selectBtnListener}" value="#{msg.lblSelect}" />
-								<h:commandButton id="clearBtn" styleClass="selectIndivBtn" immediate="true" actionListener="#{updateBean.clearSelectedIndividual}" value="#{msg.lblClear}" />
-							</div>
+                          <td class="update-menu-buttons">
+                              <table><!-- sub-table to list command buttons -->
+                                  <tr>
+                                      <td colspan="2" class="selectBtnCell">
+                                          #{msg.updateSelectedIndividual} <h:inputText id="selectedIndiv" binding="#{updateBean.selectedIndivInput}" />
+                                          <div style="display:inline-block">
+                                              <h:commandButton id="selectBtn" styleClass="selectIndivBtn" immediate="true"
+                                                               actionListener="#{updateBean.selectBtnListener}" value="#{msg.lblSelect}" />
+                                              <h:commandButton id="clearBtn" styleClass="selectIndivBtn" immediate="true"
+                                                               actionListener="#{updateBean.clearSelectedIndividual}" value="#{msg.lblClear}" />
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td align="right"><h:commandButton id="pregOutcomeBtn" immediate="true" styleClass="update-btn" action="newPregnancyOutcome" value="#{msg.updatePregOut}" /></td>
+                                      <td><h:commandButton id="relationshipBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarRelationship}" action="newRelationship" /></td>
+                                  </tr>
+                                  <tr>
+                                      <td align="right"><h:commandButton id="deathBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarDeath}" action="newDeath" /></td>
+                                      <td><h:commandButton id="membershipBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarMembership}" action="newMembership" /></td>
+                                  </tr>
+                                  <tr>
+                                      <td align="right"><h:commandButton id="inMigBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarInMigration}" action="newInmigration" /></td>
+                                      <td><h:commandButton id="outMigBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarOutMigration}" action="newOutMigration" /></td>
+                                  </tr>
+                                  <tr>
+                                      <td align="right"><h:commandButton id="pregObsBtn" immediate="true" styleClass="update-btn" value="#{msg.updatePregObserv}" action="newPregObserv" /></td>
+                                      <td></td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2" valign="top" align="center" style="padding-top:20px;"><h:commandButton id="finishBtn" immediate="true" styleClass="update-btn" value="#{msg.lblFinish}" action="finish" /></td>
+                                  </tr>
+                              </table>
                           </td>
-                      </tr>
-                      <tr>
-                          <td align="right"><h:commandButton id="pregOutcomeBtn" immediate="true" styleClass="update-btn" action="newPregnancyOutcome" value="#{msg.updatePregOut}" /></td>
-                          <td><h:commandButton id="relationshipBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarRelationship}" action="newRelationship" /></td>
-                      </tr>
-                      <tr>
-                          <td align="right"><h:commandButton id="deathBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarDeath}" action="newDeath" /></td>
-                          <td><h:commandButton id="membershipBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarMembership}" action="newMembership" /></td>
-                      </tr>
-                      <tr>
-                          <td align="right"><h:commandButton id="inMigBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarInMigration}" action="newInmigration" /></td>
-                          <td><h:commandButton id="outMigBtn" immediate="true" styleClass="update-btn" value="#{msg.navBarOutMigration}" action="newOutMigration" /></td>
-                      </tr>
-                      <tr>
-                          <td align="right"><h:commandButton id="pregObsBtn" immediate="true" styleClass="update-btn" value="#{msg.updatePregObserv}" action="newPregObserv" /></td>
-                          <td></td>
-                      </tr>
-                      <tr>
-                          <td colspan="2" valign="top" align="center" style="padding-top:20px;"><h:commandButton id="finishBtn" immediate="true" styleClass="update-btn" value="#{msg.lblFinish}" action="finish" /></td>
                       </tr>
                   </table>
               </c:if>

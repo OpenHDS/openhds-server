@@ -228,9 +228,10 @@ public class UpdateBean implements Serializable {
 	 * @param extId the extid of the individual to look up
 	 */
 	private void setCurrentIndividualByExtId(String extId) {
+        currentIndividual = null;
 		for(Individual individual : getIndividualsAtLocation()) {
 			if (individual.getExtId().equals(extId)) {
-				this.currentIndividual = individual;				
+				currentIndividual = individual;				
 				break;
 			}
 		}
