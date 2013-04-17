@@ -161,11 +161,12 @@ public class NavigationMenuBean {
 	}
 	
 	public void clearTrailExceptFirst() {
-		ArrayList<String> tempTrail = new ArrayList<String>();
-		tempTrail.add(trail.get(0));
+        ArrayList<String> tempTrail = new ArrayList<String>();
+        if( trail.size() > 0 )
+		    tempTrail.add(trail.get(0));
 		trail = tempTrail;
 	}
-			
+	
 	public void clear() {
 		trail.clear();
 		showHome = false;

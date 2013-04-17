@@ -43,14 +43,14 @@ public class ValueConstraintServiceImpl {
 	}
 	
 	public boolean isValidConstraintValue(String constraintName, Object value) {
-		List list = doc.getRootElement().getChildren();
-		for (int i = 0; i < list.size(); i++) {
-			Element ele = (Element)list.get(i);
-			if (ele.getAttribute("id").getValue().equals(constraintName)) {
-				List children = ele.getChildren();
-				for (int j = 0; j < children.size(); j++) {
-					Element ele2 = (Element)children.get(j);
-					if (ele2.getValue().toLowerCase().equals(value.toString().toLowerCase()))
+        // Get children of the root element whose "id" attribute is constraintName...
+        List list = doc.getRootElement().getChildren();
+		for (Object o : list) {
+			Element elt = (Element)o;
+			if (elt.getAttribute("id").getValue().equals(constraintName)) {
+                // ...and return true if the value of some child matches the input
+				for (Object o2 : elt.getChildren()) {
+					if (((Element)o2).getValue().toLowerCase().equals(value.toString().toLowerCase()))
 						return true;
 				}
 				return false;
