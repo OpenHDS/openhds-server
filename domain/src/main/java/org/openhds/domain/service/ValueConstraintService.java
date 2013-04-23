@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.jdom.Element;
 
-public interface ValueConstaintService {
+public interface ValueConstraintService {
 	
 	boolean isConstraintDefined(String constraintName);
 	

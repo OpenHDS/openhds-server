@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import org.openhds.domain.constaint.impl.ExtensionIntegerConstraintImpl;
+import org.openhds.domain.constraint.impl.ExtensionIntegerConstraintImpl;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)

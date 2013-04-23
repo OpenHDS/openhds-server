@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import org.openhds.domain.constaint.impl.CheckRecordedDateGreaterThanInsertDateImpl;
+import org.openhds.domain.constraint.impl.CheckRecordedDateGreaterThanInsertDateImpl;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

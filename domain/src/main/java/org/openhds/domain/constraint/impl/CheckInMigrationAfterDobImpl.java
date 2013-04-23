@@ -1,4 +1,4 @@
-package org.openhds.domain.constaint.impl;
+package org.openhds.domain.constraint.impl;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
