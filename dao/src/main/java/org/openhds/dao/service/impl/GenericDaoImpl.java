@@ -15,6 +15,15 @@ import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.Individual;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
+ * This class differs from the Dao/BaseDaoImpl in that it is not have
+ * generic parameters. Instead it uses generic methods so that only one instance
+ * of this class needs to be created and can be shared by any entity
+ *
+ * @author dave
+ *
+ */
 @Transactional
 public class GenericDaoImpl implements GenericDao {
 	
@@ -222,7 +231,8 @@ public class GenericDaoImpl implements GenericDao {
 		return (List<T>) crit.list();
 	}
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> List<T> findPaged(Class<?> entityType, String orderProperty, int start, int size) {
         Criteria crit = getSession().createCriteria(entityType);
         
@@ -236,7 +246,8 @@ public class GenericDaoImpl implements GenericDao {
         return (List<T>) crit.list();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty,
             Object filterValue, int start, int size) {
         Criteria crit = getSession().createCriteria(entityType);
@@ -247,10 +258,25 @@ public class GenericDaoImpl implements GenericDao {
         crit.setFirstResult(start).setMaxResults(size);
         return (List<T>) crit.list();
     }
+    
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty,
+            Object filterValue, int start, int size) {
+        Criteria crit = getSession().createCriteria(entityType);
+
+        crit.add(Restrictions.ge(filterProperty, filterValue));
+        crit.add(Restrictions.eq("deleted", false));
+        crit.addOrder(Order.asc(orderProperty));
+        crit.setFirstResult(start).setMaxResults(size);
+        return (List<T>) crit.list();
+    }
 
     @Override
     public <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue) {
-        return (Long) getSession().createCriteria(entityType).add(Restrictions.eq(filterProperty, filterValue))
+        long total =(Long) getSession().createCriteria(entityType).add(Restrictions.ge(filterProperty, filterValue))
                 .setProjection(Projections.rowCount()).uniqueResult();
+        return total;
     }
 }

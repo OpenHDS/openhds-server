@@ -6,8 +6,7 @@
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://openfaces.org/"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-      xmlns:t="http://myfaces.apache.org/tomahawk">
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <head>
     </head>
@@ -17,7 +16,7 @@
 			<ui:define name="title">OpenHDS - Create Visit</ui:define>
 			
 		  		<div id="loading-div">
-		      		<img src="#{request.contextPath}/resources/images/ajax-loader.gif" /> #{msg.working}
+		      		<img src="#{request.contextPath}/resources/images/ajax-loader.gif" alt="loading..."/> #{msg.working}
 		  		</div>
 		
 		  		<ui:param name="crud" value="#{visitCrud}" />
@@ -29,7 +28,7 @@
           		</ui:define>
           	<ui:define name="display">
             
-          	<style>
+          	<style type="text/css">
 				.extensions {
 			    	border-collapse:collapse;
 				  	border-color:#888;

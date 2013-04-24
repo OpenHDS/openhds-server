@@ -28,7 +28,7 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
 
     @Override
     protected List<Visit> getEntitiesInRange(TaskContext taskContext, int i, int pageSize) {
-        int round = getRoundNumber(taskContext);
+        int round = getRoundNumber(taskContext) -1;
         return visitService.getAllVisitsForRoundInRange(round, i, pageSize);
     }
 
@@ -48,7 +48,8 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
 
     @Override
     protected int getTotalEntityCount(TaskContext taskContext) {
-        return (int) visitService.getTotalVisitCountForRound(getRoundNumber(taskContext));
+    	int previousround=getRoundNumber(taskContext) -1;
+        return (int) visitService.getTotalVisitCountForRound(previousround);
     }
 
 }

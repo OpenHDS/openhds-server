@@ -21,7 +21,7 @@ public class NavigationMenuBean {
 	String currentItem;
 	
 	/**
-	 * Outputs the breadcrumb trail
+	 * Returns the breadcrumb trail
 	 */
 	public String getBreadcrumbTrail() {
 		String result = "";
@@ -161,11 +161,12 @@ public class NavigationMenuBean {
 	}
 	
 	public void clearTrailExceptFirst() {
-		ArrayList<String> tempTrail = new ArrayList<String>();
-		tempTrail.add(trail.get(0));
+        ArrayList<String> tempTrail = new ArrayList<String>();
+        if( trail.size() > 0 )
+		    tempTrail.add(trail.get(0));
 		trail = tempTrail;
 	}
-			
+	
 	public void clear() {
 		trail.clear();
 		showHome = false;

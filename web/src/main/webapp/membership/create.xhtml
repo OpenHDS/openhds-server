@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE ui:composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/templates/default.xhtml"
 		xmlns="http://www.w3.org/1999/xhtml"
@@ -6,8 +6,7 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:c="http://java.sun.com/jstl/core"
-	    xmlns:o="http://openfaces.org/"
-		xmlns:t="http://myfaces.apache.org/tomahawk">      
+	    xmlns:o="http://openfaces.org/">      
 
 		<ui:define name="title">OpenHDS - Create Membership</ui:define>
 	
@@ -40,7 +39,7 @@
 		            <h:message for="socialGrp" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		  
 			        <h:outputText value="#{msg.membershipRelationToHead}:" />
-			        <img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+			        <img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" alt="?"/>
 					<h:inputText id="relationshipType1" value="#{membershipCrud.item.bIsToA}" converter="#{membershipCodesConverter}" />
 			        <h:message for="relationshipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		   
@@ -50,7 +49,7 @@
 		            <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 			        <h:outputText value="#{msg.membershipStartType}:"/>
-			        <img class="clickable" onclick="O$('popupWindowForMembershipStartType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+			        <img class="clickable" onclick="O$('popupWindowForMembershipStartType').showCentered();" src="#{request.contextPath}/resources/images/question.png" alt="?"/>
 					<h:inputText id="membershipType1" value="#{membershipCrud.item.startType}" converter="#{membershipStartTypeCodesConverter}" />
 			        <h:message for="membershipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 							
@@ -60,7 +59,7 @@
 		            <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		
 		            <h:outputText value="#{msg.membershipEndType}:"/>
-		            <img class="clickable" onclick="O$('popupWindowForMembershipEndType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+		            <img class="clickable" onclick="O$('popupWindowForMembershipEndType').showCentered();" src="#{request.contextPath}/resources/images/question.png" alt="?"/>
 					<h:inputText id="membershipEndType" value="#{membershipCrud.item.endType}" converter="#{membershipEndTypeCodesConverter}" disabled="true" />
 		            <h:message for="membershipEndType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 		
@@ -69,7 +68,7 @@
 		            <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{membershipCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.updating or flowScope.deathHOH or flowScope.pregnancyOutcome or flowScope.regIndivToSg}" />
 		            <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	            </h:panelGrid>
-	            <script>
+	            <script type="text/javascript">
 	            	document.getElementById('form:socialGrp').focus();
 					document.getElementById('form:indiv').focus();
 				</script>

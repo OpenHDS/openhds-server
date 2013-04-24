@@ -13,9 +13,7 @@
 				
   	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="location">
-            <value>classpath:webservice.properties</value>
-        </property>
+        <property name="location" value="classpath:webservice.properties"/>
     </bean>					
 				
 	<!-- The controllers are autodetected POJOs labeled with the @Controller annotation. -->

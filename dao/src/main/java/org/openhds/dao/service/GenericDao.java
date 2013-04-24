@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
 
-/**
- * A generic implementation of a Dao that simplifies Dao/BaseDaoImpl
- * This class differs from the Dao/BaseDaoImpl in that it is not have
- * generic parameters. Instead it uses generic methods so that only one instance
- * of this class needs to be created and can be shared by any entity
- * 
- * @author dave
- *
+/** Interface for GenericDaoImpl.
  */
 public interface GenericDao {
 
@@ -83,4 +76,6 @@ public interface GenericDao {
     <T> List<T> findPagedFiltered(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 
     <T> long getTotalCountWithFilter(Class<T> entityType, String filterProperty, Object filterValue);
+
+    <T> List<T> findPagedFilteredgt(Class<?> entityType, String orderProperty, String filterProperty, Object filterValue, int start, int size);
 }

@@ -4,3 +4,5 @@ target
 .settings
 *.log
 generated-xml
+.idea/workspace.xml
+.directory
