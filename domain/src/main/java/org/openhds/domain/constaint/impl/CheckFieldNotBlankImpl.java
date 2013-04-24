@@ -14,6 +14,7 @@ public class CheckFieldNotBlankImpl implements ConstraintValidator<CheckFieldNot
 			return false;
 		}
 		
+	
 		if (arg0.trim().length() == 0) {
 			return false;
 		}	

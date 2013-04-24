@@ -45,10 +45,16 @@
 	            	<h:outputText value="#{msg.inmigrationOrigin}:"/>
 	                <h:inputText id="origin" value="#{inMigrationCrud.item.origin}" converter="#{defaultConverter}" />
 	            	<h:message for="origin" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-					
+	            	
 	            	<h:outputText value="#{msg.inmigrationReason}"/>
+	                <h:selectOneListbox value="#{inMigrationCrud.item.reason}" size="1" id="reason" immediate="true" >
+		            	<f:selectItems value="#{inMigrationCrud.reasonsForMigration}" />
+		           </h:selectOneListbox>
+		           <h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+	            	<!-- <h:outputText value="#{msg.inmigrationReason}"/>
 	                <h:inputText id="reason" value="#{inMigrationCrud.item.reason}" converter="#{defaultConverter}" />
-	            	<h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            	<h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/> -->
 	
 	                <h:outputText value="#{msg.fieldWorkerId}:"/>
 	                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" disabled="#{flowScope.updating != null}" value="#{inMigrationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
