@@ -75,61 +75,17 @@ public class SocialGroupTest extends AbstractTransactionalJUnit4SpringContextTes
 	 @Test
 	 public void testSocialGroupCreate() {
 	 
-		 SocialGroup socialGroup = new SocialGroup();
-		 socialGroup.setGroupHead(individual);
-		 socialGroup.setGroupName("Group");
-		 socialGroup.setGroupType("FAM");
-		 socialGroup.setCollectedBy(fieldWorker);
-		 
-		 socialGroupCrud.setItem(socialGroup);
-		 socialGroupCrud.create();
-		 
-		 SocialGroup savedSocialGroup = genericDao.findByProperty(SocialGroup.class, "extId", socialGroup.getExtId());
-		 assertNotNull(savedSocialGroup);
+
 	 }
 	 
 	 @Test
 	 public void testSocialGroupDeath() {
 		 
-		 Individual indiv = genericDao.findByProperty(Individual.class, "extId", "CBLA1H", false);
-		 
-		 SocialGroup socialGroup = new SocialGroup();
-		 socialGroup.setGroupHead(indiv);
-		 socialGroup.setGroupName("Group");
-		 socialGroup.setGroupType("FAM");
-		 socialGroup.setCollectedBy(fieldWorker);
-		 
-		 socialGroupCrud.setItem(socialGroup);
-		 assertNull(socialGroupCrud.create());
-		 
-		 assertTrue(jsfServiceMock.getErrors().size() > 0);
+		
 	 }
 	 
 	 private void createLocationHierarchy() {
 		 
-    	 LocationHierarchy locH1 = new LocationHierarchy();
     	
-    	 locH1.setParent(new LocationHierarchy());
-    	 locH1.setName(locationHierarchyService.getLevel(1).getName());
-    	 locH1.setExtId("MOR");
-    	
-    	 locationHierarchyCrud.setItem(locH1);
-    	 locationHierarchyCrud.create();
-	   
-	     LocationHierarchy locH2 = new LocationHierarchy();
-	     locH2.setParent(locH1);
-	     locH2.setName(locationHierarchyService.getLevel(2).getName());
-	     locH2.setExtId("IFA");
-   	    
- 	     locationHierarchyCrud.setItem(locH2);
-	     locationHierarchyCrud.create();
-	  
-	     LocationHierarchy item = new LocationHierarchy();
-	     item.setParent(locH2);
-	     item.setName(locationHierarchyService.getLevel(3).getName());
-	     item.setExtId("MBI");
-   	    
-	     locationHierarchyCrud.setItem(item);
- 	     locationHierarchyCrud.create();
 	 }
 }

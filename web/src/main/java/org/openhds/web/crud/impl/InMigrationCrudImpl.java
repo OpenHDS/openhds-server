@@ -7,9 +7,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.faces.model.SelectItem;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Location;
+import org.openhds.domain.model.PrimitiveType;
+import org.openhds.domain.model.ReasonForMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.controller.service.InMigrationService;
 
@@ -29,6 +34,16 @@ public class InMigrationCrudImpl extends EntityCrudImpl<InMigration, String> {
     public String createSetup() {
     	String outcome = super.createSetup(); 
     	return outcome.replace("inmigration", "migration");
+    }
+    
+    public List<SelectItem> getReasonsForMigration() {
+    	List<SelectItem> output = new ArrayList<SelectItem>();
+		List<ReasonForMigration> items = jsfService.arrayToList(ReasonForMigration.values());
+		
+		for (ReasonForMigration pt : items) {
+			output.add(new SelectItem(pt, pt.getReason()));
+		}
+		return output;
     }
 
 	@Override

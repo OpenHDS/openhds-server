@@ -69,71 +69,18 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 	 @Test
 	 public void testRelationshipCreate() {
 		 	     
-	     Relationship relationship = new Relationship();
-	     relationship.setIndividualA(indivA);
-	     relationship.setIndividualB(indivB);
-	     relationship.setaIsToB("1");
-	     relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
-	     relationship.setEndType(siteProperties.getNotApplicableCode());
-	     relationship.setCollectedBy(fieldWorker);
-		
-	     relationshipCrud.setItem(relationship);	     	     
-	     relationshipCrud.create();
-
-	     Relationship savedRelationship = genericDao.findByProperty(Relationship.class, "individualA", indivA, false);
-	     assertNotNull(savedRelationship);
-	     	     
-	     relationship = new Relationship();
-	     relationship.setIndividualA(indivB);
-	     relationship.setIndividualB(indivA);
-	     relationship.setaIsToB("1");
-	     relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
-	     relationship.setEndType(siteProperties.getNotApplicableCode());
-	     relationship.setCollectedBy(fieldWorker);
-	     
-	     relationshipCrud.setItem(relationship);
-	     assertNull(relationshipCrud.create());
-	     
-	     // errors, an individual cannot have multiple relationships with the same person
-	     assertTrue(jsfServiceMock.getErrors().size() > 0);
+	   
 	 }
 	 
 	 @Test
 	 public void testDuplicateRelationship() {
-		 
-		 Relationship relationship = new Relationship();
-	     relationship.setIndividualA(indivA);
-	     relationship.setIndividualB(indivA);
-	     relationship.setaIsToB("1");
-	     relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
-	     relationship.setEndType(siteProperties.getNotApplicableCode());
-	     relationship.setCollectedBy(fieldWorker);
-		 
-	     relationshipCrud.setItem(relationship);
-	     assertNull(relationshipCrud.create());
-	     
-		 // errors, no two indivs can be the same, relationship must be for man and woman only
-	     assertTrue(jsfServiceMock.getErrors().size() > 0);
+	
 	 }
 	 
 	 @Test
 	 public void testDeathInRelationship() {
 		 
-		 Individual indiv = genericDao.findByProperty(Individual.class, "extId", "CBLA1H", false);
-		 
-		 Relationship relationship = new Relationship();
-	     relationship.setIndividualA(indiv);
-	     relationship.setIndividualB(indivB);
-	     relationship.setaIsToB("1");
-	     relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
-	     relationship.setEndType(siteProperties.getNotApplicableCode());
-	     relationship.setCollectedBy(fieldWorker);
-		 
-	     relationshipCrud.setItem(relationship);
-	     assertNull(relationshipCrud.create());
-	     
-		 // errors, individual cannot have a death event
-	     assertTrue(jsfServiceMock.getErrors().size() > 0);
+		
 	 }
 	 
 	 

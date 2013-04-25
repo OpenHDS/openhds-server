@@ -171,7 +171,7 @@ public class IndividualServiceImpl implements IndividualService {
 		List<LastEvent> events= new ArrayList<LastEvent>();
 		
 		events.add(new LastEvent("Birth. Create membership for this individual ",individual.getDob()));
-		
+		String pobsDate=pregObs.getRecordedDate().toString();
 		if(om!=null)
 			events.add(new LastEvent("Out Migration",om.getRecordedDate()));
 		if(in!=null)
@@ -208,6 +208,7 @@ public class IndividualServiceImpl implements IndividualService {
 			
 		}else if (events.size()==1)
 			le = events.get(0);
+		//events.clear();
 		
 		
 		return le.eventType==null ? "" : le.eventType;

@@ -122,102 +122,26 @@ public class PregnancyOutcomeTest extends AbstractTransactionalJUnit4SpringConte
 	 @Test
 	 public void testPregnancyOutcomeCreate() {
 		 		 
-		 PregnancyOutcome po = new PregnancyOutcome();
-		 po.setMother(mother);
-		 po.setFather(unknownIndiv);
-		 po.setVisit(visit);
-		 po.setNumberOfLiveBirths(0);
-		 po.setOutcomeDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1980));
-		 po.setCollectedBy(fieldWorker);
-		 
-		 List<Outcome> outcomes = po.getOutcomes();
-		 Outcome outcome = new Outcome();
-		 outcome.setType(siteProperties.getMarriageCode());
-		 outcomes.add(outcome);
-		 
-		 po.setOutcomes(outcomes);
-		 
-		 pregnancyOutcomeCrud.setItem(po);
-		 pregnancyOutcomeCrud.create();
-		 
-		 PregnancyOutcome savedPO = genericDao.findByProperty(PregnancyOutcome.class, "outcomeDate", calendarUtil.getCalendar(Calendar.JANUARY, 4, 1980));
-		 assertNotNull(savedPO);
+		
 	 }
 	 
 	 @Test
 	 public void testInvalidMotherAgeForPregnancyOutcome() {
 		 		 
-		 PregnancyOutcome po = new PregnancyOutcome();
-		 po.setMother(mother);
-		 po.setFather(unknownIndiv);
-		 po.setVisit(visit);
-		 po.setNumberOfLiveBirths(1);
-		 po.setOutcomeDate(calendarUtil.getCalendar(Calendar.SEPTEMBER, 4, 1960));
-		 po.setCollectedBy(fieldWorker);
-		 
-		 pregnancyOutcomeCrud.setItem(po);
-		 assertNull(pregnancyOutcomeCrud.create());
-		 assertTrue(jsfServiceMock.getErrors().size() > 0);
+		
 	 }
 	 
 	 private void createResidency() {
 		 
-		 Residency residency = new Residency();
-		 residency.setStartDate(calendarUtil.getCalendar(Calendar.DECEMBER, 19, 1959));
-		 residency.setIndividual(mother);
-		 residency.setLocation(location);
-		 residency.setStartType(siteProperties.getBirthCode());
-		 residency.setEndType(siteProperties.getNotApplicableCode());
-		 residency.setCollectedBy(fieldWorker);
-		 
-		 Set<Residency> residencies = new HashSet<Residency>();
-		 residencies.add(residency);
-		 
-		 mother.setAllResidencies(residencies);
-		 
-		 residencyCrud.setItem(residency);
-		 residencyCrud.create();
-		 
-		 Residency savedResidency = genericDao.findByProperty(Residency.class, "individual", mother);
-		 assertNotNull(savedResidency);
+	
 	 }
 	 
 	 private void createLocationHierarchy() {
-		 
-    	 LocationHierarchy locH1 = new LocationHierarchy();
-    	
-    	 locH1.setParent(new LocationHierarchy());
-    	 locH1.setName(locationHierarchyService.getLevel(1).getName());
-    	 locH1.setExtId("MOR");
-    	
-    	 locationHierarchyCrud.setItem(locH1);
-    	 locationHierarchyCrud.create();
-	   
-	     LocationHierarchy locH2 = new LocationHierarchy();
-	     locH2.setParent(locH1);
-	     locH2.setName(locationHierarchyService.getLevel(2).getName());
-	     locH2.setExtId("IFA");
-   	    
- 	     locationHierarchyCrud.setItem(locH2);
-	     locationHierarchyCrud.create();
-	  
-	     item = new LocationHierarchy();
-	     item.setParent(locH2);
-	     item.setName(locationHierarchyService.getLevel(3).getName());
-	     item.setExtId("MBI");
-   	    
-	     locationHierarchyCrud.setItem(item);
- 	     locationHierarchyCrud.create();
+		
 	 }
 	 
 	 private void createLocation() {
-		 location = new Location();
-		 location.setLocationName("locationName");
-		 location.setLocationType("RUR");
-		 location.setLocationLevel(item);
-		 location.setCollectedBy(fieldWorker);
-		 locationCrud.setItem(location);
-	     locationCrud.create();
+		
 	 }
 }
 

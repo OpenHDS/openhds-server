@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openhds.domain.annotations.Description;
+import org.openhds.domain.constraint.CheckDropdownMenuItemSelected;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.CheckInMigrationAfterDob;
 import org.openhds.domain.constraint.CheckIndividualNotUnknown;
@@ -27,6 +28,7 @@ import org.openhds.domain.constraint.Searchable;
  */
 @Description(description = "An InMigration represents a migration into the study area. It contains information about the Individual who is in-migrating to a particular Residency. It also contains information about the origin, date, and reason the Indiviudal is migrating as well as the Visit that is associated with the migration.")
 @Entity
+@CheckDropdownMenuItemSelected
 @CheckInMigrationAfterDob
 @Table(name = "inmigration")
 @XmlRootElement(name = "inmigration")
@@ -49,7 +51,7 @@ public class InMigration
     @Searchable
     @CheckFieldNotBlank
     @Description(description = "Name origin of the inmigration.")
-    private String origin;
+    private String origin;    
     @Searchable
     @CheckFieldNotBlank
     @Description(description = "The reason for inmigrating.")
