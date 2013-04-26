@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import org.openhds.domain.constaint.impl.CheckInMigrationAfterDobImpl;
+import org.openhds.domain.constraint.impl.CheckInMigrationAfterDobImpl;
 
 @Target( { TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)

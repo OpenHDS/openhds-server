@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import org.openhds.domain.constaint.impl.CheckIntegerImpl;
+import org.openhds.domain.constraint.impl.CheckIntegerImpl;
 
 @Target( { FIELD})
 @Retention(RUNTIME)

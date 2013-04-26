@@ -49,6 +49,7 @@ datageneration:
     Tool for generating test data. See "Instructions.txt" file for usage.
 specialstudy:
     Specific extensions (using dataextensions) for certain special studies.
+    Disabled by default.
 task:
     Some Java code for use with XML files, used by the web and webservice modules.
 webservice:
@@ -60,3 +61,24 @@ documentation:
     Some documentation not intented to be "installed" with the web application.
 mobile-forms:
     Forms for ODKCollect.
+
+
+Dependencies
+--------------------
+
+Maven plugins (i.e. dependencies affecting the build process):
+
+*   Maven compiler
+*   Maven JAR plugin
+*   Maven WAR plugin
+*   Maven Surefire plugin
+*   Maven Assembly plugin
+*   Maven deploy plugin
+*   Maven Eclipse plugin
+*   Maven IDEA plugin
+*   Maven release plugin
+*   Maven source plugin
+*   Tomcat
+*   Jetty
+*   XMLBeans Maven plugin (ddi and community modules) 
+*   aspectj (only optional specialstudy module)

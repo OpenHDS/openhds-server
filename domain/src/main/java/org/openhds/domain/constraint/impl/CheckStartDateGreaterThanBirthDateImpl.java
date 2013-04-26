@@ -1,7 +1,6 @@
-package org.openhds.domain.constaint.impl;
+package org.openhds.domain.constraint.impl;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
