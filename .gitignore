@@ -6,3 +6,6 @@ target
 generated-xml
 .idea/workspace.xml
 .directory
+.idea/dictionaries/
+.idea/inspectionProfiles/
+not-in-version-control/
