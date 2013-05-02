@@ -20,6 +20,13 @@
             	<value>classpath:database.properties</value>
             	<value>classpath:location-levels.properties</value>
             	<value>classpath:codes.properties</value>
+                <!-- linux-specific local configuration -->
+                <value>file:/etc/openhds/*.properties</value>
+                <value>file:${user.home}/.config/openhds/*.properties</value>
+                <!-- Mac-specific local configuration -->
+                <value>file:${user.home}/Library/Preferences/OpenHDS/*.properties</value>
+                <!-- Windows-specific local configuration -->
+                <value>file:${user.home}/Local Settings/Application Data/OpenHDS/*.properties</value>
             </list>
         </property>
     </bean>	
