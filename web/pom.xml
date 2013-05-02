@@ -306,9 +306,12 @@
                 <configuration>
                     <scanIntervalSeconds>0</scanIntervalSeconds>
                     <useTestClasspath>false</useTestClasspath>
-                    <systemPropertyVariables>
-                        <org.mortbay.jetty.Request.maxFormContentSize>10000000</org.mortbay.jetty.Request.maxFormContentSize>
-                    </systemPropertyVariables>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>maxFormContentSize</name>
+                            <value>10000000</value>
+                        </systemProperty>
+                    </systemProperties>
                     <contextPath>/${project.parent.artifactId}2</contextPath>
                 </configuration>
             </plugin>
