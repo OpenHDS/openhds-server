@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 @Component("openhdsTaskExecutor")
 public class TaskExecutorImpl implements TaskExecutor {
 
@@ -70,28 +72,28 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
-    @Autowired
-    public void setIndividualTaskWriter(@Qualifier("individualXmlWriter") XmlWriterTask individualTaskWriter) {
+    @Resource(name="individualXmlWriter")
+    public void setIndividualTaskWriter(XmlWriterTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
     }
 
-    @Autowired
-    public void setLocationTaskWriter(@Qualifier("locationXmlWriter") XmlWriterTask individualTaskWriter) {
+    @Resource(name="locationXmlWriter")
+    public void setLocationTaskWriter(XmlWriterTask individualTaskWriter) {
         this.locationTaskWriter = individualTaskWriter;
     }
 
-    @Autowired
-    public void setRelationshipTaskWriter(@Qualifier("relationshipXmlWriter") XmlWriterTask relationshipTaskWriter) {
+    @Resource(name="relationshipXmlWriter")
+    public void setRelationshipTaskWriter(XmlWriterTask relationshipTaskWriter) {
         this.relationshipTaskWriter = relationshipTaskWriter;
     }
 
-    @Autowired
-    public void setSocialGroupTaskWriter(@Qualifier("socialGroupXmlWriter") XmlWriterTask socialGroupTaskWriter) {
+    @Resource(name="socialGroupXmlWriter")
+    public void setSocialGroupTaskWriter(XmlWriterTask socialGroupTaskWriter) {
         this.socialGroupTaskWriter = socialGroupTaskWriter;
     }
 
-    @Autowired
-    public void setVisitTaskWriter(@Qualifier("visitXmlWriter") XmlWriterTask visitTaskWriter) {
+    @Resource(name="visitXmlWriter")
+    public void setVisitTaskWriter(XmlWriterTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
     }
 
