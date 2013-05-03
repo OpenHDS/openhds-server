@@ -86,7 +86,13 @@ public class PregnancyServiceImpl implements PregnancyService {
 
 	public PregnancyOutcome evaluatePregnancyOutcome(PregnancyOutcome entityItem) throws ConstraintViolations {
 		
-		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getOutcomeDate()) / 365.25);
+		int age;
+		   
+		if (entityItem.getOutcomeDate()==null) {
+			age =  (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getVisit().getVisitDate()) / 365.25);
+		} else {
+			age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getOutcomeDate()) / 365.25);
+		}
 		if (age < siteProperties.getMinimumAgeOfPregnancy())
 			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Outcome.");	
     	if (individualService.getLatestEvent(entityItem.getMother()).equals("Death"))
