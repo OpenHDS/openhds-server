@@ -623,6 +623,7 @@
 		<property name="dbPassword" value="${dbPass}"/>
 		<property name="dbDialect" value="${hibernateDialect}"/>
 		<property name="jsfService" ref="jsfService" />
+        <property name="showSql" value="${hibernateShowSql}"/>
 	</bean>
 	
 	<bean id="locationLevelConfig" class="org.openhds.web.beans.LocationLevelConfigBean">

@@ -27,7 +27,8 @@
                     <h:panelGrid columns="4">
                        
                         <h:outputText value="#{msg.dbType}:"/>
-                 		<h:selectOneRadio id="type" value="#{databaseConfig.dbType}" onchange="submit()" immediate="true" valueChangeListener="#{databaseConfig.updateType}">
+                 		<h:selectOneRadio id="type" value="#{databaseConfig.dbType}"
+                                          onchange="submit()" immediate="true" valueChangeListener="#{databaseConfig.updateType}">
    							<f:selectItem itemValue="H2" itemLabel="H2" />
 						   	<f:selectItem itemValue="MYSQL" itemLabel="MYSQL" />
 						</h:selectOneRadio>
@@ -45,19 +46,113 @@
                         <h:outputText />
                         
                         <h:outputText value="#{msg.dbUrl}:"/>
-                        <h:inputText id="url" value="#{databaseConfig.dbUrl}" binding="#{databaseConfig.inputText}" converter="#{defaultConverter}" size="50" disabled="true" />
+                        <h:inputText id="url" value="#{databaseConfig.dbUrl}"
+                                     binding="#{databaseConfig.inputText}" converter="#{defaultConverter}" size="50" disabled="true" />
                         <h:message for="url" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-                    	<h:commandButton action="#{databaseConfig.editUrl}" value="Edit" />
+                    	<h:commandButton action="#{databaseConfig.editUrl}" value="#{msg.lblEdit}" />
                     
                     	<h:outputText value="#{msg.dbDriver}:"/>
                         <h:inputText id="driver" value="#{databaseConfig.dbDriver}" converter="#{defaultConverter}" disabled="true" size="50" />
                         <h:message for="driver" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                         <h:outputText />
-                                                  
+                        
+                        <h:outputText value="#{msg.dbShowSql}:"/>
+                        <h:selectBooleanCheckbox id="showSql" value="#{databaseConfig.showSql}"/>
+                        <h:outputText/>
+                        <h:outputText/>
+                        
+                        <h:outputText value="#{msg.dbSaveTo}:"/>
+                        <h:selectOneMenu id="saveTo" value="#{databaseConfig.dbSaveTo}">
+                            <!-- Note: the label paths are informative only.
+                             Canonical paths for reading are set in
+                             application-context.xml and for writing are set in
+                             DatabaseConfigBean.java -->
+                            <f:selectItem itemValue="classpath" itemLabel="#{msg.dbSaveToCP}"/>
+                            <f:selectItem itemValue="linuxUser" itemLabel="#{msg.dbSaveToLU}"/>
+                            <f:selectItem itemValue="linuxEtc" itemLabel="#{msg.dbSaveToLS  }"/>
+                            <f:selectItem itemValue="macUser" itemLabel="#{msg.dbSaveToMU}"/>
+                            <f:selectItem itemValue="winUser" itemLabel="#{msg.dbSaveToWU}"/>
+                        </h:selectOneMenu>
+                        <h:message for="saveTo" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        <h:commandButton action="#{databaseConfig.saveChanges}" value="#{msg.lblSave}"/>
+                        
                     </h:panelGrid>
-                    <br />
-                    <h:commandButton styleClass="config" action="#{databaseConfig.create}" value="#{msg.lblCreate}" />
                     
+                    <h:outputText value="#{msg.dbSaveToNote}"/><br/><br/>
+                    
+                    <fieldset style="width:35%; display: #{databaseConfig.mysqlDisplay}">
+                        <legend>#{msg.dbInitialData}</legend>
+                        <h:outputText value="#{msg.dbInitializeDesc}"/>
+                        <br/>
+                        <h:commandButton action="#{databaseConfig.initializeDB}" value="#{msg.dbInitialize}"/>
+                    </fieldset>
+                    
+                    <fieldset style="width:35%; display: #{databaseConfig.h2Display}">
+                        <legend>#{msg.gettingStartedTestData}</legend>
+                        <b>#{msg.gettingStartedSampleTestData}</b><br />
+                        #{msg.gettingStartedSampleTestDataRequirements}<br /><br />
+
+                        #{msg.gettingStartedEntityIds}:<br />
+                        <table style="text-align:center">
+                            <tr>
+                                <td><b>#{msg.navBarIndividual}</b></td>
+                                <td><b>#{msg.navBarLocation}</b></td>
+                                <td><b>#{msg.navBarSocialGroup}</b></td>
+                                <td><b>#{msg.navBarVisit}</b></td>
+                            </tr>
+                            <tr>
+                                <td>BRHA1U</td>
+                                <td>MBI01</td>
+                                <td>SG01</td>
+                                <td>VMBI01</td>
+                            </tr>
+                            <tr>
+                                <td>CHHA12</td>
+                                <td>MBI02</td>
+                                <td>SG02</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>SAR01E</td>
+                                <td>MBI03</td>
+                                <td>SG03</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>JEMA1H</td>
+                                <td>MBI04</td>
+                                <td>SG04</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>TOMA1M</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>HEMA1L</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>ABHA1C</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>PEBA1R</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <br />
+                        <h:commandButton styleClass="config" action="#{databaseConfig.executeTestScript}" value="#{msg.gettingStartedLoadTestData}" disabled="#{databaseConfig.testDataEnabled}" />
+                    </fieldset>
+
                     <script>
 						//<![CDATA[
 						(function() {
