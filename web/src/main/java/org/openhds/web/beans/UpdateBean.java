@@ -8,6 +8,7 @@ import javax.faces.event.ActionEvent;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Relationship;
+import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.domain.service.SitePropertiesService;
@@ -237,7 +238,19 @@ public class UpdateBean implements Serializable {
 		}
 		
 	}
-	
+    
+        /** Get a social group by ID, assuming it should be the location ID + "00". */
+        public SocialGroup getSocialGroupById( String extId ){
+            SocialGroup result = genericDao.findByProperty( SocialGroup.class, "extId", extId, true );
+            return result;
+        }
+        
+        /** Guess at the social group ID for the current location (assumes
+         * Indepth site extId naming rules) */
+        public String getIndepthSocialGroupId(){
+            return currentVisit.getVisitLocation().getExtId() + "00";
+        }
+     
 	public String getLocationName() {
 		if (currentVisit == null) {
 			return "";

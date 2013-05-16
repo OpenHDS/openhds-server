@@ -37,8 +37,13 @@
 		       		<h:outputText />
 		        	<h:inputText styleClass="socialGroup" autocomplete="off" id="socialGrp" value="#{membershipCrud.item.socialGroup}" converter="#{socialGroupExtIdConverter}" disabled="#{flowScope.updatingBaseline or flowScope.settingDeathHOH or flowScope.modifyHOH}" />
 		            <h:message for="socialGrp" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-		  
-			        <h:outputText value="#{msg.membershipRelationToHead}:" />
+
+                    <h:outputText/>
+                    <h:outputText/>
+                    <h:outputText value="#{msg.socialGroupIdIsDefault}"/>
+                    <h:outputText/>
+
+                    <h:outputText value="#{msg.membershipRelationToHead}:" />
 			        <img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" alt="?"/>
 					<h:inputText id="relationshipType1" value="#{membershipCrud.item.bIsToA}" converter="#{membershipCodesConverter}" />
 			        <h:message for="relationshipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

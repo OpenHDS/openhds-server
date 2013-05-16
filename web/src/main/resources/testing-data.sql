@@ -33,7 +33,7 @@ INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency8','Location1','Indiv 6','1993-02-01','ENU',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
 
 
-INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup1','MBI0101',false,'2012-04-17','Harold','FieldWorker1','User 1','Indiv 1','FAM','P');
+INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup1','MBI00000100',false,'2012-04-17','Harold','FieldWorker1','User 1','Indiv 1','FAM','P');
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup2','MBI0102',false,'2012-04-17','Marsh','FieldWorker1','User 1','Indiv 5','FAM','P');
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup3','MBI0201',false,'2012-04-17','Ross','FieldWorker1','User 1','Indiv 3','FAM','P');
 INSERT INTO `socialgroup` (uuid, extId, deleted, insertdate, groupName, collectedby_uuid, insertby_uuid, grouphead_uuid,groupType,status) VALUES ('SocialGroup4','MBI0202',false,'2012-04-17','Bash','FieldWorker1','User 1','Indiv 8','FAM','P');
