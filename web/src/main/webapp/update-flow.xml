@@ -185,6 +185,7 @@
             <set name="flowScope.currentView" value="'membership'"></set>
             <evaluate expression="membershipCrud.initFlow(true)"></evaluate>
             <evaluate expression="membershipCrud.getItem().setIndividual(updateBean.getCurrentIndividual())"></evaluate>
+            <evaluate expression="membershipCrud.getItem().setSocialGroup(updateBean.getSocialGroupById( updateBean.getIndepthSocialGroupId() ))"/>
             <evaluate expression="membershipCrud.getItem().setStartDate(updateBean.getCurrentVisit().visitDate)"></evaluate>
             <evaluate expression="membershipCrud.getItem().setCollectedBy(updateBean.getCurrentVisit().collectedBy)"></evaluate>
             <evaluate expression="navController.addItemToTrail('Membership Create')" />

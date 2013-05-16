@@ -11,6 +11,9 @@ web:	jetty
 jetty:
 	cd web; mvn jetty:run; cd -
 
+debug:
+	cd web; mvnDebug jetty:run; cd -
+
 test:
 	mvn clean install -DskipTests=false
 
