@@ -18,6 +18,16 @@ public class DemRatesCrudImpl extends EntityCrudImpl<DemRates, String> {
 	public DemRatesCrudImpl(Class<DemRates> entityClass) {
         super(entityClass);
     }
+	
+	@Override
+    public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
 		
 	public Date getStartDate() {
 	    	
