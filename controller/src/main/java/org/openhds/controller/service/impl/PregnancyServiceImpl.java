@@ -43,8 +43,8 @@ public class PregnancyServiceImpl implements PregnancyService {
 	
 	public PregnancyObservation evaluatePregnancyObservation(PregnancyObservation entityItem) throws ConstraintViolations {
     	
-		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getRecordedDate()) / 365.25);
-		if (age < siteProperties.getMinimumAgeOfPregnancy())
+		int age = (int) (CalendarUtil.daysBetween(entityItem.getMother().getDob(), entityItem.getExpectedDeliveryDate()) / 365.25);
+		if (age  < siteProperties.getMinimumAgeOfPregnancy())
 			throw new ConstraintViolations("The Mother specified is younger than the minimum age required to have a Pregnancy Observation.");	
 		if (!checkDuplicatePregnancyObservation(entityItem.getMother())) 
     		throw new ConstraintViolations("The Mother specified already has a pending Pregnancy Observation.");	
