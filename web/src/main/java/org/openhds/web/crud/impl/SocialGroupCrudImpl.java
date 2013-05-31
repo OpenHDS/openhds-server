@@ -81,6 +81,16 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     	
     	return false;
     }
+    
+    @Override
+    public String createSetup() {
+        reset(false, true);
+        showListing=false;
+        entityItem = newInstance();
+        navMenuBean.setNextItem(entityClass.getSimpleName());
+        navMenuBean.addCrumb(entityClass.getSimpleName() + " Create");
+        return outcomePrefix + "_create";
+    }
         
     public boolean validateSocialGroup(MessageContext messageContext) {
     	try {
