@@ -19,6 +19,8 @@
         </on-entry>
         <transition on="setFWAndDate">
             <evaluate expression="baselineFlowBean.determineValidDate(messageContext)" />
+            <evaluate expression="baselineFlowBean.setSgName('NOT SELECTED')" />
+            <evaluate expression="baselineFlowBean.setLocationName('NOT SELECTED')" />
             <set name="flowScope.showListing" value="false"></set>
             <set name="flowScope.showNavMenu" value="false"></set>
             <set name="flowScope.updatingBaseline" value="true"></set>

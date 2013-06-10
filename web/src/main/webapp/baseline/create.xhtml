@@ -97,7 +97,7 @@
 	                    <tr>
 	                        <td>#{msg.locationName}:</td>
 	                        <td>
-	                            <h:inputText disabled="true" value="#{baselineFlowBean.currentLocation.locationName}" />
+	                            <h:inputText disabled="true" value="#{baselineFlowBean.locationName}" />
 	                            <h:commandButton id="locationSelectBtn" value="#{msg.lblSelect}" rendered="#{baselineFlowBean.currentLocation == null}" action="setLocation" />
 	                            <h:commandButton immediate="true" value="#{msg.lblCreate}" rendered="#{baselineFlowBean.currentLocation == null}" action="newLocation" />
 	                        </td>
@@ -120,7 +120,7 @@
 	                    <tr>
 	                        <td><h:outputText value="#{msg.socialGroupName}:"/></td>
 	                        <td>
-	                            <h:inputText id="socialGroupName" value="#{baselineFlowBean.currentSocialGroup.groupName}" converter="#{defaultConverter}" disabled="true" />
+	                            <h:inputText id="socialGroupName" value="#{baselineFlowBean.sgName}" converter="#{defaultConverter}" disabled="true" />
 	                            <h:commandButton id="socialGroupBtn" rendered="#{baselineFlowBean.currentSocialGroup == null}" value="#{msg.lblSelect}" action="setSocialGroup"/>
 	                            <h:commandButton immediate="true" rendered="#{baselineFlowBean.currentSocialGroup == null}" value="#{msg.lblCreate}" action="newSocialGroup" />
 	                        </td>

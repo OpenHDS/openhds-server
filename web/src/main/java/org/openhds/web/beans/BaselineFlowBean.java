@@ -49,8 +49,26 @@ public class BaselineFlowBean implements Serializable {
 	Generator<SocialGroup> socialGroupGenerator;
 	SitePropertiesService properties;
 	IdSchemeResource idSchemeResource;
+	String locationName ="NOT SELECTED";
+	String sgName ="NOT SELECTED";
 			
-	public void clear() {
+	public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getSgName() {
+        return sgName;
+    }
+
+    public void setSgName(String sgName) {
+        this.sgName = sgName;
+    }
+
+    public void clear() {
     	currentVillage = null;
         currentLocation = null;
         currentSocialGroup = null;
@@ -192,6 +210,7 @@ public class BaselineFlowBean implements Serializable {
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
+        setLocationName(currentLocation.getLocationName());
     }
     
     public SocialGroup getCurrentSocialGroup() {
@@ -200,6 +219,7 @@ public class BaselineFlowBean implements Serializable {
 
     public void setCurrentSocialGroup(SocialGroup currentSocialGroup) {
         this.currentSocialGroup = currentSocialGroup;
+        setSgName(currentSocialGroup.getGroupName());
     }
 
     public GenericDao getGenericDao() {
