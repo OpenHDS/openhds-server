@@ -170,7 +170,7 @@ public class IndividualServiceImpl implements IndividualService {
 		
 		List<LastEvent> events= new ArrayList<LastEvent>();
 		
-		events.add(new LastEvent("Birth. Create membership for this individual ",individual.getDob()));
+		events.add(new LastEvent("Enumeration/Baseline",individual.getDob()));
 		if(om!=null)
 			events.add(new LastEvent("Out Migration",om.getRecordedDate()));
 		if(in!=null)
