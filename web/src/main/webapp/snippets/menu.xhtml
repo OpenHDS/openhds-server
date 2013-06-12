@@ -14,11 +14,13 @@
 	        		<f:setPropertyActionListener target="#{navController.showHome}" value="true" /> 
 	            </h:commandLink>
 	        </li>
-	        <li>
-		        <h:commandLink action="gettingStarted" value="#{msg.navBarGettingStarted}" >
-		        	<f:setPropertyActionListener target="#{navController.showGettingStarted}" value="true" /> 
-		        </h:commandLink>
-			</li>
+            <sec:ifAllGranted roles="ACESSS_CONFIGURATION">
+                <li>
+                    <h:commandLink action="gettingStarted" value="#{msg.navBarGettingStarted}" >
+                        <f:setPropertyActionListener target="#{navController.showGettingStarted}" value="true" />
+                    </h:commandLink>
+                </li>
+            </sec:ifAllGranted>
 	        <sec:ifAllGranted roles="ACCESS_BASELINE">
 		   		<li>
 		   			<h:commandLink action="baseline_flow" value="#{msg.navBarBaseline}" >
