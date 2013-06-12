@@ -22,7 +22,7 @@
 	    <h1>#{msg.locationCreate}</h1>
 	    <h:messages id="errors" globalOnly="true" />
 	    <h:form id="form">
-	        <table width="100%">
+	        <table style="width: 100%">
 	            <tr>
 	                <td>
 	                    <h:panelGrid columns="4">
@@ -36,7 +36,7 @@
 	                    
 	                        <h:outputText value="#{locationHierarchyService.lowestLevel.name}:"/>
 	                        <h:outputText />
-	                        <h:inputText styleClass="locationName" autocomplete="off" name="level" id="level" value="#{locationCrud.item.locationLevel.extId}"/>
+	                        <h:inputText styleClass="locationName" autocomplete="off" id="level" value="#{locationCrud.item.locationLevel.extId}"/>
 	                        <h:message for="level" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                       
 	                        <h:outputText value="#{msg.locationName}:"/>

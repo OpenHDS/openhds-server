@@ -1,9 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:c="http://java.sun.com/jstl/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags">
       <h:form>
           <div style="text-align:right;">
               <div style="float:left;">
@@ -103,10 +104,9 @@
                                 <f:param name="itemId" value="#{relationship.uuid}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{relationshipCrud.delete}">
-                                <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
-                                <f:param name="itemId" value="#{relationship.uuid}"/>
-                            </h:commandLink>
+                            <sec:ifAllGranted roles="DELETE_ENTITY">
+                            h
+                            </sec:ifAllGranted>
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>

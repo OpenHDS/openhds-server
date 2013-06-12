@@ -105,10 +105,12 @@
 	                            <f:param name="itemId" value="#{item.uuid}"/>
 	                        </h:commandLink>
 	                        <h:outputText value=" "/>
+	                        <sec:ifAllGranted roles="DELETE_ENTITY">
 	                        <h:commandLink action="Delete">
                                            <h:graphicImage title="#{msg.btnDelete}" style="border: 0;" value="/resources/icons/delete.ico"/>
 	                            <f:param name="itemId" value="#{item.uuid}"/>
-	                        </h:commandLink> -->
+	                        </h:commandLink>
+	                         </sec:ifAllGranted> -->
 	                    </h:column>	 
 		            </h:dataTable>
 	            </h:panelGroup>

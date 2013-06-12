@@ -1,9 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:o="http://openfaces.org/"
-				xmlns:c="http://java.sun.com/jstl/core">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://openfaces.org/"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags">
 	<h:form>
     	<div style="text-align:right;">
         	<div style="float:left;">
@@ -57,10 +58,12 @@
                         	<f:param name="itemId" value="#{loc.uuid}"/>
                           	<h:graphicImage style="border: 0;" title="edit" value="/resources/icons/edit.ico" />
                         </h:commandLink>
-						<h:commandLink action="#{locationCrud.delete}">
-		                   	<h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
-                           	<f:param name="itemId" value="#{loc.uuid}"/>
-		                </h:commandLink>
+                        <sec:ifAllGranted roles="DELETE_ENTITY">
+						    <h:commandLink action="#{locationCrud.delete}">
+		                   	    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                           	    <f:param name="itemId" value="#{loc.uuid}"/>
+		                    </h:commandLink>
+                        </sec:ifAllGranted>
                     </h:column>
                 </h:dataTable>
             </h:panelGroup>
