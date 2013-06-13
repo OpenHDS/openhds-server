@@ -245,7 +245,7 @@ public class DatabaseConfigBean {
 			return false;
 		}
 		jsfService.addMessage("Test data loaded successfully.");
-        logger.info("Test data loaded successfully.");
+                logger.info("Test data loaded successfully.");
 		return true;
 	}
 	

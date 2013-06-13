@@ -11,16 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEndDateAndEndEventType;
-import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
-import org.openhds.domain.constraint.CheckEntityNotVoided;
-import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckIndividualNotUnknown;
-import org.openhds.domain.constraint.CheckStartDateGreaterThanBirthDate;
-import org.openhds.domain.constraint.ExtensionStringConstraint;
-import org.openhds.domain.constraint.GenericEndDateEndEventConstraint;
-import org.openhds.domain.constraint.GenericStartEndDateConstraint;
-import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.constraint.*;
+import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Membership represents an Individual's association with a " +
@@ -29,7 +21,7 @@ import org.openhds.domain.util.CalendarAdapter;
 		"about the date the Membership started and ended, as well as the start and end types. " +
 		"It also contains the Individual's relationship to the head of the Social Group.")
 @Entity
-@CheckEndDateGreaterThanStartDate(allowNull=true)
+@CheckEndDateNotBeforeStartDate(allowNull=true)
 @CheckStartDateGreaterThanBirthDate
 @CheckEndDateAndEndEventType
 @Table(name="membership")

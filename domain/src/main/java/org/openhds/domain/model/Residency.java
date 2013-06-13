@@ -11,7 +11,7 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
+import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
@@ -21,7 +21,7 @@ import org.openhds.domain.constraint.Searchable;
 		"which is tied to a particular Location. It also contains information about " +
 		"the date the Residency started and ended as well as the start and end types.")
 @Entity
-@CheckEndDateGreaterThanStartDate(allowNull=true)
+@CheckEndDateNotBeforeStartDate(allowNull=true)
 @Table(name="residency")
 @XmlRootElement
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {

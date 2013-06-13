@@ -17,7 +17,7 @@ public class CheckDeathDateGreaterThanBirthDateImpl implements ConstraintValidat
         Calendar birthDate = arg0.getIndividual().getDob();
 
         try {
-            if (birthDate.before(deathDate)||birthDate.equals(deathDate)) {
+            if (birthDate.compareTo(deathDate) <= 0) {
                 return true;
             }
         } catch (Exception e) {

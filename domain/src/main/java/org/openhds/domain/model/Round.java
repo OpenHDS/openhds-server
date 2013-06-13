@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckEndDateGreaterThanStartDate;
+import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.constraint.CheckInteger;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 
 @Description(description="A Round represents a range of dates in which Visits " +
 		"can take place.")
 @Entity
-@CheckEndDateGreaterThanStartDate
+@CheckEndDateNotBeforeStartDate
 @Table(name="round")
 public class Round implements Serializable, GenericStartEndDateConstraint {
 

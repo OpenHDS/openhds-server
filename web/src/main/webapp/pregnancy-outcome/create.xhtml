@@ -128,8 +128,8 @@
                     <br />
 
                    	<br /> 
-                    <h:commandButton value="#{msg.lblCreate}" action="#{pregnancyOutcomeCrud.create}" />
                     <h:commandButton value="#{msg.pregnancyOutcomeAddOutcome}" disabled="false" action="addOutcome" />
+                    <h:commandButton value="#{msg.lblCreate}" action="#{pregnancyOutcomeCrud.create}" />
                     <h:commandButton value="#{msg.lblClear}" immediate="true" action="reset" />
                     <h:commandButton value="#{msg.lblCancel}" rendered="#{flowScope.updating != null}" immediate="true" action="cancel" />
                 </h:form>
