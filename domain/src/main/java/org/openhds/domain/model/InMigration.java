@@ -3,6 +3,8 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -62,7 +64,7 @@ public class InMigration
     private Calendar recordedDate;
     @Searchable
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Description(description = "The visit associated with the inmigration, identified by external id.")
     private Visit visit;
     @Enumerated(EnumType.STRING)

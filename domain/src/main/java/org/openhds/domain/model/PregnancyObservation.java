@@ -38,10 +38,7 @@ public class PregnancyObservation
     @Searchable
     @CheckIndividualGenderFemale(allowNull = true, message = "The mother specified is not female gender")
     @CheckEntityNotVoided(allowNull = true, message = "The mother has been voided")
-    @ManyToOne(cascade = {
-        CascadeType.MERGE,
-        CascadeType.PERSIST
-    }, targetEntity = org.openhds.domain.model.Individual.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Individual.class)
     @Description(description = "The mother of the pregnancy observation, identified by the external id.")
     private Individual mother;
     @NotNull
@@ -55,7 +52,7 @@ public class PregnancyObservation
     private Calendar recordedDate;
     @Searchable
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Description(description = "The visit this pregnancy observation was registered during.")
     private Visit visit;
 
