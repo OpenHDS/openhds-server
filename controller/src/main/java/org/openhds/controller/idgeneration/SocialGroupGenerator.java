@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
 
 /**
@@ -17,10 +18,15 @@ import org.openhds.domain.model.SocialGroup;
  */
 
 public class SocialGroupGenerator extends Generator<SocialGroup> {
+	private Location location;
+	
+	public void setLocation(Location location){
+		this.location = location;
+	}
 	
 	@Override
 	public String generateId(SocialGroup entityItem) throws ConstraintViolations  {
-		StringBuilder sb = new StringBuilder();	
+StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
 		HashMap<String, Integer> fields = scheme.getFields();
@@ -34,23 +40,25 @@ public class SocialGroupGenerator extends Generator<SocialGroup> {
 			
 			if (filter != null) {
 			
-				if (key.equals(IdGeneratedFields.SOCIALGROUP_NAME.toString())) {
-					String name = entityItem.getGroupName();
+				if (key.equals(IdGeneratedFields.LOCATION_PREFIX.toString())) {
+					//String fname = individual.getFirstName();
+					String extId = location.getExtId();
 					
-					if (name.length() >= filter) {
-					
-						if (filter > 0 && name.length() >= filter) 
-							sb.append(formatProperString(name, filter));
-						else if (filter == 0 || name.length() < filter) 
-							sb.append(formatProperString(name, name.length()));
+					if (extId.length() >= filter) {
+						
+						if (filter > 0 && extId.length() >= filter) 
+							sb.append(formatProperString(extId, filter));
+						else if (filter == 0 || extId.length() < filter) 
+							sb.append(formatProperString(extId, extId.length()));
 						else
 							throw new ConstraintViolations("An error occurred while attempting to generate " +
-									"the id on the field specified as '" + name + "'");
+									"the id on the field specified as '" + extId + "'");
 					}
 					else
-						throw new ConstraintViolations("Unable to generate the id. Make sure the field Social Group Name is of the required length " +
-								"specified in the id configuration.");
+						throw new ConstraintViolations("Unable to generate the id. Make sure the First Name field is of the required length " +
+						"specified in the id configuration.");
 				}
+				
 			}
 		}
 
