@@ -64,7 +64,7 @@ public class InMigration
     private Calendar recordedDate;
     @Searchable
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description = "The visit associated with the inmigration, identified by external id.")
     private Visit visit;
     @Enumerated(EnumType.STRING)
