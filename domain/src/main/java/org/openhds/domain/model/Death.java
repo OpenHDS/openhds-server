@@ -39,7 +39,7 @@ public class Death
     @Searchable
     @CheckEntityNotVoided
     @CheckIndividualNotUnknown
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description = "Individual who has died, identified by external id.")
     private Individual individual;
     @CheckFieldNotBlank
@@ -56,7 +56,7 @@ public class Death
     @Description(description = "Date of the Death.")
     private Calendar deathDate;
     @Searchable
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description = "Visit associated with the death, identified by external id.")
     private Visit visitDeath;
     @Description(description = "Age of death in number of data.")
