@@ -75,7 +75,6 @@ Maven plugins (i.e. dependencies affecting the build process):
 *   Maven Assembly plugin
 *   Maven deploy plugin
 *   Maven Eclipse plugin
-*   Maven IDEA plugin
 *   Maven release plugin
 *   Maven source plugin
 *   Tomcat
