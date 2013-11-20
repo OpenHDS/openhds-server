@@ -37,7 +37,7 @@ public class PregnancyOutcome extends AuditableCollectedEntity implements Serial
 
     private static final long serialVersionUID = -8901037436653805795L;
         
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description="Visit that is associated with the pregnancy outcome, identified by the external id.")
     private Visit visit;
    
