@@ -59,7 +59,7 @@ public class OutMigration
     private String reason;
     @Searchable
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = org.openhds.domain.model.Visit.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = org.openhds.domain.model.Visit.class)
     @Description(description = "The visit associated with the outmigration, identified by external id.")
     private Visit visit;
     @NotNull
