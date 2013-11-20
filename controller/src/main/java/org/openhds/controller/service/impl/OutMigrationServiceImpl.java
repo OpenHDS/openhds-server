@@ -2,6 +2,7 @@ package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -10,6 +11,7 @@ import org.openhds.controller.service.OutMigrationService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
@@ -75,6 +77,25 @@ public class OutMigrationServiceImpl implements OutMigrationService {
                     "There as a problem updating the database with the residency associated with the out migration");
         }
 
+        //Gets the individual's memberships if any
+        // Iterates through memberships and sets endType(DEATH) and endDate
+        if (!outMigration.getIndividual().getAllMemberships().isEmpty()) {
+            Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
+            for (Membership mem : memberships) {
+            	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
+	                mem.setEndDate(outMigration.getRecordedDate());
+	                mem.setEndType(siteProperties.getOutmigrationCode());
+	                try {
+						entityService.save(mem);
+					} catch (SQLException e) {
+						 throw new ConstraintViolations(
+				                    "There as a problem updating the database with the membership associated with the out migration");
+					}
+            	}
+            }
+        }
+        
+        
         try {
             entityService.create(outMigration);
         } catch (IllegalArgumentException e) {
