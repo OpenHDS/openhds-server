@@ -4,6 +4,8 @@ public interface TaskExecutor {
 
     void executeIndividualXmlWriterTask();
     
+    void executeFormXmlWriterTask();
+    
     void executeLocationXmlWriterTask();
     
     void executeRelationshipXmlWriterTask();

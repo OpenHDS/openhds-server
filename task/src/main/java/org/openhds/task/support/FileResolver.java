@@ -13,5 +13,7 @@ public interface FileResolver {
     File resolvesocialGroupXmlFile();
 
     File resolveVisitXmlFile();
+    
+    File resolveFormXmlFile();
 
 }

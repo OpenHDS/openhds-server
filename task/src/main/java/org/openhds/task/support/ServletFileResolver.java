@@ -64,4 +64,11 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
         return visitXmlFile;
     }
 
+	@Override
+	public File resolveFormXmlFile() {
+		File generatedXmlFileDir = getGeneratedXmlFolder();
+		File formXmlFile = new File(generatedXmlFileDir, "forms.xml");
+		return formXmlFile;
+	}
+
 }

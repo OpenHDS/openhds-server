@@ -124,6 +124,15 @@
 		</property>
     </bean>
     
+	<bean id="formService" parent="baseServiceBean">
+	 	<property name="target">
+	 		<bean class="org.openhds.controller.service.impl.FormServiceImpl">
+		        <constructor-arg ref="genericDao" />
+                <constructor-arg ref="entityService" />
+		    </bean>
+		</property>
+    </bean>
+	
     <bean id="individualMergeService" parent="baseServiceTransactionBean">
     	<property name="target">
 		    <bean class="org.openhds.controller.service.impl.IndividualMergeServiceImpl">

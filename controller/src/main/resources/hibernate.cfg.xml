@@ -14,6 +14,7 @@
 		<mapping class="org.openhds.domain.model.Death"/>
 		<mapping class="org.openhds.domain.model.DemRates"/>
 		<mapping class="org.openhds.domain.model.FieldWorker"/>
+		<mapping class="org.openhds.domain.model.Form"/>
 		<mapping class="org.openhds.domain.model.Individual"/>
 		<mapping class="org.openhds.domain.model.InMigration"/>
 		<mapping class="org.openhds.domain.model.Location"/>

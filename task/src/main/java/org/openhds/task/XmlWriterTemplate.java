@@ -42,12 +42,16 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         // service methods require authorization, which in turn depend on a user
         // this will use the security context of the user who starts the task
         SecurityContextHolder.setContext(taskContext.getSecurityContext());
-        asyncTaskService.beginNewTaskSession();
+        if (!taskName.startsWith("Form")){
+        	asyncTaskService.beginNewTaskSession();
+        }
 
         try {
             OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
 
-            asyncTaskService.startTask(taskName);
+            if (!taskName.startsWith("Form")){
+            	asyncTaskService.startTask(taskName);
+            }
 
             long itemsWritten = 0L;
             int totalCount = getTotalEntityCount(taskContext);
@@ -74,8 +78,10 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                 // as the size of the database grows
                 // TODO: Is there a better way of handling this? Stateless
                 // Sessions?
+                if (!taskName.startsWith("Form")){
                 asyncTaskService.clearSession();
                 asyncTaskService.updateTaskProgress(taskName, itemsWritten);
+                }
             }
 
             xmlStreamWriter.writeEndElement();
@@ -85,12 +91,15 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             InputStream inputStream = new FileInputStream(taskContext.getDestinationFile());
             String md5 = DigestUtils.md5Hex(inputStream);
             inputStream.close();
-
+            if (!taskName.startsWith("Form")){
             asyncTaskService.finishTask(taskName, itemsWritten, md5);
+            }
         } catch (Exception e) {
             System.out.println(e);
         } finally {
-            asyncTaskService.closeTaskSession();
+        	 if (!taskName.startsWith("Form")){
+                asyncTaskService.closeTaskSession();
+        	 }
         }
     }
 

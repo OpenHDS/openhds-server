@@ -6,7 +6,6 @@ import org.openhds.task.TaskContext;
 import org.openhds.task.XmlWriterTask;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +22,7 @@ public class TaskExecutorImpl implements TaskExecutor {
     private XmlWriterTask relationshipTaskWriter;
     private XmlWriterTask socialGroupTaskWriter;
     private XmlWriterTask visitTaskWriter;
+    private XmlWriterTask formTaskWriter;
 
     @Autowired
     public TaskExecutorImpl(AsyncTaskService asyncTaskService, FileResolver fileResolver) {
@@ -72,6 +72,14 @@ public class TaskExecutorImpl implements TaskExecutor {
         }
     }
 
+	@Override
+	public void executeFormXmlWriterTask() {
+		 if (asyncTaskService.taskShouldRun(AsyncTaskService.FORM_TASK_NAME)) {
+	            File formXmlFile = fileResolver.resolveFormXmlFile();
+	            formTaskWriter.writeXml(new TaskContext(formXmlFile, SecurityContextHolder.getContext()));
+	        }		
+	}
+    
     @Resource(name="individualXmlWriter")
     public void setIndividualTaskWriter(XmlWriterTask individualTaskWriter) {
         this.individualTaskWriter = individualTaskWriter;
@@ -96,5 +104,12 @@ public class TaskExecutorImpl implements TaskExecutor {
     public void setVisitTaskWriter(XmlWriterTask visitTaskWriter) {
         this.visitTaskWriter = visitTaskWriter;
     }
+    
+    @Resource(name="formXmlWriter")
+    public void setFormTaskWriter(XmlWriterTask formTaskWriter) {
+        this.formTaskWriter = formTaskWriter;
+    }
+
+
 
 }

@@ -38,6 +38,11 @@ public class TaskBean {
         taskExecutor.executeSocialGroupXmlWriterTask();
         return TASK_VIEW;
     }
+    public String startFormTask() {
+        taskExecutor.executeFormXmlWriterTask();
+        return TASK_VIEW;
+    }
+    
     
     public String startVisitTask() {
         taskExecutor.executeVisitWriterTask(roundNumber);

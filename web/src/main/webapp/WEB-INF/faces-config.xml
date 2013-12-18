@@ -151,6 +151,21 @@
 			<to-view-id>/fieldworker/detail.faces</to-view-id>
 			<redirect />
 		</navigation-case>
+	    <navigation-case>
+			<from-outcome>form_create</from-outcome>
+			<to-view-id>/form/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>form_edit</from-outcome>
+			<to-view-id>/form/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>form_detail</from-outcome>
+			<to-view-id>/form/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>generateDHISDoc</from-outcome>
 			<to-view-id>/webservice/dhisGenerator</to-view-id>

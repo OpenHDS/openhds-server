@@ -10,5 +10,19 @@
     <context:component-scan base-package="org.openhds.task" />
 
     <task:annotation-driven />
-    <task:executor id="taskExecutor" pool-size="5" queue-capacity="25" />
+    <task:executor id="taskExecutor" pool-size="5" queue-capacity="25" /> 
+     
+<!--     <bean id="formXmlWriter" parent="baseServiceBean">
+	 	<property name="target">
+	 		<bean class="org.openhds.task.FormsXmlWriterTask">
+	 		 <constructor-arg ref="FormService" />
+        <constructor-arg ref="asyncTaskServiceImpl" />
+        <constructor-arg ref="calendarUtil" />
+        </bean
+		</property>
+    </bean>-->
+    
+
+
+    
 </beans>

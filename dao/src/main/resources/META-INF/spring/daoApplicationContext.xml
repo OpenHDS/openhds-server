@@ -40,6 +40,7 @@
 				<value>org.openhds.domain.model.DemRates</value>
 				<value>org.openhds.domain.model.Extension</value>
 				<value>org.openhds.domain.model.FieldWorker</value>
+				<value>org.openhds.domain.model.Form</value>
 				<value>org.openhds.domain.model.Individual</value>
 				<value>org.openhds.domain.model.InMigration</value>
 				<value>org.openhds.domain.model.Location</value>
@@ -150,6 +151,10 @@
         <property name="properties" ref="siteProperties" />
     </bean>
 
+    <bean id="formDao" parent="baseDao">
+        <constructor-arg value="org.openhds.domain.model.Form" />
+    </bean>
+    
     <bean id="individualDao" parent="baseDao" class="org.openhds.dao.service.impl.IndividualDaoImpl">
         <constructor-arg value="org.openhds.domain.model.Individual" />
         <property name="properties" ref="siteProperties" />

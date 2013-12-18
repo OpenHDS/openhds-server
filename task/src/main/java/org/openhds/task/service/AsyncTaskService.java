@@ -11,6 +11,7 @@ public interface AsyncTaskService {
     public static final String RELATIONSHIP_TASK_NAME = "Relationship Task";
     public static final String SOCIALGROUP_TASK_NAME = "Social Group Task";
     public static final String VISIT_TASK_NAME = "Visit Task";
+    public static final String FORM_TASK_NAME = "Form Task";
 
     boolean taskShouldRun(String taskName);
 

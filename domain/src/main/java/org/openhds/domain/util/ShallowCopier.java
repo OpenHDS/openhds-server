@@ -1,6 +1,7 @@
 package org.openhds.domain.util;
 
 import org.openhds.domain.model.FieldWorker;
+import org.openhds.domain.model.Form;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
@@ -141,6 +142,14 @@ public class ShallowCopier {
         copy.setRoundNumber(original.getRoundNumber());
         copy.setVisitDate(original.getVisitDate());
 
+        return copy;
+    }
+    
+    
+    public static Form copyForm(Form original) {
+        Form copy = new Form();
+        copy.setFormName(original.getFormName());
+        copy.setGender(original.getGender());
         return copy;
     }
 }

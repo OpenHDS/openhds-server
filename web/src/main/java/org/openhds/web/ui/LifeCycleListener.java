@@ -6,6 +6,11 @@ import javax.faces.event.PhaseListener;
 
 public class LifeCycleListener implements PhaseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public void afterPhase(PhaseEvent event) {
 		System.out.println("[after] "+event.getPhaseId()+" - "+event.getSource());
 	}
