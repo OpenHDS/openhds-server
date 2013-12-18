@@ -35,9 +35,9 @@
 		</snapshotRepository> </distributionManagement> -->
 
 	<scm>
-		<connection>scm:git:https://code.google.com/p/ihi-openhds/</connection>
-		<developerConnection>scm:git:https://code.google.com/p/ihi-openhds/</developerConnection>
-		<url>http://code.google.com/p/ihi-openhds/source/browse/</url>
+		<connection>scm:git:https://github.com/OpenHDS/openhds-server</connection>
+		<developerConnection>scm:git:https://github.com/OpenHDS/openhds-server</developerConnection>
+		<url>http://github.com/OpenHDS/openhds-server</url>
 		<tag>HEAD</tag>
 	</scm>
 

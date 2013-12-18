@@ -1,11 +1,8 @@
 OpenHDS
 ======
 
-This project and variants of it are hosted on Google code, at one of the following URLs:
-*   http://code.google.com/p/openhds/
-*   http://code.google.com/p/ihi-openhds/
-*   https://code.google.com/r/davidroberge-filtering/
-
+This project and variants of it are hosted on GitHub at the following URL:
+*   http://github.com/OpenHDS/openhds-server
 
 Architecture
 --------------------
@@ -75,7 +72,6 @@ Maven plugins (i.e. dependencies affecting the build process):
 *   Maven Assembly plugin
 *   Maven deploy plugin
 *   Maven Eclipse plugin
-*   Maven IDEA plugin
 *   Maven release plugin
 *   Maven source plugin
 *   Tomcat
