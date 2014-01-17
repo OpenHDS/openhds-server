@@ -33,7 +33,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Form> getAllActiveForms() {
-        return genericDao.findListByProperty(Form.class, "active", "Yes");
+        return genericDao.findListByProperty(Form.class, "active", "Yes", true);
     	// return genericDao.findAll(Form.class, false);
     }
 
