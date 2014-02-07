@@ -14,4 +14,8 @@ public interface RoundService {
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     List<Round> getAllRounds();
+    
+    @Authorized({ PrivilegeConstants.VIEW_ENTITY })
+    List<Round> getLastRound();
+    
 }

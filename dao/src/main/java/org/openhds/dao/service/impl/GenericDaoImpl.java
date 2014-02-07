@@ -70,6 +70,20 @@ public class GenericDaoImpl implements GenericDao {
 		 return criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> findMax(Class<T> entityType, boolean filterDeleted, String orderByCol, boolean ascending) {
+		Criteria criteria = getSession().createCriteria(entityType);
+		Order order = (ascending ? Order.asc(orderByCol) : Order.desc(orderByCol));
+		
+		criteria.addOrder(order).setMaxResults(1).uniqueResult();
+        if (filterDeleted) {
+        	criteria = criteria.add(Restrictions.eq("deleted", false));
+        }
+		 return criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> findAllDistinct(Class<T> entityType) {
 		return getSession().createCriteria(entityType).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();

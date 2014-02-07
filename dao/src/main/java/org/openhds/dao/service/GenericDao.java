@@ -35,7 +35,7 @@ public interface GenericDao {
     <T> T merge(T entityItem);
 
     <T> List<T> findAll(Class<T> entityType, boolean filterDeleted);
-    
+    <T> List<T> findMax(Class<T> entityType, boolean filterDeleted,String orderByCol, boolean ascending);
 	<T> List<T> findAllDistinct(Class<T> entityType);
     
     <T> List<T> findAllWithOrder(Class<T> entityType, OrderProperty... orderProps);

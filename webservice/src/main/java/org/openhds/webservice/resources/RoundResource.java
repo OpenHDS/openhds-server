@@ -1,5 +1,6 @@
 package org.openhds.webservice.resources;
 
+
 import org.openhds.controller.service.RoundService;
 import org.openhds.domain.model.wrappers.Rounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class RoundResource {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Rounds getAllRounds() {
+    public Rounds getLastRound() {
         Rounds rounds = new Rounds();
-        rounds.setRounds(roundService.getAllRounds());
+        rounds.setRounds(roundService.getLastRound());
         return rounds;
     }
 
