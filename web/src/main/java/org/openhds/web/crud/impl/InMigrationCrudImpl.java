@@ -12,8 +12,6 @@ import javax.faces.model.SelectItem;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.InMigration;
-import org.openhds.domain.model.Location;
-import org.openhds.domain.model.PrimitiveType;
 import org.openhds.domain.model.ReasonForMigration;
 import org.openhds.domain.model.Residency;
 import org.openhds.controller.service.InMigrationService;

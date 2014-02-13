@@ -1,7 +1,6 @@
 package org.openhds.controller.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -9,18 +8,16 @@ import org.openhds.controller.idgeneration.FieldWorkerGenerator;
 import org.openhds.controller.idgeneration.Generator;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.dao.service.GenericDao;
-import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 
-@SuppressWarnings("unchecked")
 public class FieldWorkerServiceImpl implements FieldWorkerService {
 
     private GenericDao genericDao;
-	private Generator generator;
+	private Generator<FieldWorker> generator;
 	
 	public FieldWorkerServiceImpl() { }
 	
-	public FieldWorkerServiceImpl(GenericDao genericDao, Generator generator) {
+	public FieldWorkerServiceImpl(GenericDao genericDao, Generator<FieldWorker> generator) {
 		this.genericDao = genericDao;
 		this.generator = generator;
 	}
