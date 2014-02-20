@@ -38,7 +38,7 @@ public class DeathResource {
         death.setCollectedBy(fieldBuilder.referenceField(death.getCollectedBy(), cv));
         death.setIndividual(fieldBuilder.referenceField(death.getIndividual(), cv,
                 "Individual external id referenced in death event is invalid"));
-        death.setVisitDeath(fieldBuilder.referenceField(death.getVisitDeath(), cv));
+       death.setVisitDeath(fieldBuilder.referenceField(death.getVisitDeath(), cv));
 
         if (cv.hasViolations()) {
             return badRequest(cv);
@@ -55,11 +55,11 @@ public class DeathResource {
         return new ResponseEntity<Death>(copy(death), HttpStatus.CREATED);
     }
 
-    private ResponseEntity<? extends Serializable> badRequest(ConstraintViolations cv) {
+    public ResponseEntity<? extends Serializable> badRequest(ConstraintViolations cv) {
         return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
     }
 
-    private Death copy(Death death) {
+    public Death copy(Death death) {
         Death copy = new Death();
         copy.setCollectedBy(copyFieldWorker(death.getCollectedBy()));
         copy.setDeathCause(death.getDeathCause());
@@ -71,21 +71,22 @@ public class DeathResource {
         return copy;
     }
 
-    private FieldWorker copyFieldWorker(FieldWorker collectedBy) {
+    public FieldWorker copyFieldWorker(FieldWorker collectedBy) {
         FieldWorker fw = new FieldWorker();
         fw.setExtId(collectedBy.getExtId());
         return fw;
     }
 
-    private Individual copyIndividual(Individual individual) {
+    public Individual copyIndividual(Individual individual) {
         Individual copy = new Individual();
         copy.setExtId(individual.getExtId());
         return copy;
     }
 
-    private Visit copyVisit(Visit visitDeath) {
+    public Visit copyVisit(Visit visitDeath) {
         Visit copy = new Visit();
         copy.setExtId(visitDeath.getExtId());
+        copy.setVisitDate(visitDeath.getVisitDate());
         return copy;
     }
 
