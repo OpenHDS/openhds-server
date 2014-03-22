@@ -1,0 +1,85 @@
+	<form name="locationForm" novalidate>
+		<div>
+			<label class="control-label" for="subvillage">Subvillage*</label>
+			<input type="text" id="subvillage" name="subvillage" placeholder="Subvillage" ng-model="location.locationLevel.extId" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.locationLevel.extId.$dirty && locationForm.locationLevel.extId.$invalid">
+				<small ng-if="locationForm.locationLevel.extId.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="locationName">Location Name*</label>
+			<input type="text" id="locationName" name="locationName" placeholder="Location Name" ng-model="location.locationName" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.locationName.$dirty && locationForm.locationName.$invalid">
+				<small ng-if="locationForm.locationName.$error.required">Required</small>
+			</span>
+		</div>
+		<!--
+		<div>
+			<label class="control-label" for="locationType">Location Type</label>
+			<input type="text" id="locationType" name="locationType" placeholder="Location Type" ng-model="location.locationType"></input>
+		</div>
+		-->
+		<div>
+			<label class="control-label" for="locationType">Location Type*</label>
+			<select id="locationType" ng-model="location.locationType" ng-required="true"> <!--  ng-options="l.name for l in locationTypes">-->
+				<option value="RUR">Rural</option>
+				<option value="URB">Urban</option>
+			</select>
+			<span class="alert alert-error" ng-show="locationForm.locationType.$dirty && locationForm.locationType.$invalid">
+				<small ng-if="locationForm.locationType.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="latitude">Latitude*</label>
+			<input type="text" id="latitude" name="latitude" placeholder="Latitude" ng-model="location.latitude" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.latitude.$dirty && locationForm.latitude.$invalid">
+				<small ng-if="locationForm.latitude.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="longitude">Longitude*</label>
+			<input type="text" id="longitude" name="longitude" placeholder="Longitude" ng-model="location.longitude" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.longitude.$dirty && locationForm.longitude.$invalid">
+				<small ng-if="locationForm.longitude.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="accuracy">Accuracy*</label>
+			<input type="text" id="accuracy" name="accuracy" placeholder="Accuracy" ng-model="location.accuracy" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.accuracy.$dirty && locationForm.accuracy.$invalid">
+				<small ng-if="locationForm.accuracy.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="altitude">Altitude*</label>
+			<input type="text" id="altitude" name="altitude" placeholder="Altitude" ng-model="location.altitude" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.altitude.$dirty && locationForm.altitude.$invalid">
+				<small ng-if="locationForm.altitude.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<label class="control-label" for="fieldWorkerId">Field Worker ID*</label>
+			<input type="text" id="fieldWorkerId" name="fieldWorkerId" placeholder="Field Worker ID" ng-model="location.collectedBy.extId" ng-required="true"/>
+			<span class="alert alert-error" ng-show="locationForm.collectedBy.extId.$dirty && locationForm..collectedBy.extId.$invalid">
+				<small ng-if="locationForm.collectedBy.extId.$error.required">Required</small>
+			</span>
+		</div>
+		<div>
+			<button class="btn btn-inverse" ng-click="createLocation()" ng-disabled="!locationForm.$valid">Create</button>
+			<button class="btn btn-inverse" ng-click="reset()">Reset</button>
+			<button class="btn btn-inverse" ng-click="resetAll()">Reset All</button>
+		</div>
+	</form>
+<br/>
+<div>
+	<button type="button" class="btn btn-default" ng-click="getLocation('SUB000001')">Get location</button>
+</div>
+<div class="voffset2">
+	<button type="button" class="btn btn-default" ng-click="getLocations()">Get locations</button>
+</div>
+
+<div class="voffset2"></div>
+<pre>location = {{location | json}}</pre>
+<pre>locations = {{locations | json}}</pre>
+<pre>master = {{master | json}}</pre>
+
