@@ -43,7 +43,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<org.springframework.version>3.0.3.RELEASE</org.springframework.version>
+		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
+		<org.springframework.security.version>3.2.1.RELEASE</org.springframework.security.version>
 		<org.hibernate.core.version>3.5.3-Final</org.hibernate.core.version>
 		<org.hibernate.annotation.version>3.5.3-Final</org.hibernate.annotation.version>
 		<org.hibernate.validator.version>4.1.0.Final</org.hibernate.validator.version>
@@ -143,7 +144,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
-				<version>${org.springframework.version}</version>
+				<version>${org.springframework.security.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -154,7 +155,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${org.springframework.version}</version>
+				<version>${org.springframework.security.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -165,7 +166,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>${org.springframework.version}</version>
+				<version>${org.springframework.security.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -254,11 +255,11 @@
                         <downloadJavadocs>true</downloadJavadocs>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>jetty-maven-plugin</artifactId>
-                    <version>7.6.8.v20121106</version>
-                </plugin>
+<!--                 <plugin> -->
+<!--                     <groupId>org.mortbay.jetty</groupId> -->
+<!--                     <artifactId>jetty-maven-plugin</artifactId> -->
+<!--                     <version>7.6.8.v20121106</version> -->
+<!--                 </plugin> -->
             </plugins>
         </pluginManagement>
     </build>
