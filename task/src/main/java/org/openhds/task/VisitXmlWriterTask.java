@@ -17,7 +17,7 @@ public class VisitXmlWriterTask extends XmlWriterTemplate<Visit> {
 
     @Autowired
     public VisitXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil, VisitService visitService) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.VISIT_TASK_NAME);
+        super(asyncTaskService, AsyncTaskService.VISIT_TASK_NAME);
         this.visitService = visitService;
     }
 

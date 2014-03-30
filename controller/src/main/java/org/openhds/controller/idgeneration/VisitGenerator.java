@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Visit;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -16,6 +17,7 @@ import org.openhds.domain.model.Visit;
  * the id. 
  */
 
+@Component("visitIdGenerator")
 public class VisitGenerator extends Generator<Visit> {
 
 	@Override

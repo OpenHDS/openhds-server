@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Location;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -16,6 +17,7 @@ import org.openhds.domain.model.Location;
  * the id. 
  */
 
+@Component("locationIdGenerator")
 public class LocationGenerator extends Generator<Location> {
 
 	@Override

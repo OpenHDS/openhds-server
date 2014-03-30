@@ -16,6 +16,8 @@
     <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
     
+    <context:component-scan base-package="org.openhds.controller" />
+
     <context:property-placeholder location="classpath*:site-config.properties" />
     
      <!-- Used by the baseTransactionBean to determine when to insert the Transactional Advice -->
@@ -256,45 +258,13 @@
      
     <bean id="visitService" parent="baseServiceBean">
     	<property name="target">
-		    <bean class="org.openhds.controller.service.impl.VisitServiceImpl">
-		        <constructor-arg ref="entityService" />
-                <constructor-arg ref="genericDao" />
-		        <constructor-arg ref="visitIdGenerator" />
-                <constructor-arg ref="siteProperties" />
-		    </bean>
+		    <ref bean="visitServiceImpl"/>
 	    </property>
     </bean>
-    
-    <bean id="whitelistService" class="org.openhds.controller.service.impl.WhitelistServiceImpl">
-    	<constructor-arg ref="genericDao" />
-    </bean>
-                        
-    <bean id="idSchemeResource" class="org.openhds.controller.idgeneration.IdSchemeResource">
- 		<property name="idScheme">
-      		<list>
-      			<ref bean="fieldWorkerIdScheme" />
-      			<ref bean="individualIdScheme" />
-      			<ref bean="locationIdScheme" />
-      			<ref bean="locationHierarchyIdScheme" />
-      			<ref bean="socialGroupIdScheme" />
-      			<ref bean="visitIdScheme" />
-      		</list>
-      </property>
-	</bean>
-    
-	<bean id="idGenerator" class="org.openhds.controller.idgeneration.Generator" abstract="true">
-    	<property name="resource" ref="idSchemeResource" />
-    	<property name="genericDao" ref="genericDao" />
-    </bean>
-    
-   <bean id="luhnValidator" class="org.openhds.controller.idgeneration.LuhnValidator" />
 	
-	<bean id="idValidator" class="org.openhds.controller.idgeneration.IdValidator">
-		<constructor-arg ref="luhnValidator" />
-		<constructor-arg ref="siteProperties" />
-		<constructor-arg ref="idSchemeResource" />
-	</bean>
-	    
+	<!-- ID GENERATOR BEANS --> 
+
+		<!--
     <bean id="locationIdGenerator" class="org.openhds.controller.idgeneration.LocationGenerator" parent="idGenerator">
     	<property name="generated"><value>${openhds.locationIdUseGenerator}</value></property>
     </bean>
@@ -315,8 +285,10 @@
     
     <bean id="fieldWorkerIdGenerator" class="org.openhds.controller.idgeneration.FieldWorkerGenerator" parent="idGenerator" >
     	<property name="generated"><value>${openhds.fwIdUseGenerator}</value></property>
-    </bean>
+    </bean> -->
     
+    <!-- ID SCHEME BEANS -->
+
 	<!-- Supported fields are LOCATION_NAME, LOCATION_HIERARCHY_ID -->
     <bean id="locationIdScheme" class="org.openhds.controller.idgeneration.IdScheme">
     	<property name="name" value="Location" />

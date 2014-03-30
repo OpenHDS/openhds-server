@@ -9,6 +9,8 @@
         http://www.springframework.org/schema/lang/spring-lang-3.2.xsd">
 
 
+     <context:component-scan base-package="org.openhds.domain" />
+
     <bean id="appSettings" class="org.openhds.domain.model.AppSettings" scope="prototype">
         <property name="versionNumber">
             <value>${openhdsVersion}</value>
@@ -17,10 +19,6 @@
 
     <bean id="appContextAware" class="org.openhds.domain.constraint.AppContextAware" />
     <bean id="valueConstraintService" class="org.openhds.domain.service.impl.ValueConstraintServiceImpl" />
-
-    <bean id="calendarUtil" class="org.openhds.domain.util.CalendarUtil">
-        <property name="siteProperties" ref="siteProperties" />
-    </bean>
 
     <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
@@ -53,7 +51,6 @@
         <property name="adapters">
             <array>
                 <bean id="calendarAdapter" class="org.openhds.domain.util.CalendarAdapter">
-                    <constructor-arg ref="calendarUtil" />
                 </bean>
             </array>
         </property>

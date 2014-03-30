@@ -100,10 +100,7 @@
             <bean class="org.openhds.dao.finder.SimpleArgumentTypeFactory" />
         </property>
      </bean>
-	 
-	 <bean id="genericDao" class="org.openhds.dao.service.impl.GenericDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-     </bean>
+
      
     <!-- A proxy that contains an introduction advisor -->
 	<!-- Any bean that uses the DynamicFinder annotation should use this bean as its parent -->

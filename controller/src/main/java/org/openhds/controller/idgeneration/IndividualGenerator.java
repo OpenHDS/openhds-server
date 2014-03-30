@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -17,6 +18,7 @@ import org.openhds.domain.model.Location;
  * the id. 
  */
 
+@Component("individualIdGenerator")
 public class IndividualGenerator extends Generator<Individual> {
 	private Location location;
 	

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -17,6 +18,7 @@ import org.openhds.domain.model.SocialGroup;
  * the id. 
  */
 
+@Component("socialGroupIdGenerator")
 public class SocialGroupGenerator extends Generator<SocialGroup> {
 	private Location location;
 	

@@ -18,7 +18,7 @@ public class RelationshipXmlWriterTask extends XmlWriterTemplate<Relationship> {
     @Autowired
     public RelationshipXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
             RelationshipService relationshipService) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.RELATIONSHIP_TASK_NAME);
+        super(asyncTaskService, AsyncTaskService.RELATIONSHIP_TASK_NAME);
         this.relationshipService = relationshipService;
     }
 

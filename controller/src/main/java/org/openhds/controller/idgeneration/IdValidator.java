@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openhds.controller.util.OpenHDSResult;
 import org.openhds.domain.service.SitePropertiesService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class IdValidator {
 	
@@ -15,9 +16,12 @@ public class IdValidator {
     private static final String INVALID_CHECKCHAR_INDIVIDUAL = "Check character doesn't match the provided Individual id";
     private static final String INVALID_CHECKCHAR_FIELDWORKER = "Check character doesn't match the provided Field Worker id";
 
-    LuhnValidator luhnValidator;
-    SitePropertiesService siteProperties;
-    IdSchemeResource resource;
+    @Autowired
+    private LuhnValidator luhnValidator;
+    @Autowired
+    private SitePropertiesService siteProperties;
+    @Autowired
+    private IdSchemeResource resource;
     
     public IdValidator(LuhnValidator luhnValidator, SitePropertiesService siteProperties, IdSchemeResource resource) {
     	this.luhnValidator = luhnValidator;
