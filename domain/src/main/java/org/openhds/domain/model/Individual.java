@@ -218,5 +218,15 @@ public class Individual
         }
         return residency;
     }
-
+    public Membership getCurrentMembership() {
+        if (allMemberships.size() == 0) {
+            return null;
+        }
+        Iterator<Membership> itr = allMemberships.iterator();
+        Membership membership = null;
+        while (itr.hasNext()) {
+        	membership = itr.next();
+        }
+        return membership;
+    }
 }

@@ -33,7 +33,7 @@ public class ValueConstraintServiceImpl {
 	}
 	
 	private Element findConstraintByName(String constraintName) {
-		List list = doc.getRootElement().getChildren();
+		List<?> list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
 			Element ele = (Element)list.get(i);
 			if (ele.getAttribute("id").getValue().equals(constraintName)) 
@@ -44,7 +44,7 @@ public class ValueConstraintServiceImpl {
 	
 	public boolean isValidConstraintValue(String constraintName, Object value) {
         // Get children of the root element whose "id" attribute is constraintName...
-        List list = doc.getRootElement().getChildren();
+        List<?> list = doc.getRootElement().getChildren();
 		for (Object o : list) {
 			Element elt = (Element)o;
 			if (elt.getAttribute("id").getValue().equals(constraintName)) {
@@ -62,7 +62,7 @@ public class ValueConstraintServiceImpl {
 	public List<String> getAllConstraintNames() {
 		
 		List<String> output = new ArrayList<String>();
-		List list = doc.getRootElement().getChildren();
+		List<?> list = doc.getRootElement().getChildren();
 		for (int i = 0; i < list.size(); i++) {
 			Element ele = (Element)list.get(i);
 			output.add(ele.getAttribute("id").getValue()); 
@@ -73,7 +73,7 @@ public class ValueConstraintServiceImpl {
 	public Map<String, String> getMapForConstraint(String constraintName) {
 		Map<String, String> keyValues = new TreeMap<String, String>();
 		Element constraint = findConstraintByName(constraintName);
-		List children = constraint.getChildren();
+		List<?> children = constraint.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Element child = (Element)children.get(i);
 			keyValues.put(child.getValue(), child.getAttributeValue("description"));

@@ -32,14 +32,13 @@ public class ShallowCopier {
             copy.setMiddleName(middleName);
             copy.setMother(copyExtId(individual.getMother()));
 
-            for (Membership membership : individual.getAllMemberships()) {
-                Membership memCopy = new Membership();
-
+            if (individual.getCurrentMembership() != null && individual.getCurrentMembership().getEndDate()==null) {
+            	Membership memCopy = new Membership();
                 SocialGroup sgCopy = new SocialGroup();
-                sgCopy.setExtId(membership.getSocialGroup().getExtId());
+                sgCopy.setExtId(individual.getCurrentMembership().getSocialGroup().getExtId());
 
                 memCopy.setSocialGroup(sgCopy);
-                memCopy.setbIsToA(membership.getbIsToA());
+                memCopy.setbIsToA(individual.getCurrentMembership().getbIsToA());
                 copy.getAllMemberships().add(memCopy);
             }
 
