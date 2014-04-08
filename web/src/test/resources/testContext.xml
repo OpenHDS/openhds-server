@@ -33,6 +33,7 @@
 	<!-- This bean is here to override the locationLevelsSetter that otherwise loads location levels -->
 	<bean id="locationLevelsSetter" class="org.openhds.dao.service.impl.LocationLevelsSetterImpl"/>
 	
+	<!-- Independent database configuration for test context -->
 	<bean id="databaseConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
@@ -46,126 +47,16 @@
 		</property>
 	</bean>
 
+	<!-- JsfService is mocked for tests -->
 	<bean id="jsfService" class="org.openhds.integration.util.JsfServiceMock" />
 
+	<!-- Independent data source for test context -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="DriverClassName" value="org.h2.Driver" />
         <property name="Url" value="jdbc:h2:mem:openhds" />
         <property name="Username" value="sa" />
         <property name="Password" value="" />
     </bean>
-    
-     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="annotatedClasses">
-			<list>				      
-				<value>org.openhds.domain.model.AuditableCollectedEntity</value>
-				<value>org.openhds.domain.model.AuditableEntity</value>
-				<value>org.openhds.domain.model.ClassExtension</value>
-				<value>org.openhds.domain.model.Death</value>
-				<value>org.openhds.domain.model.DemRates</value>
-				<value>org.openhds.domain.model.Extension</value>
-				<value>org.openhds.domain.model.FieldWorker</value>
-				<value>org.openhds.domain.model.Individual</value>
-				<value>org.openhds.domain.model.InMigration</value>
-				<value>org.openhds.domain.model.Location</value>
-				<value>org.openhds.domain.model.LocationHierarchy</value>
-				<value>org.openhds.domain.model.LocationHierarchyLevel</value>
-				<value>org.openhds.domain.model.Membership</value>
-				<value>org.openhds.domain.model.MigrationType</value>
-				<value>org.openhds.domain.model.Note</value>
-				<value>org.openhds.domain.model.Outcome</value>
-				<value>org.openhds.domain.model.OutMigration</value>
-				<value>org.openhds.domain.model.PregnancyObservation</value>
-				<value>org.openhds.domain.model.PregnancyOutcome</value>
-				<value>org.openhds.domain.model.Privilege</value>
-				<value>org.openhds.domain.model.Relationship</value>
-				<value>org.openhds.domain.model.Residency</value>
-				<value>org.openhds.domain.model.Role</value>
-				<value>org.openhds.domain.model.Round</value>
-				<value>org.openhds.domain.model.SocialGroup</value>
-				<value>org.openhds.domain.model.User</value>
-				<value>org.openhds.domain.model.Visit</value>
-				<value>org.openhds.domain.model.Whitelist</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-	    	<value>
-            	hibernate.dialect=org.hibernate.dialect.HSQLDialect
-                hibernate.hbm2ddl.auto=create
-                hibernate.show_sql=true
-        	</value>
-        </property>
-	 </bean>
-	 
-	 
-	 	 <bean id="sitePropertiesConfigBean" class="org.openhds.web.beans.SitePropertiesConfigBean">
-	 	<property name="jsfService" ref="jsfService" />
-	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
-	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
-	 	<property name="outmigration"><value>${outmigration}</value></property>
-	 	<property name="birth"><value>${birth}</value></property>
-	 	<property name="death"><value>${death}</value></property>
-	 	<property name="enumeration"><value>${enumeration}</value></property>
-	 	<property name="marriage"><value>${marriage}</value></property>
-	 	<property name="notApplicable"><value>${notApplicable}</value></property>
-	 	<property name="liveBirth"><value>${liveBirth}</value></property>
-	 	<property name="stillBirth"><value>${stillBirth}</value></property>
-	 	<property name="miscarriage"><value>${miscarriage}</value></property>
-	 	<property name="abortion"><value>${abortion}</value></property>
-	 	<property name="male"><value>${male}</value></property>
-	 	<property name="female"><value>${female}</value></property>
-	 	<property name="dataStatusWarning"><value>${dataStatusWarning}</value></property>
-	 	<property name="dataStatusValid"><value>${dataStatusValid}</value></property>
-	 	<property name="dataStatusFatal"><value>${dataStatusFatal}</value></property>
-	 	<property name="dataStatusVoid"><value>${dataStatusVoid}</value></property>
-	 	<property name="dataStatusPending"><value>${dataStatusPending}</value></property>
-	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
-	 	<property name="yesResponse"><value>${yesResponse}</value></property>
-	 	<property name="noResponse"><value>${noResponse}</value></property>	
-	 	<property name="dateFormat"><value>${dateFormat}</value></property>
-	 	<property name="autocomplete"><value>${autocomplete}</value></property>
-	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
-        <property name="minAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
-        <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
-        <property name="minAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
-        <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
-	 </bean>
-	 
-	      <bean id="siteProperties" class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">   
-    	<property name="locale"><value>${openhds.locale}</value></property>     
-        <property name="dateFormat"><value>${dateFormat}</value></property>
-        <property name="autocomplete"><value>${autocomplete}</value></property>
-        <property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
-        <property name="inmigrationCode"><value>${inmigration}</value></property>
-        <property name="outmigrationCode"><value>${outmigration}</value></property>
-        <property name="birthCode"><value>${birth}</value></property>
-        <property name="deathCode"><value>${death}</value></property>
-        <property name="enumerationCode"><value>${enumeration}</value></property>
-        <property name="marriageCode"><value>${marriage}</value></property>
-        <property name="notApplicableCode"><value>${notApplicable}</value></property>
-        <property name="liveBirthCode"><value>${liveBirth}</value></property>
-        <property name="stillBirthCode"><value>${stillBirth}</value></property>
-        <property name="miscarriageCode"><value>${miscarriage}</value></property>
-        <property name="abortionCode"><value>${abortion}</value></property>
-        <property name="maleCode"><value>${male}</value></property>
-        <property name="femaleCode"><value>${female}</value></property>
-        <property name="dataStatusWarningCode"><value>${dataStatusWarning}</value></property>
-        <property name="dataStatusValidCode"><value>${dataStatusValid}</value></property>
-        <property name="dataStatusFatalCode"><value>${dataStatusFatal</value></property>
-        <property name="dataStatusVoidCode"><value>${dataStatusVoid}</value></property>
-        <property name="dataStatusPendingCode"><value>${dataStatusPending}</value></property>
-        <property name="dataStatusClosedCode"><value>${dataStatusClosed}</value></property>
-        <property name="minimumAgeOfParents"><value>${minAgeOfParenthood}</value></property>
-        <property name="minimumAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
-        <property name="minimumAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
-        <property name="minimumAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
-        <property name="yesResponse"><value>${yesResponse}</value></property>
-        <property name="noResponse"><value>${noResponse}</value></property>
-		<property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
-        <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
-     </bean> 
-    
+
      <mvc:annotation-driven />
-    
 </beans>
