@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.FieldWorker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -84,5 +86,12 @@ public class FieldWorkerGenerator extends Generator<FieldWorker> {
 	@Override
 	public String buildNumberWithBound(FieldWorker entityItem, IdScheme scheme) throws ConstraintViolations {
 		return null;
+	}
+	
+	@Override
+	@Autowired
+	@Value("${openhds.fwIdUseGenerator}")
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
 	}
 }

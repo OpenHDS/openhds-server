@@ -3,6 +3,8 @@ package org.openhds.controller.idgeneration;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,5 +27,10 @@ public class IdSchemeResource {
 
 	public void setIdScheme(List<IdScheme> idScheme) {
 		this.idScheme = idScheme;
+	}
+
+	@PostConstruct
+	public void sort() {
+		Collections.sort(idScheme);
 	}
 }

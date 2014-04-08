@@ -3,9 +3,10 @@ package org.openhds.controller.idgeneration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Visit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -126,5 +127,12 @@ public class VisitGenerator extends Generator<Visit> {
 	public IdScheme getIdScheme() {
 		int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("Visit"));
 		return resource.getIdScheme().get(index);
+	}
+
+	@Override
+	@Autowired
+	@Value("${openhds.visitIdUseGenerator}")
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
 	}
 }

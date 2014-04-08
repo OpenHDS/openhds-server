@@ -7,6 +7,8 @@ import java.util.Iterator;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -119,5 +121,12 @@ StringBuilder sb = new StringBuilder();
 	public IdScheme getIdScheme() {
 		int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("SocialGroup"));
 		return resource.getIdScheme().get(index);
+	}
+	
+	@Override
+	@Autowired
+	@Value("${openhds.sgIdUseGenerator}")
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
 	}
 }
