@@ -146,6 +146,8 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 			throw new ConstraintViolations("Unable to delete this Location " +
 					"because there are Residencies that are dependent on this entity.");
 		
+		genericDao.delete(entityItem);
+
 		return entityItem;
 	}
 		
@@ -478,5 +480,16 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     public long getTotalLocationCount() {
         return genericDao.getTotalCount(Location.class);
     }
+
+	@Override
+	public void updateLocation(Location location) throws ConstraintViolations {
+        try {
+            entityService.save(location);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+            throw new ConstraintViolations("There was a problem updating the location to the database");
+        }
+		
+	}
 
 }

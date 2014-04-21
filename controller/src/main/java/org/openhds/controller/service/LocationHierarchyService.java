@@ -96,6 +96,9 @@ public interface LocationHierarchyService {
 	List<Location> getAllLocationsInRange(int i, int pageSize);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-    long getTotalLocationCount(); 
+    long getTotalLocationCount();
+
+	@Authorized({PrivilegeConstants.EDIT_ENTITY})
+	void updateLocation(Location location) throws ConstraintViolations;
 }
 

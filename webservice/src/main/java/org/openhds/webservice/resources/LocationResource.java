@@ -98,4 +98,56 @@ public class LocationResource {
 
         return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.CREATED);
     }
+    
+    @RequestMapping(method = RequestMethod.PUT, produces = "application/xml")
+    public ResponseEntity<? extends Serializable> addOrUpdate(@RequestBody Location location) {
+    	
+        ConstraintViolations cv = new ConstraintViolations();
+        location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
+        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+
+        if (cv.hasViolations()) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+        }
+
+    	Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
+    	if (existingLocation == null) {
+    		try {
+				locationHierarchyService.createLocation(location);
+			} catch (ConstraintViolations e) {
+	            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
+
+			}
+            return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.CREATED);
+
+    	}
+    	
+    	//updating fields on existing persistent object
+    	existingLocation.setLocationName(location.getLocationName());
+
+    	try {
+			locationHierarchyService.updateLocation(existingLocation);
+		} catch (ConstraintViolations e) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
+		}
+    	
+        return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{extId}", method = RequestMethod.DELETE, produces = "application/xml")
+    public ResponseEntity<? extends Serializable> deleteLocationByExtId(@PathVariable String extId) {
+        Location location = locationHierarchyService.findLocationById(extId);
+
+        if (location == null) {
+        	return new ResponseEntity<String>(HttpStatus.GONE);
+        }
+
+    	try {
+			locationHierarchyService.deleteLocation(location);
+		} catch (ConstraintViolations e) {
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(new ConstraintViolations(e.getMessage(), e.getViolations())), HttpStatus.BAD_REQUEST);
+		}
+    	
+        return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.OK);
+    }
 }

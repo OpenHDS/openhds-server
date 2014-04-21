@@ -1,14 +1,22 @@
 package org.openhds.integration;
 
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
 
+import javax.xml.xpath.XPathExpressionException;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.dao.service.GenericDao;
+import org.openhds.domain.model.Location;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,6 +52,9 @@ public class LocationResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+
+	@Autowired
+	private GenericDao genericDao;
 
 	private MockHttpSession session;
 
@@ -126,6 +137,107 @@ public class LocationResourceTest {
 				.andExpect(xpath("/location/locationName").string("Test House"))
 				.andExpect(xpath("/location/locationType").string("RUR"))
 				.andExpect(xpath("/location/longitude").string(""));
+	}
+	
+	@Test
+	public void testDeleteLocationDoesNotExist() throws Exception {
+		String locationExtId = "DOESNOTEXIST";
+
+		mockMvc.perform(delete("/locations/{extId}", locationExtId).session(session))
+		.andExpect(status().isGone());
+	}
+	
+	@Test
+	public void testAddDeleteRetrieveLocation() throws Exception {
+		String locationExtId = "testLocation";
+		
+		testPostLocation();
+	    Location savedLocation = genericDao.findByProperty(Location.class, "extId", locationExtId);
+	    Assert.assertNotNull(savedLocation);
+		
+		mockMvc.perform(delete("/locations/{extId}", locationExtId).session(session))
+		.andExpect(status().isOk());
+		
+	    savedLocation = genericDao.findByProperty(Location.class, "extId", locationExtId);
+	    Assert.assertNull(savedLocation);
+	}
+	
+	@Test
+	public void testUpdateLocation() throws Exception {
+		final String LOCATION_PUT_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ "<location>"
+				+ "<collectedBy>"
+				+ "<extId>FWEK1D</extId>"
+				+ "</collectedBy>"
+				+ "<accuracy></accuracy>"
+				+ "<altitude></altitude>"
+				+ "<extId>testLocation</extId>"
+				+ "<latitude></latitude>"
+				+ "<locationLevel>"
+				+ "<extId>IFB</extId>"
+				+ "</locationLevel>"
+				+ "<locationName>Test House</locationName>"
+				+ "<locationType>RUR</locationType>"
+				+ "<longitude></longitude>"
+				+ "</location>";
+
+		mockMvc.perform(put("/locations").session(session)
+				.contentType(MediaType.APPLICATION_XML)
+				.body(LOCATION_PUT_XML.getBytes())
+				).andExpect(status().isOk())
+				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
+				.andExpect(xpath("/location/collectedBy/extId").string("FWEK1D"))
+				.andExpect(xpath("/location/accuracy").string(""))
+				.andExpect(xpath("/location/altitude").string(""))
+				.andExpect(xpath("/location/extId").string("testLocation"))
+				.andExpect(xpath("/location/latitude").string(""))
+				.andExpect(xpath("/location/locationLevel/extId").string("IFB"))
+				.andExpect(xpath("/location/locationName").string("Test House"))
+				.andExpect(xpath("/location/locationType").string("RUR"))
+				.andExpect(xpath("/location/longitude").string(""));
+		
+		Location location = genericDao.findByProperty(Location.class, "extId", "testLocation");
+		
+		assertTrue(location.getLocationName().equals("Test House"));
+	}
+	
+	@Test
+	public void testUpdateNonExistingLocation() throws Exception {
+		final String LOCATION_PUT_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ "<location>"
+				+ "<collectedBy>"
+				+ "<extId>FWEK1D</extId>"
+				+ "</collectedBy>"
+				+ "<accuracy></accuracy>"
+				+ "<altitude></altitude>"
+				+ "<extId>testLocation3</extId>"
+				+ "<latitude></latitude>"
+				+ "<locationLevel>"
+				+ "<extId>IFB</extId>"
+				+ "</locationLevel>"
+				+ "<locationName>Test House</locationName>"
+				+ "<locationType>RUR</locationType>"
+				+ "<longitude></longitude>"
+				+ "</location>";
+
+		mockMvc.perform(put("/locations").session(session)
+				.contentType(MediaType.APPLICATION_XML)
+				.body(LOCATION_PUT_XML.getBytes())
+				).andExpect(status().isCreated())
+				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
+				.andExpect(xpath("/location/collectedBy/extId").string("FWEK1D"))
+				.andExpect(xpath("/location/accuracy").string(""))
+				.andExpect(xpath("/location/altitude").string(""))
+				.andExpect(xpath("/location/extId").string("testLocation3"))
+				.andExpect(xpath("/location/latitude").string(""))
+				.andExpect(xpath("/location/locationLevel/extId").string("IFB"))
+				.andExpect(xpath("/location/locationName").string("Test House"))
+				.andExpect(xpath("/location/locationType").string("RUR"))
+				.andExpect(xpath("/location/longitude").string(""));
+		
+		Location location = genericDao.findByProperty(Location.class, "extId", "testLocation3");
+		
+		assertTrue(location.getLocationName().equals("Test House"));
 	}
 
 	private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
