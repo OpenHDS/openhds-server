@@ -37,8 +37,7 @@ public class Interceptor implements IntroductionInterceptor {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public boolean implementsInterface(Class intf) {
+	public boolean implementsInterface(Class<?> intf) {
 		return intf.isInterface()
 				&& FinderExecutor.class.isAssignableFrom(intf);
 	}

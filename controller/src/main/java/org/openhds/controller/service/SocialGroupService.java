@@ -6,6 +6,7 @@ import java.util.List;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.domain.model.SocialGroup;
@@ -49,8 +50,8 @@ public interface SocialGroupService {
 	List<SocialGroup> getAllSocialGroups();
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
-	void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations;
-
+	void createSocialGroup(SocialGroup socialGroup, Location  location) throws ConstraintViolations;
+	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
     List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
 

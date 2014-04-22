@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import javax.faces.context.FacesContext;
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
@@ -13,16 +14,26 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
 
 	SocialGroupService socialGroupService;
 	IndividualService individualService;
+	private Location location;
 	
+	
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
 	public SocialGroupCrudImpl(Class<SocialGroup> entityClass) {
 		super(entityClass);
 	}
 
 	@Override
     public String create() {
-    	
     	try {
-    		socialGroupService.createSocialGroup(entityItem);		
+    		socialGroupService.createSocialGroup(entityItem, location);		
+    		this.setLocation(null);
 	        return onCreateComplete();
     	}		
     	catch(ConstraintViolations e) {
@@ -73,7 +84,7 @@ public class SocialGroupCrudImpl extends EntityCrudImpl<SocialGroup, String> {
     @Override
     public boolean commit(MessageContext messageContext) {
     	try {
-    		socialGroupService.createSocialGroup(entityItem);
+    		socialGroupService.createSocialGroup(entityItem,location);
     		return true;
     	} catch(ConstraintViolations e) {
     		webFlowService.createMessage(messageContext, e.getMessage());

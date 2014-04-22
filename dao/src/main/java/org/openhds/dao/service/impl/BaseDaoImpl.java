@@ -184,7 +184,7 @@ public class BaseDaoImpl<T, PK extends Serializable> implements Dao<T, PK>, Find
                 } else {
                     if (arg instanceof Collection) {
                         namedQuery.setParameterList(namedParameters[i],
-                                (Collection) arg);
+                                (Collection<?>) arg);
                     } else {
                         namedQuery.setParameter(namedParameters[i], arg);
                     }

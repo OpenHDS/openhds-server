@@ -18,7 +18,7 @@ import org.openhds.domain.model.SocialGroup;
  */
 
 public class SocialGroupGenerator extends Generator<SocialGroup> {
-	private Location location;
+	private Location location=null;
 	
 	public void setLocation(Location location){
 		this.location = location;
@@ -26,7 +26,7 @@ public class SocialGroupGenerator extends Generator<SocialGroup> {
 	
 	@Override
 	public String generateId(SocialGroup entityItem) throws ConstraintViolations  {
-StringBuilder sb = new StringBuilder();	
+        StringBuilder sb = new StringBuilder();	
 		
 		IdScheme scheme = getIdScheme();
 		HashMap<String, Integer> fields = scheme.getFields();
@@ -38,13 +38,13 @@ StringBuilder sb = new StringBuilder();
 			String key = itr.next();
 			Integer filter = fields.get(key);
 			
-			if (filter != null) {
+			if (filter != null && location!=null) {
 			
-				if (key.equals(IdGeneratedFields.LOCATION_PREFIX.toString())) {
-					//String fname = individual.getFirstName();
-					String extId = location.getExtId();
+				if (key.equals(IdGeneratedFields.SOCIALGROUP_NAME.toString())) {
+					String extId =location.getExtId();
+					sb.append(extId).append("00");
 					
-					if (extId.length() >= filter) {
+				/*	if (extId.length() >= filter) {
 						
 						if (filter > 0 && extId.length() >= filter) 
 							sb.append(formatProperString(extId, filter));
@@ -55,19 +55,19 @@ StringBuilder sb = new StringBuilder();
 									"the id on the field specified as '" + extId + "'");
 					}
 					else
-						throw new ConstraintViolations("Unable to generate the id. Make sure the First Name field is of the required length " +
-						"specified in the id configuration.");
+						throw new ConstraintViolations("Unable to generate the id.");*/
 				}
 				
 			}
 		}
 
 		extId = sb.toString();
-		if (scheme.getIncrementBound() > 0) 
-			sb.append(buildNumberWithBound(entityItem, scheme));
-		else
-			sb.append(buildNumber(SocialGroup.class, sb.toString(), scheme.isCheckDigit()));
-				
+		if (location==null) {
+			if (scheme.getIncrementBound() > 0) 
+				sb.append(buildNumberWithBound(entityItem, scheme));
+			else
+				sb.append(buildNumber(SocialGroup.class, sb.toString(), scheme.isCheckDigit()));
+		}	
 		validateIdLength(sb.toString(), scheme);
 		
 		return sb.toString();

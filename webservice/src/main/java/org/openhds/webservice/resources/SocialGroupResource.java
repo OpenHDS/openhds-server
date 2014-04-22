@@ -74,7 +74,7 @@ public class SocialGroupResource {
         }
 
         try {
-            socialGroupService.createSocialGroup(socialGroup);
+            socialGroupService.createSocialGroup(socialGroup, null);
         } catch (ConstraintViolations e) {
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }

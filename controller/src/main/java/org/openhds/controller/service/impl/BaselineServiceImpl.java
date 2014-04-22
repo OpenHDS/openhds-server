@@ -25,7 +25,7 @@ public class BaselineServiceImpl implements BaselineService {
 	private SitePropertiesService siteProperties;
 	
 	public BaselineServiceImpl(MembershipService membershipService, EntityService entityService, SitePropertiesService siteProperties) {
-		this.membershipService = membershipService;
+		this.setMembershipService(membershipService);
 		this.entityService = entityService;
 		this.siteProperties = siteProperties;
 	}
@@ -104,5 +104,13 @@ public class BaselineServiceImpl implements BaselineService {
 		createResidencyAndMembershipForIndividual(individual, membership, currentLocation, collectedBy, convertedEntryDate);
 		
 		entityService.create(relationship);
+	}
+
+	public MembershipService getMembershipService() {
+		return membershipService;
+	}
+
+	public void setMembershipService(MembershipService membershipService) {
+		this.membershipService = membershipService;
 	}
 }

@@ -32,7 +32,12 @@
 	                    	<h:inputText id="extId" value="#{socialGroupCrud.item.extId}" converter="#{defaultConverter}" />
 							<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
 	                   	</c:if>
-                    
+                        
+                        <h:outputText value="#{msg.locationId}:"/>
+                       	<h:outputText />
+						<h:inputText styleClass="location" autocomplete="off" value="#{socialGroupCrud.location}" id="locationExtId" converter="#{locationExtIdConverter}" />
+                        <h:message for="locationExtId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
                         <h:outputText value="#{msg.socialGroupName}:"/>
                         <h:outputText />
                         <h:inputText id="name" value="#{socialGroupCrud.item.groupName}" converter="#{defaultConverter}"/>

@@ -100,7 +100,7 @@
         </on-entry>
         <transition on="createSocialGroup" to="home">
             <evaluate expression="individualService.generateId(individualCrud.getItem())" />
-            <evaluate expression="socialGroupService.generateId(socialGroupCrud.getItem())" />
+            <evaluate expression="socialGroupService.createSocialGroup(socialGroupCrud.getItem(), socialGroupCrud.location)" />
             <evaluate expression="socialGroupCrud.validateEntity(socialGroupCrud.getItem(), messageContext)" />
             <evaluate
                 expression="baselineFlowBean.createSocialGroupAndIndividual(individualCrud.getItem(), socialGroupCrud.getItem(), messageContext)" />
@@ -138,6 +138,7 @@
         </on-entry>
         <transition on="addPerson" to="socialGroup">
             <evaluate expression="individualIdGenerator.setLocation(baselineFlowBean.getCurrentLocation())" />
+            <evaluate expression="socialGroupCrud.setLocation(baselineFlowBean.getCurrentLocation())" />
             <evaluate expression="individualCrud.validateIndividual(messageContext)" />
             <evaluate expression="individualCrud.validateEntity(individualCrud.getItem(), messageContext)" />
             <evaluate expression="socialGroupCrud.initFlow(true)" />

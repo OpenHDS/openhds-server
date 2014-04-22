@@ -383,7 +383,7 @@
     	<property name="length"><value>${openhds.sgIdLength}</value></property>
     	<property name="fields">
     		<map>
-    			<entry key="SOCIALGROUP_NAME"><value>${openhds.sgNameLength}</value></entry>
+    			<entry key="SOCIALGROUP_NAME"><value>${openhds.sgIdLength}</value></entry>
     		</map>
     	</property>
     </bean>

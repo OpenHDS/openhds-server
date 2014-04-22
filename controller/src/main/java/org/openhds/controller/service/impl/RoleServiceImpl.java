@@ -21,7 +21,7 @@ public class RoleServiceImpl implements RoleService {
 	public RoleServiceImpl(RoleDao roleDao, GenericDao genericDao, EntityService service) {
 		this.roleDao = roleDao;
 		this.genericDao = genericDao;
-		this.service = service;
+		this.setService(service);
 	}
 	
 	public Role evaluateRole(Role entityItem) throws ConstraintViolations {
@@ -90,5 +90,13 @@ public class RoleServiceImpl implements RoleService {
 
 	private boolean needToAddNewRole(String string) {
 		return !NOROLE_VALUE.equals(string);
+	}
+
+	public EntityService getService() {
+		return service;
+	}
+
+	public void setService(EntityService service) {
+		this.service = service;
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostRemove;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -59,6 +60,9 @@ public class SocialGroup
     @Description(description = "The set of all memberships of the social group.")
     private Set<Membership> memberships;
 
+    
+    @PostRemove
+    
     public String getExtId() {
         return extId;
     }
@@ -98,5 +102,6 @@ public class SocialGroup
     public void setMemberships(Set<Membership> list) {
         memberships = list;
     }
+
 
 }

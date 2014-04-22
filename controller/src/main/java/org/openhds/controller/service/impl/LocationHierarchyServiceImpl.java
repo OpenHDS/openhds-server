@@ -15,15 +15,14 @@ import org.openhds.domain.model.Location;
 import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.LocationHierarchyLevel;
 
-@SuppressWarnings("unchecked")
 public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 
 	private GenericDao genericDao;
-	private Generator locationGenerator;
-	private Generator locationHierarchyGenerator;
+	private Generator<Location> locationGenerator;
+	private Generator<LocationHierarchy> locationHierarchyGenerator;
     private EntityService entityService;
 	
-	public LocationHierarchyServiceImpl(GenericDao genericDao, EntityService entityService, Generator locationGenerator, Generator locationHierarchyGenerator) {
+	public LocationHierarchyServiceImpl(GenericDao genericDao, EntityService entityService, Generator<Location> locationGenerator, Generator<LocationHierarchy> locationHierarchyGenerator) {
 		this.genericDao = genericDao;
 		this.entityService = entityService;
 		this.locationGenerator = locationGenerator;
@@ -430,11 +429,11 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     	return genericDao.findByProperty(LocationHierarchyLevel.class, "keyIdentifier", level);
     }
 
-	public Generator getLocationHierarchyGenerator() {
+	public Generator<LocationHierarchy> getLocationHierarchyGenerator() {
 		return locationHierarchyGenerator;
 	}
 
-	public void setLocationHierarchyGenerator(Generator locationHierarchyGenerator) {
+	public void setLocationHierarchyGenerator(Generator<LocationHierarchy> locationHierarchyGenerator) {
 		this.locationHierarchyGenerator = locationHierarchyGenerator;
 	}
 

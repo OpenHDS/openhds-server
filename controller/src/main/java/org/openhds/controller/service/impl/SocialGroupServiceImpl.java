@@ -14,6 +14,7 @@ import org.openhds.controller.service.SocialGroupService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.SocialGroup;
 import org.springframework.transaction.annotation.Transactional;
@@ -172,8 +173,8 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 	}
 
 	@Override
-	public void createSocialGroup(SocialGroup socialGroup) throws ConstraintViolations {
-		assignId(socialGroup);
+	public void createSocialGroup(SocialGroup socialGroup, Location location) throws ConstraintViolations {
+		assignId(socialGroup,location);
 	    evaluateSocialGroup(socialGroup);
 		
 		try {
@@ -184,9 +185,10 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 		}
 	}
 
-    private void assignId(SocialGroup socialGroup) throws ConstraintViolations {
+    private void assignId(SocialGroup socialGroup, Location location) throws ConstraintViolations {
         String id = socialGroup.getExtId() == null ? "" : socialGroup.getExtId();
         if (id.trim().isEmpty() && generator.generated) {
+    		generator.setLocation(location);
             generateId(socialGroup);
         }
     }
@@ -202,4 +204,5 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     public long getTotalSocialGroupCount() {
         return genericDao.getTotalCount(SocialGroup.class);
     }
+
 }
