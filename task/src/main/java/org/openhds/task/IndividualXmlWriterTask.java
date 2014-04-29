@@ -17,9 +17,8 @@ public class IndividualXmlWriterTask extends XmlWriterTemplate<Individual> {
     private IndividualService individualService;
 
     @Autowired
-    public IndividualXmlWriterTask(AsyncTaskService asyncTaskService, IndividualService individualService,
-            CalendarUtil calendarUtil) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.INDIVIDUAL_TASK_NAME);
+    public IndividualXmlWriterTask(AsyncTaskService asyncTaskService, IndividualService individualService) {
+        super(asyncTaskService, AsyncTaskService.INDIVIDUAL_TASK_NAME);
         this.individualService = individualService;
     }
 

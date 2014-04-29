@@ -5,11 +5,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import org.openhds.domain.service.SitePropertiesService;
 
+import org.openhds.domain.service.SitePropertiesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class CalendarUtil {
 	
-	SitePropertiesService siteProperties;
+	@Autowired
+	private SitePropertiesService siteProperties;
 	
 	public static Calendar getMidPointDate(Calendar startDate, Calendar endDate) {
 		int daysBtw = (int)daysBetween(startDate, endDate);

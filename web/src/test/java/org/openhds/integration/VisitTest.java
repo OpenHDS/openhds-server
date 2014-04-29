@@ -1,7 +1,9 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,31 +29,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
+@WebAppConfiguration
 public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 	 
 	 @Autowired
-	 @Qualifier("locationCrud")
 	 LocationCrudImpl locationCrud;
 	
 	 @Autowired
-	 @Qualifier("locationHierarchyCrud")
 	 LocationHierarchyCrudImpl locationHierarchyCrud;
 	 
 	 @Autowired
-	 @Qualifier("roundCrud")
 	 RoundCrudImpl roundCrud;
 	 
 	 @Autowired
-	 @Qualifier("visitCrud")
 	 VisitCrudImpl visitCrud;
 	 	 
 	 @Autowired
-	 @Qualifier("locationHierarchyService")
 	 LocationHierarchyService locationHierarchyService;
 	 	 
 	 @Autowired
@@ -70,7 +69,6 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 	 JsfService jsfService;
 	 	 
 	 @Autowired
-	 @Qualifier("currentUser")
 	 CurrentUser currentUser;
 	 
 	 JsfServiceMock jsfServiceMock;

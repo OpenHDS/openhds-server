@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
@@ -12,15 +15,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * to a restful webservice. Jax-rs requires custom marshalling if the field 
  * cannot be mapped. 
  */
+@Component
 public class CalendarAdapter extends XmlAdapter<String, Calendar> {
-	
+
 	private final String SQL_DATE_FORMAT = "yyyy-MM-dd";
+	@Autowired
 	private CalendarUtil calendarUtil;
-	
-	public CalendarAdapter(CalendarUtil calendarUtil) {
-	    this.calendarUtil = calendarUtil;
-	}
-		
+
 	public String marshal(Calendar v) throws Exception {
 		return calendarUtil.formatDate(v);
 	}
@@ -34,7 +35,7 @@ public class CalendarAdapter extends XmlAdapter<String, Calendar> {
 			cal.setTime(d);
 			return cal;
 		} catch(Exception e) {}
-		
+
 		return calendarUtil.parseDate(v);
 	}
 }

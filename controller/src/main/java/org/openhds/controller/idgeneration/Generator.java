@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.dao.service.GenericDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -18,14 +20,16 @@ import org.openhds.dao.service.GenericDao;
  * generateId(T entityItem) will build the external id for the entityItem provided.
  * 
  */
-
+@Component("idGenerator")
 public abstract class Generator<T> extends LuhnValidator {
 	
-	IdSchemeResource resource;
-	GenericDao genericDao;
+	@Autowired
+	protected IdSchemeResource resource;
+	@Autowired
+	protected GenericDao genericDao;
 	
 	// temp variable for storing parts of the id
-	String extId;
+	protected String extId;
 	
 	// if set to true, the system will automatically generate the id based on the id scheme
 	// if set to false, the system will not manage id generation and the user will be responsible

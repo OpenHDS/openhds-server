@@ -2,27 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
     <context:annotation-config />
     <context:component-scan base-package="org.openhds.task" />
 
     <task:annotation-driven />
-    <task:executor id="taskExecutor" pool-size="5" queue-capacity="25" /> 
-     
-<!--     <bean id="formXmlWriter" parent="baseServiceBean">
-	 	<property name="target">
-	 		<bean class="org.openhds.task.FormsXmlWriterTask">
-	 		 <constructor-arg ref="FormService" />
-        <constructor-arg ref="asyncTaskServiceImpl" />
-        <constructor-arg ref="calendarUtil" />
-        </bean
-		</property>
-    </bean>-->
-    
-
-
-    
+    <task:executor id="taskExecutor" pool-size="5" queue-capacity="25" />
 </beans>

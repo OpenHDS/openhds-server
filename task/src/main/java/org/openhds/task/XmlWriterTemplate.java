@@ -15,6 +15,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.openhds.domain.util.CalendarAdapter;
 import org.openhds.domain.util.CalendarUtil;
 import org.openhds.task.service.AsyncTaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -27,12 +28,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     private static final int PAGE_SIZE = 100;
 
-    private CalendarUtil calendarUtil;
+    @Autowired
+    private CalendarAdapter calendarAdapter;
     private AsyncTaskService asyncTaskService;
     private String taskName;
 
-    public XmlWriterTemplate(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil, String taskName) {
-        this.calendarUtil = calendarUtil;
+    public XmlWriterTemplate(AsyncTaskService asyncTaskService, String taskName) {
         this.asyncTaskService = asyncTaskService;
         this.taskName = taskName;
     }
@@ -63,7 +64,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             JAXBContext context = JAXBContext.newInstance(getBoundClass());
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
-            marshaller.setAdapter(new CalendarAdapter(calendarUtil));
+            marshaller.setAdapter(calendarAdapter);
 
             for (int i = 0; i < totalPages; i++) {
                 List<T> entities = getEntitiesInRange(taskContext, (i * PAGE_SIZE), PAGE_SIZE);

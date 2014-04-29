@@ -26,9 +26,11 @@ public class MembershipResource extends AbstractResource<Membership> {
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Membership membership) {
-        return createResource(membership);
+        ResponseEntity<? extends Serializable> response = createResource(membership);
+
+        return response;
     }
 
     @Override

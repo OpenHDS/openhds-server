@@ -18,7 +18,7 @@ public class LocationXmlWriterTask extends XmlWriterTemplate<Location> {
     @Autowired
     public LocationXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
             LocationHierarchyService locationHierarchyService) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.LOCATION_TASK_NAME);
+        super(asyncTaskService, AsyncTaskService.LOCATION_TASK_NAME);
         this.locationHierarchyService = locationHierarchyService;
     }
 

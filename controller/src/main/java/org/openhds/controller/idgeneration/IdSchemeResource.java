@@ -3,9 +3,16 @@ package org.openhds.controller.idgeneration;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class IdSchemeResource {
 	
-	List<IdScheme> idScheme; 
+	@Autowired
+	private List<IdScheme> idScheme; 
 	
 	public IdScheme getIdSchemeByName(String name) {
 		int index = Collections.binarySearch(this.getIdScheme(), new IdScheme(name));
@@ -20,5 +27,10 @@ public class IdSchemeResource {
 
 	public void setIdScheme(List<IdScheme> idScheme) {
 		this.idScheme = idScheme;
+	}
+
+	@PostConstruct
+	public void sort() {
+		Collections.sort(idScheme);
 	}
 }

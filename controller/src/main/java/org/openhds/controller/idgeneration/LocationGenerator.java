@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Location;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian
@@ -16,6 +19,7 @@ import org.openhds.domain.model.Location;
  * the id. 
  */
 
+@Component("locationIdGenerator")
 public class LocationGenerator extends Generator<Location> {
 
 	@Override
@@ -120,7 +124,14 @@ public class LocationGenerator extends Generator<Location> {
 		int index = Collections.binarySearch(resource.getIdScheme(), new IdScheme("Location"));
 		return resource.getIdScheme().get(index);
 	}
-	
+
+	@Override
+	@Autowired
+	@Value("${openhds.locationIdUseGenerator}")
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
+	}
+
 	public void validateId(Location loc) throws ConstraintViolations {
 		IdScheme scheme = getIdScheme();
 		

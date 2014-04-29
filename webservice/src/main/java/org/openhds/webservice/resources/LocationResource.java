@@ -45,7 +45,7 @@ public class LocationResource {
         this.fileResolver = fileResolver;
     }
 
-    @RequestMapping(value = "/{extId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/xml")
     public ResponseEntity<? extends Serializable> getLocationByExtId(@PathVariable String extId) {
         Location location = locationHierarchyService.findLocationById(extId);
         if (location == null) {
@@ -55,7 +55,7 @@ public class LocationResource {
         return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public Locations getAllLocations() {
         List<Location> locations = locationHierarchyService.getAllLocations();
@@ -71,7 +71,7 @@ public class LocationResource {
         return allLocations;
     }
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
     public void getAllCachedLocations(HttpServletResponse response) {
         try {
             CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
@@ -80,7 +80,7 @@ public class LocationResource {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Location location) {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));

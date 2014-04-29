@@ -18,7 +18,7 @@ public class SocialGroupXmlWriterTask extends XmlWriterTemplate<SocialGroup> {
     @Autowired
     public SocialGroupXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
             SocialGroupService socialGroupService) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.SOCIALGROUP_TASK_NAME);
+        super(asyncTaskService, AsyncTaskService.SOCIALGROUP_TASK_NAME);
         this.socialGroupService = socialGroupService;
     }
 

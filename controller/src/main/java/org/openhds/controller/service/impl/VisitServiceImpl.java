@@ -17,22 +17,21 @@ import org.openhds.domain.model.Extension;
 import org.openhds.domain.model.Round;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.service.SitePropertiesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component("visitServiceImpl")
 public class VisitServiceImpl implements VisitService {
 
+	@Autowired
     private GenericDao genericDao;
+	@Autowired
     private VisitGenerator generator;
+	@Autowired
     private EntityService entityService;
+	@Autowired
     private SitePropertiesService siteProperties;
-
-    public VisitServiceImpl(EntityService entityService, GenericDao genericDao, VisitGenerator generator,
-            SitePropertiesService siteProperties) {
-        this.genericDao = genericDao;
-        this.generator = generator;
-        this.entityService = entityService;
-        this.siteProperties = siteProperties;
-    }
 
     public Visit evaluateVisit(Visit entityItem) throws ConstraintViolations {
         if (!checkValidRoundNumber(entityItem.getRoundNumber()))

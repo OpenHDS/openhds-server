@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openhds.controller.service.FormService;
 import org.openhds.domain.model.Form;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,9 @@ public class FormsXmlWriterTask extends XmlWriterTemplate<Form> {
     private FormService formService;
 
     @Autowired
-    public FormsXmlWriterTask(AsyncTaskService asyncTaskService, CalendarUtil calendarUtil,
+    public FormsXmlWriterTask(AsyncTaskService asyncTaskService, 
     		FormService formService) {
-        super(asyncTaskService, calendarUtil, AsyncTaskService.FORM_TASK_NAME);
+        super(asyncTaskService, AsyncTaskService.FORM_TASK_NAME);
         this.formService = formService;
     }
 

@@ -43,8 +43,7 @@ public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
     public void shouldWriteXml() {
         File individualFile = new File("individual.xml");
         try {
-            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService,
-                    calendarUtil);
+            IndividualXmlWriterTask task = new IndividualXmlWriterTask(asyncTaskService, individualService);
             when(individualService.getTotalIndividualCount()).thenReturn(1L);
            // when(individualService.getAllIndividualsInRange(0, 100)).thenReturn(Arrays.asList(createIndividual()));
             when(calendarUtil.formatDate(any(Calendar.class))).thenReturn("02-09-1987");
