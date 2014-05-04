@@ -3,7 +3,6 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,13 +10,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.Searchable;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 
 /**
@@ -28,6 +28,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @Table(name = "location")
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class Location
     extends AuditableCollectedEntity
     implements Serializable

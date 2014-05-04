@@ -22,13 +22,15 @@
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
             <array>
-                <ref bean="marshallingHttpMessageConverter" />
+                <ref bean="marshallingXmlHttpMessageConverter" />
+                <ref bean="marshallingJsonHttpMessageConverter" />
             </array>
         </property>
     </bean>
 
-    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter">
-    </bean>
+    <bean id="marshallingXmlHttpMessageConverter" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+
+    <bean id="marshallingJsonHttpMessageConverter" class ="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
     
     <mvc:annotation-driven/>
 </beans>

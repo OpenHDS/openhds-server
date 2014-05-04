@@ -1,12 +1,17 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Description(description="A Field Worker represents one who collects the data within " +
 		"the study area. They can be identified by a uniquely generated " +
@@ -14,6 +19,7 @@ import org.openhds.domain.constraint.Searchable;
 		"are recorded.")
 @Entity
 @Table(name="fieldworker")
+@JsonInclude(Include.NON_NULL)
 public class FieldWorker extends AuditableEntity implements Serializable {
 
     private static final long serialVersionUID = 1898036206514199266L;

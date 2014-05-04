@@ -9,11 +9,15 @@ import javax.validation.constraints.NotNull;
 
 import org.openhds.domain.annotations.Description;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * An AuditableCollectedEntity is any entity that is recorded or collected by a Field Worker
  * that needs to be audited
  */
 @MappedSuperclass
+@JsonInclude(Include.NON_NULL)
 public abstract class AuditableCollectedEntity extends AuditableEntity implements Serializable {
 
 	private static final long serialVersionUID = 3558979775991767767L;

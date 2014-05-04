@@ -17,6 +17,9 @@ import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.Searchable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Description(description="The Location Hierarchy represents the overall structure " +
 		"of all Locations within the study area. The levels of the hierarchy are " +
 		"specified in a configuration file which may set the levels as follows: " +
@@ -29,6 +32,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @Table(name="locationhierarchy")
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class LocationHierarchy implements Serializable {
 	
 	private static final long serialVersionUID = -5334850119671675888L;
