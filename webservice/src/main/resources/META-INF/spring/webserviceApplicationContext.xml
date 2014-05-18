@@ -27,8 +27,9 @@
         </property>
     </bean>
 
-    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter">
-    </bean>
-    
+    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+     <property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" />
+    </bean>    
     <mvc:annotation-driven/>
 </beans>

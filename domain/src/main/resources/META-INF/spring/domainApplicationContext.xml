@@ -50,8 +50,7 @@
         </property>
         <property name="adapters">
             <array>
-                <bean id="calendarAdapter" class="org.openhds.domain.util.CalendarAdapter">
-                </bean>
+				<ref bean="calendarAdapter" />
             </array>
         </property>
     </bean>
