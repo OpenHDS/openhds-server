@@ -28,7 +28,10 @@
         </property>
     </bean>
 
-    <bean id="marshallingXmlHttpMessageConverter" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+    <bean id="marshallingXmlHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">        
+    	<property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" /> 
+    </bean>
 
     <bean id="marshallingJsonHttpMessageConverter" class ="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
     
