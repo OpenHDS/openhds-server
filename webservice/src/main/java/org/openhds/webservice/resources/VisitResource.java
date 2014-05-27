@@ -76,7 +76,7 @@ public class VisitResource {
         try {
             visitService.createVisit(visit);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<Visit>(ShallowCopier.copyVisit(visit), HttpStatus.CREATED);

@@ -93,7 +93,7 @@ public class LocationResource {
         try {
             locationHierarchyService.createLocation(location);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.CREATED);

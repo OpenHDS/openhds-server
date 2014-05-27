@@ -47,7 +47,7 @@ public class DeathResource {
         try {
             deathService.createDeath(death);
         } catch (ConstraintViolations e) {
-            return badRequest(cv);
+            return badRequest(e);
         } catch (SQLException e) {
             return badRequest(new ConstraintViolations("There was a database problem saving the death event"));
         }

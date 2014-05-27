@@ -77,7 +77,7 @@ public class RelationshipResource {
         try {
             relationshipService.createRelationship(relationship);
         } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<Relationship>(ShallowCopier.copyRelationship(relationship), HttpStatus.CREATED);
