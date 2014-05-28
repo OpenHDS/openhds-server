@@ -154,10 +154,13 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     		throw new ConstraintViolations("The " + getLowestLevel().getName() + 
     		" specified is not the lowest level in the Location Hierarchy.");
 		}
+		
+	    if(findLocationById(entityItem.getExtId()) != null) 
+	    	throw new ConstraintViolations("There is already a location with this extId!");
+	    
 		LocationHierarchy item = genericDao.findByProperty(LocationHierarchy.class, "extId", entityItem.getLocationLevel().getExtId());
 		entityItem.setLocationLevel(item);
-		
-		
+				
 		return entityItem;
 	}	
 	
@@ -459,11 +462,6 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	    if (id.trim().isEmpty() && locationGenerator.generated) {
 	        generateId(location);
 	    }
-	    
-	    //Id Constraint check
-	    id = location.getExtId();	    
-	    Location loc = findLocationById(id);
-	    if(loc != null) throw new ConstraintViolations("There is already a location with this extId!");
     }
 
     @Override
