@@ -459,6 +459,11 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
 	    if (id.trim().isEmpty() && locationGenerator.generated) {
 	        generateId(location);
 	    }
+	    
+	    //Id Constraint check
+	    id = location.getExtId();	    
+	    Location loc = findLocationById(id);
+	    if(loc != null) throw new ConstraintViolations("There is already a location with this extId!");
     }
 
     @Override
