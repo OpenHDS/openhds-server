@@ -7,6 +7,7 @@
         
     <head>
     	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
+    	<title>OpenHDS</title>
     </head>
     
    	<body> 	
@@ -21,7 +22,7 @@
 							<c:if test="${not empty param.login_error}">
 								<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
 							</c:if>
-							<input type="text" name="j_username" value="#{username}"/>
+							<input type="text" name="j_username" value="#{username}" autofocus="autofocus"/>
 						</td>
 					</tr>
 					<tr>
