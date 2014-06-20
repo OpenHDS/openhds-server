@@ -118,7 +118,7 @@
                   </tr>
               </table>
               <br />
-              <c:if test="#{flowScope.updating}">
+              <c:if test="#{not empty flowScope.updating and flowScope.updating}">
 				<div class="shortcut-container">
 					<strong>#{msg.updateShortcutKeys}</strong>
 					<ul class="shortcut-list">

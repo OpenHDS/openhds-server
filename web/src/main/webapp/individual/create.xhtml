@@ -19,9 +19,9 @@
     <ui:define name="display">
     
     	<h:outputText value="#{navController.breadcrumbTrail}" />	
-
+	
         <c:choose>
-            <c:when test="#{flowScope.baselineAddSG}">
+            <c:when test="#{not empty flowScope.baselineAddSG and flowScope.baselineAddSG}">
                 <h1>#{msg.socialGroupHead}</h1>
             </c:when>
             <c:otherwise>
