@@ -3,7 +3,6 @@ package org.openhds.webservice.response;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

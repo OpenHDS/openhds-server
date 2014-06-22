@@ -241,6 +241,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.openhds</groupId>
+            <artifactId>errorhandling</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>javax.el</groupId>
             <artifactId>el-api</artifactId>
             <version>1.0</version>

@@ -2,22 +2,31 @@ package org.openhds.webservice.resources;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.wrappers.Locations;
 import org.openhds.domain.util.ShallowCopier;
+import org.openhds.errorhandling.constants.ErrorConstants;
+import org.openhds.errorhandling.domain.ErrorLog;
+import org.openhds.errorhandling.service.ErrorHandlingService;
+import org.openhds.errorhandling.util.ErrorLogUtil;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
 import org.openhds.webservice.response.WebserviceResult;
 import org.openhds.webservice.response.WebserviceResultHelper;
+import org.openhds.webservice.response.constants.ResultCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +47,23 @@ public class LocationResource {
     private final FieldBuilder fieldBuilder;
     private final LocationHierarchyService locationHierarchyService;
     private final FileResolver fileResolver;
+    private final ErrorHandlingService errorService;
+    private JAXBContext context;
+    private Marshaller marshaller;
 
     @Autowired
     public LocationResource(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
-            FileResolver fileResolver) {
+            FileResolver fileResolver, ErrorHandlingService errorService) {
         this.locationHierarchyService = locationHierarchyService;
         this.fieldBuilder = fieldBuilder;
         this.fileResolver = fileResolver;
+        this.errorService = errorService;
+        try {
+            context = JAXBContext.newInstance(Location.class);
+            marshaller = context.createMarshaller();
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create JAXB context and marshaller for location resource, CRITICAL ERROR");
+        }
     }
 
     @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/json")
@@ -56,8 +75,8 @@ public class LocationResource {
 
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.copyLocation(location));
-        result.setResultCode(1);
-        result.setStatus("success");
+        result.setResultCode(ResultCodes.SUCCESS_CODE);
+        result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was found");
         
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
@@ -103,8 +122,8 @@ public class LocationResource {
 
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("locations", copies);
-        result.setResultCode(1);
-        result.setStatus("success");
+        result.setResultCode(ResultCodes.SUCCESS_CODE);
+        result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage(locations.size() + " locations were found.");
         
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
@@ -129,18 +148,28 @@ public class LocationResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml", consumes = "application/xml")
-    public ResponseEntity<? extends Serializable> insertXml(@RequestBody Location location) {
+    public ResponseEntity<? extends Serializable> insertXml(@RequestBody Location location) throws JAXBException {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
         location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
 
         if (cv.hasViolations()) {
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(location, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, Location.class.getSimpleName(), 
+                    location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
         try {
             locationHierarchyService.createLocation(location);
         } catch (ConstraintViolations e) {
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(location, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, Location.class.getSimpleName(), 
+                    location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
             return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
         }
 
@@ -148,25 +177,35 @@ public class LocationResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-    public ResponseEntity<? extends Serializable> insertJson(@RequestBody Location location) {
+    public ResponseEntity<? extends Serializable> insertJson(@RequestBody Location location) throws JAXBException {
         ConstraintViolations cv = new ConstraintViolations();
         location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
         location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
 
         if (cv.hasViolations()) {
-        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to create location, there are " + cv.getViolations().size() + " constraint violations.");
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(location, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, Location.class.getSimpleName(), 
+                    location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+        	return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
         try {
             locationHierarchyService.createLocation(location);
         } catch (ConstraintViolations e) {
-        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to create location, there are " + cv.getViolations().size() + " constraint violations.");
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(location, writer);
+            ErrorLog error = ErrorLogUtil.generateErrorLog(ErrorConstants.UNASSIGNED, writer.toString(), null, Location.class.getSimpleName(), 
+                    location.getCollectedBy(), ErrorConstants.UNRESOLVED_ERROR_STATUS, cv.getViolations());
+            errorService.logError(error);
+        	return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.copyLocation(location));
-        result.setResultCode(1);
-        result.setStatus("success");
+        result.setResultCode(ResultCodes.SUCCESS_CODE);
+        result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location created");
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.CREATED);
     }
@@ -214,7 +253,7 @@ public class LocationResource {
         location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
 
         if (cv.hasViolations()) {
-        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to create or update location, there are " + cv.getViolations().size() + " constraint violations.");
+        	return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
     	Location existingLocation  = locationHierarchyService.findLocationById(location.getExtId());
@@ -222,12 +261,12 @@ public class LocationResource {
     		try {
 				locationHierarchyService.createLocation(location);
 			} catch (ConstraintViolations e) {
-	        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to create or update location, there are " + cv.getViolations().size() + " constraint violations.");
+	        	return WebserviceResultHelper.genericConstraintResponse(cv);
 			}
             WebserviceResult result = new WebserviceResult();
             result.addDataElement("location", ShallowCopier.copyLocation(location));
-            result.setResultCode(1);
-            result.setStatus("success");
+            result.setResultCode(ResultCodes.SUCCESS_CODE);
+            result.setStatus(ResultCodes.SUCCESS);
             result.setResultMessage("Location was created");
             
             return new ResponseEntity<WebserviceResult>(result, HttpStatus.CREATED);
@@ -240,13 +279,13 @@ public class LocationResource {
     	try {
 			locationHierarchyService.updateLocation(existingLocation);
 		} catch (ConstraintViolations e) {
-        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to create or update location, there are " + cv.getViolations().size() + " constraint violations.");
+        	return WebserviceResultHelper.genericConstraintResponse(e);
         }
     	
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.copyLocation(location));
-        result.setResultCode(1);
-        result.setStatus("success");
+        result.setResultCode(ResultCodes.SUCCESS_CODE);
+        result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was updated");
         
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);
@@ -280,13 +319,13 @@ public class LocationResource {
     	try {
 			locationHierarchyService.deleteLocation(location);
 		} catch (ConstraintViolations cv) {
-        	return WebserviceResultHelper.constraintViolationResponse(cv, "Unable to delete location, there are " + cv.getViolations().size() + " constraint violations.");
+        	return WebserviceResultHelper.genericConstraintResponse(cv);
         }
 
         WebserviceResult result = new WebserviceResult();
         result.addDataElement("location", ShallowCopier.copyLocation(location));
-        result.setResultCode(1);
-        result.setStatus("success");
+        result.setResultCode(ResultCodes.SUCCESS_CODE);
+        result.setStatus(ResultCodes.SUCCESS);
         result.setResultMessage("Location was deleted");
 
         return new ResponseEntity<WebserviceResult>(result, HttpStatus.OK);

@@ -38,5 +38,7 @@
 		<mapping class="org.openhds.domain.model.ClassExtension"/>
 		<mapping class="org.openhds.domain.mobile.FormInstance" />
 		<mapping class="org.openhds.domain.mobile.ValidationMessage" />
-	</session-factory>
+	    <mapping class="org.openhds.errorhandling.domain.ErrorLog" />
+		<mapping class="org.openhds.errorhandling.domain.Error" />
+	    </session-factory>
 </hibernate-configuration>
