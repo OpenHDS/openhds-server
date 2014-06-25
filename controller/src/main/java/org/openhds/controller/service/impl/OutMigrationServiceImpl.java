@@ -78,7 +78,7 @@ public class OutMigrationServiceImpl implements OutMigrationService {
         }
 
         //Gets the individual's memberships if any
-        // Iterates through memberships and sets endType(DEATH) and endDate
+        // Iterates through memberships and sets endType(OMG) and endDate
         if (!outMigration.getIndividual().getAllMemberships().isEmpty()) {
             Set<Membership> memberships = (Set<Membership>) outMigration.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
@@ -61,7 +62,7 @@ public class MembershipServiceImpl implements MembershipService {
 		
 		while(itr.hasNext()) {
 			Membership item = itr.next();
-			if (item.getSocialGroup().getExtId().equals(group.getExtId()) && !item.isDeleted())
+			if (item.getSocialGroup().getExtId().equals(group.getExtId()) && !item.isDeleted() && item.getEndDate()==null) 
 				return false;
 		}					
 		return true;		
@@ -143,6 +144,7 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     @Transactional
     public void createMembership(Membership item) throws ConstraintViolations {
+
         // assume a default start type of in migration
         if (item.getStartType() == null) {
             item.setStartType(siteProperties.getInmigrationCode());
@@ -153,6 +155,25 @@ public class MembershipServiceImpl implements MembershipService {
         }
         
         evaluateMembership(item);
+        //Gets the individual's memberships if any
+        // Iterates through memberships and sets endType(OMG) and endDate
+        if (!item.getIndividual().getAllMemberships().isEmpty()) {
+            Set<Membership> memberships = (Set<Membership>) item.getIndividual().getAllMemberships();
+            for (Membership mem : memberships) {
+            	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
+	                mem.setEndDate(item.getStartDate());
+	                mem.setEndType(siteProperties.getOutmigrationCode());
+	                try {
+						entityService.save(mem);
+					} catch (SQLException e) {
+						 throw new ConstraintViolations(
+				                    "There as a problem updating the database with the membership associated with the out migration");
+					}
+            	}
+            }
+        }
+        
+        
         try {
             entityService.create(item);
         } catch (IllegalArgumentException e) {
