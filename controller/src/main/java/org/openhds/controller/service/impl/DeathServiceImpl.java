@@ -169,8 +169,29 @@ public class DeathServiceImpl implements DeathService {
     		
     		while(itr.hasNext()) {
     			Membership mem = itr.next();
-    			mem.setDeleted(true);
-    			entityService.save(mem);
+    			if (mem.getIndividual().getExtId() != death.getIndividual().getExtId()){
+    				mem.setDeleted(true);
+    				// TO CHECK IF IS OK. Which value to endType? DHH= Death Head of Household
+    				//mem.setEndDate(death.getDeathDate());
+    				//mem.setEndType("DHH");
+    				//
+    				entityService.save(mem);
+    			}
+    			if (mem.getIndividual().getExtId()==mem.getSocialGroup().getGroupHead().getExtId()){
+    				Membership memNew = new Membership();
+					memNew.setDeleted(false);
+    				memNew.setbIsToA("1");
+    				memNew.setStartType(mem.getStartType());
+    				memNew.setEndDate(null);
+    				memNew.setIndividual(mem.getIndividual());
+    				memNew.setSocialGroup(mem.getSocialGroup());
+    				memNew.setCollectedBy(mem.getCollectedBy());
+    				memNew.setEndType(siteProperties.getNotApplicableCode());
+    				memNew.setInsertBy(mem.getInsertBy());
+    				memNew.setStatus(siteProperties.getDataStatusValidCode());
+    				memNew.setStartDate(death.getDeathDate());
+    				entityService.create(memNew);
+    			}
     		}
     	}
     	
