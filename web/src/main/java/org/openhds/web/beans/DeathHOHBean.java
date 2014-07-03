@@ -184,7 +184,7 @@ public class DeathHOHBean implements Serializable {
 	 */
 	public boolean checkCorrespondingMemberships(MessageContext messageContext) {
 				
-		if (memberships.get(current).size() == indivsOfSocialGroup.size()-1) 
+		if ((memberships.get(current).size() == indivsOfSocialGroup.size()-2) || indivsOfSocialGroup.size()==1)
 			return true;
 			
 		webFlowService.createMessage(messageContext, 
