@@ -90,9 +90,13 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
 		UserCache cache = (UserCache) beanFactory.getBean("userCache");
 		if (cache.getUser() == null) {
 			Object obj = getSpringSecurityUser();
-	
+	System.out.println("User object is of type: " + obj.getClass());
 	        if (obj instanceof User) {
 	            String username = ((User) obj).getUsername();
+	            cache.setUser(userDao.findByProperty("username", username));
+	        }
+	        else if(obj instanceof org.springframework.security.core.userdetails.User){
+	            String username = ((org.springframework.security.core.userdetails.User) obj).getUsername();
 	            cache.setUser(userDao.findByProperty("username", username));
 	        }
 		}
