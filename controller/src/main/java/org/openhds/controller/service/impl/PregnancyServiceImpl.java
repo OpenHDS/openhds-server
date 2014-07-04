@@ -102,8 +102,24 @@ public class PregnancyServiceImpl implements PregnancyService {
 		if (entityItem.getMother().getCurrentResidency() == null) 
 			throw new ConstraintViolations("A Pregnancy Outcome cannot be created because a Residency record cannot be found for the mother.");
 
+		
+		/*Check for duplicate extIds of */
+		for(Outcome outcome : entityItem.getOutcomes()) {
+			Individual child = outcome.getChild();
+			
+			if(findIndivById(child.getExtId()) != null){
+				throw new ConstraintViolations("The Child Id specified already exists");
+			}
+		}
+		
 		return entityItem;
 	}
+	
+    @Transactional(readOnly=true)
+    public Individual findIndivById(String indivExtId) {
+        Individual indiv = genericDao.findByProperty(Individual.class, "extId", indivExtId);
+        return indiv;
+    }  	
 	
 	public List<PregnancyOutcome> getPregnancyOutcomesByIndividual(Individual individual) {
 		return genericDao.findListByProperty(PregnancyOutcome.class, "mother", individual, true);
@@ -115,6 +131,9 @@ public class PregnancyServiceImpl implements PregnancyService {
 
 	@Transactional(rollbackFor=Exception.class)
 	public void createPregnancyOutcome(PregnancyOutcome pregOutcome) throws ConstraintViolations {	
+		
+		evaluatePregnancyOutcome(pregOutcome);
+		
 		Location motherLocation = pregOutcome.getMother().getCurrentResidency().getLocation();
 		
 		List<PregnancyOutcome> persistedPOList = genericDao.findListByMultiProperty(PregnancyOutcome.class, 
