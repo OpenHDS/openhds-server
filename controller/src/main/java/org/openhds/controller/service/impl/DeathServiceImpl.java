@@ -1,6 +1,7 @@
 package org.openhds.controller.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,6 +76,8 @@ public class DeathServiceImpl implements DeathService {
 
         //Gets the individual's relationships if any
         // Iterates through the relationships and sets endType(DEATH) and endDate
+        List<Relationship> relationshipsToUpdate = new ArrayList<Relationship>();
+        
          if (!entityItem.getIndividual().getAllRelationships1().isEmpty()) {
             Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships1();
             Iterator<Relationship> it = relationships.iterator();
@@ -83,11 +86,12 @@ public class DeathServiceImpl implements DeathService {
                 if (rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
 	                rel.setEndDate(endDate);
 	                rel.setEndType(siteProperties.getDeathCode());
-	                entityService.save(rel);
+//	                entityService.save(rel);
+	                relationshipsToUpdate.add(rel);
                 }
             }
-        }
-         
+         }
+                 
 		 if (!entityItem.getIndividual().getAllRelationships2().isEmpty()) {
 		     Set<Relationship> relationships = (Set<Relationship>) entityItem.getIndividual().getAllRelationships2();
 		     Iterator<Relationship> it = relationships.iterator();
@@ -96,10 +100,15 @@ public class DeathServiceImpl implements DeathService {
 		         if (rel.getEndType().equals(siteProperties.getNotApplicableCode())) {
 		             rel.setEndDate(endDate);
 		             rel.setEndType(siteProperties.getDeathCode());
-		             entityService.save(rel);
+//		             entityService.save(rel);
+		             relationshipsToUpdate.add(rel);
 		         }
 		     }
 		 }
+		 
+         for(Relationship rel : relationshipsToUpdate){
+        	 entityService.save(rel);
+         }		 
          
          entityService.create(entityItem);
 
