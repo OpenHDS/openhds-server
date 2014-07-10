@@ -48,7 +48,7 @@ public class Visit
     @Temporal(TemporalType.DATE)
     @Description(description = "Date of the visit.")
     private Calendar visitDate;
-    @CheckInteger(min = 1)
+    @CheckInteger(min = 0)
     @Description(description = "Round number for the visit.")
     private Integer roundNumber;
     @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
