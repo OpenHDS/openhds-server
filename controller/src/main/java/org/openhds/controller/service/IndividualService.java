@@ -7,6 +7,7 @@ import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PrivilegeConstants;
+import org.openhds.domain.service.SitePropertiesService;
 
 public interface IndividualService {
 	
@@ -46,6 +47,9 @@ public interface IndividualService {
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createIndividual(Individual individual) throws ConstraintViolations;
 
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	SitePropertiesService getProperties();
+	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
     long getTotalIndividualCount();
 	

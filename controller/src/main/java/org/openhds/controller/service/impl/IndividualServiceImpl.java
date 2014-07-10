@@ -54,7 +54,11 @@ public class IndividualServiceImpl implements IndividualService {
 		return entityItem;
 	}
 	
-    @Transactional
+    public SitePropertiesService getProperties() {
+		return properties;
+	}
+
+	@Transactional
     public void createIndividual(Individual individual) throws ConstraintViolations {
         assignId(individual);
         evaluateIndividual(individual);

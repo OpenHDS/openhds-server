@@ -88,7 +88,7 @@ public class InMigrationServiceImpl implements InMigrationService {
 		checkValidIndividual(inMigration);
 
 		residencyService.evaluateResidency(inMigration.getResidency());
-		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
+		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION) || inMigration.getMigType().equals(MigrationType.BASELINE)) {
 			try {
                 entityService.create(inMigration.getIndividual());
             } catch (IllegalArgumentException e) {
@@ -104,12 +104,14 @@ public class InMigrationServiceImpl implements InMigrationService {
             throw new ConstraintViolations("There was a problem creating the residency for the in migration in the database");
         }
 		
-		try {
-            entityService.create(inMigration);
-        } catch (IllegalArgumentException e) {
-        } catch (SQLException e) {
-            throw new ConstraintViolations("There was a problem creating the in migration in the database");
-        }
+		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
+			try {
+	            entityService.create(inMigration);
+	        } catch (IllegalArgumentException e) {
+	        } catch (SQLException e) {
+	            throw new ConstraintViolations("There was a problem creating the in migration in the database");
+	        }
+	    }
 	}
 
 	private void checkValidIndividual(InMigration inMigration) throws ConstraintViolations {
@@ -125,7 +127,11 @@ public class InMigrationServiceImpl implements InMigrationService {
 		Residency residency = migration.getResidency();
         residency.setIndividual(migration.getIndividual());
         residency.setStartDate(migration.getRecordedDate());
-        residency.setStartType(siteProperties.getInmigrationCode());
+    	if (migration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
+         residency.setStartType(siteProperties.getInmigrationCode());
+    	} else {
+    	 residency.setStartType(siteProperties.getEnumerationCode());
+    	}
         residency.setCollectedBy(migration.getCollectedBy());
         residency.setEndType(siteProperties.getNotApplicableCode());
         residency.setLocation(migration.getVisit().getVisitLocation());

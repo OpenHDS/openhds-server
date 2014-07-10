@@ -31,7 +31,7 @@ public class Round implements Serializable, GenericStartEndDateConstraint {
     @Column(length=32)
 	String uuid;
 	
-	@CheckInteger(min=1)
+	@CheckInteger(min=0)
 	@Description(description="Round number for the study.")
 	Integer roundNumber;
 	

@@ -224,7 +224,7 @@ public class InMigrationTemplateBuilder implements ExtensionTemplate {
 		jad.param("description", "An InMigration represents a migration into the study area. " +
 		"It contains information about the Individual who is in-migrating to a particular " +
 		"Residency. It also contains information about the origin, date, and reason the " +
-		"Indiviudal is migrating as well as the Visit that is associated with the migration.");
+		"Individual is migrating as well as the Visit that is associated with the migration.");
 				
 		// create Entity annotation
 		jc.annotate(javax.persistence.Entity.class);
