@@ -38,6 +38,16 @@ public class VisitServiceImpl implements VisitService {
             throw new ConstraintViolations("The Round Number specified is not a valid Round Number.");
 
         generator.validateIdLength(entityItem.getExtId(), generator.getIdScheme());
+        
+        //Check if key already exists
+        Visit v = null;
+        try{
+        	v = findVisitById(entityItem.getExtId(), "");
+        }catch(Exception e){}
+        
+    	if(v != null){
+    		throw new ConstraintViolations("Duplicate entry for visit extId!");
+    	}
 
         return entityItem;
     }
