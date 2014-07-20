@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import org.openhds.dao.service.GenericDao.ValueProperty;
+import org.openhds.dao.service.GenericDao.RangeProperty;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.dao.service.GenericDao;
@@ -59,8 +60,11 @@ public class ErrorLogDAOImpl implements ErrorLogDAO {
     }
 
     @Override
-    public List<ErrorLog> findAllByFilters(ValueProperty... properties) {
-        return genericDao.findListByMultiProperty(ErrorLog.class, properties);
+    public List<ErrorLog> findAllByFilters(RangeProperty range, ValueProperty... properties) {
+        if (range == null) {
+            return genericDao.findListByMultiProperty(ErrorLog.class, properties);
+        }
+        return genericDao.findListByMultiPropertyAndRange(ErrorLog.class, range, properties);
     }
 
     public EntityService getEntityService() {

@@ -22,6 +22,15 @@ public interface GenericDao {
         Object getValue();
     }
 
+    interface RangeProperty {
+
+        String getPropertyName();
+
+        Object getMinRange();
+
+        Object getMaxRange();
+    }
+
     <T> String create(T newInstance);
 
     <T> T read(Class<T> entityType, String id);
@@ -75,6 +84,8 @@ public interface GenericDao {
     void clear();
 
     <T> List<T> findListByMultiProperty(Class<T> entityType, ValueProperty... properties);
+    
+    <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties);
 
     <T> long getTotalCount(Class<T> entityType);
 

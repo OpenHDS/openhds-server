@@ -28,6 +28,8 @@ public class Error implements Serializable {
 
     private String errorMessage;
 
+    public Error() { }
+
     public Error(String errorMessage) {
         this.errorMessage = errorMessage;
     }

@@ -1,9 +1,15 @@
 package org.openhds.webservice.resources;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import org.openhds.dao.service.GenericDao.RangeProperty;
 import org.openhds.dao.service.GenericDao.ValueProperty;
+import org.openhds.dao.util.RangePropertyHelper;
 import org.openhds.dao.util.ValuePropertyHelper;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.FieldWorkerService;
@@ -44,7 +50,9 @@ public class ErrorLogResource {
     public ResponseEntity<?> getErrors(@RequestParam(value="resolutionStatus", required=false) String resolutionStatus,
             @RequestParam(value="assignedTo", required=false) String assignedTo,
             @RequestParam(value="fieldWorkerId", required=false) String fieldWorkerId,
-            @RequestParam(value="entityType", required=false) String entityType) throws NoSuchMethodException, SecurityException, ConstraintViolations {
+            @RequestParam(value="entityType", required=false) String entityType,
+            @RequestParam(value="minDate", required=false) String minDate,
+            @RequestParam(value="maxDate", required=false) String maxDate) throws NoSuchMethodException, SecurityException, ConstraintViolations {
 
         List<ValueProperty> properties = new ArrayList<ValueProperty>();
 
@@ -67,7 +75,35 @@ public class ErrorLogResource {
             }
         }
 
-        List<ErrorLog> errors = errorService.findAllErrorsByFilters(properties.toArray(new ValueProperty[properties.size()]));
+        RangeProperty range = null;
+
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+
+        Calendar minRange = Calendar.getInstance();
+        Calendar maxRange = Calendar.getInstance();
+        try {
+
+            if (minDate != null) {
+                minRange.setTime(format.parse(minDate));
+            } else {
+                minRange.setTime(format.parse("1-1-1970"));
+            }
+
+            if (maxDate != null) {
+                maxRange.setTime(format.parse(maxDate));
+            } 
+        } catch (ParseException e) {
+            WebserviceResult result = new WebserviceResult();
+            result.setResultMessage(e.getMessage());
+            result.setResultCode(ResultCodes.BAD_PARAMETER_CODE);
+            result.setStatus(ResultCodes.ERROR);
+
+            return new ResponseEntity<WebserviceResult>(result, HttpStatus.BAD_REQUEST);
+        }
+
+        range = RangePropertyHelper.getRangeProperty("insertDate", minRange, maxRange);
+
+        List<ErrorLog> errors = errorService.findAllErrorsByFilters(range, properties.toArray(new ValueProperty[properties.size()]));
 
         List<ErrorLog> shallowCopies = new ArrayList<ErrorLog>();
 
@@ -87,7 +123,7 @@ public class ErrorLogResource {
     @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getErrorLogById(@PathVariable String uuid) {
         ErrorLog error = errorService.findErrorById(uuid);
-        
+
         if (error == null) {
             return WebserviceResultHelper.entityNotFoundResponse("Error record not found", "error");
         }

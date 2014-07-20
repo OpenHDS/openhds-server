@@ -162,14 +162,29 @@ public class GenericDaoImpl implements GenericDao {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> findListByMultiProperty(Class<T> entityType, ValueProperty... properties) {
-		Criteria criteria = getSession().createCriteria(entityType);
-		
-		criteria = addPropertiesToCriteria(criteria, properties);
-		
-		return (List<T>) criteria.list();
+		return findListByMultiPropertyAndRange(entityType, null, properties);
 	}
 
-	private Criteria addPropertiesToCriteria(Criteria criteria, ValueProperty... properties) {
+    @Override
+    public <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        
+        criteria = addPropertiesToCriteria(criteria, properties);
+        
+        if (range != null) {
+             criteria = addRangeToCriteria(criteria, range);
+        }
+        
+        return (List<T>) criteria.list();
+    }
+
+	private Criteria addRangeToCriteria(Criteria criteria, RangeProperty range) {
+        criteria = criteria.add(Restrictions.between(range.getPropertyName(), range.getMinRange(), range.getMaxRange()));
+
+        return criteria;
+    }
+
+    private Criteria addPropertiesToCriteria(Criteria criteria, ValueProperty... properties) {
 		for(ValueProperty prop : properties) {
 			criteria = criteria.add(Restrictions.eq(prop.getPropertyName(), prop.getValue()));
 		}

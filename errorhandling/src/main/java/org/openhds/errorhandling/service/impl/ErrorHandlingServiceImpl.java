@@ -1,7 +1,7 @@
 package org.openhds.errorhandling.service.impl;
 
 import java.util.List;
-
+import org.openhds.dao.service.GenericDao.RangeProperty;
 import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.errorhandling.dao.ErrorLogDAO;
@@ -59,7 +59,7 @@ public class ErrorHandlingServiceImpl implements ErrorHandlingService {
     }
 
     @Override
-    public List<ErrorLog> findAllErrorsByFilters(ValueProperty... properties) {
-        return errorLogDao.findAllByFilters(properties);
+    public List<ErrorLog> findAllErrorsByFilters(RangeProperty range, ValueProperty... properties) {
+        return errorLogDao.findAllByFilters(range, properties);
     }
 }
