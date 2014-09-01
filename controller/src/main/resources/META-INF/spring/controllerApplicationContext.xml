@@ -15,9 +15,9 @@
         
     <import resource="classpath*:/META-INF/spring/domainApplicationContext.xml" />
     <import resource="classpath*:/META-INF/spring/daoApplicationContext.xml" />
-    
-    <context:component-scan base-package="org.openhds.controller" />
 
+    <context:component-scan base-package="org.openhds.controller" />
+    <context:component-scan base-package="org.openhds.events" />
     <context:property-placeholder location="classpath*:site-config.properties" ignore-unresolvable="true"/>
     
      <!-- Used by the baseTransactionBean to determine when to insert the Transactional Advice -->
@@ -39,7 +39,7 @@
 
 	<!-- Request scoped bean to serve as a cache for the current logged in user -->
     <bean id="userCache" class="org.openhds.controller.util.UserCache" scope="request" />
-     
+
 	<!-- Simple bean to get current logged in user -->
     <bean id="currentUser" class="org.openhds.controller.service.impl.CurrentUserImpl" >
         <property name="userDao" ref="userDao" />
@@ -380,4 +380,13 @@
     		</map>
     	</property>
     </bean>
+
+    <!-- DAO for events -->
+    <bean id="eventsDAO" parent="baseTransactionBean">
+    	<property name="target">
+    		<bean class="org.openhds.events.dao.EventsDAOImpl">
+    			<constructor-arg ref="genericDao" />
+		    </bean>
+   		</property>
+	</bean>
 </beans>

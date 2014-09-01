@@ -40,5 +40,7 @@
 		<mapping class="org.openhds.domain.mobile.ValidationMessage" />
 	    <mapping class="org.openhds.errorhandling.domain.ErrorLog" />
 		<mapping class="org.openhds.errorhandling.domain.Error" />
+		<mapping class="org.openhds.events.domain.OpenHDSEvent" />
+		<mapping class="org.openhds.events.domain.EventMetaData" />
 	    </session-factory>
 </hibernate-configuration>

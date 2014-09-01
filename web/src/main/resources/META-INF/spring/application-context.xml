@@ -327,7 +327,8 @@
 		        <constructor-arg ref="calendarUtil" />
 		        <constructor-arg ref="siteProperties" />
 		        <constructor-arg ref="entityValidator" />
-	        </bean>
+	            <constructor-arg ref="eventGateway" />
+		    </bean>
         </property>
     </bean> 
     

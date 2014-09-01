@@ -87,6 +87,8 @@ public interface GenericDao {
     
     <T> List<T> findListByMultiPropertyAndRange(Class<T> entityType, RangeProperty range, ValueProperty... properties);
 
+    <T> List<T> performSQLQuery(Class<T> entityType, String sqlQuery, Map<String, Object> params);
+
     <T> long getTotalCount(Class<T> entityType);
 
     <T> List<T> findByExample(Class<T> entityType, T exampleInstance, String... excludeProperty);

@@ -1,9 +1,16 @@
 package org.openhds.controller.service.impl;
 
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.CurrentUser;
@@ -15,6 +22,9 @@ import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.User;
 import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
+import org.openhds.events.domain.EventMetaData;
+import org.openhds.events.domain.OpenHDSEvent;
+import org.openhds.events.service.EventGateway;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -31,18 +41,25 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @SuppressWarnings("unchecked")
 public class EntityServiceImpl implements EntityService {
-	private GenericDao genericDao;
+	private static final String CREATE_TYPE = "create";
+    private static final String UPDATE_TYPE = "update";
+    private static final String VOID_TYPE = "void";
+    private static final String USER_DELETED_TYPE = "user_delete";
+    private static final String DELETE_TYPE = "delete";    private static final String UNABLE_TO_MARSHAL_ERROR = "Error - Unable to convert entity to an XML payload";
+    private GenericDao genericDao;
 	private CurrentUser currentUser;
 	private CalendarUtil calendarUtil;
 	private SitePropertiesService siteProperties;
 	private EntityValidationService classValidator;
+	private EventGateway eventGateway;
 	
-	public EntityServiceImpl(GenericDao genericDao, CurrentUser currentUser, CalendarUtil calendarUtil, SitePropertiesService siteProperties, EntityValidationService classValidator) {
+	public EntityServiceImpl(GenericDao genericDao, CurrentUser currentUser, CalendarUtil calendarUtil, SitePropertiesService siteProperties, EntityValidationService classValidator, EventGateway eventGateway) {
 		this.genericDao = genericDao;
 		this.currentUser = currentUser;
 		this.calendarUtil = calendarUtil;
 		this.siteProperties = siteProperties;
 		this.classValidator = classValidator;
+		this.eventGateway = eventGateway;
 	}
 
 	@Transactional
@@ -67,10 +84,12 @@ public class EntityServiceImpl implements EntityService {
 		}
 		setStatusPending(entityItem);	
 		classValidator.validateEntity(entityItem);
-			
+
 		genericDao.create(entityItem);
+
+		publishEvent(entityItem, CREATE_TYPE);
 	}
-	
+
 	@Transactional
 	public <T> void delete(T persistentObject) throws SQLException {
         Method setDeletedMethod = null;
@@ -93,18 +112,21 @@ public class EntityServiceImpl implements EntityService {
             }
             setStatusVoided(persistentObject);
             genericDao.update(persistentObject);
+            publishEvent(persistentObject, VOID_TYPE);
         }
         else if (persistentObject instanceof User) {
         	try {
 	        	setDeletedMethod = persistentObject.getClass().getMethod("setDeleted", boolean.class);
 	            setDeletedMethod.invoke(persistentObject, true);
 	            genericDao.update(persistentObject);
+	            publishEvent(persistentObject, USER_DELETED_TYPE);
         	} catch (Exception e) {
             	e.printStackTrace();
             }
         }
         else {
             genericDao.delete(persistentObject);
+            publishEvent(persistentObject, DELETE_TYPE);
         }
 	}
 	
@@ -113,6 +135,7 @@ public class EntityServiceImpl implements EntityService {
 		setStatusPending(entityItem);	
 		classValidator.validateEntity(entityItem);
 		genericDao.update( genericDao.merge(entityItem) );
+		publishEvent(entityItem, UPDATE_TYPE);
 	}
 
 	public <T> T read(Class<T> entityType, String id) {
@@ -132,4 +155,40 @@ public class EntityServiceImpl implements EntityService {
 			((AuditableCollectedEntity)entityItem).setStatusMessage("");
 		}	
 	}
+
+	private <T> void publishEvent(T entityItem, String actionType) {
+        String result = null;
+        StringWriter sw = new StringWriter();
+        try {
+            JAXBContext carContext = JAXBContext.newInstance(entityItem.getClass());
+            Marshaller carMarshaller = carContext.createMarshaller();
+            carMarshaller.marshal(entityItem, sw);
+            result = sw.toString();
+        } catch (JAXBException e) {
+            result = UNABLE_TO_MARSHAL_ERROR;
+        }
+
+	    OpenHDSEvent event = new OpenHDSEvent();
+	    event.setActionType(actionType);
+	    event.setEntityType(entityItem.getClass().getSimpleName());
+	    event.setEventData(result);
+	    event.setInsertDate(calendarUtil.convertDateToCalendar(new Date()));
+	    event.setEventMetaData(generateMetaData());
+
+	    eventGateway.publishEvent(event);
+	}
+
+    private List<EventMetaData> generateMetaData() {
+        List<EventMetaData> metaDataList = new ArrayList<EventMetaData>();
+
+        EventMetaData metaData = new EventMetaData();
+        metaData.setInsertDate(calendarUtil.convertDateToCalendar(new Date()));
+        metaData.setNumTimesRead(0);
+        metaData.setStatus("Unread");
+        metaData.setSystem("Default");
+
+        metaDataList.add(metaData);
+
+        return metaDataList;
+    }
 }

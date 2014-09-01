@@ -66,6 +66,8 @@
 				<value>org.openhds.domain.model.Whitelist</value>
 				<value>org.openhds.errorhandling.domain.ErrorLog</value>
 				<value>org.openhds.errorhandling.domain.Error</value>
+				<value>org.openhds.events.domain.OpenHDSEvent</value>
+				<value>org.openhds.events.domain.EventMetaData</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
