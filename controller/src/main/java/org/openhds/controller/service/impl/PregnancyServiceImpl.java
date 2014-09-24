@@ -105,11 +105,13 @@ public class PregnancyServiceImpl implements PregnancyService {
 		
 		/*Check for duplicate extIds of */
 		for(Outcome outcome : entityItem.getOutcomes()) {
-			Individual child = outcome.getChild();
-			
-			if(findIndivById(child.getExtId()) != null){
-				throw new ConstraintViolations("The Child Id specified already exists");
-			}
+			if (outcome.getType().equals(siteProperties.getLiveBirthCode())) {
+				Individual child = outcome.getChild();
+				
+				if(findIndivById(child.getExtId()) != null){
+					throw new ConstraintViolations("The Child Id specified already exists");
+				}
+		   }
 		}
 		
 		return entityItem;
