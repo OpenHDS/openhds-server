@@ -4,6 +4,8 @@ package org.openhds.webservice.resources;
  * A service class to be used when dealing with the Baseline 
  * 
  * @author Aurelio Di Pasquale
+ * this class re-use the InMigrationService. This is why we have migType/setOrigin/setReason
+ * To do create a BaselineService to get more clean
  *
  */
 
@@ -14,6 +16,8 @@ import org.openhds.controller.service.InMigrationService;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.MigrationType;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.webservice.FieldBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +32,14 @@ public class BaselineResource extends AbstractResource<InMigration> {
 
     private InMigrationService inMigrationService;
     private FieldBuilder fieldBuilder;
+    private SitePropertiesService siteProperties;
 
     @Autowired
-    public BaselineResource(InMigrationService inMigrationService, FieldBuilder fieldBuilder) {
+    public BaselineResource(InMigrationService inMigrationService, FieldBuilder fieldBuilder,
+            SitePropertiesService siteProperties) {
         this.inMigrationService = inMigrationService;
         this.fieldBuilder = fieldBuilder;
+        this.siteProperties = siteProperties;
     }
     
     @RequestMapping(method = RequestMethod.POST)
@@ -45,10 +52,10 @@ public class BaselineResource extends AbstractResource<InMigration> {
         InMigration copy = new InMigration();
         copy.setCollectedBy(copyFieldWorker(item.getCollectedBy()));
         copy.setIndividual(copyIndividual(item.getIndividual()));
-        copy.setMigType(item.getMigType());
+        copy.setMigType(MigrationType.BASELINE);
         
-        copy.setOrigin(item.getMigType().toString());
-        copy.setReason(item.getMigType().toString());
+        copy.setOrigin(siteProperties.getEnumerationCode());
+        copy.setReason(siteProperties.getEnumerationCode());
         copy.setRecordedDate(item.getRecordedDate());
         copy.setVisit(copyVisit(item.getVisit()));
         
