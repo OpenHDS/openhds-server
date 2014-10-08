@@ -1,9 +1,12 @@
 package org.openhds.web.crud.impl;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import javax.faces.context.FacesContext;
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.ConstraintViolations;
@@ -49,6 +52,24 @@ public class MembershipCrudImpl extends EntityCrudImpl<Membership, String> {
     	try {
     		entityItem.setEndType(properties.getNotApplicableCode());
     		service.evaluateMembership(entityItem);
+    		
+            //Gets the individual's memberships if any
+            // Iterates through memberships and sets endType(OMG) and endDate
+            if (!entityItem.getIndividual().getAllMemberships().isEmpty()) {
+                Set<Membership> memberships = (Set<Membership>) entityItem.getIndividual().getAllMemberships();
+                for (Membership mem : memberships) {
+                	if (mem.getEndType().equals(properties.getNotApplicableCode())) {
+    	                mem.setEndDate(entityItem.getStartDate());
+    	                mem.setEndType(properties.getOutmigrationCode());
+    	                try {
+    						entityService.save(mem);
+    					} catch (SQLException e) {
+    						 throw new ConstraintViolations(
+    				                    "There as a problem updating the database with the membership associated with the out migration");
+    					}
+                	}
+                }
+            }
     		return super.commit(messageContext);
     	} catch(ConstraintViolations e) {
     		webFlowService.createMessage(messageContext, e.getMessage());
