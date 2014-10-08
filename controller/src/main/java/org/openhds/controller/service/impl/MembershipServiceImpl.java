@@ -37,7 +37,8 @@ public class MembershipServiceImpl implements MembershipService {
     		throw new ConstraintViolations("A Membership for the specified Social Group already exists.");	
     	if (individualService.getLatestEvent(entityItem.getIndividual()).equals("Death"))
     		throw new ConstraintViolations("A Membership cannot be created for an Individual who has a Death event.");
-        		
+		if(!checkOverlappingMemberships(entityItem))
+			throw new ConstraintViolations("A Membership cannot be created because it is overlapping with an already existing membership.");
     	return entityItem;
 	}
 
@@ -47,7 +48,6 @@ public class MembershipServiceImpl implements MembershipService {
 			throw new ConstraintViolations("A Membership cannot be saved because an attempt was made to modify the end event type on an Individual who has a Death event.");	
 		if (!checkEndEventTypeForMembershipOnEdit(persistedItem, entityItem))
 			throw new ConstraintViolations("A Membership cannot be saved because the end event type of Death cannot apply to Individuals who do not have a Death event.");	
-		
 		return entityItem;
 	}
 	
@@ -67,6 +67,24 @@ public class MembershipServiceImpl implements MembershipService {
 		}					
 		return true;		
 	}
+	
+	/**
+	 * Checks if an existing Membership for the specific individual overlaps with the potential membership to be inserted
+	 */
+	public boolean checkOverlappingMemberships(Membership persistedItem) {
+		
+		List<Membership> list = genericDao.findListByProperty(Membership.class, "individual", persistedItem.getIndividual());
+		
+		Iterator<Membership> itr = list.iterator();
+		
+		while(itr.hasNext()) {
+			Membership item = itr.next();
+			if (!item.isDeleted() && item.getEndDate()==null && 
+					item.getStartDate() != null && item.getStartDate().before(persistedItem.getStartDate())) 
+				return false;
+		}					
+		return true;		
+	}	
 	
 	/**
 	 * Compares the persisted and (soon to be persisted) Membership items.
@@ -161,7 +179,7 @@ public class MembershipServiceImpl implements MembershipService {
             Set<Membership> memberships = (Set<Membership>) item.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {
             	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
-	                 
+            		mem.setEndDate(item.getStartDate());
 	                mem.setEndType(siteProperties.getOutmigrationCode());
 	                try {
 						entityService.save(mem);
