@@ -337,6 +337,12 @@
                         </systemProperty>
                     </systemProperties>
                     <contextPath>/${project.parent.artifactId}2</contextPath>
+	                <connectors>
+	                    <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+	                        <port>8085</port>
+	                        <maxIdleTime>60000</maxIdleTime>
+	                    </connector>
+	                </connectors>                    
                 </configuration>
             </plugin>
         </plugins>

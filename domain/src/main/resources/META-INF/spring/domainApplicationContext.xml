@@ -37,6 +37,7 @@
                 <value>org.openhds.domain.model.Round</value>
                 <value>org.openhds.domain.model.SocialGroup</value>
                 <value>org.openhds.domain.model.Visit</value>
+                <value>org.openhds.domain.model.HeadOfHousehold</value>
                 
                 <value>org.openhds.domain.model.wrappers.FieldWorkers</value>
                 <value>org.openhds.domain.model.wrappers.Individuals</value>

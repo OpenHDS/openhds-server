@@ -161,7 +161,7 @@ public class MembershipServiceImpl implements MembershipService {
             Set<Membership> memberships = (Set<Membership>) item.getIndividual().getAllMemberships();
             for (Membership mem : memberships) {
             	if (mem.getEndType().equals(siteProperties.getNotApplicableCode())) {
-	                mem.setEndDate(item.getStartDate());
+	                 
 	                mem.setEndType(siteProperties.getOutmigrationCode());
 	                try {
 						entityService.save(mem);

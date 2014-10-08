@@ -184,6 +184,9 @@ public class DeathServiceImpl implements DeathService {
     				//mem.setEndDate(death.getDeathDate());
     				//mem.setEndType("DHH");
     				//
+    				
+    				mem.setEndDate(death.getDeathDate());
+    				mem.setEndType("DHH");    				
     				entityService.save(mem);
     			}
     			if (mem.getIndividual().getExtId()==mem.getSocialGroup().getGroupHead().getExtId()){
