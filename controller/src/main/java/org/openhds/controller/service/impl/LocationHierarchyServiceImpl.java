@@ -366,7 +366,7 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
     			item.getLevel().equals(getLowestLevel()))
     			return item;
     	}
-    	return null;
+    	throw new IllegalArgumentException(msg);
     }
     
     public LocationHierarchy getHierarchyItemHighestLevel() {
