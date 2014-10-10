@@ -17,5 +17,8 @@ public interface RoundService {
     
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     List<Round> getLastRound();
+
+    @Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createRound(Round round) throws ConstraintViolations;
     
 }

@@ -1,5 +1,6 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
@@ -48,4 +49,18 @@ public class RoundServiceImpl implements RoundService {
 		return genericDao.findMax(Round.class, false, "roundNumber", false);
 	}
 
+	
+	@Override
+	public void createRound(Round round) throws ConstraintViolations {
+	
+	    evaluateRound(round);
+		
+		try {
+			entityService.create(round);
+		} catch (IllegalArgumentException e) {
+		} catch (SQLException e) {
+			throw new ConstraintViolations("There was a problem saving the round to the database");
+		}
+	}
+	
 }

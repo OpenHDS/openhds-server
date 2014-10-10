@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -21,6 +22,7 @@ import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 @Entity
 @CheckEndDateNotBeforeStartDate
 @Table(name="round")
+@XmlRootElement
 public class Round implements Serializable, GenericStartEndDateConstraint {
 
 	private static final long serialVersionUID = 1022315305801238563L;
