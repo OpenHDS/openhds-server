@@ -8,6 +8,7 @@ import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.Residency;
+import org.openhds.domain.model.Round;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.slf4j.Logger;
@@ -151,4 +152,13 @@ public class ShallowCopier {
         copy.setGender(original.getGender());
         return copy;
     }
+
+	public static Round copyRound(Round original) {
+		Round copy = new Round();
+		copy.setEndDate(original.getEndDate());
+		copy.setRoundNumber(original.getRoundNumber());
+		copy.setStartDate(original.getStartDate());
+		copy.setRemarks(original.getRemarks());
+		return copy;
+	}
 }
