@@ -216,17 +216,17 @@ public class CalculationServiceImpl implements CalculationService {
 				// get all visits for this residency
 				List<Visit> visits = genericDao.findListByProperty(Visit.class, "visitLocation", res.getLocation());
 				
+				Calendar latestDate = new GregorianCalendar(1900, Calendar.JANUARY, 1);
 				if (visits.size() > 0) {
 					// grab latest visit
-					Calendar latestDate = new GregorianCalendar(1900, Calendar.JANUARY, 1);
 					for (Visit visit : visits) {
 						Calendar visitDate = visit.getVisitDate();
 						if (visitDate.after(latestDate))
 							latestDate = visitDate;
 					}		
-					resEndDate = latestDate;
-					res.setEndDate(resEndDate);
 				}
+				resEndDate = latestDate;
+				res.setEndDate(resEndDate);
 			}
 			else 
 				resEndDate = res.getEndDate();

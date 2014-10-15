@@ -20,6 +20,7 @@ public class SitePropertiesConfigBean {
 	String outmigration;
 	String birth;
 	String death;
+	String deathOfHOH;
 	String enumeration;
 	String marriage;
 	String notApplicable;
@@ -58,6 +59,7 @@ public class SitePropertiesConfigBean {
 		properties.put("outmigration", outmigration);
 		properties.put("birth", birth);
 		properties.put("death", death);
+		properties.put("deathOfHOH", deathOfHOH);
 		properties.put("enumeration", enumeration);
 		properties.put("marriage", marriage);	
 		properties.put("notApplicable", notApplicable);
@@ -188,6 +190,14 @@ public class SitePropertiesConfigBean {
 	public void setDeath(String death) {
 		this.death = death;
 	}
+	
+	public String getDeathOfHOH() {
+		return deathOfHOH;
+	}
+	
+	public void setDeathOfHOH(String deathOfHOH) {
+		this.deathOfHOH = deathOfHOH;
+	}	
 	
 	public String getEnumeration() {
 		return enumeration;

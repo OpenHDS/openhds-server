@@ -674,6 +674,7 @@
 	 	<property name="outmigration"><value>${outmigration}</value></property>
 	 	<property name="birth"><value>${birth}</value></property>
 	 	<property name="death"><value>${death}</value></property>
+	 	<property name="deathOfHOH"><value>${deathOfHOH}</value></property>
 	 	<property name="enumeration"><value>${enumeration}</value></property>
 	 	<property name="marriage"><value>${marriage}</value></property>
 	 	<property name="notApplicable"><value>${notApplicable}</value></property>
@@ -710,6 +711,7 @@
         <property name="outmigrationCode"><value>${outmigration}</value></property>
         <property name="birthCode"><value>${birth}</value></property>
         <property name="deathCode"><value>${death}</value></property>
+        <property name="deathOfHOHCode"><value>${deathOfHOH}</value></property>
         <property name="enumerationCode"><value>${enumeration}</value></property>
         <property name="marriageCode"><value>${marriage}</value></property>
         <property name="notApplicableCode"><value>${notApplicable}</value></property>
