@@ -128,6 +128,7 @@ public class EntityServiceImpl implements EntityService {
 	
 	private <T> void setStatusPending(T entityItem) {
 		if (entityItem instanceof AuditableCollectedEntity) {
+			if (((AuditableCollectedEntity)entityItem).getStatus()==null)
 			((AuditableCollectedEntity)entityItem).setStatus(siteProperties.getDataStatusPendingCode());
 			((AuditableCollectedEntity)entityItem).setStatusMessage("");
 		}	
