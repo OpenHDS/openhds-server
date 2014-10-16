@@ -216,6 +216,64 @@ public class PregnancyServiceImpl implements PregnancyService {
             }
 		}
 	}
+	
+	@Transactional(rollbackFor=Exception.class)
+	public void createPregnancyOutcomeImg(PregnancyOutcome pregOutcome) throws ConstraintViolations {	
+		
+		
+		List<PregnancyOutcome> persistedPOList = genericDao.findListByMultiProperty(PregnancyOutcome.class, 
+				getValueProperty("mother", pregOutcome.getMother()),
+				getValueProperty("outcomeDate", pregOutcome.getOutcomeDate()));
+		
+		PregnancyOutcome persistedPO = null;
+		if (!persistedPOList.isEmpty())
+			persistedPO = persistedPOList.get(0);
+		
+		int totalEverBorn = 0;
+		int liveBirths = 0;
+
+		for(Outcome outcome : pregOutcome.getOutcomes()) {
+			if (persistedPO != null)
+				persistedPO.addOutcome(outcome);
+			
+			totalEverBorn++;
+			if (!outcome.getType().equals(siteProperties.getLiveBirthCode())) {
+				// not a live birth so individual, residency and membership not needed
+				continue;
+			}
+			
+			liveBirths++;
+			// create individual
+			try {
+			   // outcome.getChild().setDob(pregOutcome.getOutcomeDate());
+			   // outcome.getChild().setDobAspect("1");
+            } catch (IllegalArgumentException e) {
+            }
+			
+	
+			
+		
+		}
+		
+		pregOutcome.setChildEverBorn(totalEverBorn);
+		pregOutcome.setNumberOfLiveBirths(liveBirths);
+				
+		if (persistedPO != null) {
+			try {
+                entityService.save(persistedPO);
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem saving pregnancy outcome to database");
+            }
+		// finally create the pregnancy outcome
+		} else {
+			try {
+                entityService.create(pregOutcome);
+            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
+                throw new ConstraintViolations("Problem creating pregnancy outcome in the database");
+            }
+		}
+	}
 		
 	public List<PregnancyOutcome> findAllLiveBirthsBetweenInterval(Calendar startDate, Calendar endDate) {
 		

@@ -33,6 +33,10 @@ public class Outcome implements Serializable {
 	@Description(description="Pregnancy outcome type.")
 	private String type;
 	
+	 @Description(description = "External Id of the individual. This id is used internally.")
+	 private String childextId;
+	
+	
 	@OneToOne(cascade = {CascadeType.ALL})
 	@CheckEntityNotVoided(allowNull=true)
     @CheckIndividualNotUnknown
@@ -73,5 +77,13 @@ public class Outcome implements Serializable {
 
 	public void setChildMembership(Membership childMembership) {
 		this.childMembership = childMembership;
+	}
+	
+	public String getChildextId() {
+		return childextId;
+	}
+
+	public void setChildextId(String childextId) {
+		this.childextId = childextId;
 	}
 }

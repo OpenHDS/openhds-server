@@ -10,6 +10,7 @@ import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.PregnancyOutcome;
+import org.openhds.domain.model.PregnancyOutcomeImg;
 import org.openhds.domain.model.PrivilegeConstants;
 
 /**
@@ -107,4 +108,8 @@ public interface PregnancyService {
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
     void createPregnancyObservation(PregnancyObservation pregObs) throws ConstraintViolations;
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createPregnancyOutcomeImg(PregnancyOutcome item) throws ConstraintViolations;
+	
 }
