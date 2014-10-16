@@ -13,6 +13,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	String outmigrationCode;
 	String birthCode;
 	String deathCode;
+	String deathOfHOHCode;
 	String enumerationCode;
 	String marriageCode;
 	String miscarriageCode;
@@ -291,5 +292,13 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	
 	public String getFemaleCode() {
 		return femaleCode;
+	}
+	
+	public void setDeathOfHOHCode(String deathofHOHCode) {
+		this.deathOfHOHCode = deathofHOHCode;
+	}	
+
+	public String getDeathOfHOHCode() {
+		return deathOfHOHCode;
 	}
 }
