@@ -2,6 +2,8 @@ package org.openhds.domain.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -9,12 +11,14 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckEndDateNotBeforeStartDate;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.GenericStartEndDateConstraint;
 import org.openhds.domain.constraint.Searchable;
+import org.openhds.domain.util.CalendarAdapter;
 
 @Description(description="A Residency represents a home within the study area. " +
 		"It contains information about the Individual who lives at the Residency " +
@@ -23,7 +27,7 @@ import org.openhds.domain.constraint.Searchable;
 @Entity
 @CheckEndDateNotBeforeStartDate(allowNull=true)
 @Table(name="residency")
-@XmlRootElement
+@XmlRootElement(name="residency")
 public class Residency extends AuditableCollectedEntity implements GenericStartEndDateConstraint, Serializable {
 	private static final long serialVersionUID = -4666666231598767965L;
     
@@ -33,7 +37,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
     Individual individual;
     
 	@Searchable
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description="Location of the residency, identified by external id.")
     Location location;
     
@@ -62,6 +66,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
         this.individual = individual;
     }
 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getStartDate() {
         return startDate;
     }
@@ -70,6 +75,7 @@ public class Residency extends AuditableCollectedEntity implements GenericStartE
         this.startDate = startDate;
     }
 
+    @XmlJavaTypeAdapter(value=CalendarAdapter.class) 
     public Calendar getEndDate() {
         return endDate;
     }

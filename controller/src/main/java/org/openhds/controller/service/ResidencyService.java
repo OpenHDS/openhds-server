@@ -66,4 +66,7 @@ public interface ResidencyService {
 	
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
     List<Residency> getAllResidencies(Individual individual);
+
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createResidency(Residency item) throws ConstraintViolations;
 }

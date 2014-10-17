@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.openhds.webservice.WebServiceCallException;
@@ -58,6 +59,11 @@ public abstract class AbstractResource<T extends Serializable> {
         return copy;
     }
     
+    protected Location copyLocation(Location location) {
+        Location copy = new Location();
+        copy.setExtId(location.getExtId());
+        return copy;
+    }
     protected SocialGroup copySocialGroup(SocialGroup sg) {
         SocialGroup copy = new SocialGroup();
         copy.setExtId(sg.getExtId());

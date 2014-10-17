@@ -1,5 +1,6 @@
 package org.openhds.controller.service.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -10,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
@@ -19,6 +21,7 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.service.SitePropertiesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the ResidencySerivce
@@ -30,11 +33,14 @@ public class ResidencyServiceImpl implements ResidencyService {
 
     private GenericDao genericDao;
     private SitePropertiesService siteProperties;
+    private EntityService entityService;
+
     static Logger log = LoggerFactory.getLogger(ResidencyServiceImpl.class);
 
-    public ResidencyServiceImpl(GenericDao genericDao, SitePropertiesService siteProperties) {
+    public ResidencyServiceImpl(GenericDao genericDao, EntityService entityService, SitePropertiesService siteProperties) {
         this.genericDao = genericDao;
         this.siteProperties = siteProperties;
+		this.entityService = entityService;
     }
 
     /*
@@ -206,6 +212,30 @@ public class ResidencyServiceImpl implements ResidencyService {
 
         return residency;
     }
+    
+    @Override
+    @Transactional
+    public void createResidency(Residency item) throws ConstraintViolations {
+    	Residency residency = new Residency();
+        residency.setIndividual(item.getIndividual());
+        residency.setLocation(genericDao.findByProperty(Location.class, "extId", item.getLocation().getExtId()));
+        residency.setStartDate(item.getStartDate());
+        residency.setStartType(item.getStartType());
+        residency.setEndDate(item.getEndDate());
+        residency.setEndType(item.getEndType());
+        residency.setCollectedBy(item.getCollectedBy());
+    
+        
+        evaluateResidency(residency);
+        
+      
+        try {
+            entityService.create(residency);
+        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
+        }
+    }
+    
     
     public List<Residency> getAllResidencies(Individual individual) {
     	List<Residency> list = genericDao.findListByProperty(Residency.class, "individual", individual, true);

@@ -231,10 +231,12 @@
 		    <bean class="org.openhds.controller.service.impl.ResidencyServiceImpl">
 		        <constructor-arg ref="genericDao" />
 		        <constructor-arg ref="siteProperties" />
+		       	<constructor-arg ref="entityService" /> 
 		    </bean>
 	    </property>
     </bean>
     
+      
     <bean id="roleService" parent="baseServiceTransactionBean">
 	    <property name="target">
 		    <bean class="org.openhds.controller.service.impl.RoleServiceImpl">

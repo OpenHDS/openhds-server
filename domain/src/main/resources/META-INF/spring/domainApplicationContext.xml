@@ -34,6 +34,7 @@
                 <value>org.openhds.domain.model.PregnancyObservation</value>
                 <value>org.openhds.domain.model.PregnancyOutcome</value>
                 <value>org.openhds.domain.model.Relationship</value>
+                <value>org.openhds.domain.model.Residency</value>
                 <value>org.openhds.domain.model.Round</value>
                 <value>org.openhds.domain.model.SocialGroup</value>
                 <value>org.openhds.domain.model.Visit</value>
