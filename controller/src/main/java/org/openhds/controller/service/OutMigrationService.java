@@ -18,4 +18,7 @@ public interface OutMigrationService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createOutMigration(OutMigration outMigration) throws ConstraintViolations;
+	
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createOutMigrationImg(OutMigration outMigration) throws ConstraintViolations;
 }
