@@ -40,14 +40,14 @@ public class InMigration
 {
 
     public final static long serialVersionUID = 7889700709284952892L;
-    @NotNull
+   // @NotNull
     @Searchable
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @CheckIndividualNotUnknown
     @Description(description = "Individual who is inmigrating, identified by external id.")
     private Individual individual;
-    @OneToOne
-    @NotNull
+    @OneToOne(cascade = CascadeType.MERGE)
+  //  @NotNull
     @Description(description = "The residency the individual is inmigrating to.")
     private Residency residency = new Residency();
     @Searchable

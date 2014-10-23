@@ -63,4 +63,8 @@ public interface InMigrationService {
 	 */
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	void createInMigration(InMigration inMigration) throws ConstraintViolations;
+	
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void createInMigrationImg(InMigration inMigration) throws ConstraintViolations;
+	
 }

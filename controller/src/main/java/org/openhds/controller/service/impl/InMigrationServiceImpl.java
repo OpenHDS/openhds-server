@@ -9,6 +9,7 @@ import org.openhds.controller.service.InMigrationService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.ResidencyService;
 import org.openhds.dao.service.GenericDao;
+import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.MigrationType;
@@ -104,7 +105,7 @@ public class InMigrationServiceImpl implements InMigrationService {
             throw new ConstraintViolations("There was a problem creating the residency for the in migration in the database");
         }
 		
-		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
+		if (inMigration.isUnknownIndividual() || inMigration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)|| inMigration.getMigType().equals(MigrationType.INTERNAL_INMIGRATION)) {
 			try {
 	            entityService.create(inMigration);
 	        } catch (IllegalArgumentException e) {
@@ -113,7 +114,22 @@ public class InMigrationServiceImpl implements InMigrationService {
 	        }
 	    }
 	}
+	
+	
+	@Transactional(rollbackFor=Exception.class)
+	public void createInMigrationImg(InMigration inMigration) throws ConstraintViolations {
+		//checkValidIndividual(inMigration);
 
+			try {
+	            entityService.create(inMigration);
+	        } catch (IllegalArgumentException e) {
+	        } catch (SQLException e) {
+	            throw new ConstraintViolations("There was a problem creating the in migration in the database");
+	        }
+	   
+	}
+	
+	
 	private void checkValidIndividual(InMigration inMigration) throws ConstraintViolations {
 		if (inMigration.getMigType().equals(MigrationType.INTERNAL_INMIGRATION)
 				&& !inMigration.isUnknownIndividual()) {
@@ -127,10 +143,10 @@ public class InMigrationServiceImpl implements InMigrationService {
 		Residency residency = migration.getResidency();
         residency.setIndividual(migration.getIndividual());
         residency.setStartDate(migration.getRecordedDate());
-    	if (migration.getMigType().equals(MigrationType.EXTERNAL_INMIGRATION)) {
-         residency.setStartType(siteProperties.getInmigrationCode());
+    	if (migration.getMigType().equals(MigrationType.BASELINE)) {
+         residency.setStartType(siteProperties.getEnumerationCode());
     	} else {
-    	 residency.setStartType(siteProperties.getEnumerationCode());
+    	 residency.setStartType(siteProperties.getInmigrationCode());
     	}
         residency.setCollectedBy(migration.getCollectedBy());
         residency.setEndType(siteProperties.getNotApplicableCode());
@@ -140,4 +156,5 @@ public class InMigrationServiceImpl implements InMigrationService {
 	public List<InMigration> getInMigrationsByIndividual(Individual individual) {
 		return genericDao.findListByProperty(InMigration.class, "individual", individual, true);
 	}
+	
 }
