@@ -81,9 +81,9 @@ public class MembershipServiceImpl implements MembershipService {
 			Membership item = itr.next();
 			if (!item.isDeleted() && item.getEndDate()==null && 
 					item.getStartDate() != null && item.getStartDate().before(persistedItem.getStartDate())) 
-				return false;
+				return true;
 		}					
-		return true;		
+		return false;		
 	}	
 	
 	/**
