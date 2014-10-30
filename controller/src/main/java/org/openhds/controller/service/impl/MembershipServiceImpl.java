@@ -75,15 +75,19 @@ public class MembershipServiceImpl implements MembershipService {
 		
 		List<Membership> list = genericDao.findListByProperty(Membership.class, "individual", persistedItem.getIndividual());
 		
+		if (list.size()==0){
+			return true;
+		}
+
 		Iterator<Membership> itr = list.iterator();
 		
 		while(itr.hasNext()) {
 			Membership item = itr.next();
 			if (!item.isDeleted() && item.getEndDate()==null && 
-					item.getStartDate() != null && item.getStartDate().before(persistedItem.getStartDate())) 
-				return true;
+					item.getStartDate() != null && item.getStartDate().after(persistedItem.getStartDate())) 
+				return false;
 		}					
-		return false;		
+		return true;		
 	}	
 	
 	/**
