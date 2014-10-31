@@ -111,12 +111,14 @@ public class OutMigrationServiceImpl implements OutMigrationService {
 		// configure out migration
 		outMigration.setResidency(currentResidence);
 		
-		// run the residency through the residency service which provides additional integrity constraints
-		residencyService.evaluateResidency(currentResidence);
-		
-      
-        
-        
+		      Set<Residency> res = outMigration.getIndividual().getAllResidencies();
+
+        // integrity checks on previous residencies
+        for (Residency possibleResidency : res) {
+                if (possibleResidency.getEndType().equals("OMG") && possibleResidency.getEndDate().equals(outMigration.getRecordedDate()))
+            	outMigration.setResidency(possibleResidency);
+            }
+
         try {
             entityService.create(outMigration);
         } catch (IllegalArgumentException e) {
