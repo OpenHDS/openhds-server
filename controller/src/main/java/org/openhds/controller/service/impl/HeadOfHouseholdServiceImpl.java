@@ -34,7 +34,7 @@ import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sun.javafx.collections.NonIterableChange.GenericAddRemoveChange;
+//import com.sun.javafx.collections.NonIterableChange.GenericAddRemoveChange;
 import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 @Component("headOfHouseholdServiceImpl")
