@@ -2,13 +2,13 @@ OpenHDS
 ======
 
 This project and variants of it are hosted on GitHub at the following URL:
-*   http://github.com/OpenHDS/openhds-server
+*   https://github.com/SwissTPH/openhds-server
 
 Architecture
 --------------------
 
-OpenHDS architecture is documented here:
-*   https://code.google.com/p/openhds/wiki/Implementation
+OpenHDS is documented here:
+*   https://github.com/SwissTPH/openhds/blob/master/doc/OpenHDS_Manual.pdf?raw=true
 
 A brief description of sub-components follows.
 
