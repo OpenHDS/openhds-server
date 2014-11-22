@@ -45,6 +45,8 @@ public class FieldWorker extends AuditableEntity implements Serializable {
 	@Transient
 	String confirmPassword;
 	
+	@NotNull
+	@CheckFieldNotBlank
 	@Description(description="Hashed version of a field worker's password.")
 	String passwordHash;
 	

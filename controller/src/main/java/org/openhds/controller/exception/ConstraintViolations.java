@@ -31,5 +31,12 @@ public class ConstraintViolations extends Exception {
 	public boolean hasViolations() {
 		return violations != null && violations.size() > 0;
 	}
+	
+	public static void addViolationIfNotNull(ConstraintViolations cv,
+			String violation) {
+		if (null != cv) {
+			cv.addViolations(violation);
+		}
+	}
 }
 
