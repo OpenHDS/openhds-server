@@ -29,6 +29,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
     	try {
     		service.evaluateFieldWorker(entityItem);
+    	 // service.makeTheHash()
 	        return super.create();
     	}
     	catch(ConstraintViolations e) {

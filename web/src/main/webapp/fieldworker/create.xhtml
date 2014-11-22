@@ -39,8 +39,21 @@
 
                         <h:outputText value="#{msg.fieldWorkerLastName}:"/>
                         <h:inputText id="lastname" value="#{fieldWorkerCrud.item.lastName}" converter="#{defaultConverter}" />
-                        <h:message for="lastname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-                    </h:panelGrid>
+	                    <h:message for="lastname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+						<h:outputText value="#{msg.fieldWorkerPassword}:" />
+						<h:inputText id="password" value="#{fieldWorkerCrud.item.password}"
+							converter="#{defaultConverter}" />
+						<h:message for="password" errorClass="error"
+							errorStyle="color: red" infoStyle="color: green" />
+	
+						<h:outputText value="#{msg.fieldWorkerPasswordConfirm}:" />
+						<h:inputText id="confirmPassword"
+							value="#{fieldWorkerCrud.item.confirmPassword}"
+							converter="#{defaultConverter}" />
+						<h:message for="confirmPassword" errorClass="error"
+							errorStyle="color: red" infoStyle="color: green" />
+					</h:panelGrid>
                     <script>
 		            	document.getElementById('form:name').focus();
 		            	document.getElementById('form:extId').focus();
