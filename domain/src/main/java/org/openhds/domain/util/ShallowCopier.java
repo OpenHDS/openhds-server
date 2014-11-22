@@ -161,4 +161,14 @@ public class ShallowCopier {
 		copy.setRemarks(original.getRemarks());
 		return copy;
 	}
+	
+	public static FieldWorker shallowCopyFieldWorker(FieldWorker fieldWorker) {
+		FieldWorker copy = new FieldWorker();
+		copy.setExtId(fieldWorker.getExtId());
+		copy.setFirstName(fieldWorker.getFirstName());
+		copy.setLastName(fieldWorker.getLastName());
+		copy.setPasswordHash(fieldWorker.getPasswordHash());
+		return copy;
+	}
+
 }

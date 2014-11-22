@@ -44,6 +44,8 @@ public class FieldWorkerTest extends AbstractTransactionalJUnit4SpringContextTes
 	     worker.setExtId("FWBD1");
 	     worker.setFirstName("Bob");
 	     worker.setLastName("Dow");
+	     worker.setPassword("test-password");
+	     worker.setConfirmPassword("test-password");
 	     fieldWorkerCrud.setItem(worker);
 	     fieldWorkerCrud.create();
 	     

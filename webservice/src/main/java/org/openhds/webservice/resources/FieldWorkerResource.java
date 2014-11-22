@@ -6,6 +6,7 @@ import java.util.List;
 import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.wrappers.FieldWorkers;
+import org.openhds.domain.util.ShallowCopier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +30,7 @@ public class FieldWorkerResource {
 		List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();
 		List<FieldWorker> copies = new ArrayList<FieldWorker>();
 		for (FieldWorker fw : allFieldWorkers) {
-			FieldWorker copy = new FieldWorker();
-			copy.setExtId(fw.getExtId());
-			copy.setFirstName(fw.getFirstName());
-			copy.setLastName(fw.getLastName());
-			copy.setUuid(fw.getUuid());
-
-			copies.add(copy);
+			copies.add(ShallowCopier.shallowCopyFieldWorker(fw));
 		}
 
 		FieldWorkers fws = new FieldWorkers();

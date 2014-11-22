@@ -2,12 +2,14 @@ package org.openhds.web.crud.impl;
 
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.controller.service.FieldWorkerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
-	FieldWorkerService service;
+	@Autowired
+	private FieldWorkerService fieldWorkerService;
 
 	public FieldWorkerCrudImpl(Class<FieldWorker> entityClass) {
         super(entityClass);
@@ -28,7 +30,11 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     public String create() {
 
     	try {
-    		service.evaluateFieldWorker(entityItem);
+    		//fieldWorkerService.evaluateFieldWorker(entityItem);
+    	 // service.makeTheHash()
+    		fieldWorkerService.generateId(entityItem);
+    		fieldWorkerService.generatePasswordHash(entityItem);
+    		fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
 	        return super.create();
     	}
     	catch(ConstraintViolations e) {
@@ -39,12 +45,12 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	return null;
     }
     
-	public FieldWorkerService getService() {
-		return service;
+	public FieldWorkerService getFieldWorkerService() {
+		return fieldWorkerService;
 	}
 
-	public void setService(FieldWorkerService service) {
-		this.service = service;
+	public void setFieldWorkerService(FieldWorkerService fieldWorkerService) {
+		this.fieldWorkerService = fieldWorkerService;
 	}
 }
 
