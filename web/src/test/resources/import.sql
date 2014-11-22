@@ -44,9 +44,9 @@ INSERT INTO user_roles (user_uuid, role_uuid) VALUES ('User 3', 'ROLE2')
 INSERT INTO locationhierarchy(uuid,name,extId,level_uuid,parent_uuid) VALUES('hierarchy_root','', 'HIERARCHY_ROOT', NULL,NULL)
 
 -- Field Worker
-INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', false)
-INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', false)
-
+INSERT INTO fieldworker (uuid, extid, firstname, lastname, passwordHash, deleted) VALUES ('UnknownFieldWorker','UNK', 'Unknown', 'FieldWorker', 'invalid-password-hash', false);
+INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', false) 	+INSERT INTO fieldworker (uuid, extid, firstname, lastname, passwordHash, deleted) VALUES ('FieldWorker1','FWEK1D', 'Editha', 'Kaweza', 'invalid-password-hash', false)
+	
 -- Unknown Individual: This should always be pre-populated
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES('Unknown Individual','UNK','Unknown',NULL,'UNKNOWN','M', '1900-12-19', NULL, NULL,'User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'UnknownFieldWorker')
 INSERT INTO individual(uuid,extId,firstName,middleName,lastName,gender,dob,mother_uuid,father_uuid,insertBy_uuid,insertDate,status,dobAspect,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid) VALUES ('Individual2','NBAS1I','Nancy',NULL,'Bassey','F', '1959-12-19', 'Unknown Individual', 'Unknown Individual','User 1','2009-12-19','P','1',NULL,NULL,NULL,false,'FieldWorker1')
