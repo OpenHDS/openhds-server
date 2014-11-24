@@ -164,6 +164,7 @@ public class ShallowCopier {
 	
 	public static FieldWorker shallowCopyFieldWorker(FieldWorker fieldWorker) {
 		FieldWorker copy = new FieldWorker();
+		copy.setUuid(fieldWorker.getUuid());
 		copy.setExtId(fieldWorker.getExtId());
 		copy.setFirstName(fieldWorker.getFirstName());
 		copy.setLastName(fieldWorker.getLastName());
