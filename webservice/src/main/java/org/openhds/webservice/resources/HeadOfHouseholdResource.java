@@ -1,35 +1,16 @@
 package org.openhds.webservice.resources;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.HeadOfHouseholdService;
-import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Death;
 import org.openhds.domain.model.HeadOfHousehold;
-import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.PregnancyObservation;
-import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.wrappers.Visits;
-import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
-import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
-import org.openhds.webservice.WebServiceCallException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,18 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/hoh")
 public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
-    private static final Logger logger = LoggerFactory.getLogger(HeadOfHouseholdResource.class);
-
     private final HeadOfHouseholdService headOfHouseholdService;
     private final FieldBuilder fieldBuilder;
-    private final FileResolver fileResolver;
-
     @Autowired
     public HeadOfHouseholdResource(HeadOfHouseholdService headOfHouseholdService, FieldBuilder fieldBuilder, EntityService entityService,
             FileResolver fileResolver) {
         this.headOfHouseholdService = headOfHouseholdService;
         this.fieldBuilder = fieldBuilder;
-        this.fileResolver = fileResolver;
     }
 
     @RequestMapping(method = RequestMethod.GET)

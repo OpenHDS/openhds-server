@@ -72,7 +72,7 @@ public class FieldWorkerServiceImpl implements FieldWorkerService {
 		}
 		// HASH THAT BABY
 		fieldWorker.setPasswordHash(BCrypt.hashpw(fieldWorker.getPassword(),
-				BCrypt.gensalt(12)));
+				BCrypt.gensalt(8)));
 		fieldWorker.setPassword(null);
 		fieldWorker.setConfirmPassword(null);
 	}

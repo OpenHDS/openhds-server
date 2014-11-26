@@ -3,7 +3,6 @@ package org.openhds.controller.service.refactor.crudhelpers;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.refactor.FieldWorkerService;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;
