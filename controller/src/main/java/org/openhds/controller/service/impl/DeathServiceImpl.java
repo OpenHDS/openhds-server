@@ -51,6 +51,12 @@ public class DeathServiceImpl implements DeathService {
 	public Death createDeath(Death entityItem) throws ConstraintViolations, SQLException {
 		Calendar endDate = entityItem.getDeathDate();
 		
+		// added for testing purpose due o possible bugs on the simulator. Normally can not happening on real data collection.
+		// if an individual was marked death will not be on the tablet.
+		// If a death event is recorded on the tablet the individual disappear from the list and then a death event can not be recorded twice.
+		if (!checkDuplicateIndividual(entityItem.getIndividual())) 
+    		throw new ConstraintViolations("The Individual Id specified already exists.");	
+		
 		if (entityItem.getIndividual().getCurrentResidency() != null) {
 			Residency residency = entityItem.getIndividual().getCurrentResidency();
 			residency.setEndDate(endDate);

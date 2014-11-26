@@ -14,7 +14,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.controller.idgeneration.VisitGenerator;
 import org.openhds.controller.service.DeathService;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.HeadOfHouseholdService;
@@ -26,16 +25,10 @@ import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.HeadOfHousehold;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
-import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
-import org.openhds.domain.model.Visit;
-import org.openhds.domain.model.wrappers.Individuals;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-//import com.sun.javafx.collections.NonIterableChange.GenericAddRemoveChange;
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 @Component("headOfHouseholdServiceImpl")
 public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
