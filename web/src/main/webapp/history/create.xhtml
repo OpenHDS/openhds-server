@@ -77,6 +77,38 @@
 	        <br /><br />
 	        
 	        <div align="center">
+	        
+	        	<c:if test="${empty individualHistoryBean.individual and flowScope.step > 0}" >
+		        	<h:outputText value="Individual is null" /><br /><br />
+		        </c:if>
+		        
+		        <h:panelGroup rendered="${not empty individualHistoryBean.individual}">
+		        	<table class="base-table">
+		        		<thead>
+			        		<tr>
+			        			<th colspan="4" scope="colgroup">Individual info</th>
+			        		</tr>
+			        		<tr>
+			        			<th class="width1" scope="col">Id</th>
+			        			<th class="width1" scope="col">First name</th>
+			        			<th class="width1" scope="col">Last name</th>
+			        			<th class="width1" scope="col">DoB</th>
+			        		</tr>
+		        		</thead>
+		        		<tbody>
+			        		<tr>
+			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.extId}</h:outputText></td>
+			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.firstName}</h:outputText></td>
+			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.lastName}</h:outputText></td>
+			        			<td class="alt-col"><h:outputText value="#{individualHistoryBean.individual.dob.time}">
+			        					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+			        				</h:outputText>
+			        			</td>
+			        		</tr>
+		        		</tbody>
+		        	</table>   	
+		        </h:panelGroup>
+		        	        
 		        <c:if test="#{fn:length(individualHistoryBean.memberships) == 0 and flowScope.step > 0}" >
 		        	<h:outputText value="#{msg.membershipEmpty}" /><br /><br />
 		        </c:if>
