@@ -45,6 +45,24 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	return null;
     }
     
+    @Override
+    public String edit() {
+
+    	try {
+    		//Only try to update password if at least one of the password fields is filled. Otherwise we'll just update name
+    		if(entityItem.getPassword().trim().length() > 0 || entityItem.getConfirmPassword().trim().length() > 0){
+    			fieldWorkerService.generatePasswordHash(entityItem);
+    		}
+	        return super.edit();
+    	}
+    	catch(ConstraintViolations e) {
+    		jsfService.addError(e.getMessage());
+    	} catch(AuthorizationException e) {
+    		jsfService.addError(e.getMessage());
+    	}
+    	return null;
+    }    
+    
 	public FieldWorkerService getFieldWorkerService() {
 		return fieldWorkerService;
 	}
