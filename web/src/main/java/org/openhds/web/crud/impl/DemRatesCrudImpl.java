@@ -3,7 +3,9 @@ package org.openhds.web.crud.impl;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.faces.context.FacesContext;
+
 import org.openhds.controller.service.DemRatesService;
 import org.openhds.domain.model.DemRates;
 
@@ -85,5 +87,18 @@ public class DemRatesCrudImpl extends EntityCrudImpl<DemRates, String> {
 
 	public void setDemRatesService(DemRatesService demRatesService) {
 		this.demRatesService = demRatesService;
+	}
+	
+	@Override
+    public String create() {
+		if(null == entityItem.getEvent() || entityItem.getEvent().isEmpty()){
+			jsfService.addError("Please select an event rate to calculate");
+			return null;
+		}			
+		if(null == entityItem.getDenominator() || entityItem.getDenominator().isEmpty()){
+			jsfService.addError("Please select a denominator type");
+			return null;
+		}	
+		return super.create();
 	}
 }
