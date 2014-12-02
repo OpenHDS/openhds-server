@@ -78,7 +78,16 @@ public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 		}
 	
 		if (scheme.isCheckDigit()) 
-			sb.append(generateCheckCharacter(sb.toString()));
+			sb.append(generateCheckCharacter(sb.toString()));		
+		
+		if (!checkValidId(sb.toString()) && sb.toString().length() > 0){	
+			for(char alphabet = 'A'; alphabet <= 'Z'; alphabet++){
+				sb.setCharAt(sb.toString().length()-1, alphabet);
+				if(checkValidId(sb.toString())){
+					break;
+				}
+			}			
+		}
 		
 		if (!checkValidId(sb.toString()))
 			throw new ConstraintViolations("An id was generated that already exists in the Location Hierarchy.");
@@ -93,6 +102,12 @@ public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 		if (item != null)
 			return false;
 		return true;
+	}
+	
+	private String generateNewId(String currentGeneratedId){
+		StringBuilder sb = new StringBuilder();
+		
+		return sb.toString();
 	}
 
 	// not applicable for location hierarchy
