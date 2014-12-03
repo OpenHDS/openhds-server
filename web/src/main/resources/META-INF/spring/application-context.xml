@@ -59,6 +59,9 @@
 	<bean id="prefLocale" class="org.openhds.web.util.Locale" >
         <property name="locale" value="#{siteProperties.locale}" />
     </bean>
+    
+    <bean id="localeBean" class="org.openhds.web.beans.LocaleBean" >
+    </bean>
 				
 	<!-- Configure Spring Security -->
     <security:http auto-config="true">

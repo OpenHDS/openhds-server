@@ -8,6 +8,15 @@
 		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler> 
 		<el-resolver>org.openhds.web.util.JsfCrudELResolver</el-resolver>
 		<el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
+     	   <locale-config>
+     	        <default-locale>en</default-locale>
+     	        <supported-locale>fr</supported-locale>
+     	        <supported-locale>sw</supported-locale>
+     	   </locale-config>
+	   <resource-bundle>
+		<base-name>message</base-name>
+		<var>msg</var>
+	   </resource-bundle>		
 	</application>
 	
 	<navigation-rule>
@@ -236,6 +245,11 @@
 			<to-view-id>/inmigration.flow?external=true</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>languageSelection</from-outcome>
+			<to-view-id>/languageSelection.faces</to-view-id>
+			<redirect />
+		</navigation-case>		
 		<navigation-case>
 			<from-outcome>location_list</from-outcome>
 			<to-view-id>/location/create.faces</to-view-id>

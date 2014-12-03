@@ -104,12 +104,6 @@ public class LocationHierarchyGenerator extends Generator<LocationHierarchy> {
 		return true;
 	}
 	
-	private String generateNewId(String currentGeneratedId){
-		StringBuilder sb = new StringBuilder();
-		
-		return sb.toString();
-	}
-
 	// not applicable for location hierarchy
 	@Override
 	public String buildNumberWithBound(LocationHierarchy entityItem, IdScheme scheme) throws ConstraintViolations {

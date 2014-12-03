@@ -5,7 +5,6 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jstl/core">
-
     <head>
     </head>
 
@@ -13,11 +12,14 @@
         <ui:composition>
             <h:form>
                 <div class="texta">
-                        <h:outputText value="#{siteProperties.locale}" />
-                        <f:loadBundle basename="MessageResource_#{siteProperties.locale}" var="msg"/>
+                        <h:commandLink action="languageSelection" value="#{localeBean.languageDisplayName}" >
+                    </h:commandLink>
                     <c:if test="#{currentUser.name != null}">
                         <div>
-		          			#{msg.welcome} #{currentUser.name}, <h:outputText value=" " /> <h:commandLink action="logoutLnk" value="#{msg.logout}" />						
+		          			#{msg.welcome} #{currentUser.name}<h:outputText value=" " /><br />
+							<h:commandLink action="logoutLnk">
+								<h:graphicImage id="n" style="width: 75%;border:0;width:24px" value="/resources/images/logout.png" title="Logout"/>
+							</h:commandLink>
                         </div>
                     </c:if>
                 </div>
