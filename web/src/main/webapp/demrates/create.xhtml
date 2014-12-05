@@ -38,11 +38,11 @@
                			               				
                				<h:outputText value="#{msg.demRatesEvent}:" />            				 				
                				<o:selectOneRadio id="eventList" value="#{demRatesCrud.item.event}" >
-								<f:selectItem itemValue="#{msg.demRatesFertility}" itemLabel="#{msg.demRatesFertility}"/>
-							  	<f:selectItem itemValue="#{msg.demRatesMortality}" itemLabel="#{msg.demRatesMortality}"/>
-							  	<f:selectItem itemValue="#{msg.demRatesOutMigration}" itemLabel="#{msg.demRatesOutMigration}"/>
-							  	<f:selectItem itemValue="#{msg.demRatesInMigration}" itemLabel="#{msg.demRatesInMigration}"/>
-							  	<f:selectItem itemValue="#{msg.demRatesPopulation}" itemLabel="#{msg.demRatesPopulation}"/>
+								<f:selectItem itemValue="Fertility" itemLabel="#{msg.demRatesFertility}"/>
+							  	<f:selectItem itemValue="Mortality" itemLabel="#{msg.demRatesMortality}"/>
+							  	<f:selectItem itemValue="OutMigration" itemLabel="#{msg.demRatesOutMigration}"/>
+							  	<f:selectItem itemValue="InMigration" itemLabel="#{msg.demRatesInMigration}"/>
+							  	<f:selectItem itemValue="Population" itemLabel="#{msg.demRatesPopulation}"/>
 							</o:selectOneRadio>
 							<h:message for="eventList" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
 							

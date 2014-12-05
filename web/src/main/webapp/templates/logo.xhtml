@@ -12,7 +12,7 @@
         <ui:composition>
             <h:form>
                 <div class="texta">
-                        <h:commandLink action="languageSelection" value="#{localeBean.languageDisplayName}" >
+                        <h:commandLink action="languageSelection" value="#{msg.chooseLang}" >
                     </h:commandLink>
                     <c:if test="#{currentUser.name != null}">
                         <div>

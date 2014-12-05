@@ -70,11 +70,11 @@
 		            </h:commandLink>
 		        	<c:if test="#{navController.showReports}" >
 		        	<ul>
-			            <li><h:commandLink value="Demographic Rates" action="#{demRatesCrud.createSetup}" /></li>
-			            <li><a href="#{request.contextPath}/household-register.report" target="_blank">Household Register</a></li>
-			            <li><a href="#{request.contextPath}/migration-ent-reconciliation.report" target="_blank">Migration Ent Reconciliation</a></li>
-			            <li><a href="#{request.contextPath}/pregnancy-observ-reconciliation.report" target="_blank">Preg Observ Reconciliation</a></li>
-			        	<li><a href="#{request.contextPath}/identification-book.report" target="_blank">Identification Book</a></li>
+			            <li><h:commandLink value="#{msg.navBarDemRates}" action="#{demRatesCrud.createSetup}" /></li>
+			            <li><a href="#{request.contextPath}/household-register.report" target="_blank">#{msg.navBarHousReg}</a></li>
+			            <li><a href="#{request.contextPath}/migration-ent-reconciliation.report" target="_blank">#{msg.navBarMigEnt}</a></li>
+			            <li><a href="#{request.contextPath}/pregnancy-observ-reconciliation.report" target="_blank">#{msg.navBarPregObsRec}</a></li>
+			        	<li><a href="#{request.contextPath}/identification-book.report" target="_blank">#{msg.navBarIdeBook}</a></li>
 			        </ul>
 			        </c:if>
 		    	</li>
