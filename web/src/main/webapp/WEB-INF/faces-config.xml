@@ -12,6 +12,7 @@
      	        <default-locale>en</default-locale>
      	        <supported-locale>fr</supported-locale>
      	        <supported-locale>sw</supported-locale>
+     	        <supported-locale>pt</supported-locale>
      	   </locale-config>
 	   <resource-bundle>
 		<base-name>message</base-name>
