@@ -12,12 +12,14 @@
     
     <body> 	
   		<div class="loginField" align="center">
+
   	  		<div><img alt="" src="#{request.contextPath}/resources/images/logo-login.png"></img></div>
   			<div style="margin-top:2%">
 				<form name="logoutForm">
 					<table>
 						<tr align="center">
-							<td><h:outputText value="You have successfully logged out." /></td>
+							<td><h:outputText value="${msg.logoutSuccess}" /></td>
+							
 						</tr>
 						<tr align="center">
 							<td><a href="#{request.contextPath}/login.faces">Continue</a></td>

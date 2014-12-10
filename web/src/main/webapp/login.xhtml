@@ -4,7 +4,6 @@
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-        
     <head>
     	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
     	<title>OpenHDS</title>
@@ -12,12 +11,13 @@
     
    	<body> 	
   		<div class="loginField" align="center">
+  		
   	  		<div><img alt="" src="#{request.contextPath}/resources/images/logo-login.png"></img></div>
   			<div style="margin-top:2%">
 			<form name="loginForm" action="${request.contextPath}/loginProcess" method="post">
 				<table>
 					<tr>
-						<td><h:outputText value="Username:" /></td>
+						<td><h:outputText value="${msg.loginUsername}" /></td>
 						<td>	
 							<c:if test="${not empty param.login_error}">
 								<c:set var="username" value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}"/>
@@ -26,16 +26,16 @@
 						</td>
 					</tr>
 					<tr>
-						<td><h:outputText value="Password:" /></td>
+						<td><h:outputText value="${msg.loginPassword}" /></td>
 						<td><input type="password" name="j_password" /></td>
 					</tr>
 					<tr>
-						<td><input name="submit" type="submit" value="Login" /></td>
+						<td><input name="submit" type="submit" value="${msg.loginButton}" /></td>
 					</tr>
 				</table>
 				<br />
 				<c:if test="${not empty param.login_error}">
-					<span class="loginMessage">Wrong username or password. Please try again.</span>
+					<span class="loginMessage">#{msg.loginErrorMessage}</span>
 				</c:if>
 			</form>
 			</div>
