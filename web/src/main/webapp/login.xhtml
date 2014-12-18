@@ -4,6 +4,7 @@
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+	<f:view locale="#{localeBean.locale}">
     <head>
     	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
     	<title>OpenHDS</title>
@@ -30,6 +31,7 @@
 						<td><input type="password" name="j_password" /></td>
 					</tr>
 					<tr>
+						<td>&#160;</td>
 						<td><input name="submit" type="submit" value="${msg.loginButton}" /></td>
 					</tr>
 				</table>
@@ -45,7 +47,8 @@
 			  		#{demoLoginString}
 			  	</span>
 		  	</c:if>
-		  	${appSettings.versionNumber}
+		  	${appSettings.versionNumber} | <h:form><h:commandLink action="languageSelection" value="#{msg.chooseLang}" ></h:commandLink></h:form>
 	  </div>	
 	</body>
+	</f:view>
 </html>

@@ -67,6 +67,7 @@
     <security:http auto-config="true">
         <security:form-login authentication-success-handler-ref="authSuccessHandler" login-page="/login.faces" login-processing-url="/loginProcess" authentication-failure-url="/login.faces?login_error=1" />
         <security:intercept-url pattern="/login.faces" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/languageSelection.faces" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/resources/images/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/resources/css/main.css" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/resources/css/login.css" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
