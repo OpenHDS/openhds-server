@@ -45,9 +45,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
 		<org.springframework.security.version>3.2.1.RELEASE</org.springframework.security.version>
-		<org.hibernate.core.version>3.5.3-Final</org.hibernate.core.version>
-		<org.hibernate.annotation.version>3.5.3-Final</org.hibernate.annotation.version>
-		<org.hibernate.validator.version>4.1.0.Final</org.hibernate.validator.version>
+		<org.hibernate.core.version>4.2.14.Final</org.hibernate.core.version>
+		<org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
 		<hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
 		<slf4j.version>1.5.6</slf4j.version>
 	</properties>
@@ -181,7 +180,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
 				<version>1.0.0.Final</version>
 			</dependency>
 			<dependency>
@@ -196,11 +195,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>${org.hibernate.core.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>${org.hibernate.validator.version}</version>
 			</dependency>
@@ -208,6 +202,11 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-envers</artifactId>
 				<version>${org.hibernate.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.18.0-GA</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>

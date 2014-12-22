@@ -11,8 +11,8 @@ import org.openhds.domain.model.AsyncTask;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -43,9 +43,10 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
      */
     @Override
     public void beginNewTaskSession() {
-        Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-        session.setFlushMode(FlushMode.MANUAL);
-        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+//    	Session session = sessionFactory.getCurrentSession();
+//        //Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+//        session.setFlushMode(FlushMode.MANUAL);
+//        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
     }
 
     @Override
@@ -83,8 +84,8 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
      */
     @Override
     public void closeTaskSession() {
-        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
-        SessionFactoryUtils.closeSession(sessionHolder.getSession());
+//        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
+//        SessionFactoryUtils.closeSession(sessionHolder.getSession());
     }
 
     @Override

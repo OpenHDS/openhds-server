@@ -2,7 +2,9 @@ package org.openhds.dao.service;
 
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Session;
+import org.hibernate.metadata.ClassMetadata;
 
 /** Interface for GenericDaoImpl.
  */
@@ -80,7 +82,7 @@ public interface GenericDao {
 
     <T> List<T> findByExample(Class<T> entityType, T exampleInstance, String... excludeProperty);
 
-    <T> Map<T,T> getClassMetaData();
+    <T> Map<String,ClassMetadata> getClassMetaData();
     
     Session getSession();
 

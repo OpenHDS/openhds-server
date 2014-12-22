@@ -11,6 +11,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.metadata.ClassMetadata;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.AuditableEntity;
 import org.openhds.domain.model.Individual;
@@ -215,7 +216,7 @@ public class GenericDaoImpl implements GenericDao {
     }
     
     @SuppressWarnings("unchecked")
-    public <T> Map<T,T> getClassMetaData() {
+    public <T> Map<String,ClassMetadata> getClassMetaData() {
     	return getSession().getSessionFactory().getAllClassMetadata();
     }
 
