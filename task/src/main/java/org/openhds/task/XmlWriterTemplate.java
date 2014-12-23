@@ -13,11 +13,11 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.openhds.domain.util.CalendarAdapter;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Template for writing entities to an XML file
@@ -39,20 +39,21 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
     }
 
     @Async
+    @Transactional
     public void writeXml(TaskContext taskContext) {
         // service methods require authorization, which in turn depend on a user
         // this will use the security context of the user who starts the task
         SecurityContextHolder.setContext(taskContext.getSecurityContext());
-        if (!taskName.startsWith("Form")){
-        	asyncTaskService.beginNewTaskSession();
-        }
+//        if (!taskName.startsWith("Form")){
+//        	asyncTaskService.beginNewTaskSession();
+//        }
 
         try {
             OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
 
-            if (!taskName.startsWith("Form")){
-            	asyncTaskService.startTask(taskName);
-            }
+//            if (!taskName.startsWith("Form")){
+//            	asyncTaskService.startTask(taskName);
+//            }
 
             long itemsWritten = 0L;
             int totalCount = getTotalEntityCount(taskContext);
@@ -97,11 +98,12 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             }
         } catch (Exception e) {
             System.out.println(e);
-        } finally {
-        	 if (!taskName.startsWith("Form")){
-                asyncTaskService.closeTaskSession();
-        	 }
-        }
+        } 
+//        finally {
+//        	 if (!taskName.startsWith("Form")){
+//                asyncTaskService.closeTaskSession();
+//        	 }
+//        }
     }
 
     protected abstract T makeCopyOf(T original);

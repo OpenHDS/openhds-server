@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Calendar;
 
 
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,7 +20,8 @@ import org.openhds.domain.util.CalendarUtil;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.context.SecurityContext;
-
+import org.springframework.transaction.annotation.Transactional;
+@Transactional
 public class IndividualXmlWriterTaskTest extends AbstractXmlWriterTest {
 
     @Mock

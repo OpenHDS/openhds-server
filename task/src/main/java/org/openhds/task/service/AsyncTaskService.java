@@ -15,8 +15,6 @@ public interface AsyncTaskService {
 
     boolean taskShouldRun(String taskName);
 
-    void beginNewTaskSession();
-
     void startTask(String taskName);
 
     void clearSession();
@@ -24,8 +22,6 @@ public interface AsyncTaskService {
     void updateTaskProgress(String taskName, long itemsWritten);
 
     void finishTask(String taskName, long itemsWritten, String md5);
-
-    void closeTaskSession();
     
     List<AsyncTask> findAllAsyncTask();
 }

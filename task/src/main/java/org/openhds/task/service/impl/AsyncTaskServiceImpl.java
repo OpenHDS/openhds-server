@@ -3,7 +3,6 @@ package org.openhds.task.service.impl;
 import java.util.Calendar;
 import java.util.List;
 
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openhds.dao.service.Dao;
@@ -11,11 +10,8 @@ import org.openhds.domain.model.AsyncTask;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.hibernate4.SessionFactoryUtils;
-import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Component
 public class AsyncTaskServiceImpl implements AsyncTaskService {
@@ -36,17 +32,6 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
 
     private boolean taskShouldRun(AsyncTask task) {
         return task == null || task.getTaskEndDate() != null;
-    }
-
-    /**
-     * This code was lifted from the OpenSessionInViewFilter to properly open a session through Spring
-     */
-    @Override
-    public void beginNewTaskSession() {
-//    	Session session = sessionFactory.getCurrentSession();
-//        //Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-//        session.setFlushMode(FlushMode.MANUAL);
-//        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
     }
 
     @Override
@@ -79,18 +64,11 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
         task.setMd5Hash(md5);
     }
 
-    /**
-     * This code was lifted from the OpenSessionInViewFilter to properly close a session through Spring
-     */
-    @Override
-    public void closeTaskSession() {
-//        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
-//        SessionFactoryUtils.closeSession(sessionHolder.getSession());
-    }
-
     @Override
     public void clearSession() {
-        sessionFactory.getCurrentSession().clear();
+    	Session session = sessionFactory.getCurrentSession();
+    	session.flush();
+    	session.clear();
     }
 
     @Override
