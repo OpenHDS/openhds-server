@@ -33,7 +33,8 @@
     	</webflow:flow-execution-listeners>
 	</webflow:flow-executor>
 	
-	<bean id="hibernateFlowExecutionListener" class="org.springframework.webflow.persistence.HibernateFlowExecutionListener">
+<!-- 	<bean id="hibernateFlowExecutionListener" class="org.springframework.webflow.persistence.HibernateFlowExecutionListener"> -->
+	<bean id="hibernateFlowExecutionListener" class="org.openhds.web.util.Hibernate4FlowExecutionListener">
 		<constructor-arg ref="sessionFactory" />
 		<constructor-arg ref="transactionManager" />
 	</bean>
