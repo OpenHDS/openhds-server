@@ -26,7 +26,26 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-	</repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>	
+	</repositories>		
+	<pluginRepositories>			
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>http://repo.spring.io/release</url>
+			<snapshots>
+			<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>			
+
 
 	<!-- <distributionManagement> <repository> <uniqueVersion>false</uniqueVersion> 
 		<id>nexus</id> <name>OpenHDS Release Repository</name> <url>http://openhds.rcg.usm.maine.edu/nexus/content/repositories/releases/</url> 
@@ -48,7 +67,7 @@
 		<org.hibernate.core.version>4.2.14.Final</org.hibernate.core.version>
 		<org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
 		<hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
-		<slf4j.version>1.5.6</slf4j.version>
+		<slf4j.version>1.7.9</slf4j.version>
 	</properties>
 
 	<modules>
