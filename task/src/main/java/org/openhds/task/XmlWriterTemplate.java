@@ -44,16 +44,14 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         // service methods require authorization, which in turn depend on a user
         // this will use the security context of the user who starts the task
         SecurityContextHolder.setContext(taskContext.getSecurityContext());
-//        if (!taskName.startsWith("Form")){
-//        	asyncTaskService.beginNewTaskSession();
-//        }
+
 
         try {
             OutputStream outputStream = new FileOutputStream(taskContext.getDestinationFile());
 
-//            if (!taskName.startsWith("Form")){
-//            	asyncTaskService.startTask(taskName);
-//            }
+             if (!taskName.startsWith("Form")){
+             	asyncTaskService.startTask(taskName);
+             }
 
             long itemsWritten = 0L;
             int totalCount = getTotalEntityCount(taskContext);
@@ -81,8 +79,8 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
                 // TODO: Is there a better way of handling this? Stateless
                 // Sessions?
                 if (!taskName.startsWith("Form")){
-                asyncTaskService.clearSession();
-                asyncTaskService.updateTaskProgress(taskName, itemsWritten);
+                	asyncTaskService.clearSession();
+                	asyncTaskService.updateTaskProgress(taskName, itemsWritten);
                 }
             }
 
@@ -99,11 +97,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
         } catch (Exception e) {
             System.out.println(e);
         } 
-//        finally {
-//        	 if (!taskName.startsWith("Form")){
-//                asyncTaskService.closeTaskSession();
-//        	 }
-//        }
+
     }
 
     protected abstract T makeCopyOf(T original);
