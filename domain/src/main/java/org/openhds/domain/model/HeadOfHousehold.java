@@ -1,26 +1,19 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,12 +21,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openhds.domain.annotations.Description;
-import org.openhds.domain.constraint.CheckDeathDateGreaterThanBirthDate;
-import org.openhds.domain.constraint.CheckEntityNotVoided;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
-import org.openhds.domain.constraint.CheckIndividualNotUnknown;
 import org.openhds.domain.constraint.Searchable;
-import org.openhds.domain.model.wrappers.Individuals;
 
 
 @Description(description = "A Death represents the final event than an Individual can have within the system. It consists of the Individual who has passed on, the Visit associated with the Death, as well as descriptive information about the occurrence, cause, and date of the death. If the Individual had any Residencies, Relationships, or Memberships then they will become closed.")

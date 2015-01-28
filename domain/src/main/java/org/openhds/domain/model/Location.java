@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import javax.persistence.CascadeType;
+
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.ExtensionStringConstraint;
@@ -43,8 +43,9 @@ public class Location
     @Searchable
     @Description(description = "Name of the location.")
     private String locationName;
-    @ManyToOne
-    @Cascade(CascadeType.SAVE_UPDATE)
+   // @ManyToOne
+    //@Cascade(CascadeType.SAVE_UPDATE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private LocationHierarchy locationLevel = new LocationHierarchy();
     @ExtensionStringConstraint(constraint = "locationTypeConstraint", message = "Invalid Value for location type", allowNull = true)
     @Description(description = "The type of Location.")
