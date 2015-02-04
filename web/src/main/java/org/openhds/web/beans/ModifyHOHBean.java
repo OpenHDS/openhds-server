@@ -3,8 +3,10 @@ package org.openhds.web.beans;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.openhds.dao.service.GenericDao;
 import org.openhds.dao.service.GenericDao.ValueProperty;
 import org.openhds.controller.exception.ConstraintViolations;
@@ -232,8 +234,15 @@ public class ModifyHOHBean implements Serializable {
 
         group = genericDao.findByProperty(SocialGroup.class, "extId", group.getExtId(), true);             
         membershipsOfSocialGroup = genericDao.findListByMultiProperty(Membership.class, getValueProperty("socialGroup", group), 
-        																				getValueProperty("deleted", false));       
-        return membershipsOfSocialGroup;
+        																				getValueProperty("deleted", false));
+        
+        List<Membership> validMemberships = new ArrayList<Membership>();
+        for (Membership item : membershipsOfSocialGroup) {
+			if (item.getEndDate() == null)
+				validMemberships.add(item);
+		}
+        
+        return validMemberships;
     }
 		
 	/**
