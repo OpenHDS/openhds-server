@@ -21,7 +21,7 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     
     public void setLocation(Location location){
     	this.location = location;
-    	String extId = location.getExtId();
+    //	String extId = location.getExtId();
     }
 
     public IndividualCrudImpl(Class<Individual> entityClass) {

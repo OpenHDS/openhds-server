@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.util.CalendarUtil;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -26,7 +26,6 @@ import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 import org.openhds.controller.service.DeathService;
-import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.InMigrationService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
@@ -54,7 +53,7 @@ public class ValidationRoutineBean {
 	InMigrationService inmigrationService;
 	ResidencyService residencyService;
 	GenericDao genericDao;
-	EntityValidationService entityValidator;
+	EntityValidationService<?> entityValidator;
 	SitePropertiesService properties;
 	IndividualGenerator indivGenerator;
 	LocationGenerator locGenerator;
@@ -69,7 +68,6 @@ public class ValidationRoutineBean {
 		run = false;
 	}
 		
-	@SuppressWarnings("unchecked")
 	public void validateIndividuals() throws ConstraintViolations, SQLException {
 		setup();
 		run = true;
@@ -142,7 +140,6 @@ public class ValidationRoutineBean {
 			errors.put("socialgroup", list);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void validateRelationships() {
 		setup();
 		run = true;	
@@ -180,7 +177,7 @@ public class ValidationRoutineBean {
 			errors.put("relationship", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	public void validateMemberships() {
 		setup();
 		run = true;	
@@ -218,7 +215,7 @@ public class ValidationRoutineBean {
 			errors.put("membership", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void validatePregnancyOutcomes() {
 		setup();
 		run = true;	
@@ -258,7 +255,7 @@ public class ValidationRoutineBean {
 			errors.put("pregnancyOutcome", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void validatePregnancyObservations() {
 		setup();
 		run = true;	
@@ -297,7 +294,7 @@ public class ValidationRoutineBean {
 			errors.put("pregnancyObservation", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void validateInMigrations() {
 		setup();
 		run = true;	
@@ -336,7 +333,7 @@ public class ValidationRoutineBean {
 			errors.put("inMigration", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void validateOutMigrations() {
 		setup();
 		run = true;	
@@ -375,7 +372,6 @@ public class ValidationRoutineBean {
 			errors.put("outMigration", list);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void validateResidencies() {
 		setup();
 		run = true;	
@@ -425,7 +421,7 @@ public class ValidationRoutineBean {
 			errors.put("visit", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void validateDeaths() {
 		setup();
 		run = true;	
@@ -462,7 +458,7 @@ public class ValidationRoutineBean {
 			errors.put("death", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private List<String> validateLocation(Location loc) {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -494,7 +490,7 @@ public class ValidationRoutineBean {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private List<String> validateVisit(Visit visit) {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -529,7 +525,7 @@ public class ValidationRoutineBean {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private List<String> validateSocialGroup(SocialGroup sg) {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -684,9 +680,8 @@ public class ValidationRoutineBean {
 		this.properties = properties;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List getErrorKeys() {
-		return new ArrayList(errors.entrySet());
+	public List<?> getErrorKeys() {
+		return new ArrayList<Object>(errors.entrySet());
 	}
 	
 	public Map<String, List<String>> getErrors() {
@@ -701,11 +696,11 @@ public class ValidationRoutineBean {
 		return run;
 	}
 	
-	public EntityValidationService getEntityValidator() {
+	public EntityValidationService<?> getEntityValidator() {
 		return entityValidator;
 	}
 
-	public void setEntityValidator(EntityValidationService entityValidator) {
+	public void setEntityValidator(EntityValidationService<?> entityValidator) {
 		this.entityValidator = entityValidator;
 	}
 	
