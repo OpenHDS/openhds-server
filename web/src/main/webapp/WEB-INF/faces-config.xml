@@ -17,7 +17,8 @@
 	   <resource-bundle>
 		<base-name>message</base-name>
 		<var>msg</var>
-	   </resource-bundle>		
+	   </resource-bundle>	
+	   <message-bundle>message</message-bundle>	
 	</application>
 	
 	<navigation-rule>

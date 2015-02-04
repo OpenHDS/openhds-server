@@ -74,9 +74,29 @@ public class DeathHOHBean implements Serializable {
 			"The Group Head of the Social Group specified has 0 members in at least one of the Social Groups in which they are Head of. The Individual cannot have a Death event since a successor cannot be determined. To create a Death event for the Social Group Head, either appoint a new Head of Social Group or add more Memberships.");
 			return false;
 		}
+		
+		autoSetSuccessor();
 				
 		return true;	
 	}
+	
+	/**
+	 * Checks if the current group we're working on contains only one membership and if this membership belongs to the Head of Household.
+	 * If it does, sets the successor to the current HoH, since there's nobody else.
+	 * 
+	 */
+	private void autoSetSuccessor() {
+		if(group != null && group.getMemberships().size() == 1){
+			for (Iterator<Membership> it = group.getMemberships().iterator(); it.hasNext(); ) {
+				Membership membership = it.next();
+				if(membership.getIndividual() != null && membership.getIndividual().getExtId().equalsIgnoreCase(group.getGroupHead().getExtId())){
+					setSuccessor(group.getGroupHead().getUuid());
+					//Initialize lists
+					getIndividualsOfSocialGroup();
+				}
+			}
+		}
+	}	
 	
 	/**
 	 * Reinitialize membership list

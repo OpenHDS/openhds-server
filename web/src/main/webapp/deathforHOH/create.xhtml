@@ -84,12 +84,12 @@
 				</tr>
 				<tr>
 	                <td><h:outputText value="#{msg.deathPlace}:"/></td>
-	                <td><h:inputText id="deathPlace" value="#{deathCrud.item.deathPlace}" converter="#{defaultConverter}" disabled="#{flowScope.deathIsSet}"/></td>
+	                <td><h:inputText id="deathPlace" value="#{deathCrud.item.deathPlace}" required="true" converter="#{defaultConverter}" disabled="#{flowScope.deathIsSet}"/></td>
 	                <td><h:message for="deathPlace" errorClass="error" errorStyle="color: red" infoStyle="color: green"/></td>
 				</tr>
 				<tr>
 	                <td><h:outputText value="#{msg.deathCause}: "/></td>
-	                <td><h:inputText id="deathCause" value="#{deathCrud.item.deathCause}" converter="#{defaultConverter}" disabled="#{flowScope.deathIsSet}"/></td>
+	                <td><h:inputText id="deathCause" value="#{deathCrud.item.deathCause}" required="true" converter="#{defaultConverter}" disabled="#{flowScope.deathIsSet}"/></td>
 	                <td><h:message for="deathCause" errorClass="error" errorStyle="color: red" infoStyle="color: green"/></td>
 				</tr>
 				<tr>
@@ -114,7 +114,7 @@
 			</c:if>
 		</table>
 	
-		<c:if test="#{flowScope.step >= 1 and flowScope.deathHOH}">      
+		<c:if test="#{flowScope.step >= 1 and flowScope.deathHOH and (deathHOHBean.selectedSuccessor.extId != deathHOHBean.socialGroup.groupHead.extId)}">      
 	 		<h4>#{msg.deathHOHSelectSuccessor}: #{deathHOHBean.socialGroup.extId} </h4>		
 	       	<table class="base-table" width="50%">
 	           	<tr class=",alt">
@@ -130,17 +130,17 @@
 	                           	<f:facet name="header">
 	                               	<h:outputText value="#{msg.individualId}" />
 	                            	</f:facet>
-	                             	<h:outputText value="#{indiv.extId}" />
+	                             	<h:outputText value="#{indiv.extId}" rendered="#{indiv.extId != deathHOHBean.socialGroup.groupHead.extId}" />
 	                           </h:column>
 	                           <h:column>  
 	                               <f:facet name="header">
 	                               	<h:outputText value="#{msg.individualFullName}" />
 	                            	</f:facet>
-	                             	<h:outputText value=" #{indiv.firstName} #{indiv.lastName}" />
+	                             	<h:outputText value="#{indiv.firstName} #{indiv.lastName}" rendered="#{indiv.extId != deathHOHBean.socialGroup.groupHead.extId}" />
 	                           </h:column>
 	                           <h:column>
 								<f:facet name="header"/>		                       	
-								<h:commandLink immediate="true" value="#{msg.lblSelect}" action="setIndividual" rendered="#{deathHOHBean.membershipListSize == 0}">
+								<h:commandLink immediate="true" value="#{msg.lblSelect}" action="setIndividual" rendered="#{deathHOHBean.membershipListSize == 0 and indiv.extId != deathHOHBean.socialGroup.groupHead.extId}">
 									<f:param name="indivId" value="#{indiv.uuid}" />
 								</h:commandLink>
 							</h:column>
@@ -153,7 +153,7 @@
 	           </table>  
 	        </c:if>              
               
-	         <c:if test="#{deathHOHBean.selectedSuccessor != null}">
+	         <c:if test="#{deathHOHBean.selectedSuccessor != null and (deathHOHBean.selectedSuccessor.extId != deathHOHBean.socialGroup.groupHead.extId)}">
 	    		<h4>#{msg.deathHOHCreateMembership}: #{deathHOHBean.selectedSuccessor.extId}</h4>  
 				<table class="base-table" width="50%" >
 	          		<tr class=",alt">
@@ -175,7 +175,7 @@
 	                            	<f:facet name="header">
 	                                	<h:outputText value="#{msg.individualFullName}" />
 	                                </f:facet>
-	                            	<h:outputText value="#{mem.individual}" />
+	                            	<h:outputText value="#{mem.individual.firstName} #{mem.individual.lastName}" />
 	                            </h:column>
 	                          	<h:column>
 	                            	<f:facet name="header">

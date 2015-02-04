@@ -195,7 +195,7 @@ public class DeathServiceImpl implements DeathService {
     				mem.setEndType("DHH");    				
     				entityService.save(mem);
     			}
-    			if (mem.getIndividual().getExtId()==mem.getSocialGroup().getGroupHead().getExtId()){
+    			if (mem.getIndividual().getExtId()==mem.getSocialGroup().getGroupHead().getExtId() && mem.getIndividual().getExtId() != death.getIndividual().getExtId()){
     				Membership memNew = new Membership();
 					memNew.setDeleted(false);
     				memNew.setbIsToA("1");
