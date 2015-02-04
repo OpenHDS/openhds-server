@@ -6,11 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
 import org.openhds.controller.exception.AuthorizationException;
 import org.openhds.controller.exception.ConstraintViolations;
-import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.Extension;
 import org.openhds.domain.model.Visit;

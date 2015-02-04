@@ -16,7 +16,7 @@ public class CheckStartDateGreaterThanBirthDateImpl implements ConstraintValidat
             ConstraintValidatorContext arg1) {
 
         Calendar startDate = arg0.getStartDate();
-        java.util.Date sDate = startDate.getTime();
+   //     java.util.Date sDate = startDate.getTime();
   //      String sDateString = sDate.toString();
         Calendar dob = arg0.getIndividual().getDob();
 

@@ -215,7 +215,6 @@ public class GenericDaoImpl implements GenericDao {
         return crit.list();
     }
     
-    @SuppressWarnings("unchecked")
     public <T> Map<String,ClassMetadata> getClassMetaData() {
     	return getSession().getSessionFactory().getAllClassMetadata();
     }
