@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			throws ConstraintViolations {
 		
 		System.out.println("In evaluateHeadOfHousehold()");
-		SocialGroup sg = getSocialGroup(entityItem);
+		SocialGroup sg = entityItem.getSocialGroup(); //getSocialGroup(entityItem);
 		Individual oldHoh = getIndividualByExtId(entityItem.getOldHoh().getExtId());
 		
 		System.out.println("With old hoh-id: " + entityItem.getOldHoh().getExtId()
@@ -148,7 +149,8 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			Membership membership = memberships.iterator().next();
 			String socialGroupExtId = membership.getSocialGroup().getExtId();
 			try{
-				SocialGroup socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId, "Could not find socialGroup");
+				//SocialGroup socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId, "Could not find socialGroup");
+				SocialGroup socialGroup = getSocialGroupFromExtId(socialGroupExtId);
 				sg = socialGroup;
 			}
 			catch(Exception e){
@@ -157,10 +159,29 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			}
 		}
 		else{
-			System.out.println("Found no memberships !");
-			throw new ConstraintViolations("Found no memberships !");
+			String socialGroupExtId = entityItem.getSocialGroup().getExtId();
+			SocialGroup socialGroup = getSocialGroupFromExtId(socialGroupExtId);
+			Individual deadIndividual = entityItem.getDeath().getIndividual();
+			if(socialGroup.getGroupHead().getExtId().equalsIgnoreCase(deadIndividual.getExtId()) && socialGroup.getMemberships().size() == 1){
+				System.out.println("No memberships needed if dead individual ");
+			}
+			else{
+				System.out.println("Found no memberships !");
+				throw new ConstraintViolations("Found no memberships !");
+			}
 		}
 		return sg;
+	}
+	
+	private SocialGroup getSocialGroupFromExtId(String socialGroupExtId){
+		SocialGroup socialGroup = null;
+		try{
+			socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId, "Could not find socialGroup");
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		return socialGroup;
 	}
 	
 	private boolean isHeadOfHousehold(String individualExtId, Set<Membership> memberships){
@@ -273,22 +294,18 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		checkCorrespondingMemberships(new ArrayList<Membership>(newMemberships), oldMemberships);
 				
 		FieldWorker fw = entityItem.getCollectedBy();
+		Death death = entityItem.getDeath();
 				
 		try{
 			for(Membership m: newMemberships){
-				Calendar calendar = new GregorianCalendar(2014,10,2);
-				m.setStartDate(calendar);
-				m.setEndType("NA");
+				m.setStartDate(death.getDeathDate());
+				m.setEndType(siteProperties.getNotApplicableCode());
 				m.setCollectedBy(fw);
-				m.setStartType("ENU"); // Is this correct ?
-				
-				Individual i = getIndividualByExtId(m.getIndividual().getExtId());
-				m.setIndividual(i);				
-//				System.out.println("New membership " + " DOB: " + i.getDob() + ", Startdate: " + calendar);
-			}
-						
-			Death death = entityItem.getDeath();			
+				m.setStartType(siteProperties.getEnumerationCode()); // Is this correct ?
+				m.setIndividual(getIndividualByExtId(m.getIndividual().getExtId()));				
+			}			
 			
+			//Package everything so we can call the existing method which handles the HoH change
 			SocialGroup group = sg; 
 			List<SocialGroup> socialGroups = new ArrayList<SocialGroup>();
 			socialGroups.add(sg);

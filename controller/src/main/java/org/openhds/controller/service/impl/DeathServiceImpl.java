@@ -40,7 +40,7 @@ public class DeathServiceImpl implements DeathService {
 	public Death evaluateDeath(Death entityItem) throws ConstraintViolations {
 		
 		if (!checkDuplicateIndividual(entityItem.getIndividual())) 
-    		throw new ConstraintViolations("The Individual Id specified already exists.");	
+    		throw new ConstraintViolations("A Death Event for the Individual with specified ExtId already exists!");	
 		if (!checkHeadOfSocialGroup(entityItem.getIndividual())) 
     		throw new ConstraintViolations("The Individual specified is a Head of a Social Group. If you wish to create a Death event for this Individual, go to the Utility Menu and create a new Death event.");	
 		
