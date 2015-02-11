@@ -15,10 +15,10 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public GeneralSettings getSettings() {
 		GeneralSettings gs = new GeneralSettings();
-		int minimumAgeOfParents = siteProperties.getMinimumAgeOfMarriage();
-		int minimumAgeOfHouseholdHead = siteProperties.getMinimumAgeOfMarriage();
+		int minimumAgeOfParents = siteProperties.getMinimumAgeOfParents();
+		int minimumAgeOfHouseholdHead = siteProperties.getMinimumAgeOfHouseholdHead();
 		int minMarriageAge = siteProperties.getMinimumAgeOfMarriage();
-		int minimumAgeOfPregnancy = siteProperties.getMinimumAgeOfMarriage();
+		int minimumAgeOfPregnancy = siteProperties.getMinimumAgeOfPregnancy();
 		
 		gs.setMinimumAgeOfParents(minimumAgeOfParents);
 		gs.setMinimumAgeOfHouseholdHead(minimumAgeOfHouseholdHead);
