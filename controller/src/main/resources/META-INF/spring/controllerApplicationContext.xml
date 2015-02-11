@@ -189,6 +189,14 @@
 	    </property>
     </bean>
     
+    <bean id="settingsService" parent="baseServiceBean">
+    	<property name="target">
+    		<bean class="org.openhds.controller.service.impl.SettingsServiceImpl">
+    			<constructor-arg ref="siteProperties" />
+    		</bean>
+    	</property>
+    </bean>
+    
     <bean id="membershipService" parent="baseServiceBean">
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.MembershipServiceImpl">
