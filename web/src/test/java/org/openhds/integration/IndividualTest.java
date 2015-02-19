@@ -48,7 +48,7 @@ public class IndividualTest extends AbstractTransactionalJUnit4SpringContextTest
 	 @Test
 	 public void testIndividualCreate() {
 		 
-		 /*currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 FieldWorker fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
 	     Individual unknownIndiv = genericDao.findByProperty(Individual.class, "extId", "UNK", false);
@@ -60,12 +60,13 @@ public class IndividualTest extends AbstractTransactionalJUnit4SpringContextTest
 	     mother.setDobAspect("1");
 	     mother.setMother(unknownIndiv);
 	     mother.setFather(unknownIndiv);
+	     mother.setExtId("NJA000001001");
 	     mother.setDob(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1980));
 	     mother.setCollectedBy(fieldWorker);
 	     individualCrud.setItem(mother);
 	     individualCrud.create();
 	     
 	     Individual savedIndividual = genericDao.findByProperty(Individual.class, "extId", mother.getExtId(), false);
-		 assertNotNull(savedIndividual);*/
+		 assertNotNull(savedIndividual);
 	 }
 }

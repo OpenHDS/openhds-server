@@ -68,7 +68,7 @@ public class EAVTest {
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-		 location = genericDao.findByProperty(Location.class, "extId", "NJA001");
+		 location = genericDao.findByProperty(Location.class, "extId", "NJA000001");
 	 }
 	 
 	 @Test
@@ -105,7 +105,7 @@ public class EAVTest {
 		 visitCrud.create();
 		 
 		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 //assertNotNull(savedVisit);
+		 assertNotNull(savedVisit);
 	 }
 	 
 	 private ClassExtension createAttribute() {

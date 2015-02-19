@@ -1,7 +1,9 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.assertNotNull;
+
 import java.util.Calendar;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
+import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Visit;
@@ -69,8 +72,22 @@ public class OutMigrationTest {
 	 
 	 @Test
 	 public void testOutMigrationCreate() {
+		 assertNotNull(fieldWorker);
+		 assertNotNull(individual);
+		 assertNotNull(visit);
 		 
-	
+		 OutMigration outMigration = new OutMigration();
+		 outMigration.setIndividual(individual);
+		 outMigration.setCollectedBy(fieldWorker);
+		 outMigration.setRecordedDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+		 outMigration.setVisit(visit);
+		 outMigration.setReason("reason");
+		 
+		 outmigrationCrud.setItem(outMigration);
+		 outmigrationCrud.create();
+		 
+		 OutMigration savedOutMig = genericDao.findByProperty(OutMigration.class, "individual", individual, false);
+		 assertNotNull(savedOutMig); 
 	 }
 }
 

@@ -1,8 +1,10 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,7 @@ import org.openhds.controller.service.PregnancyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
+import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.util.CalendarUtil;
@@ -72,8 +75,23 @@ public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringC
 	 
 	 @Test
 	 public void testPregnancyObservationCreate() {
-		 		 
-	
+		 assertNotNull(mother);
+		 assertNotNull(fieldWorker);
+		 assertNotNull(visit);
+		 
+		 PregnancyObservation pregObservation = new PregnancyObservation();
+		 pregObservation.setCollectedBy(fieldWorker);
+		 pregObservation.setExpectedDeliveryDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+		 pregObservation.setMother(mother);
+		 pregObservation.setVisit(visit);
+		 pregObservation.setRecordedDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+		 
+		 pregnancyObservationCrud.setItem(pregObservation);
+		 pregnancyObservationCrud.create();
+		 
+		 PregnancyObservation savedPregnancyObservation = genericDao.findByProperty(PregnancyObservation.class, "mother", mother, false);
+		 assertNotNull(savedPregnancyObservation); 
+		 
 	 }
 	 	 
 	 @Test

@@ -87,7 +87,7 @@ public class InMigrationTest {
 		 inmigrationCrud.create();
 	     
 	     InMigration savedInMig = genericDao.findByProperty(InMigration.class, "individual", individual, false);
-		 //assertNotNull(savedInMig);
+		 assertNotNull(savedInMig);
 	 }
 }
 

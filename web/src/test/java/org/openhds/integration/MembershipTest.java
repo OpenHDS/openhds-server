@@ -71,7 +71,7 @@ public class MembershipTest extends AbstractTransactionalJUnit4SpringContextTest
 	 @Test
 	 public void testMembershipCreate() {
 		 
-	   /*  Membership membership = new Membership();
+	     Membership membership = new Membership();
 	     membership.setSocialGroup(socialGroup);
 	     membership.setCollectedBy(fieldWorker);
 	     membership.setStartType(siteProperties.getBirthCode());
@@ -84,13 +84,13 @@ public class MembershipTest extends AbstractTransactionalJUnit4SpringContextTest
 	     membershipCrud.create();
 	     
 	     Individual savedIndividual = genericDao.findByProperty(Individual.class, "extId", individual.getExtId(), false);
-		 assertNotNull(savedIndividual);*/
+		 assertNotNull(savedIndividual);
 	 }
 	 
 	 @Test
 	 public void testMembershipDeath() {
 		 
-		 /*Individual indiv = genericDao.findByProperty(Individual.class, "extId", "CBLA1H", false);
+		 Individual indiv = genericDao.findByProperty(Individual.class, "extId", "CBLA1H", false);
 		 
 		 Membership membership = new Membership();
 	     membership.setSocialGroup(socialGroup);
@@ -104,6 +104,6 @@ public class MembershipTest extends AbstractTransactionalJUnit4SpringContextTest
 	     membershipCrud.setItem(membership);
 	     assertNull(membershipCrud.create());
 	     
-	     assertTrue(jsfServiceMock.getErrors().size() > 0);*/
+	     assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }
 }

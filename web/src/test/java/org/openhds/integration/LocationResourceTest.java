@@ -67,7 +67,7 @@ public class LocationResourceTest {
 		.andExpect(xpath("/locations/location/collectedBy/extId").string("FWEK1D"))
 		.andExpect(xpath("/locations/location/accuracy").string(""))
 		.andExpect(xpath("/locations/location/altitude").string(""))
-		.andExpect(xpath("/locations/location/extId").string("NJA001"))
+		.andExpect(xpath("/locations/location/extId").string("NJA000001"))
 		.andExpect(xpath("/locations/location/latitude").string(""))
 		.andExpect(xpath("/locations/location/locationLevel/extId").string("HIERARCHY_ROOT"))
 		.andExpect(xpath("/locations/location/locationName").string("House 3"))
@@ -77,7 +77,7 @@ public class LocationResourceTest {
 
 	@Test
 	public void testGetLocationByExtId() throws Exception {
-		String locationExtId = "NJA001";
+		String locationExtId = "NJA000001";
 
 		mockMvc.perform(get("/locations/{extId}", locationExtId).session(session))
 		.andExpect(status().isOk())
@@ -85,7 +85,7 @@ public class LocationResourceTest {
 		.andExpect(xpath("/location/collectedBy/extId").string("FWEK1D"))
 		.andExpect(xpath("/location/accuracy").string(""))
 		.andExpect(xpath("/location/altitude").string(""))
-		.andExpect(xpath("/location/extId").string("NJA001"))
+		.andExpect(xpath("/location/extId").string("NJA000001"))
 		.andExpect(xpath("/location/latitude").string(""))
 		.andExpect(xpath("/location/locationLevel/extId").string("HIERARCHY_ROOT"))
 		.andExpect(xpath("/location/locationName").string("House 3"))
