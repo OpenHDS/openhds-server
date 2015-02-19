@@ -66,7 +66,7 @@ public class InvalidIndividualsController implements InvalidIndividualsService{
 		    String query = "SELECT i.extId AS InvididualId, l.extId AS LocationId, r.startDate FROM individual i, location l, residency r " +
 		    		"WHERE r.individual_uuid=i.uuid AND " +
 		    		"l.uuid=r.location_uuid AND i.uuid NOT IN "+ 
-		    		"(SELECT individual_uuid FROM membership) AND r.endDate IS null";
+		    		"(SELECT individual_uuid FROM membership where endDate is null and deleted=0) AND r.endDate IS null";
 		    Statement st = con.createStatement();
 		    rs = st.executeQuery(query);
 
