@@ -3,8 +3,6 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
-import java.util.List;
-
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +12,17 @@ import org.openhds.controller.service.PregnancyService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.PregnancyObservation;
 import org.openhds.domain.model.Visit;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.domain.util.CalendarUtil;
 import org.openhds.integration.util.JsfServiceMock;
+import org.openhds.web.crud.impl.IndividualCrudImpl;
 import org.openhds.web.crud.impl.PregnancyObservationCrudImpl;
+import org.openhds.web.crud.impl.PregnancyOutcomeCrudImpl;
+import org.openhds.web.crud.impl.ResidencyCrudImpl;
 import org.openhds.web.service.JsfService;
+import org.openhds.webservice.FieldBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,15 +33,30 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration("/testContext.xml")
-public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringContextTests  {
 		 
 	 @Autowired
 	 @Qualifier("pregnancyObservationCrud")
 	 PregnancyObservationCrudImpl pregnancyObservationCrud;
 	 
 	 @Autowired
+	 @Qualifier("pregnancyOutcomeCrud")
+	 PregnancyOutcomeCrudImpl pregnancyOutcomeCrud;
+	 
+	 @Autowired
+	 @Qualifier("residencyCrud")
+	 ResidencyCrudImpl residencyCrud;	 
+	 
+	 @Autowired
+	 @Qualifier("individualCrud")
+	 IndividualCrudImpl individualCrud;	 
+	 
+	 @Autowired
 	 @Qualifier("pregnancyService")
 	 PregnancyService pregnancyService;
+	 
+	 @Autowired
+	 SitePropertiesService siteProperties;	 
 	 	 
 	 @Autowired
 	 SessionFactory sessionFactory;
@@ -49,6 +66,9 @@ public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringC
 	 
 	 @Autowired
 	 CalendarUtil calendarUtil;
+	 
+	 @Autowired
+	 FieldBuilder fieldBuilder;
 	 
 	 @Autowired
 	 JsfService jsfService;
@@ -90,13 +110,30 @@ public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringC
 		 pregnancyObservationCrud.create();
 		 
 		 PregnancyObservation savedPregnancyObservation = genericDao.findByProperty(PregnancyObservation.class, "mother", mother, false);
-		 assertNotNull(savedPregnancyObservation); 
-		 
+		 assertNotNull(savedPregnancyObservation); 	 
 	 }
 	 	 
 	 @Test
 	 public void testPregnancyOutcomeInvalidAge() {
+		 assertNotNull(mother);
+		 assertNotNull(fieldWorker);
+		 assertNotNull(visit);
 		 
+		 //Mother birthdate is 1959-12-19, so we try to provoke an error by setting the delivery date too near the DoB
+		 PregnancyObservation pregObservation = new PregnancyObservation();
+		 pregObservation.setCollectedBy(fieldWorker);
+		 pregObservation.setExpectedDeliveryDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1960));
+		 pregObservation.setMother(mother);
+		 pregObservation.setVisit(visit);
+		 pregObservation.setRecordedDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 
+		 pregnancyObservationCrud.setItem(pregObservation);
+		 //This should result in an ConstraintViolation in PregnancyObservationCrudImpl::create()
+		 //org.openhds.controller.exception.ConstraintViolations: The Mother specified is younger than the minimum age required to have a Pregnancy Observation.
+		 pregnancyObservationCrud.create();
+		 
+		 PregnancyObservation savedPregnancyObservation = genericDao.findByProperty(PregnancyObservation.class, "mother", mother, false);
+		 assertNull(savedPregnancyObservation); 
+		 assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }
 }

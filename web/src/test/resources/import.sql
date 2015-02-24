@@ -69,5 +69,9 @@ INSERT INTO socialgroup(uuid, extId, deleted, insertdate, groupName, collectedby
 
 INSERT INTO residency(uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('residency_uuid1','LOCATION1','Individual5','1965-12-19','ENU',NULL,NULL,'FieldWorker1',false,'P','1990-11-20','User 1')
 
+INSERT INTO residency(uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('residency_uuid2','LOCATION1','Individual2','1959-12-19','ENU',NULL,NULL,'FieldWorker1',false,'P','1990-11-20','User 1')
+
 INSERT INTO inmigration(uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Inmigration1',false,'2012-04-17','2011-01-05',NULL,NULL,'P',1,1,'INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Individual5','residency_uuid1','visit_uuid1')
+
+INSERT INTO inmigration(uuid,deleted,insertDate,recordedDate,voidDate,voidReason,status,origin,reason,migType,insertBy_uuid,voidBy_uuid,collectedBy_uuid,individual_uuid,residency_uuid,visit_uuid) VALUES ('Inmigration2',false,'2012-04-17','2011-01-05',NULL,NULL,'P',1,1,'INTERNAL_INMIGRATION','User 1',NULL,'FieldWorker1','Individual2','residency_uuid2','visit_uuid1')
 

@@ -1,7 +1,9 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,7 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 	 FieldWorker fieldWorker;
 	 Individual indivA; 
 	 Individual indivB;
+	 Individual indivDead;
 
 	 @Before
 	 public void setUp() {
@@ -64,23 +67,83 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
 	     indivA = genericDao.findByProperty(Individual.class, "extId", "NBAS1I", false);
 	     indivB = genericDao.findByProperty(Individual.class, "extId", "BJOH1J", false);
+	     indivDead = genericDao.findByProperty(Individual.class, "extId", "CBLA1H", false);
+	     
+	     assertNotNull(fieldWorker);
+	     assertNotNull(indivA);
+	     assertNotNull(indivB);
+	     assertNotNull(indivDead);
 	 }
 	 	 
 	 @Test
 	 public void testRelationshipCreate() {
-		 	     
+		 Relationship relationship = new Relationship();
+		 relationship.setaIsToB("1");
+		 relationship.setCollectedBy(fieldWorker);
+		 relationship.setEndType(siteProperties.getNotApplicableCode());
+		 relationship.setIndividualA(indivA);
+		 relationship.setIndividualB(indivB);
+		 relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 	   
+		 relationshipCrud.setItem(relationship);
+		 relationshipCrud.create();
+		 
+		 Relationship savedRelationship = genericDao.findByProperty(Relationship.class, "individualA", indivA, false);
+		 assertNotNull(savedRelationship);
 	 }
 	 
 	 @Test
 	 public void testDuplicateRelationship() {
-	
+		 Relationship relationship1 = new Relationship();
+		 relationship1.setaIsToB("3");
+		 relationship1.setCollectedBy(fieldWorker);
+		 relationship1.setEndType(siteProperties.getNotApplicableCode());
+		 relationship1.setIndividualA(indivA);
+		 relationship1.setIndividualB(indivB);
+		 relationship1.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+	   
+		 relationshipCrud.setItem(relationship1);
+		 relationshipCrud.create();
+		 
+		 Relationship relationship2 = new Relationship();
+		 relationship2.setaIsToB("3");
+		 relationship2.setCollectedBy(fieldWorker);
+		 relationship2.setEndType(siteProperties.getNotApplicableCode());
+		 relationship2.setIndividualA(indivA);
+		 relationship2.setIndividualB(indivB);
+		 relationship2.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+	   
+		 relationshipCrud.setItem(relationship2);
+		 //This should not go through due to ConstraintViolation:
+		 //org.openhds.controller.exception.ConstraintViolations: An Individual cannot have multiple relationships with the same person.
+		 relationshipCrud.create();
+		 
+		 Relationship savedRelationship = genericDao.findByProperty(Relationship.class, "individualA", indivA, false);
+		 assertNotNull(savedRelationship);		 
+		 assertTrue(jsfServiceMock.getErrors().size() > 0);
+		 
+		 for(String s: jsfServiceMock.getErrors())
+			 System.out.println("CV: " + s);
 	 }
 	 
 	 @Test
 	 public void testDeathInRelationship() {
+		 Relationship relationship = new Relationship();
+		 relationship.setaIsToB("3");
+		 relationship.setCollectedBy(fieldWorker);
+		 relationship.setEndType(siteProperties.getNotApplicableCode());
+		 relationship.setIndividualA(indivDead);
+		 relationship.setIndividualB(indivB);
+		 relationship.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+	   
+		 relationshipCrud.setItem(relationship);
+		 //This should trigger a ConstraintViolation:
+		 //A Relationship cannot be created for an Individual who has a Death event.
+		 relationshipCrud.create();
 		 
-		
+		 Relationship savedRelationship = genericDao.findByProperty(Relationship.class, "individualA", indivDead, false);
+		 assertNull(savedRelationship);
+		 assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }
 	 
 	 

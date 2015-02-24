@@ -2,10 +2,9 @@ package org.openhds.integration;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,6 +97,7 @@ public class PregnancyOutcomeTest extends AbstractTransactionalJUnit4SpringConte
 	 Location location;
 	 LocationHierarchy item;
 	 Visit visit;
+	 Residency residency;
 	 JsfServiceMock jsfServiceMock;
 	 
      @Before
@@ -110,6 +110,7 @@ public class PregnancyOutcomeTest extends AbstractTransactionalJUnit4SpringConte
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
 		 unknownIndiv = genericDao.findByProperty(Individual.class, "extId", "UNK", false);
 		 socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", "MBI1", false);
+		 
 		 		 
 		 createLocationHierarchy();
 		 createLocation();
@@ -121,19 +122,85 @@ public class PregnancyOutcomeTest extends AbstractTransactionalJUnit4SpringConte
 	 
 	 @Test
 	 public void testPregnancyOutcomeCreate() {
-		 		 
-		
+		 assertNotNull(mother);
+		 assertNotNull(fieldWorker);
+		 assertNotNull(visit);
+		 assertNotNull(residency);
+		 	 
+		 Individual child = new Individual();
+		 child.setDob(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+		 child.setExtId("NBAS3I");
+		 child.setFirstName("Firstname");
+		 child.setLastName("LastName");
+		 child.setGender(siteProperties.getFemaleCode());
+		 child.setMother(mother);
+		 child.setFather(unknownIndiv);
+		 child.setCollectedBy(fieldWorker);
+		 
+		 List<Outcome> outcomes = new ArrayList<Outcome>();
+		 Outcome outcome = new Outcome();
+		 outcome.setChild(child);
+		 outcome.setType(siteProperties.getMiscarriageCode());
+		 
+		 outcomes.add(outcome);
+		 
+		 PregnancyOutcome pregOutcome = new PregnancyOutcome();
+		 pregOutcome.setCollectedBy(fieldWorker);
+		 pregOutcome.setMother(mother);
+		 pregOutcome.setFather(unknownIndiv);
+		 pregOutcome.setOutcomeDate(calendarUtil.getCalendar(Calendar.JANUARY, 2, 1990));
+		 pregOutcome.addOutcome(outcome);
+		 pregOutcome.setVisit(visit);
+
+		 pregnancyOutcomeCrud.setItem(pregOutcome);
+		 pregnancyOutcomeCrud.create();
+		 
+		 PregnancyOutcome savedPregnancyOutcome = genericDao.findByProperty(PregnancyOutcome.class, "mother", mother, false);
+		 assertNotNull(savedPregnancyOutcome);	
 	 }
 	 
 	 @Test
 	 public void testInvalidMotherAgeForPregnancyOutcome() {
-		 		 
-		
+		 assertNotNull(mother);
+		 assertNotNull(fieldWorker);
+		 assertNotNull(visit);
+		 assertNotNull(residency);
+		 	 
+		 Individual child = new Individual();
+		 child.setDob(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
+		 child.setExtId("NBAS3I");
+		 child.setFirstName("Firstname");
+		 child.setLastName("LastName");
+		 child.setGender(siteProperties.getFemaleCode());
+		 child.setMother(mother);
+		 child.setFather(unknownIndiv);
+		 child.setCollectedBy(fieldWorker);
+		 
+		 List<Outcome> outcomes = new ArrayList<Outcome>();
+		 Outcome outcome = new Outcome();
+		 outcome.setChild(child);
+		 outcome.setType(siteProperties.getMiscarriageCode());
+		 
+		 outcomes.add(outcome);
+		 
+		 PregnancyOutcome pregOutcome = new PregnancyOutcome();
+		 pregOutcome.setCollectedBy(fieldWorker);
+		 pregOutcome.setMother(mother);
+		 pregOutcome.setFather(unknownIndiv);
+		 pregOutcome.setOutcomeDate(calendarUtil.getCalendar(Calendar.JANUARY, 2, 1962));
+		 pregOutcome.addOutcome(outcome);
+		 pregOutcome.setVisit(visit);
+
+		 pregnancyOutcomeCrud.setItem(pregOutcome);
+		 pregnancyOutcomeCrud.create();
+		 
+		 PregnancyOutcome savedPregnancyOutcome = genericDao.findByProperty(PregnancyOutcome.class, "mother", mother, false);
+		 assertNull(savedPregnancyOutcome);			 
+		 assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }
 	 
 	 private void createResidency() {
-		 
-	
+		 residency = genericDao.findByProperty(Residency.class, "uuid", "residency_uuid2");
 	 }
 	 
 	 private void createLocationHierarchy() {

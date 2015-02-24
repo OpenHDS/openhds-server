@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
-import org.openhds.domain.model.InMigration;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.OutMigration;
 import org.openhds.domain.model.Visit;
