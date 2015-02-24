@@ -3,6 +3,8 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
+import java.util.HashSet;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,7 +83,8 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-		 individual = genericDao.findByProperty(Individual.class, "extId", "NBAS1I", false);
+//		 individual = genericDao.findByProperty(Individual.class, "extId", "NBAS1I", false);
+		 individual = genericDao.findByProperty(Individual.class, "extId", "BJOH1J", false);
 		 
 		 createLocationHierarchy();
 		 createLocation();
@@ -91,7 +94,7 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 	 public void testResidencyCreate() {
 		 
 		 Residency residency = new Residency();
-		/* residency.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
+		 residency.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
 		 residency.setIndividual(individual);
 		 residency.setLocation(location);
 		 residency.setStartType(siteProperties.getBirthCode());
@@ -102,14 +105,14 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 		 residencyCrud.create();
 		 
 		 Residency savedResidency = genericDao.findByProperty(Residency.class, "individual", individual);
-		 assertNotNull(savedResidency);*/
+		 assertNotNull(savedResidency);
 	 }
 	 
 	 @Test
 	 public void testOpenResidency() {
 		 
-		 Residency residency = new Residency();
-		/* residency.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
+		 final Residency residency = new Residency();
+		 residency.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1995));
 		 residency.setIndividual(individual);
 		 residency.setLocation(location);
 		 residency.setStartType(siteProperties.getBirthCode());
@@ -119,18 +122,21 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 		 residencyCrud.setItem(residency);
 		 residencyCrud.create();
 		 
+		 individual.setAllResidencies(new HashSet<Residency>() {{ add(residency); }});
+		 
 		 Residency badResidency = new Residency();
 		 badResidency.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1997));
 		 badResidency.setIndividual(individual);
 		 badResidency.setLocation(location);
-		 residency.setStartType(siteProperties.getBirthCode());
+		 badResidency.setStartType(siteProperties.getBirthCode());
 		 badResidency.setEndType(siteProperties.getNotApplicableCode());
 		 badResidency.setCollectedBy(fieldWorker);
 		 
-		 residencyCrud.setItem(badResidency);
+		 residencyCrud.setItem(badResidency);	 
+		 //This should not go through with ConstraintViolation:
+		 //The individual already has an open residency. You must close the current residency for this Individual before a new Residency can be created. 
 		 assertNull(residencyCrud.create());
-		 assertTrue(jsfServiceMock.getErrors().size() > 0);*/
-		 
+		 assertTrue(jsfServiceMock.getErrors().size() > 0);		 
 	 }
 	 
 	 private void createLocationHierarchy() {

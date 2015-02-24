@@ -25,7 +25,6 @@ import org.openhds.web.crud.impl.RoundCrudImpl;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -91,7 +90,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 	 public void testVisitCreate() {
 		 		 
 		 Round round = new Round();
-		 round.setRoundNumber(1);
+		 round.setRoundNumber(2);
 		 round.setStartDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1989));
 		 round.setEndDate(calendarUtil.getCalendar(Calendar.JANUARY, 5, 1990));
 		 
@@ -108,7 +107,8 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 visitCrud.create();
 		 
 		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 //assertNotNull(savedVisit);
+		 assertNotNull(savedVisit);
+		 assertTrue(jsfServiceMock.getErrors().size() == 0);
 	 }
 	 
 	 @Test
@@ -121,6 +121,8 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 visit.setCollectedBy(fieldWorker);
 		 
 		 visitCrud.setItem(visit);
+		 //This should create a ConstraintViolation
+		 //A round already exists with that round number. Please enter in a unique round number., The Round Number specified is not a valid Round Number.
 		 assertNull(visitCrud.create());
 		 assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }
