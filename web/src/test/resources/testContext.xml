@@ -57,6 +57,19 @@
         <property name="Username" value="sa" />
         <property name="Password" value="" />
     </bean>
+    
+        <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <array>
+                <ref bean="marshallingHttpMessageConverter" />
+            </array>
+        </property>
+    </bean>
+
+    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+     <property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" />
+    </bean>  
 
      <mvc:annotation-driven />
 </beans>

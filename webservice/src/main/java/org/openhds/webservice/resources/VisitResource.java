@@ -45,7 +45,7 @@ public class VisitResource {
         this.fileResolver = fileResolver;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public Visits getAllVisits() {
         List<Visit> allVisits = visitService.getAllVisits();
@@ -53,17 +53,15 @@ public class VisitResource {
 
         for (Visit visit : allVisits) {
             Visit copy = ShallowCopier.copyVisit(visit);
-
             copies.add(copy);
         }
 
         Visits visits = new Visits();
         visits.setVisits(copies);
-
         return visits;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Visit visit) {
         ConstraintViolations cv = new ConstraintViolations();
         visit.setVisitLocation(fieldBuilder.referenceField(visit.getVisitLocation(), cv));
@@ -82,7 +80,7 @@ public class VisitResource {
         return new ResponseEntity<Visit>(ShallowCopier.copyVisit(visit), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
     public void getCachedVisits(HttpServletResponse response) {
         try {
             CacheResponseWriter.writeResponse(fileResolver.resolveVisitXmlFile(), response);

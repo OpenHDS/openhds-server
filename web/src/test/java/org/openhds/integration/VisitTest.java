@@ -112,6 +112,14 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 	 }
 	 
 	 @Test
+	 public void testVisitLoad() {
+		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", "VLOCMBI11J");
+		 assertNotNull(savedVisit);
+		 assertTrue(jsfServiceMock.getErrors().size() == 0);
+	 }
+	 
+	 
+	 @Test
 	 public void testInvalidVisit() {
 						 
 		 Visit visit = new Visit();
