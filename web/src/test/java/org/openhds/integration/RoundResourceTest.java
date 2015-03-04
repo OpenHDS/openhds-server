@@ -1,12 +1,10 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
-import static org.springframework.test.web.server.result.MockMvcResultHandlers.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,14 +22,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.server.MockMvc;
-import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseOperation;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -40,7 +35,6 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
 	DbUnitTestExecutionListener.class })
-//@DatabaseSetup(value = "/visitResourceDb.xml", type = DatabaseOperation.REFRESH)
 public class RoundResourceTest {
 
 	@Autowired

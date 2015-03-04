@@ -37,8 +37,8 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
 	DbUnitTestExecutionListener.class })
-@DatabaseSetup(value = "/visitResourceDb.xml", type = DatabaseOperation.REFRESH)
-public class VisitResourceTest {
+@DatabaseSetup(value = "/fieldworkerResourceDb.xml", type = DatabaseOperation.REFRESH)
+public class FieldWorkerResourceTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -63,86 +63,40 @@ public class VisitResourceTest {
 	}
 
 	@Test
-	public void testGetAllVisits() throws Exception {	
-		mockMvc.perform(get("/visits").session(session).accept(MediaType.APPLICATION_XML))
+	public void testGetAllFieldWorkers() throws Exception {	
+		mockMvc.perform(get("/fieldworkers").session(session).accept(MediaType.APPLICATION_XML))
 		.andExpect(status().isOk())
 		.andExpect(content().mimeType(MediaType.APPLICATION_XML))
-		.andExpect(xpath("/visits").nodeCount(1))
-		.andExpect(xpath("/visits/visit").nodeCount(2))
-		.andExpect(xpath("/visits/visit[1]/collectedBy/extId").string("FWEK1D"))
-		.andExpect(xpath("/visits/visit[1]/extId").string("VLOCMBI11J"))
-		.andExpect(xpath("/visits/visit[2]/extId").string("GND000001000"));	
-	}
-
-	@Test
-	public void testPostVisit() throws Exception {
-		final String VISIT_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+ "<visit>"
-					+ "<extId>ISE000012000</extId>"
-					+ "<visitLocation>"
-						+ "<extId>NJA000001</extId>"
-					+ "</visitLocation>"
-					+ "<collectedBy>"
-						+ "<extId>FWEK1D</extId>"
-					+ "</collectedBy>"
-					+ "<roundNumber>1</roundNumber>"
-					+ "<visitDate>2015-01-01</visitDate>"
-				+ "</visit>";
-
-		/* Expected result:
-		<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-			<visit>
-				<collectedBy>
-					<extId>FWEK1D</extId>
-				</collectedBy>
-				<extId>ISE000012000</extId>
-				<roundNumber>1</roundNumber>
-				<visitDate>01-01-2015</visitDate>
-				<visitLocation>
-					<extId>NJA000001</extId>
-				</visitLocation>
-			</visit>
-		 */
-		mockMvc.perform(post("/visits").session(session)
-				.contentType(MediaType.APPLICATION_XML)
-				.body(VISIT_POST_XML.getBytes()))
-				.andExpect(status().isCreated())
-				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
-				.andExpect(xpath("/visit/collectedBy/extId").string("FWEK1D"))
-				.andExpect(xpath("/visit/extId").string("ISE000012000"))
-				.andExpect(xpath("/visit/roundNumber").string("1"))
-				.andExpect(xpath("/visit/visitDate").string("01-01-2015"))
-				.andExpect(xpath("/visit/visitLocation/extId").string("NJA000001"));
-	}
-	
-	
-	@Test
-	public void testPostInvalidVisit() throws Exception {
-		final String VISIT_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+ "<visit>"
-					+ "<extId>MBA00000001</extId>"
-					+ "<visitLocation>"
-						+ "<extId>NJA0000010000</extId>"
-					+ "</visitLocation>"
-					+ "<collectedBy>"
-						+ "<extId>FWEK1D</extId>"
-					+ "</collectedBy>"
-					+ "<roundNumber>1</roundNumber>"
-					+ "<visitDate>2015-01-01</visitDate>"
-				+ "</visit>";
+		.andExpect(xpath("/fieldworkers/fieldworker").nodeCount(3))
+		.andExpect(xpath("/fieldworkers/fieldworker[3]/extId").string("FWNF5"))
+		.andExpect(xpath("/fieldworkers/fieldworker[3]/passwordHash").string("invalid-pw-hash"));	
 		
-		/*
-		 * Expected return value:
-		 * <?xml version="1.0" encoding="UTF-8" standalone="yes"?><failure><errors>Invalid Location Id</errors></failure>
+		/*	Expected return value: 
+		 * 	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		 * 		<fieldworkers>
+		 * 			<fieldworker>
+		 * 				<uuid>UnknownFieldWorker</uuid>
+		 * 				<extId>UNK</extId>
+		 * 				<firstName>Unknown</firstName>
+		 * 				<lastName>FieldWorker</lastName>
+		 * 				<passwordHash>invalid-password-hash</passwordHash>
+		 * 			</fieldworker>
+		 * 			<fieldworker>
+		 * 				<uuid>FieldWorker1</uuid>
+		 * 				<extId>FWEK1D</extId>
+		 * 				<firstName>Editha</firstName>
+		 * 				<lastName>Kaweza</lastName>
+		 * 				<passwordHash>invalid-password-hash</passwordHash>
+		 * 				</fieldworker>
+		 * 			<fieldworker>
+		 * 				<uuid>new_fieldworker_uuid</uuid>
+		 * 				<extId>FWNF5</extId>
+		 * 				<firstName>Field</firstName>
+		 * 				<lastName>Worker</lastName>
+		 * 				<passwordHash>invalid-pw-hash</passwordHash>
+		 * 			</fieldworker>
+		 * 		</fieldworkers>
 		 * */
-		
-		mockMvc.perform(post("/visits").session(session)
-				.contentType(MediaType.APPLICATION_XML)
-				.body(VISIT_POST_XML.getBytes()))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
-				.andExpect(xpath("/failure").nodeCount(1))
-				.andExpect(xpath("failure/errors").string("Invalid Location Id"));
 	}
 
 	private MockHttpSession getMockHttpSession(String username, String password) throws Exception {
