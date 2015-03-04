@@ -28,7 +28,7 @@ public class RoundResource {
         this.roundService = roundService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public Rounds getLastRound() {
         Rounds rounds = new Rounds();
@@ -36,7 +36,7 @@ public class RoundResource {
         return rounds;
     }
     
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Round round) {
       
         try {
