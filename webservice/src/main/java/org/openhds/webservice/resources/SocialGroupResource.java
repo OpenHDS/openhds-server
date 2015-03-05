@@ -44,7 +44,7 @@ public class SocialGroupResource {
         this.fileResolver = fileResolver;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public SocialGroups getAllSocialGroups() {
         List<SocialGroup> allSocialGroups = socialGroupService.getAllSocialGroups();
@@ -61,7 +61,7 @@ public class SocialGroupResource {
         return sgs;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody SocialGroup socialGroup) {
         ConstraintViolations cv = new ConstraintViolations();
 
