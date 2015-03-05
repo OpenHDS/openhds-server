@@ -44,7 +44,7 @@ public class RelationshipResource {
         this.fileResolver = fileResolver;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public Relationships getAllRelationships() {
         List<Relationship> allRelationships = relationshipService.getAllRelationships();
@@ -61,7 +61,7 @@ public class RelationshipResource {
         return relationships;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Relationship relationship) {
         ConstraintViolations cv = new ConstraintViolations();
         relationship.setIndividualA(fieldBuilder.referenceField(relationship.getIndividualA(), cv,
