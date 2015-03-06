@@ -21,6 +21,7 @@ import org.openhds.web.crud.impl.DeathCrudImpl;
 import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -76,6 +77,7 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertNotNull(visit);
 	 }
 	 
+	 @DirtiesContext
 	 @Test
 	 public void testDeathCreate() { 	 
 		 Death death = new Death();
@@ -97,6 +99,7 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertTrue(jsfServiceMock.getErrors().size() == 0);
 	 }
 	 
+	 @DirtiesContext
 	 @Test
 	 public void testInvalidDeath() { 
 		 Death death = new Death();
@@ -118,6 +121,7 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertTrue(jsfServiceMock.getErrors().size() == 1);
 	 }
 	 
+	 @DirtiesContext
 	 @Test
 	 public void testDuplicateDeath() { 
 		 Death death = new Death();
@@ -132,9 +136,7 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 
 		 deathCrud.setItem(death);
 		 String createResult = deathCrud.create();
-		 
-		 System.out.println("createResult: " + createResult);
-		 
+		 		 
 		 Death savedDeath = genericDao.findByProperty(Death.class, "individual", individual, false);
 		 
 		 assertTrue(createResult != null);
@@ -153,9 +155,7 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 
 		 deathCrud.setItem(duplicateDeath);
 		 createResult = deathCrud.create(); // This should throw a ConstrainViolation: A Death Event for the Individual with specified ExtId already exists!
-		 
-		 System.out.println("createResult: " + createResult);
-		 
+		 		 
 		 assertTrue(createResult == null);
 		 assertTrue(jsfServiceMock.getErrors().size() > 0);
 	 }	 

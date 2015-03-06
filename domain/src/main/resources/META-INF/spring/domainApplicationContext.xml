@@ -50,6 +50,7 @@
                 <value>org.openhds.domain.model.wrappers.Rounds</value>
                 <value>org.openhds.domain.model.wrappers.SocialGroups</value>
                 <value>org.openhds.domain.model.wrappers.Visits</value>
+                <value>org.openhds.domain.model.wrappers.Forms</value>
                 
                 <value>org.openhds.webservice.WebServiceCallException</value>
             </list>

@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FormResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(FormResource.class);
-	
-	
-	
+		
     private FormService formService;
     private FileResolver fileResolver;
     private TaskExecutor taskExecutor;
@@ -38,7 +36,7 @@ public class FormResource {
     }
   
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public Forms getAllActiveForms() {
         Forms forms = new Forms();
@@ -46,7 +44,7 @@ public class FormResource {
         return forms;
     }
     
-    @RequestMapping(value = "/cached", method = RequestMethod.GET)
+    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/xml")
     public void getCachedForms(HttpServletResponse response) {
         try {
         	taskExecutor.executeFormXmlWriterTask();  
