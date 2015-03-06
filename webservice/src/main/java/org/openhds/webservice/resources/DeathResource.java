@@ -32,7 +32,7 @@ public class DeathResource {
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Death death) {
         ConstraintViolations cv = new ConstraintViolations();
         death.setCollectedBy(fieldBuilder.referenceField(death.getCollectedBy(), cv));
