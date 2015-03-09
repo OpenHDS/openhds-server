@@ -26,7 +26,7 @@ public class PregnancyObservationResource extends AbstractResource<PregnancyObse
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody PregnancyObservation pregObs) {
         return createResource(pregObs);
     }
