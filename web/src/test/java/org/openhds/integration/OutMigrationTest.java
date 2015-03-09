@@ -1,6 +1,6 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Calendar;
 
@@ -21,6 +21,7 @@ import org.openhds.web.crud.impl.OutMigrationCrudImpl;
 import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,7 @@ public class OutMigrationTest {
 	 }
 	 
 	 @Test
+	 @DirtiesContext
 	 public void testOutMigrationCreate() {
 		 assertNotNull(fieldWorker);
 		 assertNotNull(individual);
@@ -87,6 +89,37 @@ public class OutMigrationTest {
 		 
 		 OutMigration savedOutMig = genericDao.findByProperty(OutMigration.class, "individual", individual, false);
 		 assertNotNull(savedOutMig); 
+	 }
+	 
+	 @Test
+	 @DirtiesContext
+	 public void testOutMigrationCreateDuplicate() {
+		 assertNotNull(fieldWorker);
+		 assertNotNull(individual);
+		 assertNotNull(visit);
+		 
+		 OutMigration outMigration = new OutMigration();
+		 outMigration.setIndividual(individual);
+		 outMigration.setCollectedBy(fieldWorker);
+		 outMigration.setRecordedDate(calendarUtil.getCalendar(Calendar.JANUARY, 1, 2015));
+		 outMigration.setVisit(visit);
+		 outMigration.setReason("reason");
+		 
+		 outmigrationCrud.setItem(outMigration);
+		 outmigrationCrud.create();
+		 
+		 OutMigration duplicateOutMigration = new OutMigration();
+		 duplicateOutMigration.setIndividual(individual);
+		 duplicateOutMigration.setCollectedBy(fieldWorker);
+		 duplicateOutMigration.setRecordedDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 2015));
+		 duplicateOutMigration.setVisit(visit);
+		 duplicateOutMigration.setReason("reason");
+		 
+		 outmigrationCrud.setItem(duplicateOutMigration);
+		 String saveResult = outmigrationCrud.create();
+
+		 assertNull(saveResult); 
+		 assertTrue(jsfServiceMock.getErrors().size() == 1);
 	 }
 }
 

@@ -26,7 +26,7 @@ public class OutMigrationResource extends AbstractResource<OutMigration> {
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody OutMigration outMigration) {
         return createResource(outMigration);
     }
@@ -46,6 +46,7 @@ public class OutMigrationResource extends AbstractResource<OutMigration> {
 
     @Override
     protected void saveResource(OutMigration outMigration) throws ConstraintViolations {
+    	outMigrationService.evaluateOutMigration(outMigration);
         outMigrationService.createOutMigration(outMigration);
     }
 
