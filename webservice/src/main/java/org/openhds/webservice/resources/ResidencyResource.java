@@ -26,7 +26,7 @@ public class ResidencyResource extends AbstractResource<Residency> {
         this.fieldBuilder = fieldBuilder;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody Residency residency) {
         return createResource(residency);
     }
