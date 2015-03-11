@@ -3,6 +3,7 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,11 @@ public class FormTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 
 		 jsfServiceMock = (JsfServiceMock)jsfService;
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @DirtiesContext

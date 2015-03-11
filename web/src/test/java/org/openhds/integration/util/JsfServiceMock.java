@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+
 import org.openhds.web.service.JsfService;
 
 /**
  * A special JsfService Mock implementation to be used only for testing.
- * It strips the dependencies on the the FacesContext.
+ * It strips the dependencies on the FacesContext.
  */
 public class JsfServiceMock implements JsfService {
 	
-	List<String> errors = new ArrayList<String>();
+	List<String> errors = new ArrayList<String>();;
 
 	@Override
 	public void addError(String msg) {
@@ -75,5 +77,9 @@ public class JsfServiceMock implements JsfService {
 	
 	public List<String> getErrors() {
 		return errors;
+	}
+	
+	public void resetErrors(){
+		errors = new ArrayList<String>();
 	}
 }

@@ -3,6 +3,7 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,6 +70,11 @@ public class LocationTest extends AbstractTransactionalJUnit4SpringContextTests 
 		 createLocationHierarchy();
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @Test

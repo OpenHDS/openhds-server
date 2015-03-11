@@ -3,6 +3,7 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,11 @@ public class SocialGroupTest extends AbstractTransactionalJUnit4SpringContextTes
 		 individual = genericDao.findByProperty(Individual.class, "extId", "NBAS1I");
 		 
 		 individualDead = genericDao.findByProperty(Individual.class, "extId", "CBLA1H");
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 	 
 	 @Test

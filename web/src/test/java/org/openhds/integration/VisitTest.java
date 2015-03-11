@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import org.openhds.web.crud.impl.RoundCrudImpl;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.openhds.web.service.JsfService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -85,7 +87,13 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 createLocationHierarchy();
 		 createLocation();
 	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
+	 }
 	 	 
+	 @DirtiesContext
 	 @Test
 	 public void testVisitCreate() {
 		 		 
@@ -111,6 +119,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertTrue(jsfServiceMock.getErrors().size() == 0);
 	 }
 	 
+	 @DirtiesContext
 	 @Test
 	 public void testVisitLoad() {
 		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", "VLOCMBI11J");
@@ -118,7 +127,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertTrue(jsfServiceMock.getErrors().size() == 0);
 	 }
 	 
-	 
+	 @DirtiesContext
 	 @Test
 	 public void testInvalidVisit() {
 						 

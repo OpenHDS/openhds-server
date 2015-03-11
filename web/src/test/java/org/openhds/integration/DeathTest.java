@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +76,11 @@ public class DeathTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 assertNotNull(fieldWorker);
 		 assertNotNull(individual);
 		 assertNotNull(visit);
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @DirtiesContext

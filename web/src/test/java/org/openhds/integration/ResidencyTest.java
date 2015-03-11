@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,11 +84,15 @@ public class ResidencyTest extends AbstractTransactionalJUnit4SpringContextTests
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
 		 
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
-//		 individual = genericDao.findByProperty(Individual.class, "extId", "NBAS1I", false);
 		 individual = genericDao.findByProperty(Individual.class, "extId", "BJOH1J", false);
 		 
 		 createLocationHierarchy();
 		 createLocation();
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @Test

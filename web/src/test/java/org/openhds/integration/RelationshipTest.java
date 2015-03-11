@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,11 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 	     assertNotNull(indivA);
 	     assertNotNull(indivB);
 	     assertNotNull(indivDead);
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 	 
 	 @Test

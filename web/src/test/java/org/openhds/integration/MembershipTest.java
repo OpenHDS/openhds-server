@@ -1,8 +1,11 @@
 package org.openhds.integration;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
+
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,6 +69,11 @@ public class MembershipTest extends AbstractTransactionalJUnit4SpringContextTest
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
 		 individual = genericDao.findByProperty(Individual.class, "extId", "NBAS1I", false);
 		 socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", "MBI1", false);
+	 }
+	 
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @Test

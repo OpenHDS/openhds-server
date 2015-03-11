@@ -3,7 +3,9 @@ package org.openhds.integration;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
+
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,6 +94,11 @@ public class PregnancyObservationTest extends AbstractTransactionalJUnit4SpringC
 		 fieldWorker = genericDao.findByProperty(FieldWorker.class, "extId", "FWEK1D");
 		 visit = genericDao.findByProperty(Visit.class, "extId", "VLOCMBI11J");
      }
+     
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
+	 }
 	 
 	 @Test
 	 public void testPregnancyObservationCreate() {

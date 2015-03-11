@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,6 +121,11 @@ public class PregnancyOutcomeTest extends AbstractTransactionalJUnit4SpringConte
 		 
 		 createResidency();
      }
+     
+	 @After
+	 public void tearDown() {
+		 jsfServiceMock.resetErrors();
+	 }
 	 
 	 @Test
 	 public void testPregnancyOutcomeCreate() {
