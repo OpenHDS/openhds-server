@@ -40,27 +40,30 @@ public class HeadOfHousehold
     
 //    @XmlTransient
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = org.openhds.domain.model.Individual.class)
+    @NotNull(message = "You must provide an oldHoh")
     private Individual oldHoh;
     
     @XmlTransient
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = org.openhds.domain.model.Individual.class)
+    @NotNull(message = "You must provide a newHoh")
     private Individual newHoh;
     
     
     @ManyToOne(cascade = CascadeType.MERGE)
     @Description(description="Visit that is associated with the pregnancy outcome, identified by the external id.")   
+    @NotNull(message = "You must provide a visit")
     private Visit visit;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @Description(description="FieldWorker that surveyed this event.")   
-    private FieldWorker collectedBy;
+//    @ManyToOne(cascade = CascadeType.MERGE)
+//    @Description(description="FieldWorker that surveyed this event.")   
+//    private FieldWorker collectedBy;
     
-    @CheckFieldNotBlank
+    @CheckFieldNotBlank(message="Please provide a deathPlace")
     @Searchable
     @Description(description = "Place where the death occurred.")
     private String deathPlace;    
     
-    @CheckFieldNotBlank
+    @CheckFieldNotBlank(message="Please provide a deathCause")
     @Searchable
     @Description(description = "Cause of the death.")
     private String deathCause;   
@@ -73,10 +76,12 @@ public class HeadOfHousehold
     
     @OneToOne(cascade = CascadeType.MERGE)
     @Description(description = "Death of the HoH")
+    @NotNull(message = "You must provide a Death")
     private Death death;
     
     @OneToMany(cascade = CascadeType.MERGE)
     @Description(description = "Death of the HoH")
+    @NotNull(message = "You must provide a SocialGroup")
     private SocialGroup socialGroup;    
     
 //    @XmlTransient

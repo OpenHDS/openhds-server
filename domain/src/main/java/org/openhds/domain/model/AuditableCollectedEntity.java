@@ -21,7 +21,7 @@ public abstract class AuditableCollectedEntity extends AuditableEntity implement
     @Description(description="Status of the data.")
     protected String status;
     
-    @NotNull
+    @NotNull(message = "You must provide a valid FieldWorker")
     @ManyToOne(fetch = FetchType.LAZY, targetEntity=FieldWorker.class)
     @Description(description="The field worker who collected the data, identified by external id.")
     protected FieldWorker collectedBy;

@@ -51,29 +51,24 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 	public HeadOfHousehold evaluateHeadOfHousehold(HeadOfHousehold entityItem)
 			throws ConstraintViolations {
 		
-		System.out.println("In evaluateHeadOfHousehold()");
+		if(entityItem == null)
+			throw new ConstraintViolations("Please provide a valid entityItem.");	
+
 		SocialGroup sg = entityItem.getSocialGroup(); //getSocialGroup(entityItem);
 		Individual oldHoh = getIndividualByExtId(entityItem.getOldHoh().getExtId());
 		
-		System.out.println("With old hoh-id: " + entityItem.getOldHoh().getExtId()
-				+ " new hoh-id: " + entityItem.getNewHoh().getExtId() + " and sg-id: " + sg.getExtId());
-		
-		
 		if(oldHoh == null){
-			System.out.println("No old Individual with this extId found!");
 			throw new ConstraintViolations("No old Individual with this extId found!");
 		}
 				
 		String newHohExtId = entityItem.getNewHoh().getExtId();
 		
 		if(newHohExtId.isEmpty()){
-			System.out.println("No new Individual as new HoH specified!");
 			throw new ConstraintViolations("No new Individual as new HoH specified!");
 		}
 		Individual newHoh = getIndividualByExtId(newHohExtId);
 		
 		if(newHoh == null){
-			System.out.println("No new Individual with this extId found!");
 			throw new ConstraintViolations("No new Individual with this extId found!");
 		}
 		
@@ -95,8 +90,7 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			}
 		}
 		else{
-			System.out.println("SocialGroup is null !");
-			throw new ConstraintViolations("SocialGroup is null !");
+			throw new ConstraintViolations("SocialGroup is null!");
 		}
 		
 		return entityItem;
@@ -115,8 +109,11 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
         	return false;
         
         indivsAtSocialGroup = socialGroupService.getAllIndividualsOfSocialGroup(socialGroup);
-    	if (indivsAtSocialGroup.size() == 0)
-    		 return false;
+    	if (indivsAtSocialGroup.size() == 0){
+    		System.out.println("No indivduals found living at this socialgroup");
+    		return false;
+    	}
+    		 
         
 		return true;
 	}	
@@ -275,9 +272,7 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			throws ConstraintViolations {
 		 
 		evaluateHeadOfHousehold(entityItem);
-		
-//		System.out.println("After ConstraintViolation");
-		
+			
 		Individual oldHoh = entityItem.getOldHoh();
 		
 //		SocialGroup sg = getSocialGroup(entityItem);

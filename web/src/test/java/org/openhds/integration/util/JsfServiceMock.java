@@ -17,7 +17,7 @@ import org.openhds.web.service.JsfService;
  */
 public class JsfServiceMock implements JsfService {
 	
-	List<String> errors = new ArrayList<String>();;
+	List<String> errors = new ArrayList<String>();
 
 	@Override
 	public void addError(String msg) {
