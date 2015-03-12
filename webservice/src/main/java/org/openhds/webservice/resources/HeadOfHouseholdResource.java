@@ -1,12 +1,16 @@
 package org.openhds.webservice.resources;
 
 import java.io.Serializable;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.HeadOfHouseholdService;
 import org.openhds.domain.model.Death;
+import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.HeadOfHousehold;
+import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Membership;
+import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.wrappers.Visits;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.FieldBuilder;
@@ -36,7 +40,7 @@ public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
     	return null;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity<? extends Serializable> insert(@RequestBody HeadOfHousehold hoh) {    	
     	return createResource(hoh);
     }
@@ -48,7 +52,26 @@ public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
         copy.setOldHoh(copyIndividual(item.getOldHoh()));
         copy.setNewHoh(copyIndividual(item.getNewHoh()));
         copy.setVisit(copyVisit(item.getVisit()));
+        copy.setDeath(copyDeath(item.getDeath()));
         return copy;
+    }
+    
+    private Death copyDeath(Death d){
+    	Death deathCopy = new Death();
+    	deathCopy.setAgeAtDeath(d.getAgeAtDeath());
+    	FieldWorker fw = new FieldWorker();
+    	fw.setExtId(d.getCollectedBy().getExtId());
+    	deathCopy.setCollectedBy(fw);
+    	deathCopy.setDeathCause(d.getDeathCause());
+    	deathCopy.setDeathDate(d.getDeathDate());
+    	deathCopy.setDeathPlace(d.getDeathPlace());
+    	Individual ind = new Individual();
+    	ind.setExtId(d.getIndividual().getExtId());
+    	deathCopy.setIndividual(ind);
+    	Visit v = new Visit();
+    	v.setExtId(d.getVisitDeath().getExtId());
+    	deathCopy.setVisitDeath(v);
+    	return deathCopy;
     }
 
 	@Override
