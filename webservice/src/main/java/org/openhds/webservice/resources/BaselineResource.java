@@ -74,8 +74,18 @@ public class BaselineResource extends AbstractResource<InMigration> {
         item.setVisit(fieldBuilder.referenceField(item.getVisit(), cv));
         
             Individual individual = item.getIndividual();
+            checkIndividual(individual, cv);
             individual.setMother(fieldBuilder.referenceField(individual.getMother(), cv, "Invalid mother id "));
             individual.setFather(fieldBuilder.referenceField(individual.getFather(), cv, "Invalid father id"));
             individual.setCollectedBy(fw);
+    }
+    
+    private void checkIndividual(Individual individual, ConstraintViolations cv){
+    	if(individual.getDob() == null)
+    		cv.addViolations("Dob cannot be null.");
+    	if(individual.getGender() == null || individual.getGender().isEmpty())
+    		cv.addViolations("Please specify a gender.");
+    	if(individual.getDobAspect() == null || individual.getDobAspect().isEmpty())
+    		cv.addViolations("dobAspect cannot be empty!");
     }
 }

@@ -82,8 +82,24 @@ public class InMigrationServiceImpl implements InMigrationService {
 		residencyService.evaluateResidency(residency);
 	}
 	
+	private boolean checkValidMigrationType(InMigration inMigration) throws ConstraintViolations {
+		if(inMigration.getMigType() == null)
+			throw new ConstraintViolations("Invalid Migration Type!");
+			
+		String test = inMigration.getMigType().name();
+		
+		for (MigrationType mt : MigrationType.values()) {
+			if (mt.name().equals(test)) {
+				return true;
+		    }
+		}
+
+		throw new ConstraintViolations("Unknown Migration Type!");
+	}
+	
 	@Transactional(rollbackFor=Exception.class)
 	public void createInMigration(InMigration inMigration) throws ConstraintViolations {
+		checkValidMigrationType(inMigration);
 		setResidencyFieldsFromInMigration(inMigration);
 		checkValidIndividual(inMigration);
 
