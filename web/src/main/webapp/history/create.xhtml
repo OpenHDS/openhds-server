@@ -101,9 +101,7 @@
 			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.extId}</h:outputText></td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.firstName}</h:outputText></td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.lastName}</h:outputText></td>
-			        			<td><h:outputText value="#{individualHistoryBean.individual.dob.time}">
-			        					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-			        				</h:outputText>
+			        			<td><h:outputText value="#{individualHistoryBean.individual.dob}"  converter="#{calendarConverter}" />
 			        			</td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.gender}</h:outputText></td>
 			        		</tr>
