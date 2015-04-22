@@ -17,7 +17,7 @@
 			<staticText>
 				<reportElement x="85" y="4" width="404" height="37"/>
 				<textElement>
-					<font size="26" isBold="true" isUnderline="true"/>
+					<font size="22" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Individuals without membership]]></text>
 			</staticText>
