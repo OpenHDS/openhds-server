@@ -1,37 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="active-report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="active-report" pageWidth="1500" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="539"/>
 	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="individualExtId" class="java.lang.String"/>
-	<field name="locationExtId" class="java.lang.String"/>
-	<field name="startDate" class="java.sql.Date"/>
+	<field name="individualExtId" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firstName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="middleName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lastName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dob" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="father" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mother" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="startType" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="startDate" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="locationExtId" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="familyName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subVillage" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subVillageName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villageCode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="villageName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="socialGroup" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="head" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dobHead" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="186" y="4" width="234" height="37"/>
+				<reportElement x="38" y="0" width="234" height="37"/>
 				<textElement>
 					<font size="26" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Active Individuals]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="195" y="55" width="100" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Report created on:]]></text>
-			</staticText>
-			<textField pattern="yyyy.MM.dd &apos;at&apos; HH:mm">
-				<reportElement x="306" y="55" width="100" height="20"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
-			</textField>
+			<elementGroup>
+				<textField pattern="yyyy.MM.dd &apos;at&apos; HH:mm">
+					<reportElement x="132" y="59" width="61" height="20"/>
+					<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="38" y="59" width="90" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Report created on:]]></text>
+				</staticText>
+			</elementGroup>
 		</band>
 	</title>
 	<pageHeader>
@@ -40,45 +97,231 @@
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="85" y="5" width="100" height="20"/>
+				<reportElement x="132" y="2" width="87" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[individualExtId]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="263" y="2" width="100" height="20"/>
+				<reportElement x="915" y="2" width="83" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[locationExtId]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="2" width="100" height="20"/>
+				<reportElement x="1322" y="2" width="62" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[startDate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="2" width="30" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="2" width="64" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[First Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="2" width="77" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[middleName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="393" y="2" width="65" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[lastName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="2" width="76" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[familyName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="2" width="53" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[gender]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="587" y="2" width="37" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[dob]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="2" width="46" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[father]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="679" y="2" width="53" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[mother]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="732" y="2" width="78" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[socialGroup]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="810" y="2" width="43" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[head]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="853" y="2" width="62" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[dobHead]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="998" y="2" width="68" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[subVillage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1066" y="2" width="98" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[subVillageName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1164" y="2" width="75" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[villageCode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1242" y="2" width="80" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[villageName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1384" y="2" width="66" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[startType]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="85" y="6" width="100" height="20"/>
+				<reportElement x="132" y="11" width="100" height="20"/>
 				<textFieldExpression><![CDATA[$F{individualExtId}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="263" y="6" width="100" height="20"/>
+				<reportElement x="915" y="11" width="83" height="20"/>
 				<textFieldExpression><![CDATA[$F{locationExtId}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="6" width="100" height="20"/>
-				<textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
+				<reportElement x="1322" y="11" width="62" height="20"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{startDate})
+]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="36" y="6" width="29" height="20"/>
+				<reportElement x="38" y="11" width="29" height="20"/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="236" y="11" width="64" height="20"/>
+				<textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="305" y="11" width="88" height="20"/>
+				<textFieldExpression><![CDATA[$F{middleName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="11" width="65" height="20"/>
+				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="11" width="76" height="20"/>
+				<textFieldExpression><![CDATA[$F{familyName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="534" y="11" width="53" height="20"/>
+				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="587" y="11" width="37" height="20"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($F{dob})
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="628" y="11" width="46" height="20"/>
+				<textFieldExpression><![CDATA[$F{father}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="679" y="11" width="53" height="20"/>
+				<textFieldExpression><![CDATA[$F{mother}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="732" y="11" width="78" height="20"/>
+				<textFieldExpression><![CDATA[$F{socialGroup}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="810" y="11" width="43" height="20"/>
+				<textFieldExpression><![CDATA[$F{head}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="853" y="11" width="62" height="20"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{dobHead})
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="998" y="11" width="68" height="20"/>
+				<textFieldExpression><![CDATA[$F{subVillage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1066" y="11" width="98" height="20"/>
+				<textFieldExpression><![CDATA[$F{subVillageName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1164" y="11" width="75" height="20"/>
+				<textFieldExpression><![CDATA[$F{villageCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1242" y="11" width="80" height="20"/>
+				<textFieldExpression><![CDATA[$F{villageName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1384" y="11" width="66" height="20"/>
+				<textFieldExpression><![CDATA[$F{startType}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -88,16 +331,16 @@
 	<pageFooter>
 		<band height="78" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="442" y="34" width="100" height="20"/>
+				<reportElement x="236" y="34" width="100" height="20"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="4" y="34" width="80" height="20"/>
+				<reportElement x="38" y="34" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="84" y="34" width="40" height="20"/>
+				<reportElement x="132" y="34" width="40" height="20"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -105,11 +348,11 @@
 	<summary>
 		<band height="42" splitType="Stretch">
 			<textField>
-				<reportElement x="193" y="17" width="100" height="20"/>
+				<reportElement x="132" y="17" width="100" height="20"/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="83" y="17" width="100" height="20"/>
+				<reportElement x="38" y="17" width="68" height="20"/>
 				<text><![CDATA[Total entries:]]></text>
 			</staticText>
 		</band>

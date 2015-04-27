@@ -90,6 +90,40 @@ public class ActiveIndividualsController implements ActiveIndividualsService{
 				String LocationId = rs.getString("Location");
 				Date startDate = rs.getDate("startDate");		    	
 				ActiveIndividualsBean tc = new ActiveIndividualsBean(InvididualId, LocationId, startDate);
+				String firstName = rs.getString("firstName");
+				String middleName = rs.getString("middleName");
+				String lastName = rs.getString("lastName");
+				String gender = rs.getString("gender");
+				String father = rs.getString("father");
+				String mother = rs.getString("mother");
+				String subVillage = rs.getString("Subvillage");
+				String socialGroup = rs.getString("SocialGroup");
+				Date dob = rs.getDate("dob");
+				String startType = rs.getString("startType");
+				String familyName = rs.getString("FamilyName");
+				String subVillageName = rs.getString("SubVillageName");
+				String villageCode = rs.getString("VillageCode");
+				String villageName = rs.getString("VillageName");
+				String head = rs.getString("Head");
+				Date dobHead = rs.getDate("Head_dob");
+								
+				tc.setFirstName(firstName);
+				tc.setMiddleName(middleName);
+				tc.setLastName(lastName);
+				tc.setGender(gender);
+				tc.setFather(father);
+				tc.setMother(mother);
+				tc.setSubVillage(subVillage);
+				tc.setSocialGroup(socialGroup);
+				tc.setDob(dob);		
+				tc.setStartType(startType);
+				tc.setFamilyName(familyName);
+				tc.setSubVillageName(subVillageName);
+				tc.setVillageCode(villageCode);
+				tc.setVillageName(villageName);
+				tc.setHead(head);
+				tc.setDobHead(dobHead);
+				
 		    	list.add(tc);
 		    }
 		    
