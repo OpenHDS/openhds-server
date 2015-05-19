@@ -137,6 +137,13 @@
 						</h:selectOneMenu>
 						<h:message for="autocomplete" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 						
+						<h:outputText value="#{msg.codeVisitAt}:"/>
+                 		<h:selectOneMenu id="visitAt" value="#{sitePropertiesConfigBean.visitAt}">
+   							<f:selectItem itemValue="location" itemLabel="Location" />
+						   	<f:selectItem itemValue="socialGroup" itemLabel="Socialgroup" />
+						</h:selectOneMenu>
+						<h:message for="visitAt" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>						
+						
 						<h:outputText value="#{msg.codeMinAgeOfParenthood}:"/>
                         <h:inputText id="minAgeParenthood" value="#{sitePropertiesConfigBean.minAgeOfParenthood}" converter="#{defaultConverter}" />
                         <h:message for="minAgeParenthood" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  

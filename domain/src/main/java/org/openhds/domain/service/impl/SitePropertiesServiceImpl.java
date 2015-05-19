@@ -37,6 +37,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	int minimumAgeOfPregnancy;
 	boolean autocomplete;
 	boolean valueExtensionsForMembershipCodesEnabled;
+	String visitAt;
 	
 	public String getLocale() {
 		return locale;
@@ -300,5 +301,13 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 
 	public String getDeathOfHOHCode() {
 		return deathOfHOHCode;
+	}
+	
+	public void setVisitAt(String visitAt){
+		this.visitAt = visitAt;
+	}
+	
+	public String getVisitAt(){
+		return visitAt;
 	}
 }

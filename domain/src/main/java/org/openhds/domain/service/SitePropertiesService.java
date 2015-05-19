@@ -29,6 +29,7 @@ public interface SitePropertiesService {
 	String getNoResponse();
 	String getMaleCode();
 	String getFemaleCode();
+	String getVisitAt();
 
 	int getMinimumAgeOfParents();
 	int getMinimumAgeOfHouseholdHead();

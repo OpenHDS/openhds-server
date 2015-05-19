@@ -20,7 +20,7 @@ public class GeneralSettingsresource {
 		this.settingsService = settingsService;
 	}
 	
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/xml")
     @ResponseBody
     public GeneralSettings getSettings() {
     	GeneralSettings gs = settingsService.getSettings();
