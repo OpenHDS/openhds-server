@@ -54,7 +54,7 @@ public class GeneralSettings implements Serializable{
 		this.minimumAgeOfPregnancy = minimumAgeOfPregnancy;
 	}
 	
-	@XmlElement(name = "visitAt")
+	@XmlElement(name = "visitLevel")
 	public String getVisitAt(){
 		return this.visitAt;
 	}
