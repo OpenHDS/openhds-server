@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+
+import org.openhds.controller.service.SiteConfigService;
 import org.openhds.web.service.JsfService;
 import org.springframework.core.io.ClassPathResource;
 
@@ -51,6 +55,8 @@ public class SitePropertiesConfigBean {
 	
 	JsfService jsfService;
 	
+	SiteConfigService siteConfigService;
+	
 	public void create() {
 		Properties properties = readCodeProperties();
 		properties.put("unknownIdentifier", unknownIdentifier);
@@ -86,8 +92,26 @@ public class SitePropertiesConfigBean {
 		properties.put("minAgeOfPregnancy", minAgeOfPregnancy.toString());
 		properties.put("earliestEnumerationDate", earliestEnumerationDate);
 		writePropertyFile(properties);
+		updateIdLength();
 	}
+	
+	@PostConstruct
+	public void onStartup(){		
+		updateIdLength();
+	}	
+	
+	/* Update the value of openhds.visitIdLength
+	/* Depending on if the visit level is at the location (12) or socialGroup level (14)
+	 */
+	private void updateIdLength(){		
+		int newVisitIdLength = visitAt.equalsIgnoreCase("location")? 12 : 14;
+		int currentVisitIdLength = siteConfigService.getVisitIdLength();
 		
+		if(newVisitIdLength != currentVisitIdLength){
+			siteConfigService.setVisitIdLength(newVisitIdLength);
+		}
+	}
+			
     public Date getDateOfEnumeration() throws ParseException {
     	
     	if (earliestEnumerationDate == null)
@@ -399,5 +423,13 @@ public class SitePropertiesConfigBean {
 	
 	public void setVisitAt(String visitAt){
 		this.visitAt = visitAt;
+	}
+	
+	public void setSiteConfigService(SiteConfigService siteConfigService){
+		this.siteConfigService = siteConfigService;
+	}
+	
+	public SiteConfigService getSiteConfigService(){
+		return this.siteConfigService;
 	}
 }

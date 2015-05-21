@@ -407,4 +407,10 @@
     		</map>
     	</property>
     </bean>
+    
+	<bean id="siteConfigService" class="org.openhds.controller.service.impl.SiteConfigServiceImpl" scope="singleton">
+		<property name="propertyFile" value="classpath*:site-config.properties" />
+		<property name="visitIdLength" value="${openhds.visitIdLength}" />
+		<property name="visitIdScheme"><ref bean="visitIdScheme"/></property>
+    </bean>    
 </beans>

@@ -672,6 +672,7 @@
 	 
 	 <bean id="sitePropertiesConfigBean" class="org.openhds.web.beans.SitePropertiesConfigBean">
 	 	<property name="jsfService" ref="jsfService" />
+	 	<property name="siteConfigService" ref="siteConfigService" />
 	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
 	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
 	 	<property name="outmigration"><value>${outmigration}</value></property>
