@@ -42,7 +42,7 @@ public class BaselineServiceImpl implements BaselineService {
 	     entityService.create(residency);
 	}
 
-	private Residency createResidency(Individual individual, Location currentLocation, FieldWorker collectedBy, Calendar startDate) {
+	protected Residency createResidency(Individual individual, Location currentLocation, FieldWorker collectedBy, Calendar startDate) {
 		Residency residency = new Residency();
 	     residency.setIndividual(individual);
 	     residency.setLocation(currentLocation);
