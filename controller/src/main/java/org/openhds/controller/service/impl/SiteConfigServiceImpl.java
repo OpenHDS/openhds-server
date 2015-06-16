@@ -9,6 +9,7 @@ public class SiteConfigServiceImpl implements SiteConfigService {
 	private String propertyFile;
 	private int visitIdLength = -1;
 	private IdScheme visitIdScheme;
+	private String visitLevel = "location";
 	
 	public void setPropertyFile(String propertyFile){
 		this.propertyFile = propertyFile;
@@ -39,5 +40,15 @@ public class SiteConfigServiceImpl implements SiteConfigService {
 	
 	public void setVisitIdScheme(IdScheme visitIdScheme){
 		this.visitIdScheme = visitIdScheme;		
+	}
+
+	@Override
+	public String getVisitAt() {
+		return this.visitLevel;
+	}
+
+	@Override
+	public void setVisitAt(String visitAt) {
+		this.visitLevel = visitAt;
 	}
 }

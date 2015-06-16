@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openhds.controller.exception.ConstraintViolations;
+import org.openhds.controller.service.SiteConfigService;
 import org.openhds.dao.service.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public abstract class Generator<T> extends LuhnValidator {
 	protected IdSchemeResource resource;
 	@Autowired
 	protected GenericDao genericDao;
+	@Autowired
+	protected SiteConfigService siteconfigService;
 	
 	// temp variable for storing parts of the id
 	protected String extId;

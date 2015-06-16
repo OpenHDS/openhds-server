@@ -92,23 +92,24 @@ public class SitePropertiesConfigBean {
 		properties.put("minAgeOfPregnancy", minAgeOfPregnancy.toString());
 		properties.put("earliestEnumerationDate", earliestEnumerationDate);
 		writePropertyFile(properties);
-		updateIdLength();
+		updateSiteConfig();
 	}
 	
 	@PostConstruct
 	public void onStartup(){		
-		updateIdLength();
+		updateSiteConfig();
 	}	
 	
 	/* Update the value of openhds.visitIdLength
 	/* Depending on if the visit level is at the location (12) or socialGroup level (14)
 	 */
-	private void updateIdLength(){		
+	private void updateSiteConfig(){		
 		int newVisitIdLength = visitAt.equalsIgnoreCase("location")? 12 : 14;
 		int currentVisitIdLength = siteConfigService.getVisitIdLength();
 		
 		if(newVisitIdLength != currentVisitIdLength){
 			siteConfigService.setVisitIdLength(newVisitIdLength);
+			siteConfigService.setVisitAt(visitAt);
 		}
 	}
 			
