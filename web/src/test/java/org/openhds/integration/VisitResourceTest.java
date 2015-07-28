@@ -1,12 +1,12 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.xpath;
 
+import org.hamcrest.text.StringContains;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,7 +128,7 @@ public class VisitResourceTest {
 						.andExpect(status().isBadRequest())
 						.andExpect(content().mimeType(MediaType.APPLICATION_XML))
 						.andExpect(xpath("/failure").nodeCount(1))
-						.andExpect(xpath("failure/errors").string("ISE0000120 is not of the required length as specified in the IdScheme. It must be 12 characters long.")); 
+						.andExpect(xpath("failure/errors").string(new StringContains("is not of the required length as specified in the IdScheme."))); 
 		 }
 
 	}

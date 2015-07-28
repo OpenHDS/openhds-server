@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
 import org.openhds.controller.service.LocationHierarchyService;
+import org.openhds.controller.service.SiteConfigService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Location;
@@ -72,6 +73,9 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 	 @Autowired
 	 CurrentUser currentUser;
 	 
+	 @Autowired
+	 SiteConfigService siteConfigService;
+	 
 	 JsfServiceMock jsfServiceMock;
 	 LocationHierarchy item;
 	 FieldWorker fieldWorker;
@@ -111,12 +115,21 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 visit.setVisitDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 visit.setCollectedBy(fieldWorker);
 		 
+		 System.out.println("visit.getExtId(): " + visit.getExtId());
+		 
 		 visitCrud.setItem(visit);
 		 visitCrud.create();
-		 
+		 		 
 		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 assertNotNull(savedVisit);
-		 assertTrue(jsfServiceMock.getErrors().size() == 0);
+		 
+		 if(siteConfigService.getVisitAt().equalsIgnoreCase("location")){
+			 assertNotNull(savedVisit);
+			 assertTrue(jsfServiceMock.getErrors().size() == 0);
+		 }
+		 else{
+			 assertNull(savedVisit);
+			 assertTrue(jsfServiceMock.getErrors().size() > 0);
+		 }
 	 }
 	 
 	 @DirtiesContext
