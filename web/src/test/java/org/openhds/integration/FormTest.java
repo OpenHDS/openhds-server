@@ -57,6 +57,7 @@ public class FormTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 
 		 jsfServiceMock = (JsfServiceMock)jsfService;
 		 currentUser.setProxyUser("admin", "test", new String[] {"VIEW_ENTITY", "CREATE_ENTITY"});
+		 jsfServiceMock.resetErrors();
 	 }
 	 
 	 @After
