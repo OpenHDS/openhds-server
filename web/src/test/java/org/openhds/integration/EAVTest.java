@@ -1,14 +1,17 @@
 package org.openhds.integration;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.CurrentUser;
+import org.openhds.controller.service.SiteConfigService;
 import org.openhds.dao.service.GenericDao;
 import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
@@ -56,6 +59,9 @@ public class EAVTest {
 	 @Autowired
 	 @Qualifier("currentUser")
 	 CurrentUser currentUser;
+	 
+	 @Autowired
+	 SiteConfigService siteConfigService;
 	 
 	 JsfServiceMock jsfServiceMock;
 	 FieldWorker fieldWorker;
@@ -105,7 +111,15 @@ public class EAVTest {
 		 visitCrud.create();
 		 
 		 Visit savedVisit = genericDao.findByProperty(Visit.class, "extId", visit.getExtId());
-		 assertNotNull(savedVisit);
+		 
+		 //If visitLevel is set to location, create should be successfull
+		 if(siteConfigService.getVisitAt().equalsIgnoreCase("location")){
+			 assertNotNull(savedVisit);
+		 }
+		 //if visitlevel at sg, create should not have been successfull (extId too short)
+		 else{
+			 assertNull(savedVisit);
+		 }
 	 }
 	 
 	 private ClassExtension createAttribute() {

@@ -1,5 +1,6 @@
 package org.openhds.integration;
 
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.x
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.controller.service.SiteConfigService;
 import org.openhds.integration.util.WebContextLoader;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,9 @@ public class VisitResourceTest {
 	 
 	 @Autowired
 	private VisitCrudImpl visitCrud; 
+	 
+	 @Autowired
+	private SiteConfigService siteConfigService;
 
 	@Before
 	public void setUp() throws Exception {
@@ -103,16 +108,29 @@ public class VisitResourceTest {
 				</visitLocation>
 			</visit>
 		 */
-		mockMvc.perform(post("/visits").session(session)
-				.contentType(MediaType.APPLICATION_XML)
-				.body(VISIT_POST_XML.getBytes()))
-				.andExpect(status().isCreated())
-				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
-				.andExpect(xpath("/visit/collectedBy/extId").string("FWEK1D"))
-				.andExpect(xpath("/visit/extId").string("ISE000012000"))
-				.andExpect(xpath("/visit/roundNumber").string("1"))
-				.andExpect(xpath("/visit/visitDate").string("01-01-2015"))
-				.andExpect(xpath("/visit/visitLocation/extId").string("NJA000001"));
+		
+		 //If visitLevel is set to location, post should be successfull
+		 if(siteConfigService.getVisitAt().equalsIgnoreCase("location")){
+				mockMvc.perform(post("/visits").session(session)
+						.contentType(MediaType.APPLICATION_XML)
+						.body(VISIT_POST_XML.getBytes()))
+						.andExpect(status().isCreated())
+						.andExpect(content().mimeType(MediaType.APPLICATION_XML))
+						.andExpect(xpath("/visit/collectedBy/extId").string("FWEK1D"))
+						.andExpect(xpath("/visit/extId").string("ISE000012000"))
+						.andExpect(xpath("/visit/roundNumber").string("1"))
+						.andExpect(xpath("/visit/visitDate").string("01-01-2015"))
+						.andExpect(xpath("/visit/visitLocation/extId").string("NJA000001"));
+		 }else{
+				mockMvc.perform(post("/visits").session(session)
+						.contentType(MediaType.APPLICATION_XML)
+						.body(VISIT_POST_XML.getBytes()))
+						.andExpect(status().isBadRequest())
+						.andExpect(content().mimeType(MediaType.APPLICATION_XML))
+						.andExpect(xpath("/failure").nodeCount(1))
+						.andExpect(xpath("failure/errors").string("ISE0000120 is not of the required length as specified in the IdScheme. It must be 12 characters long.")); 
+		 }
+
 	}
 	
 	
