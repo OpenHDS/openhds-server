@@ -33,7 +33,7 @@ public class ShallowCopier {
             copy.setMiddleName(middleName);
             copy.setMother(copyExtId(individual.getMother()));
 
-            if (individual.getCurrentMembership() != null && individual.getCurrentMembership().getEndDate()==null) {
+            if (individual.getCurrentMembership() != null /*&& individual.getCurrentMembership().getEndDate()==null*/) {
             	Membership memCopy = new Membership();
                 SocialGroup sgCopy = new SocialGroup();
                 sgCopy.setExtId(individual.getCurrentMembership().getSocialGroup().getExtId());
