@@ -3,6 +3,7 @@ package org.openhds.domain.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NamedQuery;
 import org.openhds.domain.annotations.Description;
@@ -62,6 +67,8 @@ public class User implements Serializable {
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_uuid")}, inverseJoinColumns = @JoinColumn(name="role_uuid"))
     @Description(description="Set of roles applied to the user.")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size=10)
     Set<Role> roles = new HashSet<Role>();
     
 	@Description(description="Indicator for signaling some data to be deleted.")
