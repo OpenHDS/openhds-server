@@ -219,13 +219,18 @@ public class Individual
         return residency;
     }
     public Membership getCurrentMembership() {
+    	Membership m1 = new Membership();
         if (allMemberships.size() == 0) {
             return null;
         }
         Iterator<Membership> itr = allMemberships.iterator();
         Membership membership = null;
         while (itr.hasNext()) {
-        	membership = itr.next();
+        	m1 = itr.next();
+        	if (m1.endDate==null) {
+            	membership = m1;
+        	}
+        	 
         }
         return membership;
     }
