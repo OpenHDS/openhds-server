@@ -30,8 +30,8 @@ public class SettingsServiceImpl implements SettingsService {
 		gs.setMinimumAgeOfHouseholdHead(minimumAgeOfHouseholdHead);
 		gs.setMinMarriageAge(minMarriageAge);
 		gs.setMinimumAgeOfPregnancy(minimumAgeOfPregnancy);
-		gs.setEarliestEventDate(earliestEventDate);
 		gs.setVisitAt(visitAt);
+		gs.setEarliestEventDate(earliestEventDate);
 		return gs;
 	}
 }
