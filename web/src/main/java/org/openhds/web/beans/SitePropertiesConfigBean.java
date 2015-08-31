@@ -44,6 +44,7 @@ public class SitePropertiesConfigBean {
 	String autocomplete;
 	String locale;
 	String earliestEnumerationDate;
+	String earliestEventDate;
 	String visitAt;
 
 	Integer minAgeOfParenthood;
@@ -52,6 +53,7 @@ public class SitePropertiesConfigBean {
 	Integer minAgeOfPregnancy;
 	
 	Date dateOfEnumeration;
+	Date dateOfEvent;
 	
 	JsfService jsfService;
 	
@@ -91,6 +93,7 @@ public class SitePropertiesConfigBean {
 		properties.put("minAgeOfMarriage", minAgeOfMarriage.toString());
 		properties.put("minAgeOfPregnancy", minAgeOfPregnancy.toString());
 		properties.put("earliestEnumerationDate", earliestEnumerationDate);
+		properties.put("earliestEventDate", earliestEventDate);
 		writePropertyFile(properties);
 		updateSiteConfig();
 	}
@@ -129,7 +132,23 @@ public class SitePropertiesConfigBean {
 		SimpleDateFormat sdFormat = new SimpleDateFormat(dateFormat);
 		earliestEnumerationDate = sdFormat.format(dateOfEnumeration);
 	}
-			
+		
+    public Date getDateOfEvent() throws ParseException {
+    	
+    	if (earliestEventDate == null)
+    		return new Date();
+    	
+    	DateFormat formatter = new SimpleDateFormat(dateFormat);
+        Date date = formatter.parse(earliestEventDate);
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(date);
+        return dateCal.getTime();
+	}
+
+	public void setDateOfEvent(Date dateOfEVent) throws ParseException {
+		SimpleDateFormat sdFormat = new SimpleDateFormat(dateFormat);
+		earliestEventDate = sdFormat.format(dateOfEVent);
+	}
 	public Properties readCodeProperties() {
 		FileInputStream fis = null;
 		Properties prop = null;
@@ -385,6 +404,14 @@ public class SitePropertiesConfigBean {
 	public void setEarliestEnumerationDate(String earliestEnumerationDate) {
 		this.earliestEnumerationDate = earliestEnumerationDate;
 	}
+	public String getEarliestEventDate() {
+		return earliestEventDate;
+	}
+
+	public void setEarliestEventDate(String earliestEventDate) {
+		this.earliestEventDate = earliestEventDate;
+	}
+	
 	
 	public Integer getMinAgeOfParenthood() {
 		return minAgeOfParenthood;

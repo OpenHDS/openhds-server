@@ -23,11 +23,14 @@ public class SettingsServiceImpl implements SettingsService {
 		int minMarriageAge = siteProperties.getMinimumAgeOfMarriage();
 		int minimumAgeOfPregnancy = siteProperties.getMinimumAgeOfPregnancy();
 		String visitAt = siteProperties.getVisitAt();
+		String earliestEventDate = siteProperties.getEarliestEventDate(); 
+
 		
 		gs.setMinimumAgeOfParents(minimumAgeOfParents);
 		gs.setMinimumAgeOfHouseholdHead(minimumAgeOfHouseholdHead);
 		gs.setMinMarriageAge(minMarriageAge);
 		gs.setMinimumAgeOfPregnancy(minimumAgeOfPregnancy);
+		gs.setEarliestEventDate(earliestEventDate);
 		gs.setVisitAt(visitAt);
 		return gs;
 	}

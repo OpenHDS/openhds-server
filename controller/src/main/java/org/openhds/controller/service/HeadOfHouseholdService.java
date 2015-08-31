@@ -6,7 +6,6 @@ import org.openhds.domain.model.HeadOfHousehold;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.PrivilegeConstants;
 import org.openhds.domain.model.SocialGroup;
-import org.openhds.domain.model.Visit;
 
 public interface HeadOfHouseholdService {
 	

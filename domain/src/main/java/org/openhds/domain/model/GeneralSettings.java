@@ -17,6 +17,7 @@ public class GeneralSettings implements Serializable{
 	private int minMarriageAge;	
 	private int minimumAgeOfPregnancy;
 	private String visitAt;
+	private String earliestEventDate;
 
 	@XmlElement(name = "minMarriageAge")
 	public int getMinMarriageAge() {
@@ -61,6 +62,15 @@ public class GeneralSettings implements Serializable{
 	
 	public void setVisitAt(String visitAt){
 		this.visitAt = visitAt;
+	}
+
+	@XmlElement(name = "earliestEventDate")
+	public String getEarliestEventDate() {
+		return earliestEventDate;
+	}
+
+	public void setEarliestEventDate(String earliestEventDate) {
+		this.earliestEventDate = earliestEventDate;
 	}
 	
 }

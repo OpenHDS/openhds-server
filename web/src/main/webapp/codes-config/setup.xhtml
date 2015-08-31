@@ -163,7 +163,10 @@
                         <h:outputText value="#{msg.codeEarliestEnumerationDate} (#{sitePropertiesConfigBean.dateFormat})"/>
                 		<o:dateChooser id="enumDate" value="#{sitePropertiesConfigBean.dateOfEnumeration}" pattern="#{sitePropertiesConfigBean.dateFormat}" />
                 		<h:message for="enumDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-						
+                		
+                        <h:outputText value="#{msg.codeEarliestEventDate} (#{sitePropertiesConfigBean.dateFormat})"/>
+                		<o:dateChooser id="eventDate" value="#{sitePropertiesConfigBean.dateOfEvent}" pattern="#{sitePropertiesConfigBean.dateFormat}" />
+                		<h:message for="eventDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>						
                     </h:panelGrid>
                     <br />
                     <h:commandButton styleClass="config" action="#{sitePropertiesConfigBean.create}" value="#{msg.lblCreate}" />

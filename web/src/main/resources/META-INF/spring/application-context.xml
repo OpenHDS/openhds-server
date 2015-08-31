@@ -704,6 +704,7 @@
         <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
         <property name="minAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
         <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
+        <property name="earliestEventDate"><value>${earliestEventDate}</value></property>
         <property name="visitAt"><value>${visitAt}</value></property>
 	 </bean>
 	 
@@ -739,7 +740,8 @@
         <property name="yesResponse"><value>${yesResponse}</value></property>
         <property name="noResponse"><value>${noResponse}</value></property>
 		<property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
-        <property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
+		<property name="earliestEventDate"><value>${earliestEventDate}</value></property>
+		<property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
         <property name="visitAt"><value>${visitAt}</value></property>
      </bean> 
 	 

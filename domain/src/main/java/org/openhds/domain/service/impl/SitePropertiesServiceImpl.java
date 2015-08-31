@@ -7,6 +7,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	String locale;
 	String dateFormat;
 	String earliestEnumerationDate;
+	String earliestEventDate;
 	String specialStudyLocation;
 	String unknownIdentifier;
 	String inmigrationCode;
@@ -61,6 +62,14 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 
 	public void setEarliestEnumerationDate(String earliestEnumerationDate) {
 		this.earliestEnumerationDate = earliestEnumerationDate;
+	}
+	
+	public String getEarliestEventDate() {
+		return earliestEventDate;
+	}
+	
+	public void setEarliestEventDate(String earliestEventDate) {
+		this.earliestEventDate = earliestEventDate;
 	}
 	
     public boolean isAutocomplete() {
@@ -310,4 +319,6 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	public String getVisitAt(){
 		return visitAt;
 	}
+
+
 }
