@@ -57,7 +57,7 @@ public class Membership extends AuditableCollectedEntity implements GenericEndDa
     @Description(description="End type of the membership.")
 	String endType;
     
-    @ExtensionStringConstraint(constraint="membershipConstraint", message="Invalid Value for membership relation to head", allowNull=true)
+    @ExtensionStringConstraint(constraint="membershipConstraint", message="Invalid Value for membership relation to head", allowNull=false)
     @Description(description="Relationship type to the group head.")
     String bIsToA;
 	
