@@ -11,6 +11,7 @@ import org.openhds.task.service.AsyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
@@ -35,7 +36,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void startTask(String taskName) {
         AsyncTask task = dao.findByProperty("taskName", taskName);
         if (task == null) {
@@ -49,7 +50,7 @@ public class AsyncTaskServiceImpl implements AsyncTaskService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTaskProgress(String taskName, long itemsWritten) {
         AsyncTask task = dao.findByProperty("taskName", taskName);
         task.setTotalItems(itemsWritten);
