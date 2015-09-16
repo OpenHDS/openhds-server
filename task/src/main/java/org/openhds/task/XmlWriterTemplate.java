@@ -95,7 +95,7 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             asyncTaskService.finishTask(taskName, itemsWritten, md5);
             }
         } catch (Exception e) {
-            System.out.println(e);
+        	 asyncTaskService.finishTask(taskName, 0, e.getMessage());
         } 
 
     }
