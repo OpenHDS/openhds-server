@@ -195,6 +195,25 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 			String nullable = column.getAllow_null();
 			String columnSize = column.getSize();
 			
+			if(column.getType().equalsIgnoreCase("STRING")){
+				typeName = "TEXT";
+				columnSize = "255";
+			}
+			else if(column.getType().equalsIgnoreCase("JRDATE")){
+				typeName = "DATETIME";
+			}
+			else if(column.getType().equalsIgnoreCase("JRDATETIME")){
+				typeName = "DATETIME";
+			}	
+			else if(column.getType().equalsIgnoreCase("SELECTN") || column.getType().equalsIgnoreCase("SELECT1")){
+				typeName = "TEXT";
+				columnSize = "255";
+			}	
+			else if(column.getType().equalsIgnoreCase("INTEGER")){
+				typeName = "INT";
+				columnSize = "9";
+			}
+			
 			builder.append("`" + columnName + "` " );
 			builder.append(typeName + " ");
 			
@@ -438,20 +457,44 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 				PreparedStatement pstmt = connection.prepareStatement(query);) {		
 			int pointer = 1;
 			for (ExtraForm.Data d : extraForm.getData()) {
-				if (d.data.length() == 0) {
-					if (d.type.equalsIgnoreCase("INT")) {
+				if (d.value == null || d.value.length() == 0) {
+					
+					String type = d.type;
+					
+					if(type.equalsIgnoreCase("STRING")){
+//						typeName = "VARCHAR";
+						type = "TEXT";
+					}
+					else if(type.equalsIgnoreCase("JRDATE")){
+						type = "DATETIME";
+					}
+					else if(type.equalsIgnoreCase("JRDATETIME")){
+						type = "DATETIME";
+					}	
+					else if(type.equalsIgnoreCase("SELECTN") || type.equalsIgnoreCase("SELECT1")){
+						type = "TEXT";
+					}	
+					else if(type.equalsIgnoreCase("INTEGER")){
+						type = "INT";
+					}
+					
+					if (type.equalsIgnoreCase("INT")) {
 						pstmt.setNull(pointer, java.sql.Types.INTEGER);
-					} else if (d.type.equalsIgnoreCase("DECIMAL")) {
+					} else if (type.equalsIgnoreCase("DECIMAL")) {
 						pstmt.setNull(pointer, java.sql.Types.DECIMAL);
-					} else if (d.type.equalsIgnoreCase("DATETIME")) {
+					} else if (type.equalsIgnoreCase("DATETIME")) {
 						pstmt.setNull(pointer, java.sql.Types.DATE);
-					} else if (d.type.equalsIgnoreCase("VARCHAR")) {
+					} else if (type.equalsIgnoreCase("VARCHAR")) {
 						pstmt.setNull(pointer, java.sql.Types.VARCHAR);
 					} else {
-						pstmt.setString(pointer, d.data);
+						pstmt.setString(pointer, d.value);
 					}
 				} else {
-					pstmt.setString(pointer, d.data);
+					if((d.type.equalsIgnoreCase("INTEGER") || d.type.equalsIgnoreCase("INT")) && d.value.equals("null")){
+						pstmt.setNull(pointer, java.sql.Types.INTEGER);
+					}
+					else
+						pstmt.setString(pointer, d.value);
 				}
 				pointer++;
 			}

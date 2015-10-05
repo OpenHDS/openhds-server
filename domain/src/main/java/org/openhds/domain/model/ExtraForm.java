@@ -33,27 +33,28 @@ public class ExtraForm {
 	}
 	
 	void afterUnmarshal(Unmarshaller u, Object parent){
+		System.out.println("after unmarshall");
 		for(Data d: data){
 			String columnName = d.columnName.toLowerCase();
 			if(columnName.startsWith("openhds_") || columnName.startsWith("individual_info_")){				
 				if(columnName.equalsIgnoreCase("OPENHDS_VISIT_ID")){
-					this.visitId = d.data;
+					this.visitId = d.value;
 				}
 				else if(columnName.equalsIgnoreCase("OPENHDS_ROUND_NUMBER")){
-					this.roundNumber = d.data;
+					this.roundNumber = d.value;
 				}
 				else if(columnName.equalsIgnoreCase("OPENHDS_LOCATION_ID")){
-					this.locationId = d.data;
+					this.locationId = d.value;
 				}
 				else if(columnName.equalsIgnoreCase("OPENHDS_FIELD_WORKER_ID")){
-					this.fieldWorkerId = d.data;
+					this.fieldWorkerId = d.value;
 				}
 				else if(columnName.equalsIgnoreCase("INDIVIDUAL_INFO_INDIVIDUAL_ID") 
 						|| columnName.equalsIgnoreCase("OPENHDS_INDIVIDUAL_ID")) {
-					this.individualId = d.data;
+					this.individualId = d.value;
 				}
 				else if(columnName.equalsIgnoreCase("OPENHDS_HOUSEHOLD_ID")) {
-					this.socialGroupId = d.data;
+					this.socialGroupId = d.value;
 				}
 			}
 		}
@@ -74,7 +75,7 @@ public class ExtraForm {
 		for(Data d: data){
 			sb.append(", columnName=" + d.columnName);
 			sb.append(", type=" + d.type);
-			sb.append(", data=" + d.data);
+			sb.append(", data=" + d.value);
 			sb.append("\n");
 		}
 		sb.append("]");
@@ -107,8 +108,8 @@ public class ExtraForm {
 	}
 	
 	public static class Data{
-		@XmlValue
-		public String data;
+		@XmlAttribute
+		public String value;
 		
 		@XmlAttribute
 		public String columnName;
