@@ -33,7 +33,6 @@ public class ExtraForm {
 	}
 	
 	void afterUnmarshal(Unmarshaller u, Object parent){
-		System.out.println("after unmarshall");
 		for(Data d: data){
 			String columnName = d.columnName.toLowerCase();
 			if(columnName.startsWith("openhds_") || columnName.startsWith("individual_info_")){				
