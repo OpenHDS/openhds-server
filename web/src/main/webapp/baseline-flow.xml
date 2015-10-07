@@ -133,6 +133,7 @@
     <view-state id="newIndividual" view="individual/create.xhtml">
         <on-entry>
             <set name="flowScope.currentView" value="'newIndividual'"></set>
+            <evaluate expression="individualIdGenerator.setLocation(baselineFlowBean.getCurrentLocation())" />
             <set name="individualCrud.getItem().collectedBy" value="baselineFlowBean.getCollectedBy()" />
             <evaluate expression="navController.addItemToTrail('Individual Create')" />
         </on-entry>
