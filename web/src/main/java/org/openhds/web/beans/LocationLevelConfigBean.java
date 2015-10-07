@@ -63,7 +63,7 @@ public class LocationLevelConfigBean {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
 			return;
 		}
-		jsfService.addMessage("Location Level Configuration updated successfully. Redeploy the web application for changes to take effect.");
+		jsfService.addMessage("Location Level Configuration updated successfully. Restart the web application for changes to take effect!");
 	}
 		
 	public JsfService getJsfService() {
