@@ -39,4 +39,7 @@ public interface SitePropertiesService {
 
 	boolean isAutocomplete();	
 	boolean isValueExtensionsForMembershipCodesEnabled();
+	boolean getEthiopianCalendar();
+	
+	void setEthiopianCalendar(boolean ethiopianCalendar);
 }

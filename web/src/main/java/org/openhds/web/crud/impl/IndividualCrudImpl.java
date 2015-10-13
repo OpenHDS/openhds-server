@@ -3,6 +3,8 @@ package org.openhds.web.crud.impl;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.openhds.controller.service.EntityValidationService;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.model.Individual;
@@ -43,6 +45,9 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     
     @Override
     public String edit() {
+    	
+    	System.out.println("Edit individualCrud");
+    	
     	String outcome = super.edit();
     	
     	if (outcome != null) {
@@ -67,12 +72,43 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	if (entityItem.getDob() == null)
     		return new Date();
     	
+    	
     	return entityItem.getDob().getTime();
+	}
+    
+    public Calendar getDateOfBirthAsCalendar() {
+    	
+    	Calendar dateOfBirth;
+    	
+    	System.out.println(new Date()+ ": In getDateOfBirthAsCalendar: " + entityItem.getDob().getTime());
+    	
+    	if (entityItem.getDob() == null){
+    		return new GregorianCalendar();
+    	} 	
+    	
+//    	System.out.println("Return : " + entityItem.getDob().getTime());
+    	
+    	return entityItem.getDob();
+	}
+    
+    
+	public void setDateOfBirthAsCalendar(Calendar dateOfBirth) throws ParseException {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		System.out.println("Set setDateOfBirthAsCalendar after submitting: " + dateOfBirth.getTime());
+		
+//		cal.setTime(dateOfBirth);
+//		entityItem.setDob(cal);
+		entityItem.setDob(dateOfBirth);
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) throws ParseException {
 		
 		Calendar cal = Calendar.getInstance();
+		
+		System.out.println("Set dob after submitting: " + dateOfBirth.toString());
+		
 		cal.setTime(dateOfBirth);
 		entityItem.setDob(cal);
 	}

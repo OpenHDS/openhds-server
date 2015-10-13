@@ -37,6 +37,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	int minimumAgeOfMarriage;
 	int minimumAgeOfPregnancy;
 	boolean autocomplete;
+	boolean ethiopianCalendar;
 	boolean valueExtensionsForMembershipCodesEnabled;
 	String visitAt;
 	
@@ -320,5 +321,12 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 		return visitAt;
 	}
 
+    public boolean getEthiopianCalendar() {
+		return ethiopianCalendar;
+	}
+
+	public void setEthiopianCalendar(boolean ethiopianCalendar) {
+		this.ethiopianCalendar = ethiopianCalendar;
+	}
 
 }

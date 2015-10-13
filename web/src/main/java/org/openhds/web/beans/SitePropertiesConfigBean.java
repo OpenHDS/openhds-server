@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 
 import org.openhds.controller.service.SiteConfigService;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.web.service.JsfService;
 import org.springframework.core.io.ClassPathResource;
 
@@ -46,6 +47,7 @@ public class SitePropertiesConfigBean {
 	String earliestEnumerationDate;
 	String earliestEventDate;
 	String visitAt;
+	String ethiopianCalendar;
 
 	Integer minAgeOfParenthood;
 	Integer minAgeOfHouseholdHead;
@@ -58,6 +60,7 @@ public class SitePropertiesConfigBean {
 	JsfService jsfService;
 	
 	SiteConfigService siteConfigService;
+	SitePropertiesService sitePropertiesService;
 	
 	public void create() {
 		Properties properties = readCodeProperties();
@@ -86,6 +89,7 @@ public class SitePropertiesConfigBean {
 		properties.put("dataStatusClosed", dataStatusClosed);	
 		properties.put("dateFormat", dateFormat);
 		properties.put("autocomplete", autocomplete);
+		properties.put("ethiopianCalendar", ethiopianCalendar);
 		properties.put("visitAt", visitAt);
 		properties.put("locale", locale);
 		properties.put("minAgeOfParenthood", minAgeOfParenthood.toString());
@@ -114,6 +118,8 @@ public class SitePropertiesConfigBean {
 			siteConfigService.setVisitIdLength(newVisitIdLength);
 			siteConfigService.setVisitAt(visitAt);
 		}
+		
+		sitePropertiesService.setEthiopianCalendar(ethiopianCalendar.equalsIgnoreCase("1")?true:false);
 	}
 			
     public Date getDateOfEnumeration() throws ParseException {
@@ -174,6 +180,7 @@ public class SitePropertiesConfigBean {
 			fos = new FileOutputStream(
 					new ClassPathResource("codes.properties").getFile());
 			props.store(fos, "Code Configuration updated");
+			System.out.println("Updated: " + new ClassPathResource("codes.properties").getFile().getAbsolutePath());
 		} catch (Exception e) {
 			jsfService.addMessage("Error writing Property file. Exception : " + e.getMessage());
 			return;
@@ -453,11 +460,28 @@ public class SitePropertiesConfigBean {
 		this.visitAt = visitAt;
 	}
 	
+	public String getEthiopianCalendar() {
+		return ethiopianCalendar;
+	}
+
+	public void setEthiopianCalendar(String ethiopianCalendar) {
+		System.out.println("Setting ethiopianCalendar to: " + ethiopianCalendar);
+		this.ethiopianCalendar = ethiopianCalendar;
+	}
+	
 	public void setSiteConfigService(SiteConfigService siteConfigService){
 		this.siteConfigService = siteConfigService;
 	}
 	
 	public SiteConfigService getSiteConfigService(){
 		return this.siteConfigService;
+	}
+	
+	public void setSitePropertiesService(SitePropertiesService sitepropertiesService){
+		this.sitePropertiesService = sitepropertiesService;
+	}
+	
+	public SitePropertiesService getSitePropertiesService(){
+		return this.sitePropertiesService;
 	}
 }

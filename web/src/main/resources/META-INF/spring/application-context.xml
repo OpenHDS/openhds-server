@@ -90,6 +90,7 @@
     
     <bean id="calendarConverter" class="org.openhds.web.cvt.CalendarConverter">
         <property name="dateFormat" value="#{siteProperties.dateFormat}" />
+        <property name="sitePropertiesService" ref="siteProperties" />
     </bean>
     
     <bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
@@ -670,44 +671,6 @@
          </property>
 	 </bean>
 	 
-	 <bean id="sitePropertiesConfigBean" class="org.openhds.web.beans.SitePropertiesConfigBean">
-	 	<property name="jsfService" ref="jsfService" />
-	 	<property name="siteConfigService" ref="siteConfigService" />
-	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
-	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
-	 	<property name="outmigration"><value>${outmigration}</value></property>
-	 	<property name="birth"><value>${birth}</value></property>
-	 	<property name="death"><value>${death}</value></property>
-	 	<property name="deathOfHOH"><value>${deathOfHOH}</value></property>
-	 	<property name="enumeration"><value>${enumeration}</value></property>
-	 	<property name="marriage"><value>${marriage}</value></property>
-	 	<property name="notApplicable"><value>${notApplicable}</value></property>
-	 	<property name="liveBirth"><value>${liveBirth}</value></property>
-	 	<property name="stillBirth"><value>${stillBirth}</value></property>
-	 	<property name="miscarriage"><value>${miscarriage}</value></property>
-	 	<property name="abortion"><value>${abortion}</value></property>
-	 	<property name="male"><value>${male}</value></property>
-	 	<property name="female"><value>${female}</value></property>
-	 	<property name="dataStatusWarning"><value>${dataStatusWarning}</value></property>
-	 	<property name="dataStatusValid"><value>${dataStatusValid}</value></property>
-	 	<property name="dataStatusFatal"><value>${dataStatusFatal}</value></property>
-	 	<property name="dataStatusVoid"><value>${dataStatusVoid}</value></property>
-	 	<property name="dataStatusPending"><value>${dataStatusPending}</value></property>
-	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
-	 	<property name="yesResponse"><value>${yesResponse}</value></property>
-	 	<property name="noResponse"><value>${noResponse}</value></property>	
-	 	<property name="locale"><value>${locale}</value></property>
-	 	<property name="dateFormat"><value>${dateFormat}</value></property>
-	 	<property name="autocomplete"><value>${autocomplete}</value></property>
-	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
-        <property name="minAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
-        <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
-        <property name="minAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
-        <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
-        <property name="earliestEventDate"><value>${earliestEventDate}</value></property>
-        <property name="visitAt"><value>${visitAt}</value></property>
-	 </bean>
-	 
      <bean id="siteProperties" class="org.openhds.domain.service.impl.SitePropertiesServiceImpl">   
     	<property name="locale"><value>${locale}</value></property>     
         <property name="dateFormat"><value>${dateFormat}</value></property>
@@ -743,6 +706,46 @@
 		<property name="earliestEventDate"><value>${earliestEventDate}</value></property>
 		<property name="specialStudyLocation"><value>${openhds.specialStudyLocation}</value></property>
         <property name="visitAt"><value>${visitAt}</value></property>
+        <property name="ethiopianCalendar"><value>${ethiopianCalendar}</value></property>
      </bean> 
 	 
+	 <bean id="sitePropertiesConfigBean" class="org.openhds.web.beans.SitePropertiesConfigBean">
+	 	<property name="jsfService" ref="jsfService" />
+	 	<property name="siteConfigService" ref="siteConfigService" />
+	 	<property name="sitePropertiesService" ref="siteProperties" />
+	 	<property name="unknownIdentifier"><value>${unknownIdentifier}</value></property>
+	 	<property name="inmigration"><value>${inmigration}</value></property>	 		 	
+	 	<property name="outmigration"><value>${outmigration}</value></property>
+	 	<property name="birth"><value>${birth}</value></property>
+	 	<property name="death"><value>${death}</value></property>
+	 	<property name="deathOfHOH"><value>${deathOfHOH}</value></property>
+	 	<property name="enumeration"><value>${enumeration}</value></property>
+	 	<property name="marriage"><value>${marriage}</value></property>
+	 	<property name="notApplicable"><value>${notApplicable}</value></property>
+	 	<property name="liveBirth"><value>${liveBirth}</value></property>
+	 	<property name="stillBirth"><value>${stillBirth}</value></property>
+	 	<property name="miscarriage"><value>${miscarriage}</value></property>
+	 	<property name="abortion"><value>${abortion}</value></property>
+	 	<property name="male"><value>${male}</value></property>
+	 	<property name="female"><value>${female}</value></property>
+	 	<property name="dataStatusWarning"><value>${dataStatusWarning}</value></property>
+	 	<property name="dataStatusValid"><value>${dataStatusValid}</value></property>
+	 	<property name="dataStatusFatal"><value>${dataStatusFatal}</value></property>
+	 	<property name="dataStatusVoid"><value>${dataStatusVoid}</value></property>
+	 	<property name="dataStatusPending"><value>${dataStatusPending}</value></property>
+	 	<property name="dataStatusClosed"><value>${dataStatusClosed}</value></property> 
+	 	<property name="yesResponse"><value>${yesResponse}</value></property>
+	 	<property name="noResponse"><value>${noResponse}</value></property>	
+	 	<property name="locale"><value>${locale}</value></property>
+	 	<property name="dateFormat"><value>${dateFormat}</value></property>
+	 	<property name="autocomplete"><value>${autocomplete}</value></property>
+	 	<property name="minAgeOfParenthood"><value>${minAgeOfParenthood}</value></property>
+        <property name="minAgeOfHouseholdHead"><value>${minAgeOfHouseholdHead}</value></property>
+        <property name="minAgeOfMarriage"><value>${minAgeOfMarriage}</value></property>
+        <property name="minAgeOfPregnancy"><value>${minAgeOfPregnancy}</value></property>
+        <property name="earliestEnumerationDate"><value>${earliestEnumerationDate}</value></property>
+        <property name="earliestEventDate"><value>${earliestEventDate}</value></property>
+        <property name="visitAt"><value>${visitAt}</value></property>
+        <property name="ethiopianCalendar"><value>${ethiopianCalendar}</value></property>
+	 </bean>
 </beans>

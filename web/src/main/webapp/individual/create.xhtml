@@ -64,6 +64,8 @@
                 <h:outputText />
                 <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" />
                 <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                
+                <h:outputText value="#{msg.codeEthiopianCalendar}: #{siteProperties.ethiopianCalendar}"/>
 
 				<h:outputText value="#{msg.individualDobPartial}:"/>
 				<img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
