@@ -46,7 +46,9 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     @Override
     public String edit() {
     	
-    	System.out.println("Edit individualCrud");
+    	System.out.println("Edit individualCrud:: " + entityItem.getDob().getTime());
+    	
+    	System.out.println();
     	
     	String outcome = super.edit();
     	
@@ -71,7 +73,7 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	
     	if (entityItem.getDob() == null)
     		return new Date();
-    	
+    	System.out.println("Indivdiualcrud::getDateOfBirth: " + entityItem.getDob().getTime());
     	
     	return entityItem.getDob().getTime();
 	}

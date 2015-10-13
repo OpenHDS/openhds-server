@@ -35,11 +35,11 @@ public class CalendarConverter implements Converter {
 			if(siteProperties.getEthiopianCalendar()){
 				//Convert from Ethiopian to Gregorian Calendar 
 //				Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa"));
-				Chronology chron_eth = EthiopicChronology.getInstance();
+				Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.getDefault());
 				DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy").withChronology(chron_eth);
 				DateTime dt_eth = dtf.parseDateTime(value); 
 //				dt_eth.plusHours(3);
-				DateTime dt_greg = dt_eth.withChronology(GregorianChronology.getInstance());
+				DateTime dt_greg = dt_eth.withChronology(GregorianChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa")));
 				cal = dt_greg.toGregorianCalendar();
 				
 				
@@ -84,7 +84,7 @@ public class CalendarConverter implements Converter {
 		if(siteProperties.getEthiopianCalendar()){
 //			System.out.println("Use Ethiopian Calendar");
 			// Create Ethiopian Chronology
-			Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa"));
+			Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.getDefault());
 			
 			// Create Ethiopian Date/Time (Y, M, D, H, M, S, mS)
 			//DateTime dt_eth = new DateTime(2003, 2, 30, 0, 0, 0, 0, chron_eth);
@@ -95,7 +95,7 @@ public class CalendarConverter implements Converter {
 			//System.out.println("Ethiopian Date: " + DateTimeFormat.fullDate().print(dt_eth));
 			//System.out.println("Gregorian Date: " + DateTimeFormat.fullDate().print(dt_greg));
 			
-			DateTime dt_greg = new DateTime((Calendar)value);
+			DateTime dt_greg = new DateTime((Calendar)value).withChronology(GregorianChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa")));
 			DateTime dt_eth = dt_greg.withChronology(chron_eth);
 //			dt_eth = new DateTime(2003, 13, 3, 0, 0, 0, 0, chron_eth);
 			

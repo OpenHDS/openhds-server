@@ -72,7 +72,7 @@
                 
                 <h:outputText value="Gregorian #{msg.individualDob} "/>
                 <h:outputText />
-                <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" ><f:convertDateTime type="date" pattern="#{siteProperties.dateFormat}"/></h:outputText>
+                <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}"><f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="EET"/></h:outputText>
                 <h:outputText value="(#{siteProperties.dateFormat})" />
 
 				<h:outputText value="#{msg.individualDobPartial}"/>
