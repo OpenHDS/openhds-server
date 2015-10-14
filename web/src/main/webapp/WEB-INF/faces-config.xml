@@ -10,6 +10,7 @@
 		<el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
      	   <locale-config>
      	        <default-locale>en</default-locale>
+				<supported-locale>am</supported-locale>
      	        <supported-locale>fr</supported-locale>
      	        <supported-locale>sw</supported-locale>
      	        <supported-locale>pt</supported-locale>
