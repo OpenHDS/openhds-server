@@ -70,6 +70,11 @@
 				<h:inputText id="dobAspect" value="#{individualCrud.item.dobAspect}" converter="#{defaultConverter}" />
 				<h:message for="dobAspect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 					
+				<h:outputText value="#{msg.individualReligion}:"/>
+                <h:outputText />
+                <h:inputText id="religion" value="#{individualCrud.item.religion}" converter="#{defaultConverter}"/>
+                <h:message for="religion" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+				
                 <h:outputText value="#{msg.individualMotherId} (Use #{siteProperties.unknownIdentifier} for Unknown)" />
                 <h:outputText />
                 <h:inputText styleClass="individual" autocomplete="off" id="mother" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />

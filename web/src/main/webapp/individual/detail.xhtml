@@ -52,6 +52,10 @@
                 <img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
                 <h:outputText value="#{individualCrud.item.dobAspect}" />
                 
+                <h:outputText value="#{msg.individualReligion}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.religion}" />
+                
                 <h:outputText value="#{msg.individualMotherId}:"/>
                 <h:outputText />
                 <h:outputText value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />

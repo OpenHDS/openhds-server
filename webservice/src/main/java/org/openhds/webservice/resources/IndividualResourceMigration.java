@@ -38,6 +38,10 @@ public class IndividualResourceMigration extends AbstractResource<Individual> {
         copy.setCollectedBy(copyFieldWorker(item.getCollectedBy()));
         copy.setFirstName(item.getFirstName());
         copy.setLastName(item.getLastName());
+        String middleName = item.getMiddleName() == null ? "" : item.getMiddleName();
+        copy.setMiddleName(middleName);
+        String religion = item.getReligion() == null ? "" : item.getReligion();
+        copy.setReligion(religion);
         copy.setExtId(item.getExtId());
         copy.setFather(item.getFather());
         copy.setMother(item.getMother());
