@@ -101,7 +101,7 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 	 @Test
 	 public void testDuplicateRelationship() {
 		 Relationship relationship1 = new Relationship();
-		 relationship1.setaIsToB("3");
+		 relationship1.setaIsToB("2");
 		 relationship1.setCollectedBy(fieldWorker);
 		 relationship1.setEndType(siteProperties.getNotApplicableCode());
 		 relationship1.setIndividualA(indivA);
@@ -112,7 +112,7 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 		 relationshipCrud.create();
 		 
 		 Relationship relationship2 = new Relationship();
-		 relationship2.setaIsToB("3");
+		 relationship2.setaIsToB("2");
 		 relationship2.setCollectedBy(fieldWorker);
 		 relationship2.setEndType(siteProperties.getNotApplicableCode());
 		 relationship2.setIndividualA(indivA);
@@ -135,7 +135,7 @@ public class RelationshipTest extends AbstractTransactionalJUnit4SpringContextTe
 	 @Test
 	 public void testDeathInRelationship() {
 		 Relationship relationship = new Relationship();
-		 relationship.setaIsToB("3");
+		 relationship.setaIsToB("2");
 		 relationship.setCollectedBy(fieldWorker);
 		 relationship.setEndType(siteProperties.getNotApplicableCode());
 		 relationship.setIndividualA(indivDead);

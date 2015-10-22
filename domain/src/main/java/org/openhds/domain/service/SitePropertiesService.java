@@ -15,6 +15,7 @@ public interface SitePropertiesService {
 	String getDeathOfHOHCode();
 	String getEnumerationCode();
 	String getMarriageCode();
+	String getDivorceSeparationCode();
 	String getNotApplicableCode();
 	String getLiveBirthCode();
 	String getStillBirthCode();

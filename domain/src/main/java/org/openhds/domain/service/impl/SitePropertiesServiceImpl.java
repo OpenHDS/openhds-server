@@ -17,6 +17,7 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 	String deathOfHOHCode;
 	String enumerationCode;
 	String marriageCode;
+	String divorceSeparationCode;
 	String miscarriageCode;
 	String notApplicableCode;
 	String liveBirthCode;
@@ -150,6 +151,14 @@ public class SitePropertiesServiceImpl implements SitePropertiesService {
 
 	public void setMarriageCode(String marriageCode) {
 		this.marriageCode = marriageCode;
+	}
+
+	public String getDivorceSeparationCode() {
+		return divorceSeparationCode;
+	}
+
+	public void setDivorceSeparationCode(String divorceSeparationCode) {
+		this.divorceSeparationCode = divorceSeparationCode;
 	}
 
 	public String getNotApplicableCode() {

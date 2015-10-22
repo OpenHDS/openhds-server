@@ -681,6 +681,7 @@
 	 	<property name="deathOfHOH"><value>${deathOfHOH}</value></property>
 	 	<property name="enumeration"><value>${enumeration}</value></property>
 	 	<property name="marriage"><value>${marriage}</value></property>
+	 	<property name="divorceSeparation"><value>${divorceSeparation}</value></property>
 	 	<property name="notApplicable"><value>${notApplicable}</value></property>
 	 	<property name="liveBirth"><value>${liveBirth}</value></property>
 	 	<property name="stillBirth"><value>${stillBirth}</value></property>
@@ -720,6 +721,7 @@
         <property name="deathOfHOHCode"><value>${deathOfHOH}</value></property>
         <property name="enumerationCode"><value>${enumeration}</value></property>
         <property name="marriageCode"><value>${marriage}</value></property>
+        <property name="divorceSeparationCode"><value>${divorceSeparation}</value></property>
         <property name="notApplicableCode"><value>${notApplicable}</value></property>
         <property name="liveBirthCode"><value>${liveBirth}</value></property>
         <property name="stillBirthCode"><value>${stillBirth}</value></property>
