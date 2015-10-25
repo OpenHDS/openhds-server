@@ -92,11 +92,20 @@
 	                <td><h:inputText id="deathCause" value="#{deathCrud.item.deathCause}" required="true" converter="#{defaultConverter}" disabled="#{flowScope.deathIsSet}"/></td>
 	                <td><h:message for="deathCause" errorClass="error" errorStyle="color: red" infoStyle="color: green"/></td>
 				</tr>
+				<c:if test="#{siteProperties.ethiopianCalendar}">
+				<tr>
+	                <td><h:outputText value="#{msg.deathDate} (dd/MM/yyyy) "/></td>
+	                <td><h:inputText id="deathDate_ethiopian" value="#{deathCrud.deathDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" disabled="#{flowScope.deathIsSet}" /></td>
+	                <td><h:message for="deathDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/></td>
+				</tr>
+				</c:if> 
+				<c:if test="#{!siteProperties.ethiopianCalendar}">
 				<tr>
 	                <td><h:outputText value="#{msg.deathDate} (#{siteProperties.dateFormat}) "/></td>
 	                <td><o:dateChooser id="deathDate" value="#{deathCrud.deathDate}" pattern="#{siteProperties.dateFormat}" disabled="#{flowScope.deathIsSet}" /></td>
 	                <td><h:message for="deathDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/></td>
 				</tr>
+				</c:if> 
 				<tr>
 					<td><h:outputText value="#{msg.fieldWorkerId}:"/></td>
 	                <td><h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" value="#{deathCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.deathIsSet}"/></td>

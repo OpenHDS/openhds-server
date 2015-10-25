@@ -28,6 +28,7 @@
                 <h:form id="form">   
                 	  <h:panelGrid columns="3">
                 	  
+                	  	<c:if test="#{!siteProperties.ethiopianCalendar}"> 
               		  		<h:outputText value="#{msg.demRatesStartDate} (#{siteProperties.dateFormat}):" />
               				<o:dateChooser id="startDate" value="#{demRatesCrud.startDate}" pattern="#{siteProperties.dateFormat}" />
               				<h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
@@ -35,7 +36,16 @@
               				<h:outputText value="#{msg.demRatesEndDate} (#{siteProperties.dateFormat}):" />
               				<o:dateChooser id="endDate" value="#{demRatesCrud.endDate}" pattern="#{siteProperties.dateFormat}" />
               				<h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+              			</c:if>			
+              			<c:if test="#{siteProperties.ethiopianCalendar}"> 	
+              				<h:outputText value="#{msg.demRatesStartDate} (#{siteProperties.dateFormat}):" />
+              				<h:inputText id="startDate_ethiopian" value="#{demRatesCrud.startDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+              				<h:message for="startDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
               			               				
+              				<h:outputText value="#{msg.demRatesEndDate} (#{siteProperties.dateFormat}):" />
+              				<h:inputText id="endDate_ethiopian" value="#{demRatesCrud.endDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+              				<h:message for="endDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" />
+              			</c:if>		               				
               				<h:outputText value="#{msg.demRatesEvent}:" />             				 				
               				<o:selectOneRadio id="radioList" value="#{demRatesCrud.item.event}" >
 								<f:selectItem itemValue="#{msg.demRatesFertility}" itemLabel="#{msg.demRatesFertility}"/>

@@ -43,20 +43,30 @@
 					<h:inputText id="relationshipType1" value="#{membershipCrud.item.bIsToA}" converter="#{membershipCodesConverter}" />
 			        <h:message for="relationshipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
-                   <h:outputText value="#{msg.membershipStartDate} (#{siteProperties.dateFormat})" />
-                   <h:outputText />
-                   <o:dateChooser id="startDate" value="#{membershipCrud.startDate}" pattern="#{siteProperties.dateFormat}" /> 
-                   <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-	
+                   <h:outputText value="#{msg.membershipStartDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                   <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"  />
+                   <o:dateChooser id="startDate" value="#{membershipCrud.startDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" /> 
+                   <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                   
+                   <h:outputText value="#{msg.membershipStartDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+                   <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                   <h:inputText id="startDate_ethiopian" value="#{membershipCrud.startDate}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" /> 
+                   <h:message for="startDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />
+                   
 			       <h:outputText value="#{msg.membershipType}:"/>
 			       <img class="clickable" onclick="O$('popupWindowForMembershipStartType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
 				   <h:inputText id="membershipType1" value="#{membershipCrud.item.startType}" converter="#{membershipStartTypeCodesConverter}" />
 			       <h:message for="membershipType1" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 					
-				   <h:outputText value="#{msg.membershipEndDate} (#{siteProperties.dateFormat})" />
-				   <h:outputText />
-                   <o:dateChooser id="endDate" value="#{membershipCrud.endDate}" pattern="#{siteProperties.dateFormat}"  /> 
-                   <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+				   <h:outputText value="#{msg.membershipEndDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+				   <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"  />
+                   <o:dateChooser id="endDate" value="#{membershipCrud.endDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" /> 
+                   <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                   
+				   <h:outputText value="#{msg.membershipEndDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+				   <h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                   <h:inputText id="endDate_ethiopian" value="#{membershipCrud.endDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" rendered="#{siteProperties.ethiopianCalendar}" /> 
+                   <h:message for="endDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />                   
 
 				   <h:outputText value="#{msg.membershipEndType}:"/>
 		           <img class="clickable" onclick="O$('popupWindowForMembershipEndType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />

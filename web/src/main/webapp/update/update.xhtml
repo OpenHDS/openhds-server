@@ -114,7 +114,7 @@
                   </tr>
                   <tr>
                       <td>#{msg.updateDate}:</td>
-                      <td><h:inputText disabled="true" value="#{updateBean.currentVisit.visitDate}" converter="#{calendarConverter}" /></td>
+                      <td><h:inputText disabled="true" value="#{updateBean.currentVisit.visitDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia"/></td>
                   </tr>
               </table>
               <br />
@@ -155,7 +155,9 @@
                                       </h:column>
                                       <h:column>
                                           <f:facet name="header">
-                                              <h:outputText value="#{msg.individualDob}" />
+                                          <h:panelGroup>
+                                              <h:outputText value="#{msg.individualDob}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                                          </h:panelGroup>
                                           </f:facet>
                                           <h:outputText value="#{indiv.dob}" converter="#{calendarConverter}" />
                                       </h:column>

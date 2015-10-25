@@ -101,7 +101,7 @@
 			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.extId}</h:outputText></td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.firstName}</h:outputText></td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.lastName}</h:outputText></td>
-			        			<td><h:outputText value="#{individualHistoryBean.individual.dob}"  converter="#{calendarConverter}" />
+			        			<td><h:outputText value="#{individualHistoryBean.individual.dob}"  converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 			        			</td>
 			        			<td><h:outputText>#{individualHistoryBean.individual.gender}</h:outputText></td>
 			        		</tr>
@@ -247,7 +247,9 @@
                       	</h:column>	
 						<h:column headerClass="width1">
 	                    	<f:facet name="header">
-	                            <h:outputText value="#{msg.residencyStartDate}" />
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.residencyStartDate}" />&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                            </h:panelGroup>
 	                        </f:facet>
 	                        <h:outputText value="#{residency.startDate}" converter="#{calendarConverter}" />
                       	</h:column>	
@@ -286,7 +288,9 @@
                       	</h:column>	
 						<h:column headerClass="width1">
 	                    	<f:facet name="header">
-	                            <h:outputText value="#{msg.inmigrationDate}" />
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.inmigrationDate}" />&#160;<h:graphicImage id="n3" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                            </h:panelGroup>
 	                        </f:facet>
 	                        <h:outputText value="#{inMigration.recordedDate}" converter="#{calendarConverter}" />
                       	</h:column>
@@ -326,7 +330,9 @@
                       	</h:column>	
 						<h:column headerClass="width1">
 	                    	<f:facet name="header">
-	                            <h:outputText value="#{msg.outmigrationDate}" />
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.outmigrationDate}" />&#160;<h:graphicImage id="n4" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                           	</h:panelGroup>
 	                        </f:facet>
 	                        <h:outputText value="#{outMigration.recordedDate}" converter="#{calendarConverter}" />
                       	</h:column>	
@@ -371,9 +377,11 @@
                       	</h:column>
 						<h:column headerClass="width1">
 	                    	<f:facet name="header">
+	                    	<h:panelGroup>
 	                            <h:outputText value="#{msg.pregnancyOutcomeRecordedDate}" />
+							</h:panelGroup>	                            
 	                        </f:facet>
-	                        <h:outputText value="#{pregOutcome.outcomeDate}" converter="#{calendarConverter}" />
+	                        <h:outputText value="#{pregOutcome.outcomeDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n5" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
                       	</h:column>
 			 			<h:column headerClass="width3">
 	                        <f:facet name="header">
@@ -404,7 +412,9 @@
                       	</h:column>
 			  			<h:column headerClass="width1">
 	                    	<f:facet name="header">
-	                            <h:outputText value="#{msg.pregnancyObservationEDD}" />
+	                    	<h:panelGroup>
+	                            <h:outputText value="#{msg.pregnancyObservationEDD}" />&#160;<h:graphicImage id="n6" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
 	                        </f:facet>
 	                        <h:outputText value="#{pregObserv.expectedDeliveryDate}" converter="#{calendarConverter}" />
                       	</h:column>
@@ -443,7 +453,9 @@
                       	</h:column>
                       	<h:column headerClass="width1">
 	                    	<f:facet name="header">
-	                            <h:outputText value="#{msg.deathDate}" />
+	                    	<h:panelGroup>
+	                            <h:outputText value="#{msg.deathDate}" />&#160;<h:graphicImage id="n7" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
 	                        </f:facet>
 	                        <h:outputText value="#{death.deathDate}" converter="#{calendarConverter}" />
                       	</h:column>

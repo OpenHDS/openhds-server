@@ -24,9 +24,9 @@
 			<h:form>
 	           	<h:panelGrid columns="2">     
 		            <h:outputText value="#{msg.demRatesStartDate}:"/>
-					<h:outputText value="#{demRatesCrud.item.startDate}" converter="#{calendarConverter}" />
+					<h:panelGroup><h:outputText value="#{demRatesCrud.item.startDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" /></h:panelGroup>
 		            <h:outputText value="#{msg.demRatesEndDate}: "/>
-		            <h:outputText value="#{demRatesCrud.item.endDate}" converter="#{calendarConverter}" />
+		            <h:panelGroup><h:outputText value="#{demRatesCrud.item.endDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" /></h:panelGroup>
 		           	<h:outputText value="#{msg.demRatesEventType}:"/>
 		            <h:outputText value="#{demRatesCrud.item.event}" />
 		            <h:outputText value="#{msg.demRatesDenominator}:"/>

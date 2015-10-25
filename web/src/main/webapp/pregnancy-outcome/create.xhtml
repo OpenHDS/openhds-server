@@ -85,10 +85,15 @@
 	                    <h:inputText id="pregType" value="#{pregnancyOutcomeCrud.selectedType}" converter="#{pregnancyTypeCodeConverter}" />
 	                    <h:message for="pregType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	                    
-                        <h:outputText value="#{msg.pregnancyOutcomeRecordedDate} (#{siteProperties.dateFormat})" />
-                        <h:outputText />
-                        <o:dateChooser id="date" value="#{pregnancyOutcomeCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}"/>
-                        <h:message for="date" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        <h:outputText value="#{msg.pregnancyOutcomeRecordedDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <o:dateChooser id="date" value="#{pregnancyOutcomeCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <h:message for="date" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        
+                        <h:outputText value="#{msg.pregnancyOutcomeRecordedDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:inputText id="date_ethiopian" value="#{pregnancyOutcomeCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:message for="date_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />  
 
 						<h:outputText value="#{msg.fieldWorkerId}:"/>
                         <h:outputText />

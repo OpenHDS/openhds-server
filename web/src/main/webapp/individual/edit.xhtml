@@ -68,12 +68,10 @@
                 <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
                 <h:message for="date_B_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>
                 
-                
-                
-                <h:outputText value="Gregorian #{msg.individualDob} "/>
-                <h:outputText />
-                <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}"><f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="EET"/></h:outputText>
-                <h:outputText value="(#{siteProperties.dateFormat})" />
+                <h:outputText value="Gregorian #{msg.individualDob}" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}" rendered="#{siteProperties.ethiopianCalendar}"><f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="EET"/></h:outputText>
+                <h:outputText value="(#{siteProperties.dateFormat})" rendered="#{siteProperties.ethiopianCalendar}" />
 
 				<h:outputText value="#{msg.individualDobPartial}"/>
 				<img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />

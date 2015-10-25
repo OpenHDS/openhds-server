@@ -38,9 +38,13 @@
                         <h:inputText id="deathCause" value="#{deathCrud.item.deathCause}" converter="#{defaultConverter}"/>
                         <h:message for="deathCause" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
-                        <h:outputText value="#{msg.deathDate} (#{siteProperties.dateFormat})" />
-                        <o:dateChooser id="deathDate" value="#{deathCrud.deathDate}" pattern="#{siteProperties.dateFormat}" />
-                        <h:message for="deathDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        <h:outputText value="#{msg.deathDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <o:dateChooser id="deathDate" value="#{deathCrud.deathDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <h:message for="deathDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        
+                        <h:outputText value="#{msg.deathDate} (#{siteProperties.dateFormat})" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:inputText id="deathDate_ethiopian" value="#{deathCrud.deathDate}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+                        <h:message for="deathDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />                        
 
 						<h:outputText value="#{msg.fieldWorkerId}:"/>
                         <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" value="#{deathCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>

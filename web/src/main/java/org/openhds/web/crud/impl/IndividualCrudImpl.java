@@ -82,11 +82,11 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	
     	Calendar dateOfBirth;
     	
-    	System.out.println(new Date()+ ": In getDateOfBirthAsCalendar: " + entityItem.getDob().getTime());
-    	
     	if (entityItem.getDob() == null){
     		return new GregorianCalendar();
     	} 	
+    	
+    	System.out.println(new Date()+ ": In getDateOfBirthAsCalendar: " + entityItem.getDob().getTime());
     	
 //    	System.out.println("Return : " + entityItem.getDob().getTime());
     	

@@ -46,11 +46,13 @@
 		                </f:facet>
 		                <h:outputText value="#{item.lastName}" />
 		            </h:column>
-		                           <h:column>
+		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="#{msg.individualDob}"/>
+		                	<h:panelGroup>
+		                    	<h:outputText value="#{msg.individualDob}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+		                    </h:panelGroup>
 		                </f:facet>
-		                <h:outputText value="#{item.dob}" converter="#{calendarConverter}" /><h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+		                <h:outputText value="#{item.dob}" converter="#{calendarConverter}" />
 		            </h:column>
 		            <h:column>
 		                <f:facet name="header">

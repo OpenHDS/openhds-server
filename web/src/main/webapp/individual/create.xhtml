@@ -60,12 +60,16 @@
 	            <h:inputText id="gender" value="#{individualCrud.item.gender}" converter="#{defaultConverter}" /> 
 	            <h:message for="gender" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 					                        
-                <h:outputText value="#{msg.individualDob} (#{siteProperties.dateFormat})"/>
-                <h:outputText />
-                <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" />
-                <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                <h:outputText value="#{msg.individualDob} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"  />
+                <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" />
+<!--                 <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}" rendered="#{siteProperties.ethiopianCalendar}" ><f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="EET"/></h:outputText> -->
+                <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
                 
-                <h:outputText value="#{msg.codeEthiopianCalendar}: #{siteProperties.ethiopianCalendar}"/>
+                <h:outputText value="#{msg.individualDob} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:inputText id="date_B_ethiopian" value="#{individualCrud.dateOfBirthAsCalendar}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{calendarConverter}" converterMessage="dd/MM/yyyy"/>
+                <h:message for="date_B_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>
 
 				<h:outputText value="#{msg.individualDobPartial}:"/>
 				<img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />

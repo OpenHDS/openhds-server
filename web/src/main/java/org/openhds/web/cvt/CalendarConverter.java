@@ -28,7 +28,7 @@ public class CalendarConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 			
-		System.out.println("CalendarConverter::getAsObject()");
+//		System.out.println("CalendarConverter::getAsObject()");
 		Calendar cal = null;	
 								
 		try {			
@@ -43,7 +43,7 @@ public class CalendarConverter implements Converter {
 				cal = dt_greg.toGregorianCalendar();
 				
 				
-				System.out.println("CalendarConverter::getAsObject: Received: " + value + " | Converted back to gregorian: " + cal.getTime());
+//				System.out.println("CalendarConverter::getAsObject: Received: " + value + " | Converted back to gregorian: " + cal.getTime());
 //				DateTime dtLMDGreg = getCurrentEthiopianDateDisplay().withChronology(GregorianChronology.getInstance());
 //	            DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMMM yyyy");
 //	            String str = fmt.print(dtLMDGreg);
@@ -74,6 +74,8 @@ public class CalendarConverter implements Converter {
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 
 //		System.out.println("SiteProperties: " + siteProperties.getEthiopianCalendar());
+		
+		System.out.println("Of class: " + value.getClass());
 				
 		if (value == null)
 			return null;
@@ -104,7 +106,7 @@ public class CalendarConverter implements Converter {
 			
 			formattedDate =  DateTimeFormat.forPattern("dd/MM/yyyy").print(dt_eth);
 			
-			System.out.println("CalendarConverter::getAsString: Received: " + dt_greg.toString() + " | Converted to ethiopian: " + formattedDate);
+//			System.out.println("CalendarConverter::getAsString: Received: " + dt_greg.toString() + " | Converted to ethiopian: " + formattedDate);
 		}
 		else{
 			Calendar calendar = (Calendar) value;

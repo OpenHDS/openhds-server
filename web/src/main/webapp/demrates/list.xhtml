@@ -29,13 +29,17 @@
 		        	columnClasses="center,center,center,center,width3" width="100%" cellspacing="0" cellpadding="0"  >
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="#{msg.demRatesStartDate}"/>
+		                <h:panelGroup>
+		                    <h:outputText value="#{msg.demRatesStartDate}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+		                </h:panelGroup>
 		                </f:facet>
 		                <h:outputText value="#{item.startDate}" converter="#{calendarConverter}"/>
 		            </h:column>
 		            <h:column>
 		                <f:facet name="header">
-		                    <h:outputText value="#{msg.demRatesEndDate}"/>
+		                <h:panelGroup>
+		                    <h:outputText value="#{msg.demRatesEndDate}"/>&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+		                </h:panelGroup>
 		                </f:facet>
 		                <h:outputText value="#{item.endDate}" converter="#{calendarConverter}" />
 		            </h:column>

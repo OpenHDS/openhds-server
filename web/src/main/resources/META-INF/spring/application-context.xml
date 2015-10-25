@@ -93,6 +93,11 @@
         <property name="sitePropertiesService" ref="siteProperties" />
     </bean>
     
+    <bean id="dateConverter" class="org.openhds.web.cvt.DateConverter">
+        <property name="dateFormat" value="#{siteProperties.dateFormat}" />
+        <property name="sitePropertiesService" ref="siteProperties" />
+    </bean>
+    
     <bean id="timestampConverter" class="org.openhds.web.cvt.TimeStampConverter">
         <constructor-arg value="#{siteProperties.dateFormat}" />
     </bean>
