@@ -59,7 +59,7 @@
               	<h:outputText value="#{locationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />            	
               	
               	<h:outputText value="#{msg.insertDate}:"/>
-              	<h:outputText />
+              	<h:panelGroup><h:outputText />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" /></h:panelGroup>
                	<h:outputText value="#{locationCrud.item.insertDate}" converter="#{calendarConverter}" />
 		    	
 		    	<h:outputText value="#{msg.insertBy}:"/>

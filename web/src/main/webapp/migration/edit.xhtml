@@ -30,9 +30,13 @@
 	                <h:outputText id="indiv" value="#{inMigrationCrud.item.individual}" converter="#{individualExtIdConverter}" />
 	            	<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 	            	
-	            	<h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})" />
-	               	<o:dateChooser id="endDate" value="#{inMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" /> 
-	            	<h:message for="rec_date" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            	<h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}"  />
+	               	<o:dateChooser id="endDate" value="#{inMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" /> 
+	            	<h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+	            	
+	            	<h:outputText value="#{msg.inmigrationDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+	               	<h:inputText id="endDate_ethiopian" value="#{inMigrationCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" rendered="#{siteProperties.ethiopianCalendar}"  /> 
+	            	<h:message for="_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />
 					
 	            	<h:outputText value="#{msg.inmigrationOrigin}:"/>
 	                <h:inputText id="origin" value="#{inMigrationCrud.item.origin}" converter="#{defaultConverter}"/>
