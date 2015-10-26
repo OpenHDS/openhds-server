@@ -62,7 +62,8 @@
 	                	<h:outputText value="#{visitCrud.item.visitLocation}" converter="#{locationExtIdConverter}" />
 	                
 	                	<h:outputText value="#{msg.visitDate}:"/>
-	                	<h:outputText />
+	                	<h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+						<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />	                	
 	                	<h:outputText value="#{visitCrud.item.visitDate}" converter="#{calendarConverter}" /> 
 	                
 	                	<h:outputText value="#{msg.visitRoundNumber}:"/>
@@ -70,7 +71,8 @@
 						<h:outputText value="#{visitCrud.item.roundNumber}" />
 	                
 	                	<h:outputText value="#{msg.insertDate}"/>
-	                	<h:outputText />
+	                	<h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+						<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />	                	
 	                	<h:outputText value="#{visitCrud.item.insertDate}" converter="#{calendarConverter}"  />
 					
 						<h:outputText value="#{msg.insertBy}"/>

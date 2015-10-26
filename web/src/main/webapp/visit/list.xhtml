@@ -41,7 +41,9 @@
                     </h:column>
                   	<h:column headerClass="width1">
                         <f:facet name="header">
-                            <h:outputText value="#{msg.visitDate}"/>
+                        <h:panelGroup>
+                            <h:outputText value="#{msg.visitDate}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+						</h:panelGroup>                            
                         </f:facet>
                         <h:outputText value="#{item.visitDate}" converter="#{calendarConverter}" />
                     </h:column>

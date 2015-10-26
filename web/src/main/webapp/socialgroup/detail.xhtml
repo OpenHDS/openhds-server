@@ -48,7 +48,8 @@
 	                <h:outputText value="#{socialGroupCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
 	                
 	                <h:outputText value="#{msg.insertDate}:"/>
-	                <h:outputText />
+	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+	                <h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 	                <h:outputText value="#{socialGroupCrud.item.insertDate}" converter="#{calendarConverter}" />
              		
              		<h:outputText value="#{msg.insertBy}:"/>

@@ -60,10 +60,20 @@
                 		<h:inputText styleClass="location" autocomplete="off" id="location" value="#{visitCrud.item.visitLocation}" converter="#{locationExtIdConverter}" disabled="true"/>
                 		<h:message for="location" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+					<c:if test="#{!siteProperties.ethiopianCalendar}">
 						<h:outputText value="#{msg.visitDate} (#{siteProperties.dateFormat})" />
 			    		<o:dateChooser id="visitDate" value="#{visitCrud.visitDate}" pattern="#{siteProperties.dateFormat}" /> 
                 		<h:message for="visitDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-               
+               		</c:if>
+					<c:if test="#{siteProperties.ethiopianCalendar}">
+						<h:outputText value="#{msg.visitDate} (dd/MM/yyyy)" />
+						<h:panelGroup>
+			    			<h:inputText id="visitDate_ethiopian" value="#{visitCrud.visitDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" /> 
+			    			&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
+						</h:panelGroup>			    			
+                		<h:message for="visitDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+               		</c:if>               		
+               		
                 		<h:outputText value="#{msg.visitRoundNumber}:"/>
                 		<h:inputText id="roundNum" value="#{visitCrud.item.roundNumber}" converter="#{defaultConverter}" disabled="true" />
                 		<h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
