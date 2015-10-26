@@ -36,7 +36,9 @@
                           </h:column>
                           <h:column headerClass="width1">
                               <f:facet name="header">
-                                  <h:outputText value="#{msg.pregnancyObservationEDD}" />
+                              <h:panelGroup>
+                                  <h:outputText value="#{msg.pregnancyObservationEDD}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+							  </h:panelGroup>                                  
                               </f:facet>
                               <h:outputText value="#{pregObserv.expectedDeliveryDate}" converter="#{calendarConverter}"/>
                           </h:column>
@@ -75,7 +77,9 @@
                           </h:column>
                           <h:column headerClass="width1">
                               <f:facet name="header">
-                                  <h:outputText value="#{msg.pregnancyObservationEDD}" />
+                              <h:panelGroup>
+                                  <h:outputText value="#{msg.pregnancyObservationEDD}" />&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+								</h:panelGroup>                                  
                               </f:facet>
                               <h:outputText value="#{pregObserv.expectedDeliveryDate}" converter="#{calendarConverter}"/>
                           </h:column>

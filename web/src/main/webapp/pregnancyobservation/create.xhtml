@@ -27,6 +27,7 @@
                 <h:inputText styleClass="individual" autocomplete="off" id="mother" value="#{pregnancyObservationCrud.item.mother}" disabled="#{flowScope != null}" converter="#{individualExtIdConverter}"/>
                 <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+			<c:if test="#{!siteProperties.ethiopianCalendar}">
                 <h:outputText value="#{msg.pregnancyObservationEDD} (#{siteProperties.dateFormat})" />
                 <o:dateChooser id="deliveryDate" value="#{pregnancyObservationCrud.edd}" pattern="#{siteProperties.dateFormat}" />
                 <h:message for="deliveryDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
@@ -34,6 +35,23 @@
                 <h:outputText value="#{msg.pregnancyObservationRecordedDate} (#{siteProperties.dateFormat})" />
                 <o:dateChooser id="recordedDate" value="#{pregnancyObservationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" />
                 <h:message for="recordedDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+			</c:if>
+			
+			<c:if test="#{siteProperties.ethiopianCalendar}">
+                <h:outputText value="#{msg.pregnancyObservationEDD} (dd/MM/yyyy)" />
+                <h:panelGroup>
+                	<h:inputText id="deliveryDate_ethiopian" value="#{pregnancyObservationCrud.edd}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />&#160;
+                	<h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
+                </h:panelGroup>
+                <h:message for="deliveryDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.pregnancyObservationRecordedDate} (dd/MM/yyyy)" />
+                <h:panelGroup>
+                	<h:inputText id="recordedDate_ethiopian" value="#{pregnancyObservationCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />&#160;
+                	<h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
+                </h:panelGroup>
+                <h:message for="recordedDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+			</c:if>			
 
                 <h:outputText value="#{msg.fieldWorkerId}:"/>
                 <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" disabled="#{flowScope != null}" converter="#{fieldWorkerExtIdConverter}" value="#{pregnancyObservationCrud.item.collectedBy}" />

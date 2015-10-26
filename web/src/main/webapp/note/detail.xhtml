@@ -29,10 +29,19 @@
 		            <h:panelGrid columns="2"> 
 		           		<h:outputText value="#{msg.fieldWorkerId}:"/>
 		                <h:outputText value="#{noteCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
-		           		<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})"/>
-                		<h:outputText value="#{noteCrud.item.observationDate}" converter="#{calendarConverter}" />
-		           		<h:outputText value="#{msg.insertDate}:"/>
-		                <h:outputText value="#{noteCrud.item.insertDate}" converter="#{calendarConverter}" />
+		                
+			           	<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}"/>
+			           	<h:panelGroup>
+			           		<h:outputText value="#{msg.noteObservationDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}"/>
+			           		&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+			           	</h:panelGroup>
+	                	<h:outputText value="#{noteCrud.item.observationDate}" converter="#{calendarConverter}" />
+			           	<h:outputText value="#{msg.insertDate}:"/>
+			           	<h:panelGroup>
+			            	<h:outputText value="#{noteCrud.item.insertDate}" converter="#{calendarConverter}" />		
+			            	&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />         
+			            </h:panelGroup>		         			  
+             
 		                <h:outputText value="#{msg.dataStatus}:"/>
 		                <h:outputText value="#{noteCrud.item.status}"  />
 		                <h:outputText value="#{msg.noteDescription}:"/>

@@ -81,7 +81,8 @@
 	                  	<h:outputText id="visit" value="#{pregnancyOutcomeCrud.item.visit}" converter="#{visitExtIdConverter}" />
                         
                         <h:outputText value="#{msg.pregnancyOutcomeRecordedDate}:"/>
-                        <h:outputText />
+                        <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+                        <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
                         <h:outputText id="date" value="#{pregnancyOutcomeCrud.item.outcomeDate}" converter="#{calendarConverter}" />
                         
                         <h:outputText value="#{msg.pregnancyOutcomeTotalOutcomes}:"/>
@@ -93,7 +94,8 @@
                         <h:outputText id="liveBirthNum" value="#{pregnancyOutcomeCrud.item.numberOfLiveBirths}" converter="#{defaultConverter}" />
 						
 						<h:outputText value="#{msg.insertDate}:"/>
-	                	<h:outputText />
+	                	<h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+                		<h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />	                	
 	                	<h:outputText value="#{pregnancyOutcomeCrud.item.insertDate}" converter="#{calendarConverter}" />
 						
 						<h:outputText value="#{msg.insertBy}:"/>

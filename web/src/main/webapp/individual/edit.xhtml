@@ -64,7 +64,7 @@
                 <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
                 <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
                 <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" />
-                <h:inputText id="date_B_ethiopian" value="#{individualCrud.dateOfBirthAsCalendar}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{calendarConverter}" converterMessage="dd/MM/yyyy"/>
+                <h:inputText id="date_B_ethiopian" value="#{individualCrud.dateOfBirthAsCalendar}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{calendarConverter}" converterMessage="dd/MM/yyyy" />
                 <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
                 <h:message for="date_B_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>
                 

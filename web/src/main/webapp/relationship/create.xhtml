@@ -54,21 +54,37 @@
 	                    <h:inputText id="maritalStatus" value="#{relationshipCrud.item.aIsToB}" converter="#{defaultConverter}" />
 	                    <h:message for="maritalStatus" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 							
+					<c:if test="#{!siteProperties.ethiopianCalendar}">							
                         <h:outputText value="#{msg.relationshipStartDate} (#{siteProperties.dateFormat})" />
                         <h:outputText />
                         <o:dateChooser id="startDate" value="#{relationshipCrud.startDate}" pattern="#{siteProperties.dateFormat}" />
                         <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-
+					</c:if>
+					<c:if test="#{siteProperties.ethiopianCalendar}">							
+                        <h:outputText value="#{msg.relationshipStartDate} (dd/MM/yyyy)" />
+                        <h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:inputText id="startDate_ethiopian" value="#{relationshipCrud.startDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+                        <h:message for="startDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>					
+					
 						<h:outputText value="#{msg.relationshipEndEvent}:"/>
 	                    <img class="clickable" onclick="O$('popupWindowForMaritalStatusEndType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
 	                    <h:inputText id="maritalStatusEnd" value="#{relationshipCrud.item.endType}" converter="#{maritalStatusEndTypeCodesConverter}" disabled="true" />
 	                    <h:message for="maritalStatusEnd" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+					<c:if test="#{!siteProperties.ethiopianCalendar}">					
                         <h:outputText value="#{msg.relationshipEndDate} (#{siteProperties.dateFormat})" />
                         <h:outputText />
                         <o:dateChooser id="endDate" value="#{relationshipCrud.endDate}" pattern="#{siteProperties.dateFormat}" disabled="true" /> 
                         <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-
+					</c:if>
+					<c:if test="#{siteProperties.ethiopianCalendar}">					
+                        <h:outputText value="#{msg.relationshipEndDate} (dd/MM/yyyy)" />
+                        <h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:inputText id="endDate_ethiopian" value="#{relationshipCrud.endDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" disabled="true" /> 
+                        <h:message for="endDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>					
+					
                         <h:outputText value="#{msg.fieldWorkerId}"/>
                         <h:outputText />
                         <h:inputText styleClass="collectedBy" id="collectedBy" converter="#{fieldWorkerExtIdConverter}" disabled="#{flowScope.updating != null}" value="#{relationshipCrud.item.collectedBy}" />

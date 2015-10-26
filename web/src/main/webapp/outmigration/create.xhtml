@@ -4,6 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://openfaces.org/"
+      xmlns:c="http://java.sun.com/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <head>
@@ -29,9 +30,19 @@
 	               	 	<h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{outMigrationCrud.item.individual}" disabled="#{flowScope != null}" converter="#{individualExtIdConverter}" />
 	            		<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+					<c:if test="#{!siteProperties.ethiopianCalendar}">
                      	<h:outputText value="#{msg.outmigrationDate} (#{siteProperties.dateFormat})" />
                         <o:dateChooser id="rec_date" value="#{outMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" />
                         <h:message for="rec_date" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>
+					
+					<c:if test="#{siteProperties.ethiopianCalendar}">
+                     	<h:outputText value="#{msg.outmigrationDate} (dd/MM/yyyy)" />
+                     	<h:panelGroup>
+                        	<h:inputText id="rec_date_ethiopian" value="#{outMigrationCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        </h:panelGroup>
+                        <h:message for="rec_date_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>					
 
                         <h:outputText value="#{msg.outmigrationDestination}:"/>
                         <h:inputText id="origin" value="#{outMigrationCrud.item.destination}" converter="#{defaultConverter}"/>

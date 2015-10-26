@@ -34,11 +34,13 @@
 		                <h:outputText value="#{pregnancyObservationCrud.item.mother}" converter="#{individualExtIdConverter}" />
 		                
 		                <h:outputText value="#{msg.pregnancyObservationEDD}:"/>
-		                <h:outputText />
+		                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+		                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />		                
 		                <h:outputText value="#{pregnancyObservationCrud.item.expectedDeliveryDate}" converter="#{calendarConverter}" />
 		                
 		                <h:outputText value="#{msg.pregnancyObservationRecordedDate}:"/>
-		                <h:outputText />
+		                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                		<h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />		                
 		                <h:outputText value="#{pregnancyObservationCrud.item.recordedDate}" converter="#{calendarConverter}" />
 		                
 		                <h:outputText value="#{msg.fieldWorkerId}:"/>
@@ -54,7 +56,8 @@
 		             	<h:outputText value="#{pregnancyObservationCrud.item.status}" />
 		             	
 		             	<h:outputText value="#{msg.insertDate}:"/>
-			            <h:outputText />
+			            <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                		<h:graphicImage id="n3" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />			            
 			            <h:outputText value="#{pregnancyObservationCrud.item.insertDate}" converter="#{calendarConverter}" />
 		             	
 		             	<h:outputText value="#{msg.insertBy}:"/>

@@ -31,10 +31,14 @@
                         <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" value="#{noteCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
                         <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>       
                     
-                    	<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})"/>
-                		<o:dateChooser id="observationDate" value="#{noteCrud.observationDate}" pattern="#{siteProperties.dateFormat}" />
-                		<h:message for="observationDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    	<h:outputText value="#{msg.noteObservationDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}"/>
+                		<o:dateChooser id="observationDate" value="#{noteCrud.observationDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}"/>
+                		<h:message for="observationDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}"/>
 
+                    	<h:outputText value="#{msg.noteObservationDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}"/>
+                		<h:inputText id="observationDate_ethiopian" value="#{noteCrud.observationDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" rendered="#{siteProperties.ethiopianCalendar}"/>
+                		<h:message for="observationDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>
+                		
                     	<h:outputText value="#{msg.noteDescription}:"/>
                         <h:inputTextarea id="notes" value="#{noteCrud.item.description}" rows="5" cols="17" converter="#{defaultConverter}" />
                         <h:message for="notes" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

@@ -28,9 +28,15 @@
                         <h:outputText value="#{msg.roundNumber}:"/>
                         <h:outputText id="roundNum" value="#{roundCrud.item.roundNumber}" converter="#{defaultConverter}" />
                         <h:outputText value="#{msg.roundStartDate}:"/>
-                        <h:outputText id="startDate" styleClass="date demo_jqui" value="#{roundCrud.item.startDate}" converter="#{calendarConverter}"/>
+                        <h:panelGroup>
+                        	<h:outputText id="startDate" styleClass="date demo_jqui" value="#{roundCrud.item.startDate}" converter="#{calendarConverter}"/>
+							&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />                        	
+                        </h:panelGroup>
                         <h:outputText value="#{msg.roundEndDate}:"/>
-                        <h:outputText id="endDate" styleClass="date demo_jqui" value="#{roundCrud.item.endDate}" converter="#{calendarConverter}"/>
+                        <h:panelGroup>
+                        	<h:outputText id="endDate" styleClass="date demo_jqui" value="#{roundCrud.item.endDate}" converter="#{calendarConverter}"/>
+							&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />                        	
+                        </h:panelGroup>
                         <h:outputText value="#{msg.roundRemarks}:"/>
                         <h:outputText id="remarks" value="#{roundCrud.item.remarks}" />
                     </h:panelGrid>

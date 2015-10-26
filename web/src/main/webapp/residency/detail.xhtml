@@ -38,7 +38,8 @@
 	                <h:outputText id="loc" value="#{residencyCrud.item.location}" converter="#{locationExtIdConverter}" />
 	            	
 	            	<h:outputText value="#{msg.residencyStartDate}:"/>
-	                <h:outputText />
+	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+	                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 	                <h:outputText id="startDate" value="#{residencyCrud.item.startDate}" converter="#{calendarConverter}" />
                     
                     <h:outputText value="#{msg.residencyStartType}:"/>
@@ -46,7 +47,8 @@
                     <h:outputText value="#{residencyCrud.item.startType}" size="1" id="startType" />
 	            	
 	            	<h:outputText value="#{msg.residencyEndDate}:"/>
-	                <h:outputText />
+	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+	                <h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 	                <h:outputText id="endDate" value="#{residencyCrud.item.endDate}" converter="#{calendarConverter}" />
                     
                     <h:outputText value="#{msg.residencyEndType}:"/>
@@ -54,7 +56,8 @@
                     <h:outputText value="#{residencyCrud.item.endType}" size="1" id="endType" />
                     
                     <h:outputText value="#{msg.insertDate}:"/>
-                	<h:outputText />
+                	<h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+                	<h:graphicImage id="n3" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
                 	<h:outputText value="#{residencyCrud.item.insertDate}" converter="#{calendarConverter}" />
   				
   					<h:outputText value="#{msg.insertBy}:"/>

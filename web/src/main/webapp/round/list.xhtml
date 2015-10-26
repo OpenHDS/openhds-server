@@ -33,13 +33,17 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">
-                            <h:outputText value="#{msg.roundStartDate}"/>
+                        <h:panelGroup>
+                            <h:outputText value="#{msg.roundStartDate}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+						</h:panelGroup>                            
                         </f:facet>
                         <h:outputText value="#{item.startDate}" converter="#{calendarConverter}" />
                     </h:column>
 					<h:column>
                         <f:facet name="header">
-                            <h:outputText value="#{msg.roundEndDate}"/>
+                        <h:panelGroup>
+                            <h:outputText value="#{msg.roundEndDate}"/>&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+						</h:panelGroup>                            
                         </f:facet>
                         <h:outputText value="#{item.endDate}" converter="#{calendarConverter}" />
                     </h:column>		                     

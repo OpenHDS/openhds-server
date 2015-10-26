@@ -30,6 +30,7 @@
                         <h:inputText id="roundNum" disabled="true" value="#{roundCrud.item.roundNumber}" converter="#{defaultConverter}" />
                         <h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
+					<c:if test="#{!siteProperties.ethiopianCalendar}">
                         <h:outputText value="#{msg.roundStartDate}:"/>
                         <o:dateChooser id="startDate" value="#{roundCrud.startDate}" pattern="#{siteProperties.dateFormat}" />
                         <h:message for="startDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
@@ -37,6 +38,23 @@
                         <h:outputText value="#{msg.roundEndDate}:"/>
                         <o:dateChooser id="endDate" value="#{roundCrud.endDate}" pattern="#{siteProperties.dateFormat}" />
                         <h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>
+					
+					<c:if test="#{siteProperties.ethiopianCalendar}">
+                        <h:outputText value="#{msg.roundStartDate}:"/>
+                        <h:panelGroup>
+                        	<h:inputText id="startDate_ethiopian" value="#{roundCrud.startDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+                        	&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
+						</h:panelGroup>                        	
+                        <h:message for="startDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.roundEndDate}:"/>
+                        <h:panelGroup>
+                        	<h:inputText id="endDate_ethiopian" value="#{roundCrud.endDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" />
+							&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" />                        	
+						</h:panelGroup>                        	
+                        <h:message for="endDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>					
 
                         <h:outputText value="#{msg.roundRemarks}:"/>
                         <h:inputText id="remarks" value="#{roundCrud.item.remarks}" />
