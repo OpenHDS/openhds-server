@@ -257,7 +257,12 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     	showListing = false;
         navMenuBean.setNextItem(entityClass.getSimpleName());
     	navMenuBean.addCrumb(entityClass.getSimpleName() + " Detail");
-        return scalarSetup(outcomePrefix + "_detail");
+    	String result = scalarSetup(outcomePrefix + "_detail");
+    	if (AuditableCollectedEntity.class.isAssignableFrom(entityClass)) {
+    	    // load field worker to avoid lazy load exceptions
+    	    ((AuditableCollectedEntity)entityItem).getCollectedBy().getExtId();
+    	}
+        return result;
     }
 
     public String editSetup() {
@@ -266,7 +271,7 @@ public class EntityCrudImpl<T, PK extends Serializable> implements EntityCrud<T,
     	navMenuBean.addCrumb(entityClass.getSimpleName() + " Edit");
     	String result = scalarSetup(outcomePrefix + "_edit");
     	if (AuditableCollectedEntity.class.isAssignableFrom(entityClass)) {
-    	    // load field worker to avoid lazy load exeptions
+    	    // load field worker to avoid lazy load exceptions
     	    ((AuditableCollectedEntity)entityItem).getCollectedBy().getExtId();
     	}
     	return result;
