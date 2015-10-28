@@ -6,6 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.EthiopicChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.format.DateTimeFormat;
 import org.openhds.domain.service.SitePropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,8 +64,20 @@ public class CalendarUtil {
 	}
 	
 	public String formatDate(Calendar calendar) {
-		SimpleDateFormat format = new SimpleDateFormat(siteProperties.getDateFormat());
-		return format.format(calendar.getTime());
+		String formattedDate;
+		if(siteProperties.getEthiopianCalendar()){
+			
+			Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.getDefault());
+			DateTime dt_greg = new DateTime(calendar).withChronology(GregorianChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa")));
+			DateTime dt_eth = dt_greg.withChronology(chron_eth);
+			
+			formattedDate =  DateTimeFormat.forPattern(siteProperties.getDateFormat()).print(dt_eth);
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat(siteProperties.getDateFormat());
+			formattedDate = format.format(calendar.getTime());
+		}
+		return formattedDate;
 	}
 	
     public SitePropertiesService getSiteProperties() {

@@ -475,7 +475,6 @@ public class SitePropertiesConfigBean {
 	}
 
 	public void setEthiopianCalendar(String ethiopianCalendar) {
-		System.out.println("Setting ethiopianCalendar to: " + ethiopianCalendar);
 		this.ethiopianCalendar = ethiopianCalendar;
 	}
 	

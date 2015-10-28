@@ -9,6 +9,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.x
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,6 +42,9 @@ public class RelationshipResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;	
 
 	private MockHttpSession session;
 
@@ -65,6 +69,8 @@ public class RelationshipResourceTest {
 
 	@Test
 	public void testInsertRelationship() throws Exception {
+		
+		String expectedDate = "01-01-2015";
 		
 		final String RELATIONSHIP_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<relationship>"
@@ -99,6 +105,11 @@ public class RelationshipResourceTest {
 			 * 		<aIsToB>3</aIsToB>
 		 * 		</relationship>
 		 */
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+		
 		mockMvc.perform(post("/relationships").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(RELATIONSHIP_POST_XML.getBytes()))
@@ -107,7 +118,7 @@ public class RelationshipResourceTest {
 				.andExpect(xpath("/relationship").nodeCount(1))
 				.andExpect(xpath("/relationship/individualA/extId").string("NBAS1I"))
 				.andExpect(xpath("/relationship/individualB/extId").string("BJOH1J"))
-				.andExpect(xpath("/relationship/startDate").string("01-01-2015"))
+				.andExpect(xpath("/relationship/startDate").string(expectedDate))
 				.andExpect(xpath("/relationship/aIsToB").string("3"));
 	}
 	

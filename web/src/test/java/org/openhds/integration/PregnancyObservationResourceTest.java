@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.internal.matchers.StringContains;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,6 +44,9 @@ public class PregnancyObservationResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;	
 
 	private MockHttpSession session;
 
@@ -60,6 +64,11 @@ public class PregnancyObservationResourceTest {
 	@Test
 	@DirtiesContext
 	public void testPostPregnancyObservation() throws Exception {
+		
+		String expectedDate = "01-01-2015";
+		String expectedDeliveryDate = "2015-08-01";
+		
+		
 		final String PREGNANCY_OBSERVATION_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<pregnancyobservation>"
 					+ "<mother>"
@@ -93,6 +102,12 @@ public class PregnancyObservationResourceTest {
 		 * 		</visit>
 		 * 	</pregnancyobservation>
 		 */
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+			expectedDeliveryDate = "25-11-2007";
+		}
+		
 		mockMvc.perform(post("/pregnancyobservations").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(PREGNANCY_OBSERVATION_POST_XML.getBytes()))
@@ -102,9 +117,9 @@ public class PregnancyObservationResourceTest {
 				.andExpect(xpath("/pregnancyobservation/collectedBy/extId").string("FWEK1D"))
 				.andExpect(xpath("/pregnancyobservation/mother").nodeCount(1))
 				.andExpect(xpath("/pregnancyobservation/mother/extId").string("NBAS1I"))
-				.andExpect(xpath("/pregnancyobservation/recordedDate").string("01-01-2015"))
+				.andExpect(xpath("/pregnancyobservation/recordedDate").string(expectedDate))
 				.andExpect(xpath("/pregnancyobservation/visit/extId").string("VLOCMBI11J"))
-				.andExpect(xpath("/pregnancyobservation/expectedDeliveryDate").string("01-08-2015"));	
+				.andExpect(xpath("/pregnancyobservation/expectedDeliveryDate").string(expectedDeliveryDate));	
 	}
 	
 	

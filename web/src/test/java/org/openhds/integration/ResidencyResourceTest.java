@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.internal.matchers.StringContains;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,6 +45,9 @@ public class ResidencyResourceTest {
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
 
+	@Autowired
+	private SitePropertiesService siteProperties;
+	
 	private MockHttpSession session;
 
 	private MockMvc mockMvc;
@@ -60,6 +64,9 @@ public class ResidencyResourceTest {
 	@Test
 	@DirtiesContext
 	public void testPostResidency() throws Exception {
+		
+		String expectedDate = "01-01-2015";
+		
 		final String POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<residency>"
 					+ "<individual>"
@@ -94,6 +101,11 @@ public class ResidencyResourceTest {
 		 * 		<startType>ENU</startType>
 		 * 	</residency>
 		 */
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+		
 		mockMvc.perform(post("/residencyimg").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(POST_XML.getBytes()))
@@ -102,7 +114,7 @@ public class ResidencyResourceTest {
 				.andExpect(xpath("/residency").nodeCount(1))
 				.andExpect(xpath("/residency/collectedBy/extId").string("FWEK1D"))
 				.andExpect(xpath("/residency/location/extId").string("NJA000001"))
-				.andExpect(xpath("/residency/startDate").string("01-01-2015"))
+				.andExpect(xpath("/residency/startDate").string(expectedDate))
 				.andExpect(xpath("/residency/individual/extId").string("CBLA1H"))
 				.andExpect(xpath("/residency/startType").string("ENU"));	
 	}

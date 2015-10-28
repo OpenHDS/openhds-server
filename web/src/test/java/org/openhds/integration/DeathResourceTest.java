@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.internal.matchers.StringContains;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,6 +43,9 @@ public class DeathResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;
 
 	private MockHttpSession session;
 
@@ -58,6 +62,9 @@ public class DeathResourceTest {
 
 	@Test
 	public void testPostDeath() throws Exception {
+		
+		String expectedDate = "01-01-2015";
+		
 		final String DEATH_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<death>"
 					+ "<individual>"
@@ -95,6 +102,11 @@ public class DeathResourceTest {
 		 * 		</visitDeath>
 		 * 	</death>
 		 */
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+		
 		mockMvc.perform(post("/deaths").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(DEATH_POST_XML.getBytes()))
@@ -104,7 +116,7 @@ public class DeathResourceTest {
 				.andExpect(xpath("/death/collectedBy/extId").string("FWEK1D"))
 				.andExpect(xpath("/death/deathCause").string("UNK"))
 				.andExpect(xpath("/death/individual/extId").string("BJOH1J"))
-				.andExpect(xpath("/death/deathDate").string("01-01-2015"))
+				.andExpect(xpath("/death/deathDate").string(expectedDate))
 				.andExpect(xpath("/death/deathPlace").string("Hospital"));
 	}
 	
@@ -148,6 +160,9 @@ public class DeathResourceTest {
 	
 	@Test
 	public void testPostDuplicateDeath() throws Exception {
+		
+		String expectedDate = "01-01-2015";
+		
 		final String DEATH_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<death>"
 					+ "<individual>"
@@ -165,6 +180,11 @@ public class DeathResourceTest {
 					+ "<ageAtDeath>1</ageAtDeath>"
 				+ "</death>";
 				
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+
 		mockMvc.perform(post("/deaths").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(DEATH_POST_XML.getBytes()))
@@ -174,9 +194,8 @@ public class DeathResourceTest {
 				.andExpect(xpath("/death/collectedBy/extId").string("FWEK1D"))
 				.andExpect(xpath("/death/deathCause").string("UNK"))
 				.andExpect(xpath("/death/individual/extId").string("BJOH1J"))
-				.andExpect(xpath("/death/deathDate").string("01-01-2015"))
-				.andExpect(xpath("/death/deathPlace").string("Hospital"));
-				
+				.andExpect(xpath("/death/deathDate").string(expectedDate))
+				.andExpect(xpath("/death/deathPlace").string("Hospital"));	
 		
 		final String DUPLICATE_DEATH_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<death>"

@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhds.controller.service.SiteConfigService;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class VisitResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;	
 
 	private MockHttpSession session;
 
@@ -81,6 +85,9 @@ public class VisitResourceTest {
 
 	@Test
 	public void testPostVisit() throws Exception {
+		
+		String expectedDate = "01-01-2015";
+		
 		final String VISIT_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<visit>"
 					+ "<extId>ISE000012000</extId>"
@@ -109,6 +116,10 @@ public class VisitResourceTest {
 			</visit>
 		 */
 		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+		
 		 //If visitLevel is set to location, post should be successfull
 		 if(siteConfigService.getVisitAt().equalsIgnoreCase("location")){
 				mockMvc.perform(post("/visits").session(session)
@@ -119,7 +130,7 @@ public class VisitResourceTest {
 						.andExpect(xpath("/visit/collectedBy/extId").string("FWEK1D"))
 						.andExpect(xpath("/visit/extId").string("ISE000012000"))
 						.andExpect(xpath("/visit/roundNumber").string("1"))
-						.andExpect(xpath("/visit/visitDate").string("01-01-2015"))
+						.andExpect(xpath("/visit/visitDate").string(expectedDate))
 						.andExpect(xpath("/visit/visitLocation/extId").string("NJA000001"));
 		 }else{
 				mockMvc.perform(post("/visits").session(session)

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.internal.matchers.StringContains;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,6 +44,9 @@ public class PregnancyOutcomeResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;	
 
 	private MockHttpSession session;
 
@@ -60,6 +64,8 @@ public class PregnancyOutcomeResourceTest {
 	@Test
 	@DirtiesContext
 	public void testPostPregnancyOutcome() throws Exception {
+		String expectedDate = "01-01-2015";
+		
 		final String POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<pregnancyoutcome>"
 					+ "<visit>"
@@ -129,6 +135,10 @@ public class PregnancyOutcomeResourceTest {
 		 * 		</visit>
 		 * 	</pregnancyoutcome>
 		 */
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "23-04-2007";
+		}
+		
 		mockMvc.perform(post("/pregnancyoutcomes").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(POST_XML.getBytes()))
@@ -138,7 +148,7 @@ public class PregnancyOutcomeResourceTest {
 				.andExpect(xpath("/pregnancyoutcome/collectedBy/extId").string("FWEK1D"))
 				.andExpect(xpath("/pregnancyoutcome/mother").nodeCount(1))
 				.andExpect(xpath("/pregnancyoutcome/mother/extId").string("NBAS1I"))
-				.andExpect(xpath("/pregnancyoutcome/outcomeDate").string("01-01-2015"))
+				.andExpect(xpath("/pregnancyoutcome/outcomeDate").string(expectedDate))
 				.andExpect(xpath("/pregnancyoutcome/father/extId").string("UNK"))
 				.andExpect(xpath("/pregnancyoutcome/childEverBorn").string("2"));	
 	}

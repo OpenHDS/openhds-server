@@ -9,6 +9,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.x
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.openhds.web.crud.impl.VisitCrudImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 
@@ -42,6 +44,9 @@ public class RoundResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;	
 
 	private MockHttpSession session;
 
@@ -72,6 +77,8 @@ public class RoundResourceTest {
 
 	@Test
 	public void testPostRound() throws Exception {
+		String expectedDate = "31-07-2010";
+		
 		final String ROUND_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<round>"
 					+ "<roundNumber>0</roundNumber>"
@@ -90,13 +97,17 @@ public class RoundResourceTest {
 				<startDate>30-06-2010</startDate>
 			</round>
 		 */
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "24-11-2002";
+		}
+		
 		mockMvc.perform(post("/rounds").session(session)
 				.contentType(MediaType.APPLICATION_XML)
 				.body(ROUND_POST_XML.getBytes()))
 				.andExpect(status().isCreated())
 				.andExpect(content().mimeType(MediaType.APPLICATION_XML))
 				.andExpect(xpath("/round").nodeCount(1))
-				.andExpect(xpath("/round/endDate").string("31-07-2010"))
+				.andExpect(xpath("/round/endDate").string(expectedDate))
 				.andExpect(xpath("/round/roundNumber").string("0"));
 	}
 	

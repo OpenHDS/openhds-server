@@ -9,6 +9,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.x
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhds.domain.service.SitePropertiesService;
 import org.openhds.integration.util.WebContextLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,6 +42,9 @@ public class IndividualResourceTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilterChain;
+	
+	@Autowired
+	private SitePropertiesService siteProperties;
 
 	private MockHttpSession session;
 
@@ -64,6 +69,8 @@ public class IndividualResourceTest {
 
 	@Test
 	public void testGetIndividualByExtId() throws Exception {
+		
+		String expectedDate = "19-12-1965";
 		
 		/* Expected return value:
 		 * 
@@ -91,12 +98,16 @@ public class IndividualResourceTest {
 		 * */
 		
 		String individualExtId = "BJOH1J";
+		
+		if(siteProperties != null && siteProperties.getEthiopianCalendar()){
+			expectedDate = "10-04-1958";
+		}
 
 		mockMvc.perform(get("/individuals/{extId}", individualExtId).session(session))
 		.andExpect(status().isOk())
 		.andExpect(content().mimeType(MediaType.APPLICATION_XML))
 		.andExpect(xpath("/individual").nodeCount(1))
-		.andExpect(xpath("/individual/dob").string("19-12-1965"))
+		.andExpect(xpath("/individual/dob").string(expectedDate))
 		.andExpect(xpath("/individual/gender").string("M"))
 		.andExpect(xpath("/individual/firstName").string("Bob"))
 		.andExpect(xpath("/individual/middleName").string(""))
