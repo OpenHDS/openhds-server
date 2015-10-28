@@ -28,6 +28,7 @@ public class SitePropertiesConfigBean {
 	String deathOfHOH;
 	String enumeration;
 	String marriage;
+	String divorceSeparation;
 	String notApplicable;
 	String liveBirth;
 	String stillBirth;
@@ -74,6 +75,7 @@ public class SitePropertiesConfigBean {
 		properties.put("deathOfHOH", deathOfHOH);
 		properties.put("enumeration", enumeration);
 		properties.put("marriage", marriage);	
+		properties.put("divorceSeparation", divorceSeparation);	
 		properties.put("notApplicable", notApplicable);
 		properties.put("liveBirth", liveBirth);
 		properties.put("stillBirth", stillBirth);
@@ -268,6 +270,14 @@ public class SitePropertiesConfigBean {
 		this.marriage = marriage;
 	}
 	
+	public String getDivorceSeparation() {
+		return divorceSeparation;
+	}
+
+	public void setDivorceSeparation(String divorceSeparation) {
+		this.divorceSeparation = divorceSeparation;
+	}
+
 	public String getNotApplicable() {
 		return notApplicable;
 	}

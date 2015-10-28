@@ -31,6 +31,8 @@ public class ShallowCopier {
             copy.setLastName(individual.getLastName());
             String middleName = individual.getMiddleName() == null ? "" : individual.getMiddleName();
             copy.setMiddleName(middleName);
+            String religion = individual.getReligion() == null ? "" : individual.getReligion();
+            copy.setReligion(religion);
             copy.setMother(copyExtId(individual.getMother()));
 
             if (individual.getCurrentMembership() != null /*&& individual.getCurrentMembership().getEndDate()==null*/) {

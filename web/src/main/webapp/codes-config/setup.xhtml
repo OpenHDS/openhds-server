@@ -73,6 +73,10 @@
                         <h:inputText id="marriage" value="#{sitePropertiesConfigBean.marriage}" converter="#{defaultConverter}" />
                         <h:message for="marriage" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
                         
+                        <h:outputText value="#{msg.codeDivorceSeparation}:"/>
+                        <h:inputText id="divorceSeparation" value="#{sitePropertiesConfigBean.divorceSeparation}" converter="#{defaultConverter}" />
+                        <h:message for="divorceSeparation" errorClass="error" errorStyle="color: red" infoStyle="color: green"/> 
+                        
                         <h:outputText value="#{msg.codeLiveBirth}:"/>
                         <h:inputText id="liveBirth" value="#{sitePropertiesConfigBean.liveBirth}" converter="#{defaultConverter}" />
                         <h:message for="liveBirth" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>

@@ -62,6 +62,8 @@ public class Individual
     @Searchable
     @Description(description = "Last name of the individual.")
     private String lastName;
+    @Description(description = "Religion of the individual.")
+    private String religion;
     @ExtensionStringConstraint(constraint = "genderConstraint", message = "Invalid Value for gender", allowNull = true)
     @Description(description = "The gender of the individual.")
     private String gender;
@@ -130,7 +132,15 @@ public class Individual
         lastName = name;
     }
 
-    public String getGender() {
+    public String getReligion() {
+		return religion;
+	}
+
+	public void setReligion(String religion) {
+		this.religion = religion;
+	}
+
+	public String getGender() {
         return gender;
     }
 

@@ -68,11 +68,13 @@ public class RelationshipServiceImpl implements RelationshipService {
 		
 		// compare lists
 		for (Relationship relationA : itemsA) {	
-			if ((!relationA.equals(entityItem)) && (relationA.getIndividualB().getExtId().equals(entityItem.getIndividualB().getExtId()))) 
+			if ((!relationA.equals(entityItem)) && (relationA.getIndividualB().getExtId().equals(entityItem.getIndividualB().getExtId())) 
+					&& !relationA.isDeleted() && (relationA.getEndDate()==null) && !(entityItem.getaIsToB().equals("3"))) 
 				return false;
 		}
 		for (Relationship relationB : itemsB) {	
-			if ((!relationB.equals(entityItem)) && (relationB.getIndividualA().getExtId().equals(entityItem.getIndividualB().getExtId()))) 
+			if ((!relationB.equals(entityItem)) && (relationB.getIndividualA().getExtId().equals(entityItem.getIndividualB().getExtId()))
+					&& !relationB.isDeleted() && (relationB.getEndDate()==null) && !(entityItem.getaIsToB().equals("3"))) 
 				return false;
 		}
 		return true;
@@ -191,7 +193,38 @@ public class RelationshipServiceImpl implements RelationshipService {
 		evaluateRelationship(relationship);
 		
 		try {
-			entityService.create(relationship);
+			if (relationship.getaIsToB().equalsIgnoreCase("3")) {
+				List<Relationship> itemsA = genericDao.findListByProperty(Relationship.class, "individualA", relationship.getIndividualA());
+				List<Relationship> itemsB = genericDao.findListByProperty(Relationship.class, "individualB", relationship.getIndividualA());
+			
+				for (Relationship relationA : itemsA) {	
+					if ((!relationA.equals(relationship)) && (relationA.getIndividualB().getExtId().equals(relationship.getIndividualB().getExtId())) 
+							&& !relationA.isDeleted() && (relationA.getEndDate()==null)) {						
+						relationA.setEndDate(relationship.getStartDate());
+						relationA.setEndType("DIV");;
+						entityService.save(relationA);
+					}  else if (relationA.getEndDate()==null) {
+						throw new ConstraintViolations("The divorce/separation can not exist without a previous union between individuals.");	
+					}  else if (relationA.getEndDate().equals(relationship.getStartDate())){
+						throw new ConstraintViolations("The divorce/separation is already registered in the system.");	
+					}
+				}
+
+				for (Relationship relationB : itemsB) {	
+					if ((!relationB.equals(relationship)) && (relationB.getIndividualB().getExtId().equals(relationship.getIndividualB().getExtId())) 
+							&& !relationB.isDeleted() && (relationB.getEndDate()==null)) {
+						
+						relationB.setEndDate(relationship.getStartDate());
+						relationB.setEndType("DIV");;
+						entityService.save(relationB);
+					} else if (relationB.getEndDate().equals(relationship.getStartDate())){
+						throw new ConstraintViolations("The divorce/separation is already registered in the system.");	
+					}
+
+				}
+			} else {
+				entityService.create(relationship);
+			}
 		} catch (IllegalArgumentException e) {
 		} catch (SQLException e) {
 			throw new ConstraintViolations("There was a problem saving the relationship to the database");

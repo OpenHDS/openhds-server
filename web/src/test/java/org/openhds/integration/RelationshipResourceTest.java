@@ -122,7 +122,7 @@ public class RelationshipResourceTest {
 					+ "<individualB>"
 						+ "<extId>NBAS1I</extId>"
 					+ "</individualB>"						
-					+ "<aIsToB>3</aIsToB>"
+					+ "<aIsToB>2</aIsToB>"
 					+ "<collectedBy>"
 						+ "<extId>FWEK1D</extId>"
 					+ "</collectedBy>"
