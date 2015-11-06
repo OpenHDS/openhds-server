@@ -1,5 +1,7 @@
 package org.openhds.extensions;
 
+import javax.persistence.PostRemove;
+
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JBlock;
@@ -58,6 +60,10 @@ public class SocialGroupTemplateBuilder implements ExtensionTemplate {
 		
 		JAnnotationUse jat = jc.annotate(javax.persistence.Table.class);
 		jat.param("name", "socialgroup");
+		
+		//XmlAnnotation
+		JAnnotationUse jxmlRoot = jc.annotate(javax.xml.bind.annotation.XmlRootElement.class);
+		jxmlRoot.param("name", "socialgroup");
 	}
 
 	public void buildFieldsAndMethods(JDefinedClass jc) {
@@ -74,6 +80,7 @@ public class SocialGroupTemplateBuilder implements ExtensionTemplate {
 	
 		// getter
 		JMethod jmgExtId = jc.method(JMod.PUBLIC, java.lang.String.class, "getExtId");
+		jmgExtId.annotate(PostRemove.class);
 		JBlock jmgExtIdBlock = jmgExtId.body();
 		jmgExtIdBlock._return(jfExtId);
 		

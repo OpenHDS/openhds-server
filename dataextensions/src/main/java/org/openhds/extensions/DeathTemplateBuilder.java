@@ -50,9 +50,7 @@ public class DeathTemplateBuilder implements ExtensionTemplate {
 		jfIndividual.annotate(org.openhds.domain.constraint.CheckEntityNotVoided.class);
 		jfIndividual.annotate(org.openhds.domain.constraint.CheckIndividualNotUnknown.class);
 		JAnnotationUse jfIndividualCascade = jfIndividual.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember cascadeArray = jfIndividualCascade.paramArray("cascade");
-		cascadeArray.param(javax.persistence.CascadeType.MERGE);
-		cascadeArray.param(javax.persistence.CascadeType.PERSIST);
+		jfIndividualCascade.param("cascade", javax.persistence.CascadeType.MERGE);
 		JAnnotationUse jaGroupHeadDesc = jfIndividual.annotate(org.openhds.domain.annotations.Description.class);
 		jaGroupHeadDesc.param("description", "Individual who has died, identified by external id.");
 		
@@ -132,9 +130,7 @@ public class DeathTemplateBuilder implements ExtensionTemplate {
 		JFieldVar jfVisitDeath = jc.field(JMod.PRIVATE , org.openhds.domain.model.Visit.class, "visitDeath");
 		jfVisitDeath.annotate(org.openhds.domain.constraint.Searchable.class);
 		JAnnotationUse jfVisitDeathCascade = jfVisitDeath.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember visitDeathCascadeArray = jfVisitDeathCascade.paramArray("cascade");
-		visitDeathCascadeArray.param(javax.persistence.CascadeType.MERGE);
-		visitDeathCascadeArray.param(javax.persistence.CascadeType.PERSIST);
+		jfVisitDeathCascade.param("cascade", javax.persistence.CascadeType.MERGE);
 		JAnnotationUse jaVisitDeathDesc = jfVisitDeath.annotate(org.openhds.domain.annotations.Description.class);
 		jaVisitDeathDesc.param("description", "Visit associated with the death, identified by external id.");
 		

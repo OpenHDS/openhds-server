@@ -23,6 +23,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 	boolean individualTemplateBuilt = false;
 	
 	JFieldVar jfResidencies;
+	JFieldVar jfMemberships;
 	
 	IndividualTemplateBuilder(JCodeModel jCodeModel) {
 		this.jCodeModel = jCodeModel;
@@ -119,6 +120,22 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		JBlock jmsLastNameBlock = jmsLastName.body();
 		jmsLastNameBlock.assign(jfLastName, jvarLastName);
 		
+		// religion
+		JFieldVar jfReligion = jc.field(JMod.PRIVATE , java.lang.String.class, "religion");
+		JAnnotationUse jaReligionDesc = jfReligion.annotate(org.openhds.domain.annotations.Description.class);
+		jaReligionDesc.param("description", "Religion of the individual.");
+		
+		// getter
+		JMethod jmgReligion = jc.method(JMod.PUBLIC, java.lang.String.class, "getReligion");
+		JBlock jmgReligionBlock = jmgReligion.body();
+		jmgReligionBlock._return(jfReligion);
+		
+		// setter
+		JMethod jmsReligion = jc.method(JMod.PUBLIC, void.class, "setReligion");
+		JVar jvarReligion = jmsReligion.param(java.lang.String.class, "setReligion");
+		JBlock jmsReligionBlock = jmsReligion.body();
+		jmsReligionBlock.assign(jfReligion, jvarReligion);
+		
 		// gender
 		JFieldVar jfGender = jc.field(JMod.PRIVATE , java.lang.String.class, "gender");
 		JAnnotationUse jaGender = jfGender.annotate(org.openhds.domain.constraint.ExtensionStringConstraint.class);
@@ -172,10 +189,8 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		JAnnotationUse jaMotherNotVoided = jfMother.annotate(org.openhds.domain.constraint.CheckEntityNotVoided.class);
 		jaMotherNotVoided.param("allowNull", true);
 		jaMotherNotVoided.param("message", "The mother has been voided");
-		JAnnotationUse jfMotherCascade = jfMother.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember motherArray = jfMotherCascade.paramArray("cascade");
-		motherArray.param(javax.persistence.CascadeType.MERGE);
-		motherArray.param(javax.persistence.CascadeType.PERSIST);
+		JAnnotationUse jfMotherCascade = jfMother.annotate(javax.persistence.ManyToOne.class);	
+		jfMotherCascade.param("fetch", javax.persistence.FetchType.LAZY);
 		jfMotherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);		
 		JAnnotationUse jaMotherDesc = jfMother.annotate(org.openhds.domain.annotations.Description.class);
 		jaMotherDesc.param("description", "The individual's mother, identified by the external id.");
@@ -203,9 +218,7 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jaFatherNotVoided.param("allowNull", true);
 		jaFatherNotVoided.param("message", "The father has been voided");
 		JAnnotationUse jfFatherCascade = jfFather.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember fatherArray = jfFatherCascade.paramArray("cascade");
-		fatherArray.param(javax.persistence.CascadeType.MERGE);
-		fatherArray.param(javax.persistence.CascadeType.PERSIST);
+		jfFatherCascade.param("fetch", javax.persistence.FetchType.LAZY);
 		jfFatherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);
 		JAnnotationUse jaFatherDesc = jfFather.annotate(org.openhds.domain.annotations.Description.class);
 		jaFatherDesc.param("description", "The individual's father, identified by the external id.");
@@ -250,14 +263,19 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jfResidencies.init(JExpr._new(jResidenciesClassRef));
 		JAnnotationUse jaResidenciesTarget = jfResidencies.annotate(javax.persistence.OneToMany.class);
 		jaResidenciesTarget.param("mappedBy", "individual");
-		jaResidenciesTarget.param("cascade",  javax.persistence.CascadeType.ALL);
 		JAnnotationUse jaResidenciesOrderBy = jfResidencies.annotate(javax.persistence.OrderBy.class);
 		jaResidenciesOrderBy.param("value", "startDate");
 		JAnnotationUse jaResidenciesDesc = jfResidencies.annotate(org.openhds.domain.annotations.Description.class);
 		jaResidenciesDesc.param("description", "The set of all residencies that the individual may have.");
+		JAnnotationArrayMember residenciesArray = jaResidenciesTarget.paramArray("cascade");
+		residenciesArray.param(javax.persistence.CascadeType.ALL);
 		
 		// getter
 		JMethod jmgResidencies = jc.method(JMod.PUBLIC, basicSetResidencies, "getAllResidencies");
+		JAnnotationUse jaResidenciesXml1 = jmgResidencies.annotate(javax.xml.bind.annotation.XmlElementWrapper.class);
+		jaResidenciesXml1.param("name", "residencies");
+		JAnnotationUse jaResidenciesXml2 = jmgResidencies.annotate(javax.xml.bind.annotation.XmlElement.class);
+		jaResidenciesXml2.param("name", "residency");
 		JBlock jmgResidenciesBlock = jmgResidencies.body();
 		jmgResidenciesBlock._return(jfResidencies);
 		
@@ -276,7 +294,6 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jfRelationships1.init(JExpr._new(jRelationship1ClassRef));
 		JAnnotationUse jaRelationships1Target = jfRelationships1.annotate(javax.persistence.OneToMany.class);
 		jaRelationships1Target.param("mappedBy", "individualA");
-		jaRelationships1Target.param("cascade",  javax.persistence.CascadeType.ALL);
 		JAnnotationUse jaRelationships1Desc = jfRelationships1.annotate(org.openhds.domain.annotations.Description.class);
 		jaRelationships1Desc.param("description", "The set of all relationships that the individual may have with another individual.");
 		
@@ -300,7 +317,6 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		jfRelationships2.init(JExpr._new(jRelationship2ClassRef));
 		JAnnotationUse jaRelationships2Target = jfRelationships2.annotate(javax.persistence.OneToMany.class);
 		jaRelationships2Target.param("mappedBy", "individualB");
-		jaRelationships2Target.param("cascade",  javax.persistence.CascadeType.ALL);
 		JAnnotationUse jaRelationships2Desc = jfRelationships2.annotate(org.openhds.domain.annotations.Description.class);
 		jaRelationships2Desc.param("description", "The set of all relationships where another individual may have with this individual.");
 		
@@ -318,18 +334,21 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		// allMemberships
 		JClass basicSetMemberships = jCodeModel.ref(java.util.Set.class);
 		basicSetMemberships = basicSetMemberships.narrow(org.openhds.domain.model.Membership.class);
-		JFieldVar jfMemberships = jc.field(JMod.PRIVATE , basicSetMemberships, "allMemberships");
+		jfMemberships = jc.field(JMod.PRIVATE , basicSetMemberships, "allMemberships");
 		JClass jMembershipClassRef = jCodeModel.ref(java.util.HashSet.class);
 		jMembershipClassRef = jMembershipClassRef.narrow(org.openhds.domain.model.Membership.class);
 		jfMemberships.init(JExpr._new(jMembershipClassRef));
 		JAnnotationUse jaMembershipsTarget = jfMemberships.annotate(javax.persistence.OneToMany.class);
 		jaMembershipsTarget.param("mappedBy", "individual");
-		jaMembershipsTarget.param("cascade",  javax.persistence.CascadeType.ALL);
 		JAnnotationUse jaMembershipsDesc = jfMemberships.annotate(org.openhds.domain.annotations.Description.class);
 		jaMembershipsDesc.param("description", "The set of all memberships the individual is participating in.");
 		
 		// getter
 		JMethod jmgMembership = jc.method(JMod.PUBLIC, basicSetMemberships, "getAllMemberships");
+		JAnnotationUse jaMembershipsXml1 = jmgMembership.annotate(javax.xml.bind.annotation.XmlElementWrapper.class);
+		jaMembershipsXml1.param("name", "memberships");
+		JAnnotationUse jaMembershipsXml2 = jmgMembership.annotate(javax.xml.bind.annotation.XmlElement.class);
+		jaMembershipsXml2.param("name", "membership");
 		JBlock jmgMembershipBlock = jmgMembership.body();
 		jmgMembershipBlock._return(jfMemberships);
 		
@@ -367,6 +386,43 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		whileLoopBody.assign(jvResidencies, JExpr.ref(jvIterator, "next()"));
 	
 		jBlock._return(jvResidencies);	
+				
+		//-------------- getCurrentMembership ------------------
+		JMethod jmgCurrentMembership = jc.method(JMod.PUBLIC, org.openhds.domain.model.Membership.class, "getCurrentMembership");
+		
+		//Init method
+		JBlock jBlockCurrentMembership = jmgCurrentMembership.body();
+		
+		// Membership m1
+		JClass memberShipClass = jCodeModel.ref(org.openhds.domain.model.Membership.class);
+		JVar jvM1 = jBlockCurrentMembership.decl(memberShipClass, "m1");
+		jvM1.init(JExpr._new(memberShipClass));
+		
+		// if statement
+		JConditional conditionMembership = jBlockCurrentMembership._if(JExpr.ref(jfMemberships, "size()").eq(JExpr.lit(0)));
+		conditionMembership._then()._return(JExpr._null());
+		
+		// iterator
+		JClass membershipIterator = jCodeModel.ref(java.util.Iterator.class);
+		membershipIterator = membershipIterator.narrow(org.openhds.domain.model.Membership.class);
+		JVar jvMembershipIterator = jBlockCurrentMembership.decl(membershipIterator, "itr");
+		jvMembershipIterator.init(JExpr.ref(jfMemberships, "iterator()"));
+				
+		//Membership membership
+		JVar jvMembership = jBlockCurrentMembership.decl(memberShipClass, "membership");
+		jvMembership.init(JExpr._null());
+		
+		// while loop
+		JWhileLoop membershipWhileLoop = jBlockCurrentMembership._while(JExpr.ref(jvMembershipIterator, "hasNext()"));
+		JBlock membershipWhileLoopBody = membershipWhileLoop.body();
+		membershipWhileLoopBody.assign(jvM1, JExpr.ref(jvMembershipIterator, "next()"));
+		
+		// if statement
+		JConditional conditionEndDate = membershipWhileLoopBody._if(JExpr.ref(jvM1, "endDate").eq(JExpr._null())); 
+		JBlock assignBlock = conditionEndDate._then();
+		assignBlock.assign(jvMembership, jvM1);
+		
+		jBlockCurrentMembership._return(jvMembership);
 	}
 	
 	public void buildClassAnnotations(JDefinedClass jc) {
@@ -386,5 +442,9 @@ public class IndividualTemplateBuilder implements ExtensionTemplate {
 		
 		JAnnotationUse jat = jc.annotate(javax.persistence.Table.class);
 		jat.param("name", "individual");
+		
+		//XmlAnnotation
+		JAnnotationUse jxmlRoot = jc.annotate(javax.xml.bind.annotation.XmlRootElement.class);
+		jxmlRoot.param("name", "individual");
 	}
 }

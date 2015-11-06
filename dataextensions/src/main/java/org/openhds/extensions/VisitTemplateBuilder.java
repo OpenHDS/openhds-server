@@ -57,6 +57,8 @@ public class VisitTemplateBuilder implements ExtensionTemplate {
 		
 		JAnnotationUse jat = jc.annotate(javax.persistence.Table.class);
 		jat.param("name", "visit");
+		
+		jc.annotate(javax.xml.bind.annotation.XmlRootElement.class);
 	}
 
 	public void buildFieldsAndMethods(JDefinedClass jc) {
@@ -127,7 +129,7 @@ public class VisitTemplateBuilder implements ExtensionTemplate {
 		// roundNumber
 		JFieldVar jfRoundNumber = jc.field(JMod.PRIVATE , java.lang.Integer.class, "roundNumber");
 		JAnnotationUse jaCheckInteger = jfRoundNumber.annotate(org.openhds.domain.constraint.CheckInteger.class);
-		jaCheckInteger.param("min", 1);
+		jaCheckInteger.param("min", 0);
 		JAnnotationUse jaDobAspectDesc = jfRoundNumber.annotate(org.openhds.domain.annotations.Description.class);
 		jaDobAspectDesc.param("description", "Round number for the visit.");
 		

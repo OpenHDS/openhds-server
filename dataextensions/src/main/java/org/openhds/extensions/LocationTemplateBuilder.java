@@ -89,9 +89,8 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		JFieldVar jfLocationLevel = jc.field(JMod.PRIVATE , org.openhds.domain.model.LocationHierarchy.class, "locationLevel");
 		JClass jClassRef = jCodeModel.ref(org.openhds.domain.model.LocationHierarchy.class);
 		jfLocationLevel.init(JExpr._new(jClassRef));	
-		jfLocationLevel.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationUse jaLocationLevel = jfLocationLevel.annotate(org.hibernate.annotations.Cascade.class);
-		jaLocationLevel.param("value", org.hibernate.annotations.CascadeType.SAVE_UPDATE);
+		JAnnotationUse jaLocationLevel = jfLocationLevel.annotate(javax.persistence.ManyToOne.class);
+		jaLocationLevel.param("cascade", javax.persistence.CascadeType.MERGE);
 		
 		// getter
 		JMethod jmgLocationLevel = jc.method(JMod.PUBLIC, org.openhds.domain.model.LocationHierarchy.class, "getLocationLevel");
@@ -221,7 +220,11 @@ public class LocationTemplateBuilder implements ExtensionTemplate {
 		// create Entity annotation
 		jc.annotate(javax.persistence.Entity.class);
 		
+		//Persistance annotation
 		JAnnotationUse jat = jc.annotate(javax.persistence.Table.class);
 		jat.param("name", "location");
+		
+		//XmlAnnotation
+		jc.annotate(javax.xml.bind.annotation.XmlRootElement.class);
 	}
 }

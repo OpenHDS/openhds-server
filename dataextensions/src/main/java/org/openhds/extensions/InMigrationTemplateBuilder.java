@@ -64,9 +64,9 @@ public class InMigrationTemplateBuilder implements ExtensionTemplate {
 		
 		// individual		
 		JFieldVar jfIndividual = jc.field(JMod.PRIVATE , org.openhds.domain.model.Individual.class, "individual");
-		jfIndividual.annotate(javax.validation.constraints.NotNull.class);
 		jfIndividual.annotate(org.openhds.domain.constraint.Searchable.class);
-		jfIndividual.annotate(javax.persistence.ManyToOne.class);
+		JAnnotationUse jaIndividual = jfIndividual.annotate(javax.persistence.ManyToOne.class);
+		jaIndividual.param("cascade", javax.persistence.CascadeType.MERGE);
 		jfIndividual.annotate(org.openhds.domain.constraint.CheckIndividualNotUnknown.class);
 		JAnnotationUse jaIndividualDesc = jfIndividual.annotate(org.openhds.domain.annotations.Description.class);
 		jaIndividualDesc.param("description", "Individual who is inmigrating, identified by external id.");
@@ -86,8 +86,8 @@ public class InMigrationTemplateBuilder implements ExtensionTemplate {
 		JFieldVar jfResidency = jc.field(JMod.PRIVATE , org.openhds.domain.model.Residency.class, "residency");
 		JClass jClassRef = jCodeModel.ref(org.openhds.domain.model.Residency.class);
 		jfResidency.init(JExpr._new(jClassRef));	
-		jfResidency.annotate(javax.persistence.OneToOne.class);
-		jfResidency.annotate(javax.validation.constraints.NotNull.class);
+		JAnnotationUse jaResidency = jfResidency.annotate(javax.persistence.OneToOne.class);
+		jaResidency.param("cascade", javax.persistence.CascadeType.MERGE);
 		JAnnotationUse jaResidencyDesc = jfResidency.annotate(org.openhds.domain.annotations.Description.class);
 		jaResidencyDesc.param("description", "The residency the individual is inmigrating to.");
 		
@@ -163,7 +163,8 @@ public class InMigrationTemplateBuilder implements ExtensionTemplate {
 		JFieldVar jfVisit = jc.field(JMod.PRIVATE , org.openhds.domain.model.Visit.class, "visit");
 		jfVisit.annotate(org.openhds.domain.constraint.Searchable.class);
 		jfVisit.annotate(javax.validation.constraints.NotNull.class);
-		jfVisit.annotate(javax.persistence.ManyToOne.class);
+		JAnnotationUse jaVisit = jfVisit.annotate(javax.persistence.ManyToOne.class);
+		jaVisit.param("cascade", javax.persistence.CascadeType.MERGE);
 		JAnnotationUse jaVisitDesc = jfVisit.annotate(org.openhds.domain.annotations.Description.class);
 		jaVisitDesc.param("description", "The visit associated with the inmigration, identified by external id.");
 		
@@ -228,6 +229,9 @@ public class InMigrationTemplateBuilder implements ExtensionTemplate {
 				
 		// create Entity annotation
 		jc.annotate(javax.persistence.Entity.class);
+		
+		//create CheckDropdownMenuItemSelected constraint
+		jc.annotate(org.openhds.domain.constraint.CheckDropdownMenuItemSelected.class);  
 		
 		jc.annotate(org.openhds.domain.constraint.CheckInMigrationAfterDob.class);
 		

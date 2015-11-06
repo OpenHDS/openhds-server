@@ -131,9 +131,7 @@ public class OutMigrationTemplateBuilder implements ExtensionTemplate {
 		jfVisit.annotate(org.openhds.domain.constraint.Searchable.class);
 		jfVisit.annotate(javax.validation.constraints.NotNull.class);
 		JAnnotationUse jfVisitCascade = jfVisit.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember visitArray = jfVisitCascade.paramArray("cascade");
-		visitArray.param(javax.persistence.CascadeType.MERGE);
-		visitArray.param(javax.persistence.CascadeType.PERSIST);
+		jfVisitCascade.param("cascade", javax.persistence.CascadeType.MERGE);	
 		jfVisitCascade.param("targetEntity", org.openhds.domain.model.Visit.class);
 		JAnnotationUse jaVisitDesc = jfVisit.annotate(org.openhds.domain.annotations.Description.class);
 		jaVisitDesc.param("description", "The visit associated with the outmigration, identified by external id.");

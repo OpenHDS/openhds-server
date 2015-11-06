@@ -55,9 +55,7 @@ public class PregnancyObservationTemplateBuilder implements ExtensionTemplate  {
 		jaMotherNotVoided.param("allowNull", true);
 		jaMotherNotVoided.param("message", "The mother has been voided");
 		JAnnotationUse jfMotherCascade = jfMother.annotate(javax.persistence.ManyToOne.class);
-		JAnnotationArrayMember motherArray = jfMotherCascade.paramArray("cascade");
-		motherArray.param(javax.persistence.CascadeType.MERGE);
-		motherArray.param(javax.persistence.CascadeType.PERSIST);
+		jfMotherCascade.param("cascade", javax.persistence.CascadeType.MERGE);
 		jfMotherCascade.param("targetEntity", org.openhds.domain.model.Individual.class);		
 		JAnnotationUse jaMotherDesc = jfMother.annotate(org.openhds.domain.annotations.Description.class);
 		jaMotherDesc.param("description", "The mother of the pregnancy observation, identified by the external id.");
@@ -120,7 +118,8 @@ public class PregnancyObservationTemplateBuilder implements ExtensionTemplate  {
 		JFieldVar jfVisit = jc.field(JMod.PRIVATE , org.openhds.domain.model.Visit.class, "visit");
 		jfVisit.annotate(org.openhds.domain.constraint.Searchable.class);
 		jfVisit.annotate(javax.validation.constraints.NotNull.class);
-		jfVisit.annotate(javax.persistence.ManyToOne.class);
+		JAnnotationUse jfVisitCascade = jfVisit.annotate(javax.persistence.ManyToOne.class);
+		jfVisitCascade.param("cascade", javax.persistence.CascadeType.MERGE);
 		JAnnotationUse jaVisitDesc = jfVisit.annotate(org.openhds.domain.annotations.Description.class);
 		jaVisitDesc.param("description", "The visit this pregnancy observation was registered during.");
 		
