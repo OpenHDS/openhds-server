@@ -42,6 +42,26 @@ public class ResidencyCrudImpl extends EntityCrudImpl<Residency, String> {
 		cal.setTime(startDate);
 		entityItem.setStartDate(cal);
 	}
+	
+	 public Date getEndDate() {
+	    	
+	    	if (entityItem.getEndDate() == null)
+	    		return null;
+	    	
+	    	return entityItem.getEndDate().getTime();
+		}
+
+		public void setEndDate(Date endDate) throws ParseException {
+			
+			if (endDate == null)
+				entityItem.setEndDate(null);
+			
+			else {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(endDate);
+				entityItem.setEndDate(cal);
+			}
+		}
 
 	public ResidencyService getResidencyService() {
 		return residencyService;

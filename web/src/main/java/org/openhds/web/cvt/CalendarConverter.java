@@ -28,25 +28,21 @@ public class CalendarConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 			
-//		System.out.println("CalendarConverter::getAsObject()");
+
 		Calendar cal = null;	
 								
 		try {			
 			if(siteProperties.getEthiopianCalendar()){
 				//Convert from Ethiopian to Gregorian Calendar 
-//				Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa"));
 				Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.getDefault());
 				DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy").withChronology(chron_eth);
 				DateTime dt_eth = dtf.parseDateTime(value); 
-//				dt_eth.plusHours(3);
+
 				DateTime dt_greg = dt_eth.withChronology(GregorianChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa")));
 				cal = dt_greg.toGregorianCalendar();
 				
 				
-//				System.out.println("CalendarConverter::getAsObject: Received: " + value + " | Converted back to gregorian: " + cal.getTime());
-//				DateTime dtLMDGreg = getCurrentEthiopianDateDisplay().withChronology(GregorianChronology.getInstance());
-//	            DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMMM yyyy");
-//	            String str = fmt.print(dtLMDGreg);
+
 			}
 			else{
 				DateFormat formatter = new SimpleDateFormat(dateFormat);
@@ -73,40 +69,22 @@ public class CalendarConverter implements Converter {
 
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 
-//		System.out.println("SiteProperties: " + siteProperties.getEthiopianCalendar());
-		
-		System.out.println("Of class: " + value.getClass());
-				
-		if (value == null)
-			return null;
-		
 		DateFormat formatter = new SimpleDateFormat(dateFormat);
 		String formattedDate = new String();
 		
 		if(siteProperties.getEthiopianCalendar()){
-//			System.out.println("Use Ethiopian Calendar");
+		
 			// Create Ethiopian Chronology
 			Chronology chron_eth = EthiopicChronology.getInstance(DateTimeZone.getDefault());
 			
-			// Create Ethiopian Date/Time (Y, M, D, H, M, S, mS)
-			//DateTime dt_eth = new DateTime(2003, 2, 30, 0, 0, 0, 0, chron_eth);
-
-			// Convert to Gregorian Date/Time
-			//DateTime dt_greg = dt_eth.withChronology(GregorianChronology.getInstance());
-
-			//System.out.println("Ethiopian Date: " + DateTimeFormat.fullDate().print(dt_eth));
-			//System.out.println("Gregorian Date: " + DateTimeFormat.fullDate().print(dt_greg));
+			
 			
 			DateTime dt_greg = new DateTime((Calendar)value).withChronology(GregorianChronology.getInstance(DateTimeZone.forID("Africa/Addis_Ababa")));
 			DateTime dt_eth = dt_greg.withChronology(chron_eth);
-//			dt_eth = new DateTime(2003, 13, 3, 0, 0, 0, 0, chron_eth);
-			
-//			System.out.println("Ethiopian Date: " + DateTimeFormat.forPattern("dd/MM/yyyy").print(dt_eth));
-//			System.out.println("Gregorian Date: " + DateTimeFormat.forPattern(dateFormat).print(dt_greg));
-			
+
+
 			formattedDate =  DateTimeFormat.forPattern("dd/MM/yyyy").print(dt_eth);
 			
-//			System.out.println("CalendarConverter::getAsString: Received: " + dt_greg.toString() + " | Converted to ethiopian: " + formattedDate);
 		}
 		else{
 			Calendar calendar = (Calendar) value;
