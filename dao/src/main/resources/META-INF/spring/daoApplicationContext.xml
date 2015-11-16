@@ -69,7 +69,7 @@
 		</property>
 		<property name="hibernateProperties">
 	        <props>
-	            <prop key="hibernate.show_sql">${hibernateShowSql}</prop>
+	            <prop key="hibernate.show_sql">false</prop>
 	            <prop key="hibernate.hbm2ddl.auto">${hibernateExport}</prop>        
 	            <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop> 
 	            <prop key="hibernate.jdbc.use_streams_for_binary"></prop> 

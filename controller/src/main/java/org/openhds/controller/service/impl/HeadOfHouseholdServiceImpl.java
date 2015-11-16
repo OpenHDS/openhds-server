@@ -71,18 +71,16 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		
 		boolean isValidSocialGroup = determineValidSocialGroup(sg);
 		
-		if(isValidSocialGroup)
-			System.out.println("Socialgroup seems to be valid!");
-		else
-			System.out.println("Socialgroup DOES NOT SEEM TO BE VALID !!!");
+//		if(isValidSocialGroup)
+//			System.out.println("Socialgroup seems to be valid!");
+//		else
+//			System.out.println("Socialgroup DOES NOT SEEM TO BE VALID !!!");
 		
 		
 		if(sg != null){
 			if(sg.getGroupHead().getExtId().trim().equalsIgnoreCase(oldHoh.getExtId().trim())){
-				System.out.println("OldHoh seems to be groupHead if group with extId " + sg.getExtId());
 			}
 			else{
-				System.out.println("Could not find oldHoh with extId " + oldHoh.getExtId() + " as Head of Household of group with extId " + sg.getExtId());
 				throw new ConstraintViolations("Specified old HoH-extId is not the current HoH!");
 			}
 		}
@@ -107,10 +105,8 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
         
         indivsAtSocialGroup = socialGroupService.getAllIndividualsOfSocialGroup(socialGroup);
     	if (indivsAtSocialGroup.size() == 0){
-    		System.out.println("No indivduals found living at this socialgroup");
     		return false;
-    	}
-    		 
+    	}		 
         
 		return true;
 	}	
@@ -143,12 +139,10 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			Membership membership = memberships.iterator().next();
 			String socialGroupExtId = membership.getSocialGroup().getExtId();
 			try{
-				//SocialGroup socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId, "Could not find socialGroup");
 				SocialGroup socialGroup = getSocialGroupFromExtId(socialGroupExtId);
 				sg = socialGroup;
 			}
 			catch(Exception e){
-				System.out.println(e.getMessage());
 				throw new ConstraintViolations(e.getMessage());
 			}
 		}
@@ -157,10 +151,8 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			SocialGroup socialGroup = getSocialGroupFromExtId(socialGroupExtId);
 			Individual deadIndividual = entityItem.getDeath().getIndividual();
 			if(socialGroup.getGroupHead().getExtId().equalsIgnoreCase(deadIndividual.getExtId()) && socialGroup.getMemberships().size() == 1){
-				System.out.println("No memberships needed if dead individual ");
 			}
 			else{
-				System.out.println("Found no memberships !");
 				throw new ConstraintViolations("Found no memberships !");
 			}
 		}
@@ -172,9 +164,7 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		try{
 			socialGroup = socialGroupService.findSocialGroupById(socialGroupExtId, "Could not find socialGroup");
 		}
-		catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+		catch(Exception e){}
 		return socialGroup;
 	}
 	
@@ -212,9 +202,6 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 	        
 	        if(!hasConstraintValidationErrors){
 	        	entityService.save(socialGroup);	
-	        }
-	        else{
-	        	System.err.println("Encoutered ConstraintViolations!");
 	        }			
 		} catch (ConstraintViolations e) {
 			e.printStackTrace();
@@ -271,17 +258,14 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		evaluateHeadOfHousehold(entityItem);
 			
 		Individual oldHoh = entityItem.getOldHoh();
-		
-//		SocialGroup sg = getSocialGroup(entityItem);
+
 		SocialGroup sg = entityItem.getSocialGroup();
 		
 		Individual indi = entityItem.getNewHoh();		
 		
 		List<Membership> oldMemberships = getMembershipsToModify(entityItem);
-//		System.out.println("received old memberships: " + oldMemberships.size());
 		
 		Set<Membership> newMemberships = entityItem.getMemberships();
-//		System.out.println("received new memberships: " + newMemberships.size());
 		
 		checkCorrespondingMemberships(new ArrayList<Membership>(newMemberships), oldMemberships);
 				
@@ -309,8 +293,6 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			memberships.put(new Integer(0), new ArrayList<Membership>(newMemberships));
 			
 			createDeathAndSetNewHead(death, group, socialGroups, successors, memberships);
-			
-//			System.out.println("Modifications to HoH completed: " +  (createDeathSuccess?"successfully":"UNsuccessfully") + " !");
 		}
 		catch(Exception e){
 			throw new ConstraintViolations(e.getMessage());
@@ -333,7 +315,6 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 			death.setIndividual(group.getGroupHead());
 			deathService.createDeathAndSetNewHead(death, socialGroups, successors, memberships);
 		} catch (Exception e) {
-//			System.out.println(e.getMessage());
 			throw new ConstraintViolations(e.getMessage());
 		}
 	}	

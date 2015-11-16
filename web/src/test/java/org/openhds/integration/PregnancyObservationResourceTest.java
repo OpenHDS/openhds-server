@@ -66,7 +66,7 @@ public class PregnancyObservationResourceTest {
 	public void testPostPregnancyObservation() throws Exception {
 		
 		String expectedDate = "01-01-2015";
-		String expectedDeliveryDate = "2015-08-01";
+		String expectedDeliveryDate = "01-08-2015";
 		
 		
 		final String PREGNANCY_OBSERVATION_POST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

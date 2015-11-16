@@ -114,9 +114,7 @@ public class VisitTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 visit.setVisitLocation(location);
 		 visit.setVisitDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 visit.setCollectedBy(fieldWorker);
-		 
-		 System.out.println("visit.getExtId(): " + visit.getExtId());
-		 
+		 		 
 		 visitCrud.setItem(visit);
 		 visitCrud.create();
 		 		 
