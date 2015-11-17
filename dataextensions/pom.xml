@@ -64,6 +64,9 @@
 	            <manifest>
 	              <mainClass>org.openhds.configuration.ui.Main</mainClass>
 	            </manifest>
+	            <manifestEntries>
+	            	<Built-By>OpenHDS</Built-By>
+	            </manifestEntries>   
           	</archive>
               <descriptorRefs>
                    <descriptorRef>jar-with-dependencies</descriptorRef>
