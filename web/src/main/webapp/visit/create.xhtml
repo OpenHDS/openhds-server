@@ -81,8 +81,18 @@
                       	<h:outputText />
                       	<h:inputText id="roundNum" value="#{visitCrud.item.roundNumber}" styleClass="handleChange" converter="#{defaultConverter}" required="true" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
                       	<h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                      	
+                      	<h:outputText value="#{msg.visitRealVisit}:"/>
+						<img class="clickable" onclick="O$('popupWindowForRealVisit').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+						<h:inputText id="realVisit" value="#{visitCrud.item.realVisit}" converter="#{defaultConverter}" />
+						<h:message for="realVisit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+				
+                      <!--  <h:outputText value="#{msg.visitRealVisit}:"/>
+                      	<h:outputText />
+                      	<h:inputText id="realVisit" value="#{visitCrud.item.realVisit}" styleClass="handleChange" converter="#{defaultConverter}" required="true" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
+                      	<h:message for="realVisit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>-->	
                  	 </h:panelGrid>
-                   
+       
              	  	<h:panelGroup rendered="#{fn:length(visitCrud.item.extensions) > 0}">
 	             	  	<h3>#{msg.visitExtensionTitle}</h3>
 	               	  	<h:panelGroup rendered="#{fn:length(visitCrud.visitExtensions) > 0}">

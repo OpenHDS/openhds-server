@@ -37,4 +37,8 @@
 		<value description="Other Relative">8</value>
 		<value description="Don't Know">9</value>
 	</constraint>
+		<constraint id="visitConstraint">
+		<value description="Real">0</value>
+		<value description="Empty House">1</value>
+	</constraint>
 </value-constraints>

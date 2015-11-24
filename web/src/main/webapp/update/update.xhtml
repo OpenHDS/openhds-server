@@ -114,7 +114,7 @@
                   </tr>
                   <tr>
                       <td>#{msg.updateDate}:</td>
-                      <td><h:inputText disabled="true" value="#{updateBean.currentVisit.visitDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia"/></td>
+                      <td><h:inputText disabled="true" value="#{updateBean.currentVisit.visitDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}"/></td>
                   </tr>
               </table>
               <br />

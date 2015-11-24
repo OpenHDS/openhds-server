@@ -211,6 +211,8 @@ public class VisitCrudImpl extends EntityCrudImpl<Visit, String> {
         	return "pretty:visitEdit";
 		} catch (AuthorizationException e) {
 			jsfService.addError(e.getMessage());
+		} catch (ConstraintViolations e) {
+			jsfService.addError(e.getMessage());
 		} catch(Exception e) {
         	jsfService.addError(e.getMessage());
 		}

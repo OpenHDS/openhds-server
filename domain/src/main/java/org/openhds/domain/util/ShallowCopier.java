@@ -142,6 +142,7 @@ public class ShallowCopier {
         copy.setVisitLocation(location);
         copy.setExtId(original.getExtId());
         copy.setRoundNumber(original.getRoundNumber());
+        copy.setRealVisit(original.getRealVisit());
         copy.setVisitDate(original.getVisitDate());
 
         return copy;

@@ -70,6 +70,10 @@
 						<h:outputText />
 						<h:outputText value="#{visitCrud.item.roundNumber}" />
 	                
+	                	<h:outputText value="#{msg.visitRealVisit}:"/>
+						<h:outputText />
+						<h:outputText value="#{visitCrud.item.realVisit}" />
+						
 	                	<h:outputText value="#{msg.insertDate}"/>
 	                	<h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
 						<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />	                	

@@ -46,9 +46,9 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     @Override
     public String edit() {
     	
-    	System.out.println("Edit individualCrud:: " + entityItem.getDob().getTime());
+    //	System.out.println("Edit individualCrud:: " + entityItem.getDob().getTime());
     	
-    	System.out.println();
+    //	System.out.println();
     	
     	String outcome = super.edit();
     	
@@ -73,20 +73,20 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     	
     	if (entityItem.getDob() == null)
     		return new Date();
-    	System.out.println("Indivdiualcrud::getDateOfBirth: " + entityItem.getDob().getTime());
+  //  	System.out.println("Indivdiualcrud::getDateOfBirth: " + entityItem.getDob().getTime());
     	
     	return entityItem.getDob().getTime();
 	}
     
     public Calendar getDateOfBirthAsCalendar() {
     	
-    	Calendar dateOfBirth;
+   // 	Calendar dateOfBirth;
     	
     	if (entityItem.getDob() == null){
     		return new GregorianCalendar();
     	} 	
     	
-    	System.out.println(new Date()+ ": In getDateOfBirthAsCalendar: " + entityItem.getDob().getTime());
+    //	System.out.println(new Date()+ ": In getDateOfBirthAsCalendar: " + entityItem.getDob().getTime());
     	
 //    	System.out.println("Return : " + entityItem.getDob().getTime());
     	
@@ -96,9 +96,9 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
     
 	public void setDateOfBirthAsCalendar(Calendar dateOfBirth) throws ParseException {
 		
-		Calendar cal = Calendar.getInstance();
+	//	Calendar cal = Calendar.getInstance();
 		
-		System.out.println("Set setDateOfBirthAsCalendar after submitting: " + dateOfBirth.getTime());
+//		System.out.println("Set setDateOfBirthAsCalendar after submitting: " + dateOfBirth.getTime());
 		
 //		cal.setTime(dateOfBirth);
 //		entityItem.setDob(cal);
@@ -109,7 +109,7 @@ public class IndividualCrudImpl extends EntityCrudImpl<Individual, String> {
 		
 		Calendar cal = Calendar.getInstance();
 		
-		System.out.println("Set dob after submitting: " + dateOfBirth.toString());
+//		System.out.println("Set dob after submitting: " + dateOfBirth.toString());
 		
 		cal.setTime(dateOfBirth);
 		entityItem.setDob(cal);

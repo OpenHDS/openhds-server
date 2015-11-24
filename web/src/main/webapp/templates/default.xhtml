@@ -120,6 +120,21 @@
 			</ul>
 	    </div>
 	</o:popupLayer>
+	<o:popupLayer id="popupWindowForRealVisit"
+			width="30%"
+	        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForRealVisit').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.visitConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+	    </div>
+	</o:popupLayer>
     <o:popupLayer id="popupWindowForSGType"
              width="30%"
              height="30%">

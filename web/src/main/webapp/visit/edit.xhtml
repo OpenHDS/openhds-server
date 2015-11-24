@@ -47,26 +47,31 @@
         		<h1><h:outputText value="#{msg.visitEdit}" /></h1>
         		<h:messages id="errors" globalOnly="true" />
         		<h:form id="form">        				
-            		<h:panelGrid columns="3">
+            		<h:panelGrid columns="4">
                 		<h:outputText value="#{msg.visitId}:"/>
+                		<h:outputText />
                 		<h:inputText styleClass="visit" autocomplete="off" id="extId" value="#{visitCrud.item.extId}" disabled="true"/>
                 		<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
                 		<h:outputText value="#{msg.fieldWorkerId}:"/>
+                		<h:outputText />
                 		<h:inputText styleClass="collectedBy" autocomplete="off" id="fwId" value="#{visitCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
                 		<h:message for="fwId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                 
                 		<h:outputText value="#{msg.locationId}:"/>
+                		<h:outputText />
                 		<h:inputText styleClass="location" autocomplete="off" id="location" value="#{visitCrud.item.visitLocation}" converter="#{locationExtIdConverter}" disabled="true"/>
                 		<h:message for="location" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
 
 					<c:if test="#{!siteProperties.ethiopianCalendar}">
 						<h:outputText value="#{msg.visitDate} (#{siteProperties.dateFormat})" />
+                		<h:outputText />
 			    		<o:dateChooser id="visitDate" value="#{visitCrud.visitDate}" pattern="#{siteProperties.dateFormat}" /> 
                 		<h:message for="visitDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
                		</c:if>
 					<c:if test="#{siteProperties.ethiopianCalendar}">
 						<h:outputText value="#{msg.visitDate} (dd/MM/yyyy)" />
+                		<h:outputText />
 						<h:panelGroup>
 			    			<h:inputText id="visitDate_ethiopian" value="#{visitCrud.visitDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" /> 
 			    			&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
@@ -75,9 +80,15 @@
                		</c:if>               		
                		
                 		<h:outputText value="#{msg.visitRoundNumber}:"/>
+                		<h:outputText />
                 		<h:inputText id="roundNum" value="#{visitCrud.item.roundNumber}" converter="#{defaultConverter}" disabled="true" />
                 		<h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
-         			</h:panelGrid>
+                		
+                		<h:outputText value="#{msg.visitRealVisit}:"/>
+						<img class="clickable" onclick="O$('popupWindowForRealVisit').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+						<h:inputText id="realVisit" value="#{visitCrud.item.realVisit}" converter="#{defaultConverter}" />
+						<h:message for="realVisit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 						</h:panelGrid>
          
   					<h:panelGroup rendered="#{fn:length(visitCrud.item.extensions) > 0}">
         				<h3>#{msg.visitExtensionTitle}</h3>

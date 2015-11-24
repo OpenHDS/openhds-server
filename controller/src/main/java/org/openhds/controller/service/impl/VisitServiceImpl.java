@@ -34,8 +34,10 @@ public class VisitServiceImpl implements VisitService {
     private SitePropertiesService siteProperties;
 
     public Visit evaluateVisit(Visit entityItem) throws ConstraintViolations {
-        if (!checkValidRoundNumber(entityItem.getRoundNumber()))
+        if (!checkValidRoundNumber(entityItem.getRoundNumber())){
+        	entityItem.setExtId(null);
             throw new ConstraintViolations("The Round Number specified is not a valid Round Number.");
+        }
 
         generator.validateIdLength(entityItem.getExtId(), generator.getIdScheme());
         
@@ -61,6 +63,9 @@ public class VisitServiceImpl implements VisitService {
 
         if (!checkValidRoundNumber(entityItem.getRoundNumber()))
             throw new ConstraintViolations("The Round Number specified is not a valid Round Number.");
+        if (!(entityItem.getRealVisit().equalsIgnoreCase("0") || entityItem.getRealVisit().equalsIgnoreCase("1"))) 
+        	 throw new ConstraintViolations("The parameter real Visit has not a valid value.");
+ 
         return entityItem;
     }
 

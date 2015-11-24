@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckInteger;
+import org.openhds.domain.constraint.ExtensionStringConstraint;
 import org.openhds.domain.constraint.Searchable;
 
 
@@ -51,6 +52,9 @@ public class Visit
     @CheckInteger(min = 0)
     @Description(description = "Round number for the visit.")
     private Integer roundNumber;
+    @ExtensionStringConstraint(constraint = "visitConstraint", message = "Invalid Value for real visit", allowNull = true)
+    @Description(description = "Identifer for determining if the visit is Real with individuals or none in the house.")
+    private String realVisit;
     @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Description(description = "The assigned extension and their values specific for this entity.")
     private List<Extension> extensions = new ArrayList<Extension>();
@@ -88,7 +92,15 @@ public class Visit
         roundNumber = roundNum;
     }
 
-    public List<Extension> getExtensions() {
+    public String getRealVisit() {
+		return realVisit;
+	}
+
+	public void setRealVisit(String realVisit) {
+		this.realVisit = realVisit;
+	}
+
+	public List<Extension> getExtensions() {
         return extensions;
     }
 
