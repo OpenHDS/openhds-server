@@ -5,11 +5,14 @@ import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +30,7 @@ import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.TableDummy;
 import org.openhds.domain.model.Visit;
+import org.openhds.domain.model.ExtraForm.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -621,5 +625,53 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 			foreignKeyData.put("LOCATION_UUID", "'" + location.getUuid() + "'");
 		}
 		return foreignKeyData;
+	}
+	
+	@Override
+	public List<ExtraForm> getForms(String formId) throws Exception{
+		List<ExtraForm> extraFormList = null;
+		try {
+			extraFormList = getSubmissionsForExtraFormId(formId);
+		} catch (Exception e) {
+			throw new Exception("Error while trying to read extra form submissions");
+		}
+		return extraFormList;
+	}
+	
+	private List<ExtraForm> getSubmissionsForExtraFormId(String formId) throws Exception{		
+		List<ExtraForm> extraFormList = new ArrayList<ExtraForm>();		
+		try (Connection connection = dataSource.getConnection();
+				Statement stmt = connection.createStatement();){	
+			
+			String coreTable = getCoreTableNameFromExtraForm(formId);
+			String sql = "SELECT * FROM " + coreTable;		
+			ResultSet rs = stmt.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
+						
+			while(rs.next()){					
+				ExtraForm extraForm = new ExtraForm();
+				extraForm.setFormName(formId);
+				List<Data> dataList = new ArrayList<Data>();
+
+				for(int i = 1; i<= rsmd.getColumnCount(); i++){
+					String columnName = rsmd.getColumnName(i);
+					String columnTypeName = rsmd.getColumnTypeName(i);
+					String value = rs.getString(columnName);
+					
+					Data data = new Data();
+					data.columnName = columnName;
+					data.value = value;
+					data.type = columnTypeName;
+					dataList.add(data);
+				}
+				
+				extraForm.setData(dataList);
+				extraFormList.add(extraForm);
+			}
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		return extraFormList;
 	}
 }

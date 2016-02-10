@@ -4,8 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:o="http://openfaces.org/"
       xmlns:c="http://java.sun.com/jstl/core">
-      
     <head>
     </head>
     
@@ -22,58 +22,33 @@
             
             	<h:outputText value="#{navController.breadcrumbTrail}" />
             	
-            	                <h1>Submissions ###{msg.formCreate}##</h1>
-                <h:messages id="errors" globalOnly="true" />
-<!--         <div > -->
-<!--             <h:outputText escape="false" value="#{msg.formEmpty}" rendered="#{formCrud.pager.totalCount == 0}" /> -->
-<!--             <h:panelGroup rendered="#{formCrud.pager.totalCount > 0}"> -->
-<!--                 <h:dataTable value="#{formCrud.pagedItems}" var="item" -->
-<!--                              columnClasses="center,center,center,width3" width="100%" > -->
-<!--                     <h:column> -->
-<!--                         <f:facet name="header"> -->
-<!--                             <h:outputText value="#{msg.formName}"/> -->
-<!--                         </f:facet> -->
-<!--                         <h:outputText value="#{item.formName}"/> -->
-<!--                     </h:column> -->
-<!--                     <h:column> -->
-<!--                         <f:facet name="header"> -->
-<!--                             <h:outputText value="#{msg.formActive}"/> -->
-<!--                         </f:facet> -->
-<!--                         <h:outputText value="#{item.active}"/> -->
-<!--                     </h:column> -->
-<!--                     <h:column> -->
-<!--                         <f:facet name="header"> -->
-<!--                             <h:outputText value="#{msg.formGender}"/> -->
-<!--                         </f:facet> -->
-<!--                         <h:outputText value="#{item.gender}"/> -->
-<!--                     </h:column> -->
-<!--                     <h:column> -->
-<!--                         <f:facet name="header"> -->
-<!--                             <h:outputText escape="false" value=""/> -->
-<!--                         </f:facet> -->
-<!--                         <h:commandLink action="#{formCrud.detailSetup}"> -->
-<!--                             <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/> -->
-<!--                             <f:param name="itemId" value="#{item.uuid}"/> -->
-<!--                         </h:commandLink> -->
-<!--                         <h:outputText value=" "/> -->
-<!--                         <h:commandLink action="#{formCrud.editSetup}"> -->
-<!--                             <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/> -->
-<!--                             <f:param name="itemId" value="#{item.uuid}"/> -->
-<!--                         </h:commandLink> -->
-<!-- 		                <h:commandLink action="#{formCrud.delete}"> -->
-<!-- 		                    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/> -->
-<!-- 		                    <f:param name="itemId" value="#{item.uuid}"/> -->
-<!-- 		                </h:commandLink> -->
-<!--                         <h:outputText value=" "/> -->
-<!-- 		                <h:commandLink action="#{formCrud.submissions}"> -->
-<!-- 		                    <h:graphicImage title="submissions" style="border: 0;" value="/resources/icons/report.ico" width="32" height="32"/> -->
-<!-- 		                    <f:param name="itemId" value="#{item.uuid}"/> -->
-<!-- 		                </h:commandLink> -->
-<!--                         <h:outputText value=" "/>                         -->
-<!--                     </h:column> -->
-<!--                 </h:dataTable> -->
-<!--             </h:panelGroup> -->
-<!--         </div> -->
+            	<h1><h:outputText value="Submissions for #{formCrud.item.formName}" /></h1>
+                                 
+		       	<h:form id="submissionForm">
+		       	
+		       		<c:set var="myMessage" value="${sessionScope.submissionError}" scope="page"></c:set>
+   					<h:outputText class="error" value="${myMessage}" />
+   					
+		       		<h:messages id="errors" globalOnly="true" />
+		       		<c:set var="submissionCount" value="#{formCrud.submissionCount}" />
+		       		<h:panelGrid columns="1">
+		       			No. of submissions: <h:outputText value="#{submissionCount}" style="color:green;"></h:outputText> 
+		       		</h:panelGrid>
+		            
+		            <c:if test="#{submissionCount > 0}">
+		            <h4>Click button to download submission in CSV format:</h4>
+		            <br/>
+		            <h:commandButton id="button" value="Download CSV" action="#{formCrud.downloadCsv}">
+		            	<f:param name="itemId" value="#{item.uuid}"/>
+		            </h:commandButton>
+		            </c:if>
+		            <c:if test="#{submissionCount le 0}">
+		            	<br/>
+		            	<div style="color:red;">No submissions available for download!</div> 
+		            </c:if>
+		            
+		            <f:view afterPhaseListener="#{formCrud.removeSessionAttributeAfterRender}" />
+		        </h:form>
             </ui:define>
         </ui:composition>
     </body>

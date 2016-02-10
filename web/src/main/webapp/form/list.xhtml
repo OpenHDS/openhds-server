@@ -60,6 +60,11 @@
 		                    <f:param name="itemId" value="#{item.uuid}"/>
 		                </h:commandLink>
                         <h:outputText value=" "/>
+		                <h:commandLink action="#{formCrud.submissionSetup}">
+		                    <h:graphicImage title="submissions" style="border: 0;" value="/resources/icons/report.ico" width="32" height="32"/>
+		                    <f:param name="itemId" value="#{item.uuid}"/>
+		                </h:commandLink>
+                        <h:outputText value=" "/>                        
                     </h:column>
                 </h:dataTable>
             </h:panelGroup>

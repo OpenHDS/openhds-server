@@ -1,5 +1,7 @@
 package org.openhds.controller.service;
 
+import java.util.List;
+
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.ExtraForm;
@@ -26,4 +28,7 @@ public interface ExtraFormService {
 	
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
 	boolean insertExtraFormData(ExtraForm extraForm) throws ConstraintViolations;
+	
+	@Authorized({PrivilegeConstants.VIEW_ENTITY})
+	List<ExtraForm> getForms(String formId) throws Exception;
 }

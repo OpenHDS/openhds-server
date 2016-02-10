@@ -180,6 +180,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>form_submissions</from-outcome>
+			<to-view-id>/form/submissions.faces</to-view-id>
+			<redirect />
+		</navigation-case>		
+		<navigation-case>
 			<from-outcome>generateDHISDoc</from-outcome>
 			<to-view-id>/webservice/dhisGenerator</to-view-id>
 			<redirect />

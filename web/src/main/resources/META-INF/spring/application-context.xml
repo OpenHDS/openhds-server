@@ -401,6 +401,7 @@
         <property name="dao" ref="formDao" />
         <property name="converter" ref="formConverter" />
         <property name="service" ref="formService" />
+        <property name="extraFormService" ref="extraFormService" />
     </bean>
     
     <bean id="fieldWorkerCrud" parent="baseCrud" class="org.openhds.web.crud.impl.FieldWorkerCrudImpl">
