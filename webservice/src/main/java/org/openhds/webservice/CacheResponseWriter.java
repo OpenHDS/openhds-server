@@ -16,17 +16,18 @@ public class CacheResponseWriter {
         if (!fileToWrite.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+        else{
+        	response.setStatus(HttpServletResponse.SC_OK);
 
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        InputStream is = null;
-        try {
-            is = new BufferedInputStream(new FileInputStream(fileToWrite));
-            IOUtils.copy(is, response.getOutputStream());
-        } finally {
-            if (is != null) {
-                IOUtils.closeQuietly(is);
-            }
+	        InputStream is = null;
+	        try {
+	            is = new BufferedInputStream(new FileInputStream(fileToWrite));
+	            IOUtils.copy(is, response.getOutputStream());
+	        } finally {
+	            if (is != null) {
+	                IOUtils.closeQuietly(is);
+	            }
+	        }
         }
     }
 }
