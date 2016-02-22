@@ -1,7 +1,9 @@
 package org.openhds.domain.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,6 +20,7 @@ public class GeneralSettings implements Serializable{
 	private int minimumAgeOfPregnancy;
 	private String visitAt;
 	private String earliestEventDate;
+	private SyncEntities entities;
 
 	@XmlElement(name = "minMarriageAge")
 	public int getMinMarriageAge() {
@@ -71,6 +74,68 @@ public class GeneralSettings implements Serializable{
 
 	public void setEarliestEventDate(String earliestEventDate) {
 		this.earliestEventDate = earliestEventDate;
+	}
+	
+	@XmlElement(name = "entities")
+	public SyncEntities getSyncEntities(){
+		return this.entities;
+	}
+	
+	public void setSyncEntities(SyncEntities entities){
+		this.entities = entities;
+	}
+	
+
+	@XmlRootElement(name="entites")
+	public static class SyncEntities{
+		private List<SyncEntity> syncEntityList;
+		
+		public List<SyncEntity> getEntityCount() {
+			return this.syncEntityList;
+		}
+
+		@XmlElement(name="entity")
+		public void setEntityCount(List<SyncEntity> syncEntityList) {
+			this.syncEntityList = syncEntityList;
+		}
+		
+		public SyncEntities(List<SyncEntity> syncEntityList){
+			this.syncEntityList = syncEntityList;
+		}
+		
+		private SyncEntities(){}
+	}
+	
+	@XmlRootElement(name="entity")
+	public static class SyncEntity{
+		
+		private String name;
+		private int count;
+		
+		private SyncEntity(){}
+		
+		public SyncEntity(String entityName, int entityCount){
+			setName(entityName);
+			this.count = entityCount;
+		}
+		
+		@XmlAttribute(name="name")
+		public String getName(){
+			return this.name;
+		}
+		
+		public void setName(String name){
+			this.name = name.replaceAll("\\s+","").replaceAll("Task","");
+		}
+		
+		@XmlAttribute(name="count")
+		public int getCount(){
+			return this.count;
+		}
+		
+		public void setCount(int count){
+			this.count = count;
+		}
 	}
 	
 }

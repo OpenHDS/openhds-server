@@ -193,6 +193,9 @@
     	<property name="target">
     		<bean class="org.openhds.controller.service.impl.SettingsServiceImpl">
     			<constructor-arg ref="siteProperties" />
+    			<constructor-arg ref="taskDao" />
+    			<constructor-arg ref="formService" />
+    			<constructor-arg ref="fieldWorkerService" />
     		</bean>
     	</property>
     </bean>
