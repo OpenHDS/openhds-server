@@ -74,6 +74,12 @@ public class HeadOfHousehold
     @Description(description = "Date of the Death.")
     private Calendar deathDate;    
     
+    @NotNull(message = "You must provide an Event date")
+    @Past(message = "Event date should be in the past")
+    @Temporal(TemporalType.DATE)
+    @Description(description = "Date of the event.")
+    private Calendar date;        
+    
     @OneToOne(cascade = CascadeType.MERGE)
     @Description(description = "Death of the HoH")
     @NotNull(message = "You must provide a Death")
@@ -105,12 +111,14 @@ public class HeadOfHousehold
 		this.newHoh = newHoh;
 	}
     
-//	public Individuals getHouseholdMembers() {
-//		return householdMembers;
-//	}
-//	public void setHouseholdMembers(Individuals householdMembers) {
-//		this.householdMembers = householdMembers;
-//	} 
+    @XmlJavaTypeAdapter(org.openhds.domain.util.CalendarAdapter.class)
+    public Calendar getDate() {
+        return date;
+    }
+
+    public void setDate(Calendar date) {
+    	this.date = date;
+    }
 	
     @XmlElementWrapper(name = "memberships")
     @XmlElement(name = "membership")

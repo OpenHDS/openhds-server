@@ -91,25 +91,6 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		return entityItem;
 	}
 	
-	/**
-	 * Checks for Membership counts in the Social Group. 
-	 * The Social Group must have Memberships in order for modifications to be made.
-	 */
-	private boolean determineValidSocialGroup(SocialGroup group) {
-		
-    	List<Individual> indivsAtSocialGroup = null;
-
-        SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", group.getExtId(), true);      
-        if (socialGroup == null) 
-        	return false;
-        
-        indivsAtSocialGroup = socialGroupService.getAllIndividualsOfSocialGroup(socialGroup);
-    	if (indivsAtSocialGroup.size() == 0){
-    		return false;
-    	}		 
-        
-		return true;
-	}	
 	
 	/**
 	 * Checks to make sure that all Individuals have a corresponding Membership.
@@ -123,14 +104,48 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 	}	
 	
 	/**
+	 * Ensures that a successor has been selected.
+	 */
+	public boolean checkValidSuccessor(Individual selectedSuccessor) throws ConstraintViolations{
+		
+		try {
+			if (selectedSuccessor == null)
+				throw new ConstraintViolations();
+		} 
+		catch (Exception e) {
+			throw new ConstraintViolations("The Successor Individual Id must be specified.");
+		}
+		return true;	
+	}	
+	
+	/**
+	 * Checks for Membership counts in the Social Group. 
+	 * The Social Group must have Memberships in order for modifications to be made.
+	 */
+	private boolean determineValidSocialGroup(SocialGroup group) throws ConstraintViolations{
+		
+    	List<Individual> indivsAtSocialGroup = null;
+
+        SocialGroup socialGroup = genericDao.findByProperty(SocialGroup.class, "extId", group.getExtId(), true);      
+        if (socialGroup == null) 
+        	throw new  ConstraintViolations("SocialGroup not defined");
+        
+        indivsAtSocialGroup = socialGroupService.getAllIndividualsOfSocialGroup(socialGroup);
+    	if (indivsAtSocialGroup.size() == 0)
+    		 return false;
+        
+		return true;
+	}	
+	
+	/** Taken from ModifyHOHBean
 	 * Algorithm for finalizing the modifications to Modifying the Group Head.
 	 * 1. Set the selected successor to the Social Group specified as the new Group Head and remove their Memberships from the Social Group.
 	 * 2. Delete all of the old Memberships and create new ones to the newly appointed Group Head.
 	 * All of this is done in one transaction.
 	 */
-	public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> newMemberships) throws ConstraintViolations, SQLException, Exception {
-		socialGroupService.modifySocialGroupHead(group, selectedSuccessor, newMemberships);
-    }	
+//	public void modifySocialGroupHead(SocialGroup group, Individual selectedSuccessor, List<Membership> newMemberships) throws ConstraintViolations, SQLException, Exception {
+//		socialGroupService.modifySocialGroupHead(group, selectedSuccessor, newMemberships);
+//    }	
 	
 	public SocialGroup getSocialGroup(HeadOfHousehold entityItem) throws ConstraintViolations{
 		SocialGroup sg = null;
@@ -254,45 +269,44 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 	@Override
 	public HeadOfHousehold createHeadOfHousehold(HeadOfHousehold entityItem) 
 			throws ConstraintViolations {
-		 
-		evaluateHeadOfHousehold(entityItem);
-			
-		Individual oldHoh = entityItem.getOldHoh();
-
-		SocialGroup sg = entityItem.getSocialGroup();
 		
-		Individual indi = entityItem.getNewHoh();		
-		
+		Individual selectedSuccessor = entityItem.getNewHoh();		
+		SocialGroup group = entityItem.getSocialGroup();
 		List<Membership> oldMemberships = getMembershipsToModify(entityItem);
-		
 		Set<Membership> newMemberships = entityItem.getMemberships();
-		
+
+		//Validation
+		evaluateHeadOfHousehold(entityItem);
+		checkValidSuccessor(selectedSuccessor);
 		checkCorrespondingMemberships(new ArrayList<Membership>(newMemberships), oldMemberships);
 				
 		FieldWorker fw = entityItem.getCollectedBy();
 		Death death = entityItem.getDeath();
-				
+		
 		try{
 			for(Membership m: newMemberships){
-				m.setStartDate(death.getDeathDate());
+				m.setStartDate(entityItem.getDate());
 				m.setEndType(siteProperties.getNotApplicableCode());
 				m.setCollectedBy(fw);
 				m.setStartType(siteProperties.getEnumerationCode()); // Is this correct ?
 				m.setIndividual(getIndividualByExtId(m.getIndividual().getExtId()));				
 			}			
 			
-			//Package everything so we can call the existing method which handles the HoH change
-			SocialGroup group = sg; 
-			List<SocialGroup> socialGroups = new ArrayList<SocialGroup>();
-			socialGroups.add(sg);
-			
-			List<Individual> successors = new ArrayList<Individual>();
-			successors.add(indi);
-			
-			HashMap<Integer, List<Membership>> memberships = new HashMap<Integer, List<Membership>>();
-			memberships.put(new Integer(0), new ArrayList<Membership>(newMemberships));
-			
-			createDeathAndSetNewHead(death, group, socialGroups, successors, memberships);
+			//Package everything and call the existing method which handle the HoH change
+			if(death == null){
+				List<Membership> membershipList = new ArrayList<Membership>();
+				membershipList.addAll(newMemberships);				
+				socialGroupService.modifySocialGroupHead(group, selectedSuccessor, membershipList);
+			}
+			else{
+				List<SocialGroup> socialGroups = new ArrayList<SocialGroup>();
+				socialGroups.add(group);
+				List<Individual> successors = new ArrayList<Individual>();
+				successors.add(selectedSuccessor);
+				HashMap<Integer, List<Membership>> memberships = new HashMap<Integer, List<Membership>>();
+				memberships.put(new Integer(0), new ArrayList<Membership>(newMemberships));
+				createDeathAndSetNewHead(death, group, socialGroups, successors, memberships);
+			}
 		}
 		catch(Exception e){
 			throw new ConstraintViolations(e.getMessage());
@@ -301,6 +315,7 @@ public class HeadOfHouseholdServiceImpl implements HeadOfHouseholdService {
 		return entityItem; 		
 	}
 	
+
 	/**
 	 * Taken from DeathHOHBean!
 	 * Algorithm for finalizing the modifications to the Death of Group Head.

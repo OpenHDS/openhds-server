@@ -15,6 +15,7 @@ import org.openhds.domain.model.wrappers.Visits;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.FieldBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +42,7 @@ public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/xml")
-    public ResponseEntity<? extends Serializable> insert(@RequestBody HeadOfHousehold hoh) {    	
+    public ResponseEntity<? extends Serializable> insert(@RequestBody HeadOfHousehold hoh) {    
     	return createResource(hoh);
     }
     
@@ -52,7 +53,9 @@ public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
         copy.setOldHoh(copyIndividual(item.getOldHoh()));
         copy.setNewHoh(copyIndividual(item.getNewHoh()));
         copy.setVisit(copyVisit(item.getVisit()));
-        copy.setDeath(copyDeath(item.getDeath()));
+        copy.setDate(item.getDate());
+        if(item.getDeath() != null)
+        	copy.setDeath(copyDeath(item.getDeath()));
         return copy;
     }
     
@@ -92,13 +95,15 @@ public class HeadOfHouseholdResource extends AbstractResource<HeadOfHousehold> {
         for(Membership m : hoh.getMemberships()){
         	m.setSocialGroup(fieldBuilder.referenceField(m.getSocialGroup(), cv));
         }
-                
+
         Death death = hoh.getDeath();
-        death.setCollectedBy(fieldBuilder.referenceField(death.getCollectedBy(), cv));
-        death.setIndividual(fieldBuilder.referenceField(death.getIndividual(), cv,
-                "Individual external id referenced in death event is invalid"));
-        death.setVisitDeath(fieldBuilder.referenceField(death.getVisitDeath(), cv));
-        hoh.setDeath(death);
+        if(death != null){
+	        death.setCollectedBy(fieldBuilder.referenceField(death.getCollectedBy(), cv));
+	        death.setIndividual(fieldBuilder.referenceField(death.getIndividual(), cv,
+	                "Individual external id referenced in death event is invalid"));
+	        death.setVisitDeath(fieldBuilder.referenceField(death.getVisitDeath(), cv));
+	        hoh.setDeath(death);
+        }
         
         hoh.setSocialGroup(fieldBuilder.referenceField(hoh.getSocialGroup(), cv));
 	}    
