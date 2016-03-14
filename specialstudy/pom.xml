@@ -4,7 +4,7 @@
 		
 	<groupId>org.openhds</groupId>
 	<artifactId>specialstudy</artifactId>
-	<version>1.4</version>
+	<version>1.5</version>
 	<packaging>war</packaging>
 	<name>OpenHDS Special Study</name>
 	

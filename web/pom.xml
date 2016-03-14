@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.openhds</groupId>
         <artifactId>openhds</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
     </parent>
 
     <groupId>org.openhds</groupId>
@@ -135,7 +135,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>facelets-taglib-jsf12-spring-3</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -193,11 +193,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.openfaces</groupId>
-            <artifactId>openfaces</artifactId>
-            <version>2.0</version>
-        </dependency>
+	<dependency>
+      <groupId>org.openfaces</groupId>
+      <artifactId>openfaces</artifactId>
+      <version>2.0</version>
+      <scope>compile</scope>
+   	 </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
