@@ -116,6 +116,7 @@ public class HeadOfHouseholdTest extends AbstractTransactionalJUnit4SpringContex
 		 headOfHousehold.setDeathCause("UNK");
 		 headOfHousehold.setVisit(visit);
 		 headOfHousehold.setCollectedBy(fieldWorker);
+		 headOfHousehold.setDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 headOfHousehold.setDeathDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 headOfHousehold.setSocialGroup(socialGroup);
 		 headOfHousehold.setDeath(death);
@@ -170,6 +171,7 @@ public class HeadOfHouseholdTest extends AbstractTransactionalJUnit4SpringContex
 		 death.setVisitDeath(visit);
 		 
 		 HeadOfHousehold headOfHousehold = new HeadOfHousehold();
+		 headOfHousehold.setDate(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1990));
 		 headOfHousehold.setOldHoh(invalidHoh);
 		 headOfHousehold.setNewHoh(newHoh);
 		 headOfHousehold.setDeathPlace("Home");
@@ -183,6 +185,7 @@ public class HeadOfHouseholdTest extends AbstractTransactionalJUnit4SpringContex
 		 Death savedDeath = null;
 		 /*First test for constraint violations */
 		 Set<ConstraintViolation<HeadOfHousehold>> constraintViolations = localValidatorFactory.validate(headOfHousehold);	 
+		 
 	     assertTrue("ConstraintViolations detected", constraintViolations.size() == 0);
 	     /*End test for constraint violations */
 	     
