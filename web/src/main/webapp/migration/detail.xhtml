@@ -36,16 +36,11 @@
 	                <h:outputText />
 	                <h:outputText value="#{inMigrationCrud.item.residency.location}" converter="#{locationExtIdConverter}"/>
 	                
-	             <c:if test="#{!siteProperties.ethiopianCalendar}">
-	                <h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})" />
-	                <h:outputText />
+
+	                <h:outputText value="#{msg.inmigrationDate}:" />
+	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+	                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 	                <h:outputText value="#{inMigrationCrud.item.recordedDate}" converter="#{calendarConverter}" />
-	             </c:if>   
-	             <c:if test="#{siteProperties.ethiopianCalendar}">
-	                <h:outputText value="#{msg.inmigrationDate} (dd/MM/yyyy)" />
-	                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" />
-	                <h:outputText value="#{inMigrationCrud.item.recordedDate}" converter="#{calendarConverter}" />
-	             </c:if>      
 	                
 	                <h:outputText value="#{msg.inmigrationOrigin}:"/>
 	                <h:outputText />
@@ -68,7 +63,7 @@
                     <h:outputText value="#{inMigrationCrud.item.visit}" converter="#{visitExtIdConverter}" />
 				    
 				    <h:outputText value="#{msg.insertDate}:"/>
-				    <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+				    <h:graphicImage id="q" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
 	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
 	                <h:outputText value="#{inMigrationCrud.item.insertDate}" converter="#{calendarConverter}" />
 					
