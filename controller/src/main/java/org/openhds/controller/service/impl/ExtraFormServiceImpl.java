@@ -109,12 +109,12 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 			if(successfullyAlteredTable){			
 				boolean insertCoreTableNameSuccessfull = insertCoreTableName(table.getKey(), table.getName(), constraintViolations);		
 				if(insertCoreTableNameSuccessfull){
-					boolean changeStatus = changeFormStatus(FormStatus.READY, table.getKey());
+					/*boolean changeStatus = */changeFormStatus(FormStatus.READY, table.getKey());
 					return true;
 				}
 			}else{
 				//Drop table.
-				boolean dropSuccess = dropTable(table.getName());
+				/*boolean dropSuccess =*/ dropTable(table.getName());
 				throw new ConstraintViolations("Core table could not be altered.");
 			}
 		}	
@@ -217,7 +217,11 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 				typeName = "INT";
 				columnSize = "9";
 			}
-			
+			else if(column.getType().equalsIgnoreCase("DECIMAL")){
+				typeName = "DECIMAL";
+				columnSize = "38,10";
+			}
+
 			builder.append("`" + columnName + "` " );
 			builder.append(typeName + " ");
 			
@@ -257,7 +261,7 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 		boolean success = false;
 		try (Connection connection = dataSource.getConnection();
 				Statement stmt = connection.createStatement();){	
-			int resultCount = stmt.executeUpdate(sql); //Will return 0
+			/*int resultCount = */stmt.executeUpdate(sql); //Will return 0
 			success = true;
 		}
 		catch(SQLException sqlException){
@@ -321,7 +325,7 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 		String sql = "DROP TABLE "+ tableName + ";";		
 		try (Connection connection = dataSource.getConnection();
 				Statement stmt = connection.createStatement()){
-			int rowCount = stmt.executeUpdate(sql);			
+			/*int rowCount =*/ stmt.executeUpdate(sql);			
 			return true;
 		}
 		catch(SQLException sqlException){
@@ -502,7 +506,7 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 				}
 				pointer++;
 			}
-			int rowCount = pstmt.executeUpdate();
+			/*int rowCount =*/ pstmt.executeUpdate();
 		}
 		catch (SQLException e) {	
 			if(e instanceof SQLIntegrityConstraintViolationException ){

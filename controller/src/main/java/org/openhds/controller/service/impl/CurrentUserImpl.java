@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Dave
  *
  */
+@SuppressWarnings("deprecation")
 public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
 
     private Dao<org.openhds.domain.model.User, String> userDao;
@@ -75,6 +76,7 @@ public class CurrentUserImpl implements CurrentUser, BeanFactoryAware {
     /**
      * @return the collection of granted authorites for the current logged in user
      */
+	@SuppressWarnings("unchecked")
 	private Collection<GrantedAuthority> getGrantedAuthorities() {
 		return (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 	}

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Dave Roberge
  *
  */
+@SuppressWarnings("deprecation")
 @Transactional
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
