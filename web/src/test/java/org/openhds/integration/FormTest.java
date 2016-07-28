@@ -74,6 +74,7 @@ public class FormTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 form.setDeleted(false);
 		 form.setFormName("form1_test");
 		 form.setGender("M");
+		 form.setCoreTable("coreTable");
 		 
 		 formCrud.setItem(form);
 		 formCrud.create();
@@ -95,6 +96,7 @@ public class FormTest extends AbstractTransactionalJUnit4SpringContextTests {
 		 form.setDeleted(false);
 		 form.setFormName("form1_test");
 		 form.setGender("M");
+		 form.setCoreTable("coreTable");
 		 
 		 formCrud.setItem(form);
 		 formCrud.create();
