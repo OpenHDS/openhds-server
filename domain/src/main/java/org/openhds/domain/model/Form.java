@@ -35,6 +35,10 @@ public class Form extends AuditableEntity implements Serializable {
 	@Description(description="Name of the form.")
 	String formName;
 
+	@CheckFieldNotBlank
+	@Description(description="Name of the ODK core table.")
+	String coreTable;
+
 
 
 	public String getActive() {
@@ -60,5 +64,13 @@ public class Form extends AuditableEntity implements Serializable {
 
 	public void setFormName(String formName) {
 		this.formName = formName;
+	}
+
+	public String getCoreTable() {
+		return coreTable;
+	}
+
+	public void setCoreTable(String coreTable) {
+		this.coreTable = coreTable;
 	}
 }
