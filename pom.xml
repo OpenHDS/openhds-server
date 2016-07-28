@@ -13,7 +13,7 @@
 	<repositories>
 		<repository>
 			<id>org.springframework.security.taglibs.facelets</id>
-			<url>http://spring-security-facelets-taglib.googlecode.com/svn/repo/</url>
+			<url>https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs/</url>
 		</repository>
 		<repository>
 			<id>org.openfaces</id>
