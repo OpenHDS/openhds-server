@@ -61,6 +61,7 @@ public class IndividualTest extends AbstractTransactionalJUnit4SpringContextTest
 	     mother.setMother(unknownIndiv);
 	     mother.setFather(unknownIndiv);
 	     mother.setExtId("NJA000001001");
+	     mother.setReligion("UNK");
 	     mother.setDob(calendarUtil.getCalendar(Calendar.JANUARY, 4, 1980));
 	     mother.setCollectedBy(fieldWorker);
 	     individualCrud.setItem(mother);

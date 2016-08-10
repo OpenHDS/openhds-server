@@ -89,6 +89,7 @@ public class IndividualResourceTest {
 		 * 			<gender>M</gender>
 		 * 			<lastName>Johnson</lastName>
 		 * 			<middleName></middleName>
+		 *  		<religion>UNK</religion>
 		 * 			<mother>
 		 * 				<memberships/>
 		 * 				<residencies/>
@@ -111,6 +112,7 @@ public class IndividualResourceTest {
 		.andExpect(xpath("/individual/gender").string("M"))
 		.andExpect(xpath("/individual/firstName").string("Bob"))
 		.andExpect(xpath("/individual/middleName").string(""))
+		.andExpect(xpath("/individual/religion").string("UNK"))
 		.andExpect(xpath("/individual/lastName").string("Johnson"))
 		.andExpect(xpath("/individual/father/extId").string("UNK"))
 		.andExpect(xpath("/individual/mother/extId").string("UNK"));

@@ -35,11 +35,11 @@ public class Form extends AuditableEntity implements Serializable {
 	@Description(description="Name of the form.")
 	String formName;
 
-	@CheckFieldNotBlank
 	@Description(description="Name of the ODK core table.")
 	String coreTable;
 
-
+	@Description(description="Indicator for signaling the status of the form.")
+    protected int status = 0;
 
 	public String getActive() {
 		return active;

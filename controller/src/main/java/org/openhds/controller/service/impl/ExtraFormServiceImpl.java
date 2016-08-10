@@ -191,7 +191,8 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 		StringBuilder builder = new StringBuilder();
 		String tableName = table.getName();
 		builder.append("CREATE TABLE `" + schemaName + "`.`" + tableName + "` ( ");
-		
+		int numberCol= table.getColumns().size();
+		int i=1;
 		for(ColumnDummy column: table.getColumns()){
 			String columnName = column.getName();
 			String defaultValue = column.getDefault_value();
@@ -235,7 +236,10 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 			if(defaultValue != null && defaultValue.trim().length() > 0 && defaultValue!= "null"){
 				builder.append("DEFAULT '" + defaultValue + "' ");
 			}
+			if (i<numberCol){
 			builder.append(", \n");
+			i++;
+			}
 		}
 		String primaryKey = table.getPrimaryKey();
 		if(primaryKey != null && primaryKey.length() > 0){
@@ -292,7 +296,7 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 	 */
 	private boolean insertCoreTableName(String key, String tableName, ConstraintViolations constraintViolations){
 		boolean success = false;
-		String sql = "UPDATE " + schemaName + ".form SET CORE_TABLE = ? WHERE uuid = ?";	
+		String sql = "UPDATE " + schemaName + ".form SET coreTable = ? WHERE uuid = ?";	
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql)){
 			ps.setString(1, tableName);
@@ -573,9 +577,9 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 		    Statement stmt = connection.createStatement();
 		    ResultSet rs;
 		    
-		    rs = stmt.executeQuery("SELECT formName, active, deleted, gender, insertDate, CORE_TABLE FROM " + schemaName + ".form WHERE formName = '" + formName + "'");
+		    rs = stmt.executeQuery("SELECT formName, active, deleted, gender, insertDate, coreTable FROM " + schemaName + ".form WHERE formName = '" + formName + "'");
 		    while (rs.next()) {
-		        String CORE_TABLE = rs.getString("CORE_TABLE");
+		        String CORE_TABLE = rs.getString("coreTable");
 		        if(CORE_TABLE != null)
 		        	coreTableName = CORE_TABLE;
 		    } 
@@ -583,7 +587,7 @@ public class ExtraFormServiceImpl implements ExtraFormService {
 		    throw new ConstraintViolations("Cannot connect the database!");
 		}
 		if(coreTableName == null || coreTableName.trim().length() == 0){
-			throw new ConstraintViolations("Could not find CORE_TABLE name.");
+			throw new ConstraintViolations("Could not find coreTable name.");
 		}	
 		return coreTableName;
 	}	
