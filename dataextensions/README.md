@@ -16,4 +16,4 @@ This will generate a compile and generate the dataextensions jar.
 
 Move dataextensions-x.y-jar-with-dependencies.jar from target folder one level up to dataextensions folder and double click (or start from command line with java -jar dataextensions-x.y-jar-with-dependencies.jar).
 
-For more information, please go to: https://code.google.com/p/openhds/wiki/UserGuide#Customizing_the_OpenHDS_data_model_for_various_project_sites
+For more information, please read the document "Customizing the OpenHDS data model for various project sites"
