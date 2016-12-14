@@ -98,4 +98,13 @@ public class LocationResource {
 
         return new ResponseEntity<Location>(ShallowCopier.copyLocation(location), HttpStatus.CREATED);
     }
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getAllZippedLocations(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveLocationZipFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing location zip file: " + e.getMessage());
+        }
+    }
 }

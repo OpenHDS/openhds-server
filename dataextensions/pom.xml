@@ -7,7 +7,7 @@
   <parent>
     <artifactId>openhds</artifactId>
     <groupId>org.openhds</groupId>
-    <version>1.5</version>
+    <version>1.6</version>
   </parent>
   
   <groupId>org.openhds</groupId>

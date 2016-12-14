@@ -71,4 +71,13 @@ public class IndividualResource {
             logger.error("Problem writing individual xml file: " + e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getZippedIndividuals(HttpServletResponse response) {
+            try {
+                CacheResponseWriter.writeResponse(fileResolver.resolveIndividualZipFile(), response);
+            } catch (IOException e) {
+                logger.error("Problem writing individual zip file: " +  e.getMessage());
+            }
+   }
 }

@@ -1,5 +1,6 @@
 package org.openhds.task;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -93,11 +94,27 @@ public abstract class XmlWriterTemplate<T> implements XmlWriterTask {
             inputStream.close();
             if (!taskName.startsWith("Form")){
             asyncTaskService.finishTask(taskName, itemsWritten, md5);
+          //zip file using zipmaker and TaskContext
+            zipCurrentXml(taskContext);
+            asyncTaskService.finishTask(taskName, itemsWritten, md5);
             }
         } catch (Exception e) {
         	 asyncTaskService.finishTask(taskName, 0, e.getMessage());
         } 
 
+    }
+    
+    private void zipCurrentXml(TaskContext taskContext){
+        File xmlFile = taskContext.getDestinationFile();
+        File zipFile = ZipMaker.changeExtToZip(xmlFile);
+ 
+        System.out.println("Zipping "+ xmlFile.getName() +" file");
+ 
+        ZipMaker zipMaker = new ZipMaker(zipFile);
+        zipMaker.addFile(xmlFile);
+        boolean result = zipMaker.makeZip();
+ 
+        System.out.println("Finished Zipping ");
     }
 
     protected abstract T makeCopyOf(T original);

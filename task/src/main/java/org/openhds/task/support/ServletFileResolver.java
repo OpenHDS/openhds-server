@@ -70,5 +70,51 @@ public class ServletFileResolver implements FileResolver, ServletContextAware {
 		File formXmlFile = new File(generatedXmlFileDir, "forms.xml");
 		return formXmlFile;
 	}
+	   /*resolving respective zip files*/
+	   @Override
+	   public File resolveIndividualZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File individualZipFile = new File(generatedZipFileDir, "individual.zip");
 
+	       return individualZipFile;
+	   }
+
+	   @Override
+	   public File resolveLocationZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File locationZipFile = new File(generatedZipFileDir, "location.zip");
+
+	       return locationZipFile;
+	   }
+
+	   @Override
+	   public File resolveRelationshipZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File relationshipZipFile = new File(generatedZipFileDir, "relationship.zip");
+
+	       return relationshipZipFile;
+	   }
+
+	   @Override
+	   public File resolvesocialGroupZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File socialGroupZipFile = new File(generatedZipFileDir, "socialgroup.zip");
+
+	       return socialGroupZipFile;
+	   }
+
+	   @Override
+	   public File resolveVisitZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File visitZipFile = new File(generatedZipFileDir, "visit.zip");
+
+	       return visitZipFile;
+	   }
+
+	   @Override
+	   public File resolveFormZipFile() {
+	       File generatedZipFileDir = getGeneratedXmlFolder();
+	       File formZipFile = new File(generatedZipFileDir, "forms.zip");
+	       return formZipFile;
+	   }
 }

@@ -6,7 +6,7 @@
 
 	<groupId>org.openhds</groupId>
 	<artifactId>openhds</artifactId>
-	<version>1.5</version>
+	<version>1.6</version>
 	<packaging>pom</packaging>
 	<name>OpenHDS Core</name>
 

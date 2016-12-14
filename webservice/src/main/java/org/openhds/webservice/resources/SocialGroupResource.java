@@ -90,5 +90,14 @@ public class SocialGroupResource {
             logger.error("Problem writing social group xml file: " + e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getZippedSocialGroups(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolvesocialGroupZipFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing social group zip file: " + e.getMessage());
+        }
+    }
 
 }

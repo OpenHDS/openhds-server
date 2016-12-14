@@ -88,4 +88,13 @@ public class VisitResource {
             logger.error("Problem writing visit xml file: " + e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getZippedVisits(HttpServletResponse response) {
+        try {
+            CacheResponseWriter.writeResponse(fileResolver.resolveVisitZipFile(), response);
+        } catch (IOException e) {
+            logger.error("Problem writing visit xml file: " + e.getMessage());
+        }
+    }
 }

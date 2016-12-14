@@ -53,4 +53,16 @@ public class FormResource {
             logger.error("Problem writing form xml file: " + e.getMessage());
         }
     }
+    
+    
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getZippedForms(HttpServletResponse response) {
+        try {
+                taskExecutor.executeFormXmlWriterTask();
+                CacheResponseWriter.writeResponse(fileResolver.resolveFormZipFile(), response);
+        } catch (IOException e) {
+             logger.error("Problem writing form zip file: " + e.getMessage());
+        }
+    }
 }

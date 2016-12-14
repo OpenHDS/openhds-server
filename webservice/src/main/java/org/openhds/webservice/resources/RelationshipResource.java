@@ -91,4 +91,13 @@ public class RelationshipResource {
             logger.error("Problem writing relationship xml file: " + e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
+    public void getZippedRelationships(HttpServletResponse response) {
+      try {
+          CacheResponseWriter.writeResponse(fileResolver.resolveRelationshipZipFile(), response);
+      } catch (IOException e) {
+          logger.error("Problem writing relationship zip file: " + e.getMessage());
+      }
+  }
 }
