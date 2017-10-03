@@ -21,7 +21,7 @@ INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,
 INSERT INTO `location` (uuid,extId,locationName,locationLevel_uuid,locationType,insertDate,voidDate,voidReason,voidBy_uuid,deleted,collectedBy_uuid,insertBy_uuid,status) VALUES ('Location4','MBI000004','Bash House','hierarchy5','RUR','2012-02-28',NULL,NULL,NULL,false,'FieldWorker1','User 1','A');
 
 INSERT INTO `round` (uuid,roundNumber,startDate,endDate,remarks) VALUES('ROUND 1',1,'2010-06-30','2010-07-31', 'Test Round');
-INSERT INTO `visit` (uuid,extId,visitDate,status,insertDate,collectedBy_uuid,visitLocation_uuid,deleted,roundNumber,insertBy_uuid) VALUES ('Visit1','MBI000001001','2012-02-28','P','2012-03-28','FieldWorker1','Location1',false,1,'User 1');
+INSERT INTO `visit` (uuid,extId,visitDate,status,insertDate,collectedBy_uuid,visitLocation_uuid,deleted,roundNumber,insertBy_uuid, realVisit) VALUES ('Visit1','MBI000001001','2012-02-28','P','2012-03-28','FieldWorker1','Location1',false,1,'User 1', '0');
 
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency1','Location1','Indiv 2','1989-02-21','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
 INSERT INTO `residency` (uuid,location_uuid,individual_uuid,startDate,startType,endDate,endType,collectedBy_uuid,deleted,status,insertDate,insertBy_uuid) VALUES ('Residency2','Location1','Indiv 4','2011-03-01','BIR',NULL,'NA','FieldWorker1',false,'A','2012-04-17','User 1');
