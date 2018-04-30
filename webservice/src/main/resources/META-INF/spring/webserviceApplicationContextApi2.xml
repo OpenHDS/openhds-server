@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <context:annotation-config />
+    <context:component-scan base-package="org.openhds.webservice.api2resources" />
+
+    <bean id="whitelistInterceptor" class="org.openhds.webservice.WhitelistAuthenticationInteceptor">
+        <constructor-arg ref="whitelistService" />
+    </bean>
+
+    <mvc:interceptors>
+        <bean class="org.openhds.webservice.WhitelistAuthenticationInteceptor" />
+    </mvc:interceptors>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <array>
+                <ref bean="marshallingHttpMessageConverter" />
+                <ref bean="mappingJackson2HttpMessageConverter"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+     <property name="marshaller" ref="jaxbMarshaller" />
+        <property name="unmarshaller" ref="jaxbMarshaller" />
+    </bean>    
+    
+    <bean id="mappingJackson2HttpMessageConverter"
+             class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    
+    <!-- To switch on  content negotiation strategies -->
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
+	
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="false"/>
+		
+		<property name="favorParameter" value="true"/>
+		
+		<property name="parameterName" value="formatType"/>
+		
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json"></entry>
+				<entry key="xml" value="application/xml"></entry>				
+			</map>
+		</property>
+		
+		<property name="ignoreAcceptHeader" value="false"/>
+		
+	</bean>  
+</beans>
