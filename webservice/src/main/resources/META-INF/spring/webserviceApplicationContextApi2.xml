@@ -9,7 +9,7 @@
        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
     <context:annotation-config />
-    <context:component-scan base-package="org.openhds.webservice.api2resources" />
+    <context:component-scan base-package="org.openhds.webservice.resources.api2" />
 
     <bean id="whitelistInterceptor" class="org.openhds.webservice.WhitelistAuthenticationInteceptor">
         <constructor-arg ref="whitelistService" />

@@ -1,4 +1,4 @@
-package org.openhds.webservice.resources;
+package org.openhds.webservice.resources.api2;
 
 
 import org.openhds.controller.service.LocationHierarchyLevelService;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/locationhierarchylevels")
-public class LocationHierarchyLevelResource {
+@RequestMapping("/locationhierarchylevels2")
+public class LocationHierarchyLevelResourceApi2 {
     private LocationHierarchyLevelService locationHierarchyLevelService;
 
     @Autowired
-    public LocationHierarchyLevelResource(LocationHierarchyLevelService locationHierarchyLevelService) {
+    public LocationHierarchyLevelResourceApi2(LocationHierarchyLevelService locationHierarchyLevelService) {
         this.locationHierarchyLevelService = locationHierarchyLevelService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public LocationHierarchyLevels getAllLevels() {
     	LocationHierarchyLevels locationHierarchyLevels = new LocationHierarchyLevels();
