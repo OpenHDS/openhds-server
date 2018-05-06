@@ -24,7 +24,7 @@ public class FieldWorkerResourceApi2 {
 		this.fieldWorkerService = fieldWorkerService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, produces = "application/xml")
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public FieldWorkers getAllFieldWorkers() {
 		List<FieldWorker> allFieldWorkers = fieldWorkerService.getAllFieldWorkers();

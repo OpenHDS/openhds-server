@@ -19,7 +19,7 @@ public class LocationHierarchyLevelResourceApi2 {
         this.locationHierarchyLevelService = locationHierarchyLevelService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces="application/json")
     @ResponseBody
     public LocationHierarchyLevels getAllLevels() {
     	LocationHierarchyLevels locationHierarchyLevels = new LocationHierarchyLevels();
