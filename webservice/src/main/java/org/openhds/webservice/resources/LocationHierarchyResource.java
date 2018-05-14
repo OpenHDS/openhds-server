@@ -24,7 +24,7 @@ public class LocationHierarchyResource {
 		this.locationHierarchyService = locationHierarchyService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public LocationHierarchies getEntireLocationHierarchy() {
 		List<LocationHierarchy> allLocationHierarcies = locationHierarchyService.getAllLocationHierarchies();
@@ -32,10 +32,12 @@ public class LocationHierarchyResource {
 		
 		for (LocationHierarchy lh : allLocationHierarcies) {
 			LocationHierarchy copy = new LocationHierarchy();
+			copy.setUuid(lh.getUuid());
 			copy.setExtId(lh.getExtId());
 
 			LocationHierarchyLevel level = new LocationHierarchyLevel();
 			level.setName(lh.getLevel().getName());
+			level.setKeyIdentifier(lh.getLevel().getKeyIdentifier());
 			copy.setLevel(level);
 			copy.setName(lh.getName());
 
@@ -44,7 +46,7 @@ public class LocationHierarchyResource {
 			copy.setParent(parent);
 
 			copies.add(copy);
-		}
+		} 
 
 		LocationHierarchies locationHierarcies = new LocationHierarchies();
 		locationHierarcies.setLocationHierarchies(copies);

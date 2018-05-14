@@ -16,7 +16,6 @@ import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
-import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.util.JsonShallowCopier;
 import org.openhds.task.support.FileResolver;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/census")
