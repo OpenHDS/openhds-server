@@ -1,11 +1,13 @@
 package org.openhds.domain.model;
 
 public class CensusIndividual {
+	String uuid;
+	
 	String socialGroupExtId;
 	
 	String socialGroupHeadExtId;
 
-	FieldWorker collectedBy;
+	String collectedBy;
 	
 	String locationExtId;
 	
@@ -39,11 +41,11 @@ public class CensusIndividual {
 		this.individual = individual ;
 	}
 
-	public FieldWorker getCollectedBy() {
+	public String getCollectedBy() {
 		return collectedBy;
 	}
 
-	public void setCollectedBy(FieldWorker collectedBy) {
+	public void setCollectedBy(String collectedBy) {
 		this.collectedBy = collectedBy;
 	}
 
@@ -69,5 +71,13 @@ public class CensusIndividual {
 
 	public void setSpouse(Individual spouse) {
 		this.spouse = spouse;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 }

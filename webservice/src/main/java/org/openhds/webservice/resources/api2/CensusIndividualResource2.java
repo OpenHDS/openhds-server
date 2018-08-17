@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.BaselineService;
+import org.openhds.controller.service.FieldWorkerService;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.controller.service.SocialGroupService;
@@ -36,16 +37,19 @@ public class CensusIndividualResource2 {
 	private SocialGroupService socialGroupService;
 	private IndividualService individualService;
 	private LocationHierarchyService locationService;
+	private FieldWorkerService fwService;
 	private final FieldBuilder fieldBuilder;
 
 	@Autowired
 	public CensusIndividualResource2(BaselineService baseline, FileResolver fileResolver, 
-			SocialGroupService sg, IndividualService individual, LocationHierarchyService locService, FieldBuilder fieldBuilder) {
+			SocialGroupService sg, IndividualService individual, LocationHierarchyService locService, 
+			FieldWorkerService fwService, FieldBuilder fieldBuilder) {
 
 		this.baselineService = baseline;
 		this.socialGroupService = sg;
 		this.individualService = individual;
 		this.locationService = locService;
+		this.fwService = fwService;
 		this.fieldBuilder = fieldBuilder;
 	}
 
@@ -74,16 +78,21 @@ public class CensusIndividualResource2 {
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<? extends Serializable> insert(@RequestBody CensusIndividual ind) {
 		ConstraintViolations cv = new ConstraintViolations();
-		
+		FieldWorker fw = null;
+		try {
+			fw = this.fwService.findFieldWorkerById(ind.getCollectedBy());
+		} catch (ConstraintViolations e1) {
+			return new ResponseEntity<FieldWorker>(fw, HttpStatus.BAD_GATEWAY);
+		}
 		SocialGroup social = null;
 		Individual individual = null;
 		if(ind.getSocialGroupExtId().isEmpty() || ind.getSocialGroupHeadExtId().isEmpty() || ind.getLocationExtId().isEmpty())
-			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_GATEWAY);
 
 		individual = ind.getIndividual();
 		
 		if(individual == null) {
-			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_GATEWAY);
 		}
 		
 		individual.setCollectedBy(fieldBuilder.referenceField(individual.getCollectedBy(), cv));
@@ -92,41 +101,41 @@ public class CensusIndividualResource2 {
 	
 
 		if(cv.hasViolations()) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
 		}
 		try {
 			social = socialGroupService.findSocialGroupById(ind.getSocialGroupExtId(), "Social Group does not exist");
 		} catch (Exception e) {
 			cv.addViolations(e.getMessage());	
 			cv.addViolations("Social group cannot be found.");
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
 		}
 		
 		Location location = locationService.findLocationById(ind.getLocationExtId());
-		Membership mem = createMembershipObject(individual, ind.getbIsToA(), individual.getCollectedBy(), social);
+		Membership mem = createMembershipObject(individual, ind.getbIsToA(), fw, social);
 		Relationship rel = null;
 		
 		try {
 			if(ind.getSpouse() != null) {
-				rel = createRelationshipObject(individual, ind.getSpouse(), ind.getbIsToA(), individual.getCollectedBy());
+				rel = createRelationshipObject(individual, ind.getSpouse(), ind.getbIsToA(), fw);
 				Calendar cal = Calendar.getInstance();
 				cal.set(2018, 5, 5);
-				baselineService.createResidencyMembershipAndRelationshipForIndividual(individual, mem, rel, location, ind.getCollectedBy(), cal);
+				baselineService.createResidencyMembershipAndRelationshipForIndividual(individual, mem, rel, location, fw, cal);
 			} else 
-				baselineService.createResidencyAndMembershipForIndividual(individual, mem, location, individual.getCollectedBy(), Calendar.getInstance());
+				baselineService.createResidencyAndMembershipForIndividual(individual, mem, location, fw, Calendar.getInstance());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
 
 		} catch (ConstraintViolations e) {
 			// TODO Auto-generated catch block
 			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
 		}
 		return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.CREATED);
 	}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.wrappers.Individuals;
+import org.openhds.domain.util.JsonShallowCopier;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
@@ -44,7 +45,7 @@ public class IndividualResourceApi2 {
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Individual>(ShallowCopier.shallowCopyIndividual(individual), HttpStatus.OK);
+        return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces="application/json")
@@ -53,7 +54,7 @@ public class IndividualResourceApi2 {
         List<Individual> allIndividual = individualService.getAllIndividuals();
         List<Individual> copies = new ArrayList<Individual>(allIndividual.size());
         for (Individual individual : allIndividual) {
-            Individual copy = ShallowCopier.shallowCopyIndividual(individual);
+            Individual copy = JsonShallowCopier.shallowCopyIndividual(individual);
             copies.add(copy);
         }
 
