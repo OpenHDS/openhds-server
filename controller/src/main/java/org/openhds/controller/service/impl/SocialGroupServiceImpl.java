@@ -184,6 +184,18 @@ public class SocialGroupServiceImpl implements SocialGroupService {
 			throw new ConstraintViolations("There was a problem saving the social group to the database");
 		}
 	}
+	
+	@Override
+	public void updateSocialGroup(SocialGroup socialGroup) throws ConstraintViolations {
+		try {
+			this.service.save(socialGroup);
+		} catch (IllegalArgumentException e) {
+		} 
+		catch (SQLException e) {
+			throw new ConstraintViolations("There was a problem saving the social group to the database");
+		}
+		
+	}
 
     private void assignId(SocialGroup socialGroup, Location location) throws ConstraintViolations {
         String id = socialGroup.getExtId() == null ? "" : socialGroup.getExtId();
@@ -204,5 +216,7 @@ public class SocialGroupServiceImpl implements SocialGroupService {
     public long getTotalSocialGroupCount() {
         return genericDao.getTotalCount(SocialGroup.class);
     }
+
+
 
 }

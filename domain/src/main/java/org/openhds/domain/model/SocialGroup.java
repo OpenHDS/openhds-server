@@ -59,6 +59,9 @@ public class SocialGroup
     }, mappedBy = "socialGroup")
     @Description(description = "The set of all memberships of the social group.")
     private Set<Membership> memberships;
+    
+    private long serverUpdateTime;
+    private long serverInsertTime;
 
     
     @PostRemove
@@ -102,6 +105,22 @@ public class SocialGroup
     public void setMemberships(Set<Membership> list) {
         memberships = list;
     }
+
+	public long getServerUpdateTime() {
+		return serverUpdateTime;
+	}
+
+	public void setServerUpdateTime(long serverUpdateTime) {
+		this.serverUpdateTime = serverUpdateTime;
+	}
+
+	public long getServerInsertTime() {
+		return serverInsertTime;
+	}
+
+	public void setServerInsertTime(long serverInsertTime) {
+		this.serverInsertTime = serverInsertTime;
+	}
 
 
 }

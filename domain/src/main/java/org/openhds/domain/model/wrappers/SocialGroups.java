@@ -11,6 +11,7 @@ import org.openhds.domain.model.SocialGroup;
 public class SocialGroups {
 
     private List<SocialGroup> socialGroups;
+    private long updateTimestamp;
 
     @XmlElement(name = "socialgroup")
     public List<SocialGroup> getSocialGroups() {
@@ -21,4 +22,12 @@ public class SocialGroups {
         this.socialGroups = socialGroups;
     }
 
+    public long getTimestamp() {
+		return updateTimestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.updateTimestamp = timestamp;
+	}
+    
 }

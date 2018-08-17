@@ -56,5 +56,8 @@ public interface SocialGroupService {
     List<SocialGroup> getAllSocialGroupsInRange(int i, int pageSize);
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
-    long getTotalSocialGroupCount(); 
+    long getTotalSocialGroupCount();
+
+	@Authorized({PrivilegeConstants.EDIT_ENTITY})
+	void updateSocialGroup(SocialGroup socialGroup) throws ConstraintViolations; 
 }
