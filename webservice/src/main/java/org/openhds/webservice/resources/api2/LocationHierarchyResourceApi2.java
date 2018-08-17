@@ -32,10 +32,12 @@ public class LocationHierarchyResourceApi2 {
 		
 		for (LocationHierarchy lh : allLocationHierarcies) {
 			LocationHierarchy copy = new LocationHierarchy();
+			copy.setUuid(lh.getUuid());
 			copy.setExtId(lh.getExtId());
 
 			LocationHierarchyLevel level = new LocationHierarchyLevel();
 			level.setName(lh.getLevel().getName());
+			level.setKeyIdentifier(lh.getLevel().getKeyIdentifier());
 			copy.setLevel(level);
 			copy.setName(lh.getName());
 

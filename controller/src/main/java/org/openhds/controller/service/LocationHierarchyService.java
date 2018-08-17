@@ -88,6 +88,9 @@ public interface LocationHierarchyService {
 
 	@Authorized({PrivilegeConstants.CREATE_ENTITY})
     void createLocation(Location location) throws ConstraintViolations;
+	
+	@Authorized({PrivilegeConstants.CREATE_ENTITY})
+	void updateLocation(Location location) throws ConstraintViolations;
 
 	@Authorized({PrivilegeConstants.VIEW_ENTITY})
 	List<LocationHierarchy> getAllLocationHierarchies();

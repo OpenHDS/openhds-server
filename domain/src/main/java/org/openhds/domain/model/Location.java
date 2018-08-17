@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import javax.persistence.CascadeType;
 
+import org.hibernate.annotations.Proxy;
 import org.openhds.domain.annotations.Description;
 import org.openhds.domain.constraint.CheckFieldNotBlank;
 import org.openhds.domain.constraint.ExtensionStringConstraint;
@@ -30,16 +32,15 @@ import org.openhds.domain.constraint.Searchable;
 @XmlRootElement
 public class Location
     extends AuditableCollectedEntity
-    implements Serializable
-{
+    implements Serializable {
 
     public final static long serialVersionUID = 169551578162260199L;
-    @NotNull
-    @CheckFieldNotBlank
+    @NotNull(message="Location extId cannot be null")
+    @CheckFieldNotBlank(message="Location extId cannot be blank.")
     @Searchable
     @Description(description = "External Id of the location. This id is used internally.")
     private String extId;
-    @CheckFieldNotBlank
+    @CheckFieldNotBlank(message="Location name cannot be blank.")
     @Searchable
     @Description(description = "Name of the location.")
     private String locationName;
@@ -61,6 +62,10 @@ public class Location
     @OneToMany(targetEntity = org.openhds.domain.model.Residency.class)
     @JoinColumn(name = "location_uuid")
     private List<Residency> residencies;
+    private long serverUpdateTime;
+    private long serverInsertTime;
+   
+
 
     public String getExtId() {
         return extId;
@@ -133,5 +138,24 @@ public class Location
     public void setResidencies(List<Residency> list) {
         residencies = list;
     }
+    
+    public long getServerUpdateTime() {
+		return serverUpdateTime;
+	}
 
+	public void setServerUpdateTime(long serverUpdateTime) {
+		this.serverUpdateTime = serverUpdateTime;
+	}
+
+	public long getServerInsertTime() {
+		return serverInsertTime;
+	}
+
+	public void setServerInsertTime(long serverInsertTime) {
+		this.serverInsertTime = serverInsertTime;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
 }

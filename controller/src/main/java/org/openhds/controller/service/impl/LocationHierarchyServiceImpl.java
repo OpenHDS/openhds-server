@@ -456,6 +456,19 @@ public class LocationHierarchyServiceImpl implements LocationHierarchyService {
             throw new ConstraintViolations("There was a problem saving the location to the database");
         }
     }
+    
+    public void updateLocation(Location location) throws ConstraintViolations {
+    	
+		try {
+			this.entityService.save(location);
+		} catch (IllegalArgumentException e) {
+		} 
+		catch (SQLException e) {
+			throw new ConstraintViolations("There was a problem saving the location to the database");
+		}
+	
+	
+}
 
 	private void assignId(Location location) throws ConstraintViolations {
 	    String id = location.getExtId() == null ? "" : location.getExtId();

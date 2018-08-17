@@ -3,6 +3,8 @@ package org.openhds.webservice.resources.api2;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -63,15 +65,89 @@ public class LocationResourceApi2 {
         List<Location> copies = new ArrayList<Location>(locations.size());
 
         for (Location loc : locations) {
-            Location copy = ShallowCopier.copyLocation(loc);
+            Location copy = JsonShallowCopier.copyLocation(loc);
             copies.add(copy);
         }
 
         Locations allLocations = new Locations();
         allLocations.setLocations(copies);
+        allLocations.setTimestamp(new Date().getTime());
         return allLocations;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/pull/{timestamp}", produces = "application/json")
+	public ResponseEntity<Locations> getUpdatedLocations(@PathVariable long timestamp) {
+		long time = new Date().getTime();
+
+		List<Location> locations = locationHierarchyService.getAllLocations();
+		List<Location> copies = new ArrayList<Location>(locations.size());
+
+		for (Location loc : locations) {
+			long compTime;
+			if(loc.getServerUpdateTime() == 0)
+				compTime = loc.getServerInsertTime();
+			else 
+				compTime = loc.getServerUpdateTime();
+			
+			if(timestamp <= compTime && timestamp < time) {
+				copies.add(JsonShallowCopier.copyLocation(loc));
+			}
+		}
+		Locations all = new Locations();
+		ArrayList<Location> allLocations = new ArrayList<Location>();
+		allLocations.addAll(copies);
+		all.setLocations(allLocations);
+		all.setTimestamp(time);
+		return new ResponseEntity<Locations>(all, HttpStatus.ACCEPTED);
+	}
+
+	@RequestMapping(value="/pushUpdates", method = RequestMethod.PUT, consumes= {"application/json"}, produces = { "application/json" })
+	public ResponseEntity<? extends Serializable> pushUpdate(@RequestBody Locations locations) {
+		long lastClientUpdate = locations.getTimestamp();
+		long time = new Date().getTime();
+
+		ConstraintViolations cv = new ConstraintViolations();
+
+		for(Location location: locations.getLocations()) {
+			try {
+				location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
+				location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+				location.setServerUpdateTime(new Date().getTime());
+				this.update(location, lastClientUpdate, time);
+			} catch(ConstraintViolations e){
+				return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
+			}
+		}
+		
+		return new ResponseEntity<>(time, HttpStatus.ACCEPTED);
+	}
+
+	public void update(Location loc, long currentTimestamp, long lastClientUpdate) throws ConstraintViolations {
+
+		if(locationHierarchyService.findLocationById(loc.getExtId()) == null) {
+			this.locationHierarchyService.createLocation(loc);
+		} 
+		
+		else if(loc.isDeleted()) {
+			if(loc.getUuid() == null)
+				throw new ConstraintViolations("The location uuid is null.");
+			
+			this.locationHierarchyService.updateLocation(loc);
+		} 
+		
+		else if(locationHierarchyService.findLocationById(loc.getExtId()) != null){
+			//Set UUID to prevent assignment of a new one.
+			loc.setUuid(locationHierarchyService.findLocationById(loc.getExtId()).getUuid());
+			if(lastClientUpdate > currentTimestamp) {
+				//Convert timestamp to calendar instance
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(currentTimestamp);
+				loc.setInsertDate(c);
+			}
+			this.locationHierarchyService.updateLocation(loc);
+		}
+	}
+	
     @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
     public void getAllCachedLocations(HttpServletResponse response) {
         try {
@@ -99,6 +175,8 @@ public class LocationResourceApi2 {
 
         return new ResponseEntity<Location>(JsonShallowCopier.copyLocation(location), HttpStatus.CREATED);
     }
+    
+    
     
     @RequestMapping(value = "/zipped", method = RequestMethod.GET)
     public void getAllZippedLocations(HttpServletResponse response) {
