@@ -47,12 +47,13 @@ public class SocialGroupResourceApi2 {
 
 	@Autowired
 	public SocialGroupResourceApi2(SocialGroupService socialGroupService, FieldBuilder fieldBuilder,
-			FileResolver fileResolver) {
+			FileResolver fileResolver, IndividualService individualService) {
 		this.socialGroupService = socialGroupService;
+		this.individualService = individualService;
 		this.fieldBuilder = fieldBuilder;
 		this.fileResolver = fileResolver;
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public SocialGroups getAllSocialGroups() {
@@ -79,27 +80,21 @@ public class SocialGroupResourceApi2 {
 		ConstraintViolations cv = new ConstraintViolations();
 
 		for(SocialGroup group: socialGroups.getSocialGroups()) {
-			try {
-				group.setCollectedBy(fieldBuilder.referenceField(group.getCollectedBy(), cv));
-				boolean indivExists = false;
-				Individual ind = null;
 
-				ind =fieldBuilder.referenceField(group.getGroupHead(), cv, "Individual doesn't exist");
-				if(ind != null) {
-					indivExists = true;
-				}
+			group.setCollectedBy(fieldBuilder.referenceField(group.getCollectedBy(), cv));
+			group.getGroupHead().setCollectedBy(fieldBuilder.referenceField(group.getGroupHead().getCollectedBy(), cv));
 
+			if(this.individualService.findIndivById(group.getGroupHead().getExtId()) == null) {
+				group.getGroupHead().setMother(fieldBuilder.referenceField(group.getGroupHead().getMother(), cv, "Mother Doesn't Exist"));
+				group.getGroupHead().setFather(fieldBuilder.referenceField(group.getGroupHead().getFather(), cv, "Father Doesn't Exist"));
 
-				if(!indivExists) {
-					this.individualService.createIndividual(group.getGroupHead());
-				}
-
-				group.setGroupHead(fieldBuilder.referenceField(group.getGroupHead(), cv, "Group head doesn't exist."));
-				group.setServerUpdateTime(new Date().getTime());
-				this.update(group, lastClientUpdate, time);
-			} catch(ConstraintViolations e){
-				return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.EXPECTATION_FAILED);
+				this.individualService.createIndividual(group.getGroupHead());
 			}
+			
+			group.setGroupHead(fieldBuilder.referenceField(group.getGroupHead(), cv, "Individual does not exist"));
+			
+			group.setServerUpdateTime(new Date().getTime());
+			this.update(group, lastClientUpdate, time);
 		}
 
 
@@ -120,7 +115,7 @@ public class SocialGroupResourceApi2 {
 		}
 
 		if(!doesExist) {
-			this.insert(socialGroup);
+			this.socialGroupService.createSocialGroup(socialGroup, null);
 		} 
 		else if(doesExist){
 			//Set UUID to prevent assignment of a new one.
@@ -163,7 +158,7 @@ public class SocialGroupResourceApi2 {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/pull/{timestamp}", produces = "application/json")
-	public ResponseEntity<SocialGroups> getUpdatedLocations(@PathVariable long timestamp) {
+	public ResponseEntity<SocialGroups> getUpdatedSocialGroups(@PathVariable long timestamp) {
 		long time = new Date().getTime();
 
 		List<SocialGroup> socialGroup = socialGroupService.getAllSocialGroups();
