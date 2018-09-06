@@ -32,8 +32,8 @@ public class JsonShallowCopier {
 	        copy.setLocationName(loc.getLocationName());
 	        copy.setLocationType(loc.getLocationType());
 	        	copy.setInsertDate(loc.getInsertDate());
-//	        	copy.setServerInsertTime(loc.getServerInsertTime());
-//	        	copy.setServerUpdateTime(loc.getServerUpdateTime());
+	        	copy.setServerInsertTime(loc.getServerInsertTime());
+	        	copy.setServerUpdateTime(loc.getServerUpdateTime());
 	        FieldWorker fw = new FieldWorker();
 	        fw.setExtId(loc.getCollectedBy().getExtId());
 	        copy.setCollectedBy(fw);
@@ -59,29 +59,27 @@ public class JsonShallowCopier {
 	            Individual mother = shallowCopyIndividual(individual.getMother());
 	            copy.setMother(mother);
 	            
-//				Leave commented out until memberships and residencies are implemented on Client Side
-//
-//
-//	            
-//	            if (individual.getCurrentMembership() != null /*&& individual.getCurrentMembership().getEndDate()==null*/) {
-//	            	Membership memCopy = new Membership();
-//	                SocialGroup sgCopy = new SocialGroup();
-//	                sgCopy.setExtId(individual.getCurrentMembership().getSocialGroup().getExtId());
-//
-//	                memCopy.setSocialGroup(sgCopy);
-//	                memCopy.setbIsToA(individual.getCurrentMembership().getbIsToA());
-//	                copy.getAllMemberships().add(memCopy);
-//	            }
-//
-//	            if (individual.getCurrentResidency() != null) {
-//	                Residency resCopy = new Residency();
-//	                resCopy.setEndType(individual.getCurrentResidency().getEndType());
-//	                Location locCopy = new Location();
-//	                locCopy.setLocationLevel(null);
-//	                locCopy.setExtId(individual.getCurrentResidency().getLocation().getExtId());
-//	                resCopy.setLocation(locCopy);
-//	                copy.getAllResidencies().add(resCopy);
-//	            }
+
+	            
+	            if (individual.getCurrentMembership() != null /*&& individual.getCurrentMembership().getEndDate()==null*/) {
+	            	Membership memCopy = new Membership();
+	                SocialGroup sgCopy = new SocialGroup();
+	                sgCopy.setExtId(individual.getCurrentMembership().getSocialGroup().getExtId());
+
+	                memCopy.setSocialGroup(sgCopy);
+	                memCopy.setbIsToA(individual.getCurrentMembership().getbIsToA());
+	                copy.getAllMemberships().add(memCopy);
+	            }
+
+	            if (individual.getCurrentResidency() != null) {
+	                Residency resCopy = new Residency();
+	                resCopy.setEndType(individual.getCurrentResidency().getEndType());
+	                Location locCopy = new Location();
+	                locCopy.setLocationLevel(null);
+	                locCopy.setExtId(individual.getCurrentResidency().getLocation().getExtId());
+	                resCopy.setLocation(locCopy);
+	                copy.getAllResidencies().add(resCopy);
+	            }
 	        } catch (Exception e) {
 	            System.out.println(copy.getExtId());
 	        }
