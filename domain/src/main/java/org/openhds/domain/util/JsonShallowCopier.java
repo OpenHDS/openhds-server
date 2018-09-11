@@ -7,6 +7,7 @@ import org.openhds.domain.model.LocationHierarchy;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
+import org.openhds.domain.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,6 +112,18 @@ public class JsonShallowCopier {
 		copy.setFirstName(fieldWorker.getFirstName());
 		copy.setLastName(fieldWorker.getLastName());
 		copy.setPasswordHash(fieldWorker.getPasswordHash());
+		return copy;
+	}
+	
+	public static User shallowCopyUser(User user) {
+		User copy = new User();
+		copy.setUuid(user.getUuid());
+		copy.setUsername(user.getUsername());
+		copy.setPassword(user.getPassword());
+		copy.setFirstName(user.getFirstName());
+		copy.setLastName(user.getLastName());
+		copy.setRoles(user.getRoles());
+
 		return copy;
 	}
 }
