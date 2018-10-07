@@ -27,6 +27,7 @@ public class JsonShallowCopier {
 	        level.setLevel(loc.getLocationLevel().getLevel());
 	        level.setName(loc.getLocationLevel().getName());
 	        level.setExtId(loc.getLocationLevel().getExtId());
+	        level.setParent(loc.getLocationLevel().getParent());
 	        copy.setLocationLevel(level);
 	        copy.setUuid(loc.getUuid());
 	        copy.setExtId(loc.getExtId());
