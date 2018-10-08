@@ -42,6 +42,7 @@ public class LocationHierarchyResourceApi2 {
 			copy.setName(lh.getName());
 
 			LocationHierarchy parent = new LocationHierarchy();
+			parent.setParent(lh.getParent().getParent());
 			parent.setExtId(lh.getParent().getExtId());
 			copy.setParent(parent);
 
