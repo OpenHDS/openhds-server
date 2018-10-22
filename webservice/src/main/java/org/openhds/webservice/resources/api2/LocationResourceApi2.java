@@ -14,11 +14,12 @@ import org.openhds.controller.service.LocationHierarchyService;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.wrappers.Locations;
 import org.openhds.domain.util.JsonShallowCopier;
-import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.openhds.webservice.util.Synchronization;
+import org.openhds.webservice.util.SynchronizationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,48 +35,48 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/locations2")
 public class LocationResourceApi2 {
-    private static final Logger logger = LoggerFactory.getLogger(LocationResourceApi2.class);
+	private static final Logger logger = LoggerFactory.getLogger(LocationResourceApi2.class);
 
-    private final FieldBuilder fieldBuilder;
-    private final LocationHierarchyService locationHierarchyService;
-    private final FileResolver fileResolver;
+	private final FieldBuilder fieldBuilder;
+	private final LocationHierarchyService locationHierarchyService;
+	private final FileResolver fileResolver;
 
-    @Autowired
-    public LocationResourceApi2(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
-            FileResolver fileResolver) {
-        this.locationHierarchyService = locationHierarchyService;
-        this.fieldBuilder = fieldBuilder;
-        this.fileResolver = fileResolver;
-    }
+	@Autowired
+	public LocationResourceApi2(LocationHierarchyService locationHierarchyService, FieldBuilder fieldBuilder,
+			FileResolver fileResolver) {
+		this.locationHierarchyService = locationHierarchyService;
+		this.fieldBuilder = fieldBuilder;
+		this.fileResolver = fileResolver;
+	}
 
-    @RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<? extends Serializable> getLocationByExtId(@PathVariable String extId) {
-        Location location = locationHierarchyService.findLocationById(extId);
-        if (location == null) {
-            return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-        }
+	@RequestMapping(value = "/{extId}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<? extends Serializable> getLocationByExtId(@PathVariable String extId) {
+		Location location = locationHierarchyService.findLocationById(extId);
+		if (location == null) {
+			return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+		}
 
-        return new ResponseEntity<Location>(JsonShallowCopier.copyLocation(location), HttpStatus.OK);
-    }
+		return new ResponseEntity<Location>(JsonShallowCopier.copyLocation(location), HttpStatus.OK);
+	}
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public Locations getAllLocations() {
-        List<Location> locations = locationHierarchyService.getAllLocations();
-        List<Location> copies = new ArrayList<Location>(locations.size());
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public Locations getAllLocations() {
+		List<Location> locations = locationHierarchyService.getAllLocations();
+		List<Location> copies = new ArrayList<Location>(locations.size());
 
-        for (Location loc : locations) {
-            Location copy = JsonShallowCopier.copyLocation(loc);
-            copies.add(copy);
-        }
+		for (Location loc : locations) {
+			Location copy = JsonShallowCopier.copyLocation(loc);
+			copies.add(copy);
+		}
 
-        Locations allLocations = new Locations();
-        allLocations.setLocations(copies);
-        allLocations.setTimestamp(new Date().getTime());
-        return allLocations;
-    }
+		Locations allLocations = new Locations();
+		allLocations.setLocations(copies);
+		allLocations.setTimestamp(new Date().getTime());
+		return allLocations;
+	}
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pull/{timestamp}", produces = "application/json")
+	@RequestMapping(method = RequestMethod.GET, value = "/{timestamp}", produces = "application/json")
 	public ResponseEntity<Locations> getUpdatedLocations(@PathVariable long timestamp) {
 		long time = new Date().getTime();
 
@@ -88,7 +89,7 @@ public class LocationResourceApi2 {
 				compTime = loc.getServerInsertTime();
 			else 
 				compTime = loc.getServerUpdateTime();
-			
+
 			if(timestamp <= compTime && timestamp < time) {
 				copies.add(JsonShallowCopier.copyLocation(loc));
 			}
@@ -101,25 +102,42 @@ public class LocationResourceApi2 {
 		return new ResponseEntity<Locations>(all, HttpStatus.ACCEPTED);
 	}
 
-	@RequestMapping(value="/pushUpdates", method = RequestMethod.PUT, consumes= {"application/json"}, produces = { "application/json" })
+	@RequestMapping(value="/bulkUpdate", method = RequestMethod.PUT, consumes= {"application/json"}, produces = { "application/json" })
 	public ResponseEntity<? extends Serializable> pushUpdate(@RequestBody Locations locations) {
 		long lastClientUpdate = locations.getTimestamp();
 		long time = new Date().getTime();
 
-		ConstraintViolations cv = new ConstraintViolations();
-
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
 		for(Location location: locations.getLocations()) {
+			ConstraintViolations cv = new ConstraintViolations();
+			location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
+			location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+			
+			
+			SynchronizationError err = new SynchronizationError();
+			err.setEntityType("location");
+			err.setEntityId(location.getExtId());
+			err.setFieldworkerExtId(location.getCollectedBy().getExtId());
+			List<String> violations = new ArrayList<String>();
+
 			try {
-				location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-				location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
 				location.setServerUpdateTime(new Date().getTime());
 				this.update(location, lastClientUpdate, time);
 			} catch(ConstraintViolations e){
-				return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
+				violations.addAll(e.getViolations());
 			}
+			
+			if(cv.hasViolations()) {
+				violations.addAll(cv.getViolations());
+			}
+			
+			errors.add(err);
 		}
-		
-		return new ResponseEntity<>(time, HttpStatus.ACCEPTED);
+
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
 	}
 
 	public void update(Location loc, long currentTimestamp, long lastClientUpdate) throws ConstraintViolations {
@@ -127,14 +145,14 @@ public class LocationResourceApi2 {
 		if(locationHierarchyService.findLocationById(loc.getExtId()) == null) {
 			this.locationHierarchyService.createLocation(loc);
 		} 
-		
+
 		else if(loc.isDeleted()) {
 			if(loc.getUuid() == null)
 				throw new ConstraintViolations("The location uuid is null.");
-			
+
 			this.locationHierarchyService.updateLocation(loc);
 		} 
-		
+
 		else if(locationHierarchyService.findLocationById(loc.getExtId()) != null){
 			//Set UUID to prevent assignment of a new one.
 			loc.setUuid(locationHierarchyService.findLocationById(loc.getExtId()).getUuid());
@@ -147,43 +165,96 @@ public class LocationResourceApi2 {
 			this.locationHierarchyService.updateLocation(loc);
 		}
 	}
-	
-    @RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
-    public void getAllCachedLocations(HttpServletResponse response) {
-        try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
-        } catch (IOException e) {
-            logger.error("Problem writing location xml file: " + e.getMessage());
-        }
-    }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<? extends Serializable> insert(@RequestBody Location location) {
-        ConstraintViolations cv = new ConstraintViolations();
-        location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
-        location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+	@RequestMapping(value = "/bulkInsert", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<? extends Serializable> bulkInsert(@RequestBody Locations locations) {
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+		
+		for(Location loc: locations.getLocations()) {
+			ConstraintViolations cv = new ConstraintViolations();
+			loc.setCollectedBy(fieldBuilder.referenceField(loc.getCollectedBy(), cv));
+			loc.setLocationLevel(fieldBuilder.referenceField(loc.getLocationLevel(), cv));
+			
+			SynchronizationError err = new SynchronizationError();
+			err.setEntityType("location");
+			err.setEntityId(loc.getExtId());
+			err.setFieldworkerExtId(loc.getCollectedBy().getExtId());
+			List<String> violations = new ArrayList<String>();
+			
+			try {
+				locationHierarchyService.createLocation(loc);
+			} catch (ConstraintViolations e) {
+				
+				violations.addAll(e.getViolations());
+			}
+			
+			// Check violations for fieldworker and location level
+			if(cv.hasViolations()) {
+				violations.addAll(cv.getViolations());
+			}
+			
+			err.setViolations(violations);
+			errors.add(err);
+		}
+		
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
 
-        if (cv.hasViolations()) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
-        }
+	}
 
-        try {
-            locationHierarchyService.createLocation(location);
-        } catch (ConstraintViolations e) {
-            return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
-        }
 
-        return new ResponseEntity<Location>(JsonShallowCopier.copyLocation(location), HttpStatus.CREATED);
-    }
-    
-    
-    
-    @RequestMapping(value = "/zipped", method = RequestMethod.GET)
-    public void getAllZippedLocations(HttpServletResponse response) {
-        try {
-            CacheResponseWriter.writeResponse(fileResolver.resolveLocationZipFile(), response);
-        } catch (IOException e) {
-            logger.error("Problem writing location zip file: " + e.getMessage());
-        }
-    }
+	@RequestMapping(value = "/cached", method = RequestMethod.GET, produces = "application/json")
+	public void getAllCachedLocations(HttpServletResponse response) {
+		try {
+			CacheResponseWriter.writeResponse(fileResolver.resolveLocationXmlFile(), response);
+		} catch (IOException e) {
+			logger.error("Problem writing location xml file: " + e.getMessage());
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<? extends Serializable> insert(@RequestBody Location location) {
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+
+		ConstraintViolations cv = new ConstraintViolations();
+
+		SynchronizationError err = new SynchronizationError();
+		err.setEntityType("location");
+		err.setEntityId(location.getExtId());
+		err.setFieldworkerExtId(location.getCollectedBy().getExtId());
+		List<String> violations = new ArrayList<String>();
+		
+		location.setCollectedBy(fieldBuilder.referenceField(location.getCollectedBy(), cv));
+		location.setLocationLevel(fieldBuilder.referenceField(location.getLocationLevel(), cv));
+
+		if(cv.hasViolations()) {
+			violations.addAll(cv.getViolations());
+		}
+		
+		try {
+			locationHierarchyService.createLocation(location);
+		} catch (ConstraintViolations e) {
+			violations.addAll(e.getViolations());
+		}
+		
+		errors.add(err);
+		
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.CREATED);
+	}
+
+
+
+	@RequestMapping(value = "/zipped", method = RequestMethod.GET)
+	public void getAllZippedLocations(HttpServletResponse response) {
+		try {
+			CacheResponseWriter.writeResponse(fileResolver.resolveLocationZipFile(), response);
+		} catch (IOException e) {
+			logger.error("Problem writing location zip file: " + e.getMessage());
+		}
+	}
 }
