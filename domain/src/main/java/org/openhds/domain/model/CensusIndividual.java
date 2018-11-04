@@ -3,13 +3,11 @@ package org.openhds.domain.model;
 public class CensusIndividual {
 	String uuid;
 	
-	String socialGroupExtId;
-	
-	String socialGroupHeadExtId;
+	SocialGroup socialGroup;
 
-	String collectedBy;
+	FieldWorker collectedBy;
 	
-	String locationExtId;
+	Location location;
 	
 	Individual  individual;
 	
@@ -17,22 +15,30 @@ public class CensusIndividual {
 	
 	Individual spouse;
 	
-	public String getSocialGroupExtId() {
-		return socialGroupExtId;
+	public String getUuid() {
+		return uuid;
 	}
-	
-	public void setSocialGroupExtId(String socialGroupExtId) {
-		this.socialGroupExtId = socialGroupExtId;
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
-	
-	public String getLocationExtId() {
-		return locationExtId;
+
+	public SocialGroup getSocialGroup() {
+		return socialGroup;
 	}
-	
-	public void setLocationExtId(String locationExtId) {
-		this.locationExtId = locationExtId;
+
+	public void setSocialGroup(SocialGroup socialGroup) {
+		this.socialGroup = socialGroup;
 	}
-	
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
 	public Individual getIndividual() {
 		return individual;
 	}
@@ -41,11 +47,11 @@ public class CensusIndividual {
 		this.individual = individual ;
 	}
 
-	public String getCollectedBy() {
+	public FieldWorker getCollectedBy() {
 		return collectedBy;
 	}
 
-	public void setCollectedBy(String collectedBy) {
+	public void setCollectedBy(FieldWorker collectedBy) {
 		this.collectedBy = collectedBy;
 	}
 
@@ -57,13 +63,6 @@ public class CensusIndividual {
 		this.bIsToA = bIsToA;
 	}
 
-	public String getSocialGroupHeadExtId() {
-		return socialGroupHeadExtId;
-	}
-
-	public void setSocialGroupHeadExtId(String socialGroupHeadExtId) {
-		this.socialGroupHeadExtId = socialGroupHeadExtId;
-	}
 
 	public Individual getSpouse() {
 		return spouse;
@@ -73,11 +72,5 @@ public class CensusIndividual {
 		this.spouse = spouse;
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
 }

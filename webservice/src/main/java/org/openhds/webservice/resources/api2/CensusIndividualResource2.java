@@ -2,26 +2,25 @@ package org.openhds.webservice.resources.api2;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.BaselineService;
-import org.openhds.controller.service.FieldWorkerService;
-import org.openhds.controller.service.IndividualService;
-import org.openhds.controller.service.LocationHierarchyService;
-import org.openhds.controller.service.SocialGroupService;
 import org.openhds.domain.model.CensusIndividual;
 import org.openhds.domain.model.EventType;
 import org.openhds.domain.model.FieldWorker;
 import org.openhds.domain.model.Individual;
-import org.openhds.domain.model.Location;
 import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Relationship;
 import org.openhds.domain.model.SocialGroup;
-import org.openhds.domain.util.JsonShallowCopier;
+import org.openhds.domain.model.wrappers.CensusIndividuals;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.FieldBuilder;
-import org.openhds.webservice.WebServiceCallException;
+import org.openhds.webservice.util.Synchronization;
+import org.openhds.webservice.util.SynchronizationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,112 +33,144 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/census")
 public class CensusIndividualResource2 {
 	private BaselineService baselineService;
-	private SocialGroupService socialGroupService;
-	private IndividualService individualService;
-	private LocationHierarchyService locationService;
-	private FieldWorkerService fwService;
+
 	private final FieldBuilder fieldBuilder;
 
 	@Autowired
 	public CensusIndividualResource2(BaselineService baseline, FileResolver fileResolver, 
-			SocialGroupService sg, IndividualService individual, LocationHierarchyService locService, 
-			FieldWorkerService fwService, FieldBuilder fieldBuilder) {
+			FieldBuilder fieldBuilder) {
 
 		this.baselineService = baseline;
-		this.socialGroupService = sg;
-		this.individualService = individual;
-		this.locationService = locService;
-		this.fwService = fwService;
 		this.fieldBuilder = fieldBuilder;
 	}
 
-	@RequestMapping(method= RequestMethod.POST, value = "/ind", consumes="application/json", produces="application/json")
-	public ResponseEntity<? extends Serializable> insert(@RequestBody Individual ind){
-		ConstraintViolations cv = new ConstraintViolations();
-		if(individualService.findIndivById(ind.getExtId()) != null) {
-			cv.addViolations("Individual already exists");
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
-		}
-		
-		try {
+	@RequestMapping(value = "/bulkInsert", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<? extends Serializable> bulkInsert(@RequestBody CensusIndividuals censusIndividuals) {
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+		for(CensusIndividual ind: censusIndividuals.getIndividuals()) {
+			SynchronizationError err = new SynchronizationError();
+			err.setEntityType("individual");
+			err.setEntityId(ind.getIndividual().getExtId());
+			err.setFieldworkerExtId(ind.getCollectedBy().getExtId());
+			List<String> violations = new ArrayList<String>();
+
+			ConstraintViolations cv = new ConstraintViolations();
 			ind.setCollectedBy(fieldBuilder.referenceField(ind.getCollectedBy(), cv));
-			ind.setMother(individualService.findIndivById(ind.getMother().getExtId()));
-			ind.setFather(individualService.findIndivById(ind.getFather().getExtId()));
-			individualService.createIndividual(ind);
-		} catch (ConstraintViolations e) {
-			// TODO Auto-generated catch block
-			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+			ind.setLocation(fieldBuilder.referenceField(ind.getLocation(), cv));
+			ind.setSocialGroup(fieldBuilder.referenceField(ind.getSocialGroup(), cv));
+			if(ind.getIndividual() != null) {
+				ind.getIndividual().setCollectedBy(fieldBuilder.referenceField(ind.getIndividual().getCollectedBy(), cv));
+				ind.getIndividual().setMother(fieldBuilder.referenceField(ind.getIndividual().getMother(), cv, null));
+				ind.getIndividual().setFather(fieldBuilder.referenceField(ind.getIndividual().getFather(), cv, null));
+			}
+
+			if(cv.hasViolations()) {
+				violations.addAll(cv.getViolations());
+				err.setViolations(violations);
+				errors.add(err);
+			} else {
+				try {
+					buildMembershipResidencyAndIndividual(ind);
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					violations.add(e.getMessage());
+				} catch (ConstraintViolations e) {
+					// TODO Auto-generated catch block
+					violations.add(e.getMessage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					violations.add(e.getMessage());
+				}
+			}
+
+			if(violations.size() > 0) {
+				err.setViolations(violations);
+				errors.add(err);
+			}
+
 		}
-		
-		return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(ind), HttpStatus.CREATED);
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
+
+	}
+
+	public void buildMembershipResidencyAndIndividual(CensusIndividual ind) throws IllegalArgumentException, ConstraintViolations, SQLException {
+		Membership mem = createMembershipObject(ind.getIndividual(), ind.getbIsToA(), ind.getCollectedBy(), ind.getSocialGroup());
+		Relationship rel = null;
+
+
+		if(ind.getSpouse() != null) {
+			rel = createRelationshipObject(ind.getIndividual(), ind.getSpouse(), ind.getbIsToA(), ind.getCollectedBy());
+			Calendar cal = Calendar.getInstance();
+			cal.set(2018, 5, 5);
+			baselineService.createResidencyMembershipAndRelationshipForIndividual(ind.getIndividual(), mem, rel, ind.getLocation(), 
+					ind.getCollectedBy(), cal);
+		} else 
+			baselineService.createResidencyAndMembershipForIndividual(ind.getIndividual(), mem, ind.getLocation(), ind.getCollectedBy(), 
+					Calendar.getInstance());
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<? extends Serializable> insert(@RequestBody CensusIndividual ind) {
-		ConstraintViolations cv = new ConstraintViolations();
-		FieldWorker fw = null;
-		try {
-			fw = this.fwService.findFieldWorkerById(ind.getCollectedBy());
-		} catch (ConstraintViolations e1) {
-			return new ResponseEntity<FieldWorker>(fw, HttpStatus.BAD_GATEWAY);
-		}
-		SocialGroup social = null;
-		Individual individual = null;
-		if(ind.getSocialGroupExtId().isEmpty() || ind.getSocialGroupHeadExtId().isEmpty() || ind.getLocationExtId().isEmpty())
-			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_GATEWAY);
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+		SynchronizationError err = new SynchronizationError();
+		err.setEntityType("individual");
+		err.setEntityId(ind.getIndividual().getExtId());
+		err.setFieldworkerExtId(ind.getCollectedBy().getExtId());
+		List<String> violations = new ArrayList<String>();
 
-		individual = ind.getIndividual();
-		
-		if(individual == null) {
-			return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.BAD_GATEWAY);
+		ConstraintViolations cv = new ConstraintViolations();
+		ind.setCollectedBy(fieldBuilder.referenceField(ind.getCollectedBy(), cv));
+		ind.setLocation(fieldBuilder.referenceField(ind.getLocation(), cv));
+		ind.setSocialGroup(fieldBuilder.referenceField(ind.getSocialGroup(), cv));
+		if(ind.getIndividual() != null) {
+			ind.getIndividual().setCollectedBy(fieldBuilder.referenceField(ind.getIndividual().getCollectedBy(), cv));
+			ind.getIndividual().setMother(fieldBuilder.referenceField(ind.getIndividual().getMother(), cv, null));
+			ind.getIndividual().setFather(fieldBuilder.referenceField(ind.getIndividual().getFather(), cv, null));
 		}
-		
-		individual.setCollectedBy(fieldBuilder.referenceField(individual.getCollectedBy(), cv));
-		individual.setMother(individualService.findIndivById(individual.getMother().getExtId()));
-		individual.setFather(individualService.findIndivById(individual.getFather().getExtId()));
-	
 
 		if(cv.hasViolations()) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
+			violations.addAll(cv.getViolations());
+			err.setViolations(violations);
+			errors.add(err);
+
+			Synchronization sync = new Synchronization();
+			sync.setErrors(errors);
+			sync.setSyncTime(new Date().getTime());
+			return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
 		}
-		try {
-			social = socialGroupService.findSocialGroupById(ind.getSocialGroupExtId(), "Social Group does not exist");
-		} catch (Exception e) {
-			cv.addViolations(e.getMessage());	
-			cv.addViolations("Social group cannot be found.");
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
-		}
-		
-		Location location = locationService.findLocationById(ind.getLocationExtId());
-		Membership mem = createMembershipObject(individual, ind.getbIsToA(), fw, social);
+
+
+		Membership mem = createMembershipObject(ind.getIndividual(), ind.getbIsToA(), ind.getCollectedBy(), ind.getSocialGroup());
 		Relationship rel = null;
-		
+
 		try {
+			this.baselineService.createIndividual(ind.getIndividual());
 			if(ind.getSpouse() != null) {
-				rel = createRelationshipObject(individual, ind.getSpouse(), ind.getbIsToA(), fw);
+				rel = createRelationshipObject(ind.getIndividual(), ind.getSpouse(), ind.getbIsToA(), ind.getCollectedBy());
 				Calendar cal = Calendar.getInstance();
 				cal.set(2018, 5, 5);
-				baselineService.createResidencyMembershipAndRelationshipForIndividual(individual, mem, rel, location, fw, cal);
+				baselineService.createResidencyMembershipAndRelationshipForIndividual(ind.getIndividual(), mem, rel, ind.getLocation(), 
+						ind.getCollectedBy(), cal);
 			} else 
-				baselineService.createResidencyAndMembershipForIndividual(individual, mem, location, fw, Calendar.getInstance());
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
-
+				baselineService.createResidencyAndMembershipForIndividual(ind.getIndividual(), mem, ind.getLocation(), ind.getCollectedBy(), 
+						Calendar.getInstance());
 		} catch (ConstraintViolations e) {
-			// TODO Auto-generated catch block
-			cv.addViolations(e.getMessage());
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_GATEWAY);
+			violations.addAll(e.getViolations());
+		} catch(SQLException e) {
+			violations.add(e.getMessage());
 		}
-		return new ResponseEntity<Individual>(JsonShallowCopier.shallowCopyIndividual(individual), HttpStatus.CREATED);
+
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
 	}
-	
+
+
 	private  Membership createMembershipObject(Individual ind, String bIsToA, FieldWorker collectedBy, SocialGroup sg) {
 		Membership membership = new Membership();
 		membership.setIndividual(ind);
@@ -148,14 +179,14 @@ public class CensusIndividualResource2 {
 		membership.setSocialGroup(sg);
 		membership.setDeleted(false);
 		membership.setInsertDate(Calendar.getInstance());
-	
+
 		membership.setStartDate(Calendar.getInstance());
 		membership.setStartType(EventType.ENU.toString());
 		membership.setEndType("NA");
 		membership.setEndDate(null);
 		return membership;
 	}
-	
+
 	private Relationship createRelationshipObject(Individual indA, Individual indB, String aIsToB, FieldWorker collectedBy) {
 		Relationship rel = new Relationship();
 		rel.setIndividualA(indA);

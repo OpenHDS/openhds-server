@@ -43,6 +43,8 @@
                 
                 <value>org.openhds.domain.model.wrappers.FieldWorkers</value>
                 <value>org.openhds.domain.model.wrappers.Individuals</value>
+                <value>org.openhds.domain.model.wrappers.CensusIndividuals</value>
+                
                 <value>org.openhds.domain.model.wrappers.LocationHierarchyLevels</value>
                 <value>org.openhds.domain.model.wrappers.LocationHierarchies</value>
                 <value>org.openhds.domain.model.wrappers.Locations</value>
