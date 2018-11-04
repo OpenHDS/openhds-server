@@ -2,8 +2,6 @@ package org.openhds.webservice.util;
 
 import java.util.List;
 
-import org.openhds.controller.exception.*;
-
 public class SynchronizationError {
 	private String entityType;
 	private String fieldworkerExtId;

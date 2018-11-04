@@ -172,10 +172,11 @@ public class LocationResourceApi2 {
 		
 		for(Location loc: locations.getLocations()) {
 			ConstraintViolations cv = new ConstraintViolations();
+			
+			SynchronizationError err = new SynchronizationError();
 			loc.setCollectedBy(fieldBuilder.referenceField(loc.getCollectedBy(), cv));
 			loc.setLocationLevel(fieldBuilder.referenceField(loc.getLocationLevel(), cv));
 			
-			SynchronizationError err = new SynchronizationError();
 			err.setEntityType("location");
 			err.setEntityId(loc.getExtId());
 			err.setFieldworkerExtId(loc.getCollectedBy().getExtId());
@@ -193,8 +194,11 @@ public class LocationResourceApi2 {
 				violations.addAll(cv.getViolations());
 			}
 			
-			err.setViolations(violations);
-			errors.add(err);
+			// Violations have occurred, add list of entities where sync failed
+			if(violations.size() > 0) {
+				err.setViolations(violations);
+				errors.add(err);
+			}
 		}
 		
 		Synchronization sync = new Synchronization();

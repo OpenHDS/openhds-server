@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.openhds.controller.exception.ConstraintViolations;
 import org.openhds.controller.service.IndividualService;
 import org.openhds.controller.service.SocialGroupService;
-import org.openhds.domain.model.Individual;
 import org.openhds.domain.model.Location;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.wrappers.Locations;
@@ -23,6 +22,8 @@ import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.openhds.webservice.util.Synchronization;
+import org.openhds.webservice.util.SynchronizationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,14 +73,20 @@ public class SocialGroupResourceApi2 {
 		return sgs;
 	}
 
-	@RequestMapping(value="/pushUpdates", method = RequestMethod.PUT, consumes= {"application/json"}, produces = { "application/json" })
+	@RequestMapping(value="/bulkUpdate", method = RequestMethod.PUT, consumes= {"application/json"}, produces = { "application/json" })
 	public ResponseEntity<? extends Serializable> pushUpdate(@RequestBody SocialGroups socialGroups) throws Exception {
 		long lastClientUpdate = socialGroups.getTimestamp();
 		long time = new Date().getTime();
 
-		ConstraintViolations cv = new ConstraintViolations();
-
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
 		for(SocialGroup group: socialGroups.getSocialGroups()) {
+			ConstraintViolations cv = new ConstraintViolations();
+			
+			SynchronizationError err = new SynchronizationError();
+			err.setEntityType("socialGroup");
+			err.setEntityId(group.getExtId());
+			err.setFieldworkerExtId(group.getCollectedBy().getExtId());
+			List<String> violations = new ArrayList<String>();
 
 			group.setCollectedBy(fieldBuilder.referenceField(group.getCollectedBy(), cv));
 			group.getGroupHead().setCollectedBy(fieldBuilder.referenceField(group.getGroupHead().getCollectedBy(), cv));
@@ -90,15 +97,26 @@ public class SocialGroupResourceApi2 {
 
 				this.individualService.createIndividual(group.getGroupHead());
 			}
-			
 			group.setGroupHead(fieldBuilder.referenceField(group.getGroupHead(), cv, "Individual does not exist"));
+
+			try {
+				group.setServerUpdateTime(new Date().getTime());
+				this.update(group, lastClientUpdate, time);
+			} catch(ConstraintViolations e){
+				violations.addAll(e.getViolations());
+			}
 			
-			group.setServerUpdateTime(new Date().getTime());
-			this.update(group, lastClientUpdate, time);
+			if(cv.hasViolations()) {
+				violations.addAll(cv.getViolations());
+			}
+			
+			errors.add(err);
 		}
 
-
-		return new ResponseEntity<>(time, HttpStatus.ACCEPTED);
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
 	}
 
 	public void update(SocialGroup socialGroup, long currentTimestamp, long lastClientUpdate) throws Exception {
@@ -137,25 +155,76 @@ public class SocialGroupResourceApi2 {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<? extends Serializable> insert(@RequestBody SocialGroup socialGroup) {
+	public ResponseEntity<? extends Serializable> insert(@RequestBody SocialGroup socialGroup) {		
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+
 		ConstraintViolations cv = new ConstraintViolations();
+
+		SynchronizationError err = new SynchronizationError();
+		err.setEntityType("socialGroup");
+		err.setEntityId(socialGroup.getExtId());
+		err.setFieldworkerExtId(socialGroup.getCollectedBy().getExtId());
+		List<String> violations = new ArrayList<String>();
 
 		socialGroup.setCollectedBy(fieldBuilder.referenceField(socialGroup.getCollectedBy(), cv));
 		socialGroup.setGroupHead(fieldBuilder.referenceField(socialGroup.getGroupHead(), cv,
 				"Invalid Ext Id for Group Head"));
 
-		if (cv.hasViolations()) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(cv), HttpStatus.BAD_REQUEST);
+		if(cv.hasViolations()) {
+			violations.addAll(cv.getViolations());
 		}
 
 		try {
 			socialGroupService.createSocialGroup(socialGroup, null);
 		} catch (ConstraintViolations e) {
-			return new ResponseEntity<WebServiceCallException>(new WebServiceCallException(e), HttpStatus.BAD_REQUEST);
+			violations.addAll(e.getViolations());
 		}
 
 		return new ResponseEntity<SocialGroup>(ShallowCopier.copySocialGroup(socialGroup), HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/bulkInsert", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<? extends Serializable> bulkInsert(@RequestBody SocialGroups socialGroups) {
+		List<SynchronizationError> errors = new ArrayList<SynchronizationError>();
+		
+		for(SocialGroup social: socialGroups.getSocialGroups()) {
+			ConstraintViolations cv = new ConstraintViolations();
+			
+			SynchronizationError err = new SynchronizationError();
+			err.setEntityType("socialGroup");
+			err.setEntityId(social.getExtId());
+			err.setFieldworkerExtId(social.getCollectedBy().getExtId());
+			List<String> violations = new ArrayList<String>();
+			
+			social.setCollectedBy(fieldBuilder.referenceField(social.getCollectedBy(), cv));
+			social.setGroupHead(fieldBuilder.referenceField(social.getGroupHead(), cv,
+					"Invalid Ext Id for Group Head"));
+
+			try {
+				socialGroupService.createSocialGroup(social, null);
+			} catch (ConstraintViolations e) {
+				
+				violations.addAll(e.getViolations());
+			}
+			
+			// Check violations for fieldworker
+			if(cv.hasViolations()) {
+				violations.addAll(cv.getViolations());
+			}
+			
+			if(violations.size() > 0) {
+				err.setViolations(violations);
+				errors.add(err);
+			}	
+		}
+		
+		Synchronization sync = new Synchronization();
+		sync.setErrors(errors);
+		sync.setSyncTime(new Date().getTime());
+		return new ResponseEntity<Synchronization>(sync, HttpStatus.ACCEPTED);
+
+	}
+
 
 	@RequestMapping(method = RequestMethod.GET, value = "/pull/{timestamp}", produces = "application/json")
 	public ResponseEntity<SocialGroups> getUpdatedSocialGroups(@PathVariable long timestamp) {

@@ -36,7 +36,6 @@ public class JsonShallowCopier {
 	        	copy.setInsertDate(loc.getInsertDate());
 	        	copy.setServerInsertTime(loc.getServerInsertTime());
 	        	copy.setServerUpdateTime(loc.getServerUpdateTime());
-	        	copy.setResidencies(loc.getResidencies());
 	        FieldWorker fw = new FieldWorker();
 	        fw.setExtId(loc.getCollectedBy().getExtId());
 	        copy.setCollectedBy(fw);
