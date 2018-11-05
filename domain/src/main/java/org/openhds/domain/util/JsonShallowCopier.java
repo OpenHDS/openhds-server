@@ -46,6 +46,7 @@ public class JsonShallowCopier {
 
 	        Individual copy = new Individual();
 	        try {
+	        		copy.setCollectedBy(individual.getCollectedBy());
 	            copy.setDob(individual.getDob());
 	            copy.setExtId(individual.getExtId());
 	            copy.setUuid(individual.getUuid());
