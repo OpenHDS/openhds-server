@@ -15,6 +15,8 @@ public class Visits implements Serializable {
 	 */
 	private static final long serialVersionUID = -2734798986104165931L;
 	private List<Visit> visits;
+    private long updateTimestamp;
+
 
     @XmlElement(name = "visit")
     public List<Visit> getVisits() {
@@ -24,4 +26,12 @@ public class Visits implements Serializable {
     public void setVisits(List<Visit> visits) {
         this.visits = visits;
     }
+
+	public long getUpdateTimestamp() {
+		return updateTimestamp;
+	}
+
+	public void setUpdateTimestamp(long updateTimestamp) {
+		this.updateTimestamp = updateTimestamp;
+	}
 }

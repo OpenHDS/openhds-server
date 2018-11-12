@@ -7,6 +7,7 @@ import org.openhds.domain.annotations.Authorized;
 import org.openhds.domain.model.ClassExtension;
 import org.openhds.domain.model.EntityType;
 import org.openhds.domain.model.PrivilegeConstants;
+import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.Visit;
 
 public interface VisitService {
@@ -49,4 +50,7 @@ public interface VisitService {
 
     @Authorized({ PrivilegeConstants.VIEW_ENTITY })
     long getTotalVisitCountForRound(int roundNumber);
+    
+    @Authorized({PrivilegeConstants.EDIT_ENTITY})
+	void updateVisit(Visit visit) throws ConstraintViolations; 
 }

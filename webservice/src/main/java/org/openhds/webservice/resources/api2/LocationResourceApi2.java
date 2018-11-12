@@ -23,6 +23,7 @@ import org.openhds.webservice.util.SynchronizationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -187,6 +188,8 @@ public class LocationResourceApi2 {
 			} catch (ConstraintViolations e) {
 				
 				violations.addAll(e.getViolations());
+			} catch(DataIntegrityViolationException e) {
+				violations.add(e.getMessage());
 			}
 			
 			// Check violations for fieldworker and location level
@@ -241,8 +244,11 @@ public class LocationResourceApi2 {
 			locationHierarchyService.createLocation(location);
 		} catch (ConstraintViolations e) {
 			violations.addAll(e.getViolations());
+		} catch(DataIntegrityViolationException e) {
+			violations.add("Location with this external id already exists");
 		}
 		
+		err.setViolations(violations);
 		errors.add(err);
 		
 		Synchronization sync = new Synchronization();

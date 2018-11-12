@@ -3,6 +3,7 @@ package org.openhds.webservice.resources;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +13,14 @@ import org.openhds.controller.service.EntityService;
 import org.openhds.controller.service.VisitService;
 import org.openhds.domain.model.Visit;
 import org.openhds.domain.model.wrappers.Visits;
+import org.openhds.domain.util.JsonShallowCopier;
 import org.openhds.domain.util.ShallowCopier;
 import org.openhds.task.support.FileResolver;
 import org.openhds.webservice.CacheResponseWriter;
 import org.openhds.webservice.FieldBuilder;
 import org.openhds.webservice.WebServiceCallException;
+import org.openhds.webservice.util.Synchronization;
+import org.openhds.webservice.util.SynchronizationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/visits")
+@RequestMapping("/visits2")
 public class VisitResource {
     private static final Logger logger = LoggerFactory.getLogger(VisitResource.class);
 
@@ -52,7 +56,7 @@ public class VisitResource {
         List<Visit> copies = new ArrayList<Visit>(allVisits.size());
 
         for (Visit visit : allVisits) {
-            Visit copy = ShallowCopier.copyVisit(visit);
+            Visit copy = JsonShallowCopier.copyVisit(visit);
             copies.add(copy);
         }
 

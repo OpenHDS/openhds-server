@@ -8,6 +8,7 @@ import org.openhds.domain.model.Membership;
 import org.openhds.domain.model.Residency;
 import org.openhds.domain.model.SocialGroup;
 import org.openhds.domain.model.User;
+import org.openhds.domain.model.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ public class JsonShallowCopier {
 		level.setName(loc.getLocationLevel().getName());
 		level.setExtId(loc.getLocationLevel().getExtId());
 		level.setParent(loc.getLocationLevel().getParent());
+		level.getParent().setLevel(loc.getLocationLevel().getLevel());
 		copy.setLocationLevel(level);
 		copy.setUuid(loc.getUuid());
 		copy.setExtId(loc.getExtId());
@@ -133,4 +135,24 @@ public class JsonShallowCopier {
 
 		return copy;
 	}
+	
+	public static Visit copyVisit(Visit original) {
+        FieldWorker fw = new FieldWorker();
+        fw.setExtId(original.getCollectedBy().getExtId());
+
+        Location location = new Location();
+        location.setLocationLevel(null);
+        location.setExtId(original.getVisitLocation().getExtId());
+
+        Visit copy = new Visit();
+        copy.setCollectedBy(fw);
+        copy.setVisitLocation(location);
+        copy.setExtId(original.getExtId());
+        copy.setRoundNumber(original.getRoundNumber());
+        copy.setRealVisit(original.getRealVisit());
+        copy.setVisitDate(original.getVisitDate());
+
+        return copy;
+    }
+    
 }

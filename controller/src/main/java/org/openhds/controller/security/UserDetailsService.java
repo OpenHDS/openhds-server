@@ -77,6 +77,18 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		return authorities;
 	}
+	
+	public org.openhds.domain.model.User getUser(String username){
+		List<org.openhds.domain.model.User> users = userDao.findByUsername(username);
+
+		if (users == null || users.size() == 0) { // no user found by the name
+			throw new UsernameNotFoundException("user " + username + " was not found");
+		}
+		
+		org.openhds.domain.model.User user = users.get(0);
+		return user;
+	}
+	
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;

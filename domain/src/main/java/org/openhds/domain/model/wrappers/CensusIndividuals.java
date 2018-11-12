@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openhds.domain.model.CensusIndividual;
-import org.openhds.domain.model.Individual;
 
 @XmlRootElement
 public class CensusIndividuals {
     private List<CensusIndividual> individuals;
+    private long updateTimestamp;
 
     @XmlElement(name = "censusIndividual")
     public List<CensusIndividual> getIndividuals() {
@@ -20,4 +20,12 @@ public class CensusIndividuals {
     public void setIndividuals(List<CensusIndividual> individuals) {
         this.individuals = individuals;
     }
+
+	public long getUpdateTimestamp() {
+		return updateTimestamp;
+	}
+
+	public void setUpdateTimestamp(long updateTimestamp) {
+		this.updateTimestamp = updateTimestamp;
+	}
 }

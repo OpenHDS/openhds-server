@@ -59,6 +59,9 @@ public class Visit
     @Description(description = "The assigned extension and their values specific for this entity.")
     private List<Extension> extensions = new ArrayList<Extension>();
 
+    private long serverUpdateTime;
+    private long serverInsertTime;
+    
     public String getExtId() {
         return extId;
     }
@@ -107,5 +110,22 @@ public class Visit
     public void setExtensions(List<Extension> list) {
         extensions = list;
     }
+
+
+	public long getServerInsertTime() {
+		return serverInsertTime;
+	}
+
+	public void setServerInsertTime(long serverInsertTime) {
+		this.serverInsertTime = serverInsertTime;
+	}
+
+	public long getServerUpdateTime() {
+		return serverUpdateTime;
+	}
+
+	public void setServerUpdateTime(long serverUpdateTime) {
+		this.serverUpdateTime = serverUpdateTime;
+	}
 
 }

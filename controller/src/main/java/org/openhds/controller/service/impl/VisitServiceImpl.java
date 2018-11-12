@@ -203,4 +203,10 @@ public class VisitServiceImpl implements VisitService {
     public long getTotalVisitCountForRound(int roundNumber) {
         return genericDao.getTotalCountWithFilter(Visit.class, "roundNumber", roundNumber);
     }
+
+	@Override
+	public void updateVisit(Visit visit) throws ConstraintViolations {
+		// TODO Auto-generated method stub
+		
+	}
 }
