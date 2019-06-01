@@ -63,9 +63,7 @@ public class SocialGroup
     private long serverUpdateTime;
     private long serverInsertTime;
 
-    
-    @PostRemove
-    
+       
     public String getExtId() {
         return extId;
     }

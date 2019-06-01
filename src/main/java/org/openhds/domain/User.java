@@ -29,7 +29,7 @@ import org.openhds.constraint.Searchable;
 		"the chosen username and password.")
 @Entity
 @Table(name = "user")
-@NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?")
+@NamedQuery(name = "User.findByUsername", query = "from User u where u.username = ?1")
 public class User implements Serializable {
 
     static final long serialVersionUID = 23L;

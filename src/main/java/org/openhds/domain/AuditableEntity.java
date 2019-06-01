@@ -24,7 +24,7 @@ public abstract class AuditableEntity implements Serializable {
 	
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "org.openhds.domain.uuidgen.UuidGenerator")
+    @GenericGenerator(name = "system-uuid", strategy = "org.openhds.util.UuidGenerator")
     @Column(length=32)
     String uuid;
 
