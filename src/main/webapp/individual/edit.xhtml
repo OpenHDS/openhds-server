@@ -1,0 +1,112 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:o="http://openfaces.org/"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:param name="crud" value="#{individualCrud}" />
+	
+	<ui:define name="listing">
+		<ui:include src="list.xhtml" />
+	</ui:define>
+	
+	<ui:define name="display">
+	
+		<h:outputText value="#{navController.breadcrumbTrail}" />	
+	
+		<ui:param name="crud" value="#{individualCrud}" />
+        <h1>#{msg.individualEdit}</h1>
+        <h:messages id="errors" globalOnly="true" />
+        <h:form id="individualForm">
+             <h:panelGrid columns="4">
+                     	
+                <h:outputText value="#{msg.individualId}:"/>
+                <h:outputText />
+                <h:inputText styleClass="individual" autocomplete="off" id="extId" value="#{individualCrud.item.extId}" required="true" converter="#{defaultConverter}" disabled="true"/>
+                <h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                
+                <h:outputText value="#{msg.individualFirstName}:"/>
+                <h:outputText />
+                <h:inputText id="firstName" value="#{individualCrud.item.firstName}" converter="#{defaultConverter}"/>
+                <h:message for="firstName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualMiddleName}:"/>
+                <h:outputText />
+                <h:inputText id="middleName" value="#{individualCrud.item.middleName}" converter="#{defaultConverter}"/>
+                <h:message for="middleName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualLastName}:"/>
+                <h:outputText />
+                <h:inputText id="lastName" value="#{individualCrud.item.lastName}" converter="#{defaultConverter}" />
+                <h:message for="lastName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualGender}:"/>
+                <img class="clickable" onclick="O$('popupWindowForSex').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+                <h:inputText id="gender" value="#{individualCrud.item.gender}" converter="#{defaultConverter}" /> 
+                <h:message for="gender" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+				
+<!-- 				<h:outputText value="#{msg.codeEthiopianCalendar}"/> -->
+<!-- 				<h:outputText /> -->
+<!-- 				<h:outputText value="#{siteProperties.ethiopianCalendar}"/> -->
+<!-- 				<h:outputText /> -->
+				
+<!-- 				<c:if test="#{siteProperties.ethiopianCalendar}"> -->
+<!-- 					<h:outputText value="c:if test"/> -->
+<!-- 					<h:outputText /> -->
+<!-- 					<h:outputText value="Yes" /> -->
+<!-- 					<h:outputText /> -->
+<!-- 				</c:if> -->
+				
+				<h:outputText value="#{msg.individualDob} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText value="#{msg.individualDob} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                <o:dateChooser id="date_B" value="#{individualCrud.dateOfBirth}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}" />
+                <h:inputText id="date_B_ethiopian" value="#{individualCrud.dateOfBirthAsCalendar}" rendered="#{siteProperties.ethiopianCalendar}" converter="#{calendarConverter}" converterMessage="dd/MM/yyyy" />
+                <h:message for="date_B" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                <h:message for="date_B_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>
+                
+                <h:outputText value="Gregorian #{msg.individualDob}" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText id="date_B_" value="#{individualCrud.dateOfBirth}" rendered="#{siteProperties.ethiopianCalendar}"><f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="EET"/></h:outputText>
+                <h:outputText value="(#{siteProperties.dateFormat})" rendered="#{siteProperties.ethiopianCalendar}" />
+
+				<h:outputText value="#{msg.individualDobPartial}"/>
+				<img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+				<h:inputText id="dobAspect" value="#{individualCrud.item.dobAspect}" converter="#{defaultConverter}" />
+				<h:message for="dobAspect" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualReligion}:"/>
+                <h:outputText />
+                <h:inputText id="religion" value="#{individualCrud.item.religion}" converter="#{defaultConverter}" />
+                <h:message for="religion" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+				
+				<h:outputText value="#{msg.individualMotherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
+                <h:outputText />
+                <h:inputText styleClass="individual" autocomplete="off" id="mother" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.mother}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
+                <h:message for="mother" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.individualFatherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
+                <h:outputText />
+                <h:inputText styleClass="individual" autocomplete="off" id="father" disabled="#{flowScope.pregnancyOutcome}" value="#{individualCrud.item.father}" title = "#{msg.tipIndivExtId}" converter="#{individualExtIdConverter}" />
+                <h:message for="father" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                <h:outputText value="#{msg.fieldWorkerId}:"/>
+                <h:outputText />
+                <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" disabled="#{flowScope.updating or flowScope.pregnancyOutcome}" value="#{individualCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
+                <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            </h:panelGrid>
+            <script>
+                document.getElementById('individualForm:firstName').focus();
+                document.getElementById('individualForm:extId').focus();
+            </script>
+            <br />
+ 			<h:commandButton action="#{individualCrud.edit}" value="#{msg.lblSave}">
+            	<f:setPropertyActionListener target="#{jsfService.itemId}" value="#{individualCrud.item.uuid}" />
+            </h:commandButton>
+        </h:form>
+    </ui:define>
+</ui:composition>

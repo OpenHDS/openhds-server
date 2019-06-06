@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+      		http://www.springframework.org/schema/webflow
+      		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!-- This element is needed - it provides a flow scoped persistent context -->
+	<persistence-context />
+	
+	<input name="visit" type="org.openhds.domain.model.Visit" />
+	<input name="migrationType" />
+	<input name="fieldWorker" type="org.openhds.domain.model.FieldWorker" />
+	<input name="updating" />
+	
+	<on-start>
+		<!-- Initialize the crud -->
+		<evaluate expression="inMigrationCrud.initFlow(true)" />
+
+		<!-- set values that are possibly supplied when this flow is used as a sub flow -->
+		<set name="inMigrationCrud.item.visit" value="visit" />
+		<set name="inMigrationCrud.item.collectedBy" value="fieldWorker" />
+		<set name="inMigrationCrud.item.residency.location" value="visit.visitLocation" />
+		<set name="inMigrationCrud.item.unknownIndividual" value="externalContext.getRequestParameterMap().get('external') == null and migrationType != 'external'" />
+
+		<evaluate expression="inMigrationCrud.item.isUnknownIndividual() ? inMigrationCrud.item.setMigTypeInternal() : inMigrationCrud.item.setMigTypeExternal()" />
+
+		<!-- A flag indicating whether this flow is being used as a sub flow during the update process -->
+		<set name="flowScope.updating" value="updating" />
+		
+		<!-- A flag indicating whether to show the navigation menu -->
+		<!-- During the update process, the menu should be hidden -->
+		<!-- Otherwise it is ok to show the navigation menu -->
+		<set name="flowScope.showNavMenu" value="updating == null" />
+		
+		<set name="flowScope.migrationType" value="inMigrationCrud.item.isUnknownIndividual() ? 'Internal with Unknown Id' : 'External'" />
+		
+		<set name="flowScope.inMigration" value="true" />
+		
+		<!-- Flag set to hide the listing of individuals at the top of the individual creation form -->
+		<set name="flowScope.showListing" value="false" />
+		<evaluate expression="navController.clearTrailExceptFirst()" />
+		<evaluate expression="navController.addItemToTrail('InMigration Create')" />
+		<evaluate expression="navController.addItemToTrail(flowScope.migrationType)" />
+		<evaluate expression="navController.setCurrentItem('InMigration')" />
+	</on-start>
+
+	<!-- A view used to create a new individual in the case of an external in migration/internal with unknown id -->
+	<view-state id="newIndivForm" view="individual/create.xhtml">
+		<on-entry>
+			<!-- Initialize the individual crud -->
+			<evaluate expression="individualCrud.initFlow(true)" />
+			<!-- Auto-fill field worker if inside the update flow -->
+			<set name="individualCrud.item.collectedBy" value="fieldWorker" />
+			<!-- Set flag which will show the create button on individual form -->
+			<set name="flowScope.newIndiv" value="true" />
+			<!-- Set current view which is used if user attempts to navigate away -->
+			<set name="flowScope.currentView" value="'newIndivForm'" />
+			<evaluate expression="navController.setCurrentItem('InMigration')" />
+		</on-entry>
+		
+		<!-- User clicked the create button -->
+		<transition on="addChild" to="migrationForm">
+			<!-- Validate the individual entity -->
+			<!-- This is required because the individual is not actually saved when the user presses -->
+			<!-- create. Rather, the individual is saved in the same transaction that the in migration -->
+			<!-- is created. -->
+			<evaluate expression="individualIdGenerator.setLocation(inMigrationCrud.item.residency.location)" />
+			<evaluate expression="individualCrud.validateEntity(individualCrud.item, messageContext)" />
+			<!-- Validation that uses the individual service -->
+			<evaluate expression="individualCrud.validateIndividual(messageContext)" />
+			<!-- Set the individual on the in migration entity -->
+			<evaluate expression="inMigrationCrud.getItem().setIndividual(individualCrud.getItem())" />
+			<set name="flowScope.showEditButton" value="true" />
+			<evaluate expression="navController.removeLastCrumb()" />
+		</transition>
+		
+		<!-- User wants to cancel the current in migration -->
+		<transition on="cancel" to="cancelDecision" />
+		
+		<on-exit>
+			<!-- Unset flag to show the create button on individual form -->
+			<set name="flowScope.newIndiv" value="null" />
+		</on-exit>
+	</view-state>
+
+
+	<!-- A view that displays the fields for the in migration information -->
+	<view-state id="migrationForm" view="migration/migration.xhtml">
+		<on-entry>
+			<!-- Set current view which is used if user attempts to navigate away -->
+			<set name="flowScope.currentView" value="'migrationForm'" />
+		</on-entry>
+		
+		<!-- User has successfully created an in migration -->
+		<transition on="inmigration_list" to="completeDecision" />
+		
+		<!-- User wishes to edit the individual for this external/internal with unknown id in migration -->
+		<transition on="edit" to="editIndivForm" />	
+		
+		<!-- User wishes to cancel the in migration -->
+		<transition on="cancel" to="cancelDecision" />
+	</view-state>
+
+	<!-- A view used to edit the individual created for this in migration -->
+	<view-state id="editIndivForm" view="individual/create.xhtml">
+		<on-entry>
+			<!-- set flag so that a save button is shown on individual form -->
+			<set name="flowScope.editing" value="true" />
+			<!-- set the current view -->
+			<set name="flowScope.currentView" value="'editIndivForm'" />
+			<evaluate expression="navController.addItemToTrail('Individual Edit')" />	
+		</on-entry>
+		
+		<!-- User clicked the Save button on individual form -->
+		<transition on="saveChild" to="migrationForm">
+			<!-- Make sure to validate the individual since it is not being saved in this step -->
+			<evaluate expression="individualCrud.validateEntity(individualCrud.item, messageContext)" />
+			<evaluate expression="individualCrud.validateIndividual(messageContext)" />
+			<!-- Save the individual -->
+			<evaluate expression="inMigrationCrud.getItem().setIndividual(individualCrud.getItem())" />
+			<evaluate expression="navController.removeLastCrumb()" />
+		</transition>
+		
+		<!-- User hit cancel button, send them back to in migration form -->
+		<transition on="cancel" to="migrationForm" >
+			<evaluate expression="navController.removeLastCrumb()" />
+		</transition>
+		
+		<on-exit>
+			<!-- Unset flag that will display Save Changes button on individual form -->
+			<set name="flowScope.editing" value="false" />
+		</on-exit>
+	</view-state>
+
+	<!-- A view displayed to the user to confirm navigation away from an in migration -->
+	<!-- It is possible for a user to begin filling out information about an in migration -->
+	<!-- and then attempt to navigate away. This confirm dialog is shown so that a user has an -->
+	<!-- opportunity to continue with an in migration -->
+	<view-state id="confirm" view="migration/confirm.xhtml">
+		<!-- If continue, send to the current view -->
+		<transition on="continue" to="${flowScope.currentView}" />
+		
+		<!-- Otherwise forward user to desired form -->
+		<transition on="cancel" to="exit" />
+	</view-state>
+
+	<!-- A view to confirm logging out in the case where the user has started an in migration -->
+	<view-state id="confirmToLogout" view="migration/confirm.xhtml">
+		<!-- user wants to continue with current in migration -->
+		<transition on="continue" to="${flowScope.currentView}" />
+		
+		<!-- user wants to cancel current in migration and logout -->
+		<transition on="cancel" to="logout" />
+	</view-state>
+
+	<decision-state id="completeDecision">
+		<if test="flowScope.updating == null" then="exitWithRedirect" else="complete"/>
+	</decision-state>
+	
+	<decision-state id="cancelDecision">
+		<if test="flowScope.updating == null" then="exitWithRedirect" else="cancel" />
+	</decision-state>
+
+	<!-- User completed an in migration -->
+	<end-state id="complete" />
+	
+	<!-- User presses the cancel button -->
+	<end-state id="exitWithRedirect" view="externalRedirect:contextRelative:/migration/create.faces">
+		<on-entry>
+			<evaluate expression="navController.removeItemFromTrailInFlow('InMigration Create')"></evaluate>
+		</on-entry>
+	</end-state>
+	
+	<end-state id="cancel" />
+			
+	<!-- This is mainly provided for when this flow is used as a sub flow. This is different than complete -->
+	<!-- in that the user wants to start this in migration flow over, rather than actually completing an in migration -->
+	<end-state id="restart" />
+	
+	<!-- End state for logging out of open hds -->
+	<end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+	
+	<!-- Allow users to navigate away from this flow - They will be redirected to the page they clicked on -->	 
+	<end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+	
+	<global-transitions>
+		<!-- User clicked the logout link -->
+		<transition on="logoutLnk" to="confirmToLogout" />
+		
+		<!-- User attempts to navigate away from this flow. In some cases, the user should be prompted to leave -->
+		<!-- this acts as a catch all since there is no 'on' attribute -->
+		<transition to="confirm">
+			<!-- Record the page id the user is trying to navigate to in case they do want to navigate away -->
+			<evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+			<evaluate expression="navController.removeItemFromTrailInFlow('InMigration')" />
+		</transition>
+	</global-transitions>
+</flow>

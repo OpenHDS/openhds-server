@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		     xmlns:h="http://java.sun.com/jsf/html"
+		     xmlns:f="http://java.sun.com/jsf/core"
+		     xmlns:ui="http://java.sun.com/jsf/facelets"
+		     xmlns:c="http://java.sun.com/jstl/core"
+		     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<h:form>
+		<div style="text-align:right;">
+			<div style="float:left;">
+				<!-- <h:commandButton value="#{msg.lblAddNew}" id="button1" action="addNew" immediate="true"/> -->
+
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{pregnancyOutcomeCrud}"/>
+				</ui:include>
+			</div>
+		</div>
+		
+		<!-- Search Widget -->	
+		<ui:include src="/search/searchBox.xhtml">
+		     <ui:param name="crud" value="#{pregnancyOutcomeCrud}"/>
+		</ui:include>		
+		
+		<div style="overflow:auto;">
+			<c:if test="#{flowScope.updating == null}">
+	            <h:outputText escape="false" value="#{msg.pregnancyOutcomeEmpty}" rendered="#{pregnancyOutcomeCrud.pager.totalCount == 0}" />
+	            <h:panelGroup rendered="#{pregnancyOutcomeCrud.pager.totalCount > 0}">
+	                <h:dataTable value="#{pregnancyOutcomeCrud.pagedItems}" var="item" 
+	                columnClasses="center,center,center,width3" width="100%"  >
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.individualMotherId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.mother}" converter="#{individualExtIdConverter}" />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.individualFatherId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.father}" converter="#{individualExtIdConverter}" />
+	                    </h:column>	  
+	                    <h:column>
+	                        <f:facet name="header">
+	                        <h:panelGroup>
+	                            <h:outputText value="#{msg.pregnancyOutcomeRecordedDate}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{item.outcomeDate}" converter="#{calendarConverter}" />
+	                    </h:column>	                     
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText escape="false" value=""/>
+	                        </f:facet>                          	
+                           <h:commandLink action="details" >
+                           		<f:param name="itemId" value="#{item.uuid}" />
+                           		<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                           </h:commandLink>
+   
+                               <!--
+                               <h:commandLink action="edit">
+                                   <h:graphicImage title="#{msg.btnEdit}" style="border: 0;" value="/resources/icons/edit.ico"/>
+	                            <f:param name="itemId" value="#{item.uuid}"/>
+	                        </h:commandLink>
+	                        <h:outputText value=" "/>
+	                        <h:commandLink action="Delete">
+                                           <h:graphicImage title="#{msg.btnDelete}" style="border: 0;" value="/resources/icons/delete.ico"/>
+	                            <f:param name="itemId" value="#{item.uuid}"/>
+	                        </h:commandLink> -->
+	                    </h:column>	                   
+	                </h:dataTable>
+	        	</h:panelGroup>
+			</c:if>
+            <c:if test="#{flowScope.updating != null}">
+            	<h:outputText escape="false" value="#{msg.pregnancyOutcomeEmpty}" rendered="#{fn:length(pregnancyOutcomeCrud.filteredPagedItems) == 0}" />
+            	<h:panelGroup rendered="#{fn:length(pregnancyOutcomeCrud.filteredPagedItems) > 0}">
+		        	<h:dataTable value="#{pregnancyOutcomeCrud.filteredPagedItems}" var="item" 
+		            	columnClasses="center,center,center,width3" width="100%"  >
+	                	<h:column>
+	                    	<f:facet name="header">
+	                        	<h:outputText value="#{msg.individualMotherId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.mother}" converter="#{individualExtIdConverter}" />
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.individualFatherId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.father}" converter="#{individualExtIdConverter}" />
+	                    </h:column>	
+	                    <h:column>
+	                        <f:facet name="header">
+	                        <h:panelGroup>
+	                            <h:outputText value="#{msg.pregnancyOutcomeRecordedDate}"/>&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{item.outcomeDate}" converter="#{calendarConverter}" />
+	                    </h:column>	                     
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText escape="false" value=""/>
+	                        </f:facet>
+                           <h:commandLink action="details" >
+                           		<f:param name="itemId" value="#{item.uuid}" />
+                           		<h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                           </h:commandLink>
+                               <!--
+                               <h:commandLink action="edit">
+                                   <h:graphicImage title="#{msg.btnEdit}" style="border: 0;" value="/resources/icons/edit.ico"/>
+	                            <f:param name="itemId" value="#{item.uuid}"/>
+	                        </h:commandLink>
+	                        <h:outputText value=" "/>
+	                        <sec:ifAllGranted roles="DELETE_ENTITY">
+	                        <h:commandLink action="Delete">
+                                           <h:graphicImage title="#{msg.btnDelete}" style="border: 0;" value="/resources/icons/delete.ico"/>
+	                            <f:param name="itemId" value="#{item.uuid}"/>
+	                        </h:commandLink>
+	                         </sec:ifAllGranted> -->
+	                    </h:column>	 
+		            </h:dataTable>
+	            </h:panelGroup>
+            </c:if>
+		</div>
+	</h:form>
+</ui:composition>

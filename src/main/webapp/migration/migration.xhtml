@@ -1,0 +1,90 @@
+<ui:composition template="/templates/default.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:o="http://openfaces.org/"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core">
+	<ui:define name="title">OpenHDS - Create Migration Into Location</ui:define>
+
+	<ui:param name="hideTabBar" value="true" />
+	
+	<ui:define name="display">
+	       <h:outputText value="#{navController.breadcrumbTrail}" />
+	       <h1>#{msg.inmigrationCreate}</h1>
+	       <h:messages id="errors" globalOnly="true"/>
+	       <h:form id="inmigration" prependId="false">
+	            <h:panelGrid columns="3">
+
+					<c:if test="#{flowScope == null or flowScope.inMigration == null}">
+						<h:outputText value="#{msg.individualId}:"/>
+	                	<h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{inMigrationCrud.item.individual}" converter="#{individualExtIdConverter}" />
+		            	<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>
+					
+					<c:if test="#{flowScope != null and flowScope.inMigration}" >
+						<h:outputText value="#{msg.individualId}:"/>
+	                	<h:outputText value="#{inMigrationCrud.item.individual}" converter="#{individualExtIdConverter}" />
+		            	<h:outputText />
+					</c:if>
+							            	
+	            	<c:if test="#{flowScope.showEditButton}">
+						<h:commandButton immediate="true" value="#{msg.individualEdit}" action="edit" />
+						<h:outputText />
+						<h:outputText />
+	            	</c:if>
+	            	
+	            	<h:outputText value="#{msg.locationId}:"/>
+	                <h:inputText styleClass="location" autocomplete="off" id="loc" value="#{inMigrationCrud.item.residency.location}" disabled="#{flowScope.updating}" converter="#{locationExtIdConverter}" />
+	            	<h:message for="loc" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+	            	<h:outputText value="#{msg.inmigrationDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}"/>
+	            	<o:dateChooser id="endDate" value="#{inMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" rendered="#{!siteProperties.ethiopianCalendar}"/> 
+	            	<h:message for="endDate" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}"/>
+					
+	            	<h:outputText value="#{msg.inmigrationDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}"/>
+	            	<h:inputText id="endDate_ethiopian" value="#{inMigrationCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" rendered="#{siteProperties.ethiopianCalendar}"/> 
+	            	<h:message for="endDate_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}"/>					
+					
+	            	<h:outputText value="#{msg.inmigrationOrigin}:"/>
+	                <h:inputText id="origin" value="#{inMigrationCrud.item.origin}" converter="#{defaultConverter}" />
+	            	<h:message for="origin" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            	
+	            	<h:outputText value="#{msg.inmigrationReason}"/>
+	                <h:selectOneListbox value="#{inMigrationCrud.item.reason}" size="1" id="reason" immediate="true" >
+		            	<f:selectItems value="#{inMigrationCrud.reasonsForMigration}" />
+		           </h:selectOneListbox>
+		           <h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+	            	<!-- <h:outputText value="#{msg.inmigrationReason}"/>
+	                <h:inputText id="reason" value="#{inMigrationCrud.item.reason}" converter="#{defaultConverter}" />
+	            	<h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/> -->
+	
+	                <h:outputText value="#{msg.fieldWorkerId}:"/>
+	                <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" disabled="#{flowScope.updating != null}" value="#{inMigrationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+	            	<h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+	                <h:outputText value="#{msg.visitId}:"/>
+	                <h:inputText styleClass="visit" autocomplete="off" id="visitId" disabled="#{flowScope.updating != null}" value="#{inMigrationCrud.item.visit}" converter="#{visitExtIdConverter}" />
+	            	<h:message for="visitId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	            </h:panelGrid>
+	            <script>
+	           		$('#endDate').focus();
+	            	$('#loc').focus();
+					$('#indiv').focus();
+				</script>
+	           	<br />
+	           	<h:commandButton value="#{msg.lblCreate}" action="#{inMigrationCrud.create}" />
+	           	
+	           	<c:choose>
+	           		<c:when test="#{flowScope == null}">
+	           			<h:commandButton immediate="true" action="#{inMigrationCrud.createSetup}" value="#{msg.lblCancel}" />
+	           		</c:when>
+	           		<c:otherwise>
+	           			<h:commandButton immediate="true" value="#{msg.lblCancel}" action="cancel" />
+	           		</c:otherwise>
+	           	</c:choose>
+	           <br />
+	       </h:form>
+	</ui:define>
+</ui:composition>

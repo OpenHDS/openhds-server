@@ -1,0 +1,228 @@
+/*
+    Document   : main
+    Created on : Mar 17, 2010, 2:44:43 PM
+    Author     : Advocatus
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+body {
+    margin:0;
+    padding:0;
+	background-color: #DEEBE0;
+}
+
+.clickable {
+	cursor:pointer;
+}
+
+.ajaxResult { color: #440000;
+              font-weight: bold;
+              font-size: 18px;
+              font-family: Arial, Helvetica, sans-serif;
+}
+
+.error { background-color: yellow;
+         color: red;
+         font-weight: bold;
+         font-size: 12px;
+         font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.center {
+    text-align: center;
+}
+
+#navi {
+	width: 15%;
+	float:left;
+	border-right: 1px solid #336633;
+	border-bottom: 1px solid #336633;
+}
+
+/* the position of login status*/
+.logout {
+    margin-left: 10%;
+    width: 15%;
+    position: absolute;
+}
+#lang {
+    margin-left: 75%;
+    margin-top: -1.5%;
+    width: 5%;
+    position: absolute;
+}
+
+
+
+.texta {
+    background-color: #DEEBE0;
+    padding: .4em;
+    font-size:.8em;
+}
+
+.welcome-link {
+	font-size:1.5em;	
+}
+
+span.title {
+    font-size: 200%;
+    font-weight: 600;
+    color: #FFFFFF;
+    width: 95%;
+    margin-left: 3%;
+
+}
+
+#wrapper {
+	margin-left:15%;	
+}
+
+#content {
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; font-size:12px;
+	padding-left:1em;
+	float:left;
+	width:80%;
+}
+
+.box {
+    border: 1px solid #00CC66;;
+    margin-top: 1%;
+    background-color: #86C583;
+    overflow:scroll;
+    height: 25%;
+    width: 100%;
+}
+
+.contents {
+    border: 1px solid #00CC66;
+    margin-top: 1%;
+    background-color :#DEEBE0;
+    border-bottom: 1px solid #00CC66;
+    width: 79%;
+    font-family: Arial,Helvetica,sans-serif;
+    min-height: 533px;
+    font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; font-size:12px;
+
+}
+
+
+#boxtop {
+    border-top:  1px solid #00CC66;
+    border-left: 1px solid #00CC66;
+    border-right: 1px solid #00CC66;
+    border-bottom: 1px solid #00CC66;
+    width: 95%;
+    margin-top: 3px;
+    margin-left: 3%;
+    height: 100%;
+    margin-right:3%;
+    float: none;
+    background-color:#E4F4E3;
+}
+
+.update-btn {
+    width:125px;
+    height: 30px;
+}
+#footer {
+    padding-bottom: .5em;
+    border-top: .2em solid #006633 ;
+    text-align: center;
+    font-size: 90%;
+    position:fixed;
+	bottom:0;
+	right:0;
+	left:0;
+	height:2em;
+	background-color: #DEEBE0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #579567;
+}
+
+a:link, a:visited {
+    color: #336633;
+}
+
+acronym,abbr {
+    border-bottom: 1px dotted #000000;
+    cursor: help;
+}
+
+p {
+    font-size: 85%;
+}
+
+li {
+    font-size: 85%;
+}
+
+.paging-text {
+	font-size:.9em;	
+}
+
+.paging-element {
+	padding-left:12px;
+}
+
+.paging-link:link {
+	text-decoration:underline;	
+}
+
+.paging-link:hover {
+	text-decoration:underline;
+	color:#387C44;
+}
+
+a.amendment-tab {
+	display:inline-block;
+	color:#FFF;
+	padding:1em;
+	width:5em;
+	text-align:center;
+}
+
+a.amendment-tab-selected {
+	background-color:#306331;	
+}
+
+a.amendment-tab-unselected {
+	background-color:#86C583;
+	color:#306331;
+}
+
+#loading-div {
+    position:fixed;
+    top:0;
+    width:10%;
+    left:45%;
+    background-color:#608050;
+    text-align:center;
+    padding:.2em .8em;
+    border-left:1px solid #555;
+    border-bottom:1px solid #555;
+    border-right:1px solid #555;
+    visibility:hidden;
+}
+
+.openhds-table {
+    border-collapse: collapse;
+    width:100%;
+    font-size:1em;
+}
+
+.openhds-table th {
+    background-color: #A7C942;
+    text-align:left;
+    color: white;
+    padding:5px 7px 4px;
+}
+
+.openhds-table td {
+    border:1px solid #98BF21;
+    padding:5px 5px 5px;
+}

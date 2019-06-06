@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		     xmlns:h="http://java.sun.com/jsf/html"
+		     xmlns:f="http://java.sun.com/jsf/core"
+		     xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form>
+		<div style="text-align:right;">
+			<div style="float:left;">
+				<h:commandButton immediate="true" action="#{roundCrud.createSetup}" value="#{msg.lblAddNew}" />
+				
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{roundCrud}"/>
+				</ui:include>		
+				
+
+			</div>
+		</div>
+		
+		<!-- Search Widget -->	
+		<ui:include src="/search/searchBox.xhtml">
+		     <ui:param name="crud" value="#{roundCrud}"/>
+		</ui:include>			
+		
+           <div>
+	    	<h:outputText escape="false" value="#{msg.roundEmpty}" rendered="#{roundCrud.pager.totalCount == 0}" />
+	        <h:panelGroup rendered="#{roundCrud.pager.totalCount > 0}">
+	        	<h:dataTable value="#{roundCrud.pagedItems}" var="item" columnClasses="center,center,center,width3" width="100%"  >
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.roundNumber}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.roundNumber}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="#{msg.roundStartDate}"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+						</h:panelGroup>                            
+                        </f:facet>
+                        <h:outputText value="#{item.startDate}" converter="#{calendarConverter}" />
+                    </h:column>
+					<h:column>
+                        <f:facet name="header">
+                        <h:panelGroup>
+                            <h:outputText value="#{msg.roundEndDate}"/>&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+						</h:panelGroup>                            
+                        </f:facet>
+                        <h:outputText value="#{item.endDate}" converter="#{calendarConverter}" />
+                    </h:column>		                     
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText escape="false" value=""/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText escape="false" value=""/>
+                        </f:facet>
+                        <h:commandLink immediate="true" action="#{roundCrud.detailSetup}">
+                            <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                            <f:param name="itemId" value="#{item.uuid}"/>
+                        </h:commandLink>
+                        <h:commandLink action="#{roundCrud.editSetup}">
+                            <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                            <f:param name="itemId" value="#{item.uuid}"/>
+                        </h:commandLink>
+                        <h:outputText value=" "/>   
+                        <h:commandLink  action="#{roundCrud.delete}">
+							<h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                            <f:param name="itemId" value="#{item.uuid}"/>
+                        </h:commandLink>                                     
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+		</div>
+	</h:form>
+</ui:composition>

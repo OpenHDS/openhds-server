@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	<f:view locale="#{localeBean.locale}">      
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+        <title><ui:insert name="title"/>OpenHDS</title>
+        
+        <link type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.all.css" rel="stylesheet" />
+        <link type="text/css" href="#{request.contextPath}/resources/css/demos.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/default.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/menuStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/jquery.ui.base.css"/>
+
+ 		<script type="text/javascript" src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/resources/scripts/ui/jquery-ui-1.8.5.custom.min.js"></script>
+
+		<script>
+			$(function() {
+				<c:if test="#{siteProperties.autocomplete}">
+					$(".visit").autocomplete({source:"#{request.contextPath}/visit.autocomplete"});
+					$(".collectedBy").autocomplete({source:"#{request.contextPath}/collectedBy.autocomplete"});
+					$(".location").autocomplete({source:"#{request.contextPath}/location.autocomplete"});
+					$(".locationName").autocomplete({source:"#{request.contextPath}/locationName.autocomplete"});
+					$(".socialGroup").autocomplete({source:"#{request.contextPath}/socialGroup.autocomplete"});
+					$(".individual").autocomplete({source:"#{request.contextPath}/individual.autocomplete"});
+				</c:if>
+			});
+		</script>
+		<ui:insert name="extraHeaders"/>
+    </head>
+
+    <body>
+		<div id="navi">
+            <div id="headers">
+                <h:graphicImage id="n" style="width: 100%" value="/resources/images/logo2.jpg"  title="Openhds logo"/>
+            </div>
+            <!-- Include the logo composition -->
+            <ui:include src="/templates/logo.xhtml" />
+
+            <c:if test="#{flowScope == null or flowScope.showNavMenu}">
+                <ui:include src="/snippets/menu.xhtml"/>
+            </c:if>
+        </div>
+
+        <div id="content">
+        	<c:if test="#{hideTabBar == null or hideTabBar != true}">
+				<ui:include src="/templates/tab-bar.xhtml" />
+			</c:if>
+            
+            <div id="center" class="boxcontent" >
+            	<div style="#{crud.showListing ? '' : 'display:none;'}">
+                	<ui:insert name="listing"/>
+               	</div>
+               	<div style="#{crud.showListing ? 'display:none;' : ''}">
+                	<ui:insert name="display" />
+                </div>
+            </div>
+        </div>
+
+		<div style="" />
+
+        <span id="navi-scroll-block" style="float:left;clear:left;height:4em;">
+        	<!-- Acting as a spacer because the footer will overlay the content since its position is set to fixed -->
+        	<!-- This will provide the necessary space so that scrolling works properly -->
+        </span>
+        
+		<div id="footer" align="center">
+			#{msg.footerTop} ${appSettings.versionNumber}
+			<br />
+			#{msg.footerBottom} | <a href="#" title="License">#{msg.footerLicense}</a> | <a href="https://github.com/SwissTPH" title="Repository">#{msg.footerRepository}</a>
+		</div>
+    </body>
+    <o:popupLayer id="popupWindowForSex"
+        	 width="30%"
+        	 height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForSex').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.genderConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>
+   	<o:popupLayer id="popupWindowForLocType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForLocType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.locationTypeConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForDobAspect"
+			width="30%"
+	        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForDobAspect').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.dobAspectConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+	    </div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForRealVisit"
+			width="30%"
+	        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForRealVisit').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.visitConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+	    </div>
+	</o:popupLayer>
+    <o:popupLayer id="popupWindowForSGType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForSGType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.socialGroupTypeConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForRelationship"
+	              width="30%"
+	              height="30%">
+			<div style="position:absolute;right:1%;top:1%">
+				<input type="button" value="Close [X]" onclick="O$('popupWindowForRelationship').hide();"/>
+			</div>
+			<div style="overflow:auto;padding:.5em;">
+				<h3>#{msg.popupValidValues}:</h3>
+				<ul>
+					<c:forEach items="#{valueExtensionIterator.membershipConstraint}" var="dv">
+						<li>#{dv.key} - #{dv.value}</li>
+					</c:forEach>
+				</ul>
+	    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForMembershipStartType"
+        width="30%"
+        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMembershipStartType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.birthCode} - #{msg.birth}</li>
+				<li>#{siteProperties.inmigrationCode} - #{msg.inmigration}</li>
+				<li>#{siteProperties.marriageCode} - #{msg.marriage}</li>
+				<li>#{siteProperties.enumerationCode} - #{msg.enumeration}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForMembershipEndType"
+        width="30%"
+        height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMembershipEndType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.deathCode} - #{msg.death}</li>
+				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
+				<li>#{siteProperties.notApplicableCode} - #{msg.notApplicable}</li>
+				<li>#{siteProperties.deathOfHOHCode} - #{msg.deathOfHOH}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>
+	<o:popupLayer id="popupWindowForMaritalStatusEndType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMaritalStatusEndType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.notApplicableCode} - #{msg.none}</li>
+				<li>#{siteProperties.deathCode} - #{msg.death}</li>
+				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForMaritalStatusStartType"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForMaritalStatusStartType').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<c:forEach items="#{valueExtensionIterator.maritalStatusConstraint}" var="dv">
+					<li>#{dv.key} - #{dv.value}</li>
+				</c:forEach>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForResidencyStartTypeCodes"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForResidencyStartTypeCodes').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.enumerationCode} - #{msg.enumeration}</li>
+				<li>#{siteProperties.inmigrationCode} - #{msg.inmigration}</li>
+				<li>#{siteProperties.birthCode} - #{msg.birth}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForResidencyEndTypeCodes"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForResidencyEndTypeCodes').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.outmigrationCode} - #{msg.outmigration}</li>
+				<li>#{siteProperties.deathCode} - #{msg.death}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>		
+    <o:popupLayer id="popupWindowForPregOutcome"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForPregOutcome').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.liveBirthCode} - #{msg.pregnancyOutcomeLiveBirth}</li>
+				<li>#{siteProperties.stillBirthCode} - #{msg.pregnancyOutcomeStillBirth}</li>
+				<li>#{siteProperties.miscarriageCode} - #{msg.pregnancyOutcomeMiscarriage}</li>
+				<li>#{siteProperties.abortionCode} - #{msg.pregnancyOutcomeAbortion}</li>
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForPeriods"
+             width="30%"
+             height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForPeriods').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>Valid values:</h3>
+			<ul>
+				<li>#{msg.dhisDaily}</li>	
+				<li>#{msg.dhisMonthly}</li>	
+				<li>#{msg.dhisYearly}</li>	
+			</ul>
+    	</div>
+	</o:popupLayer>	
+	<o:popupLayer id="popupWindowForDataStatus"
+            width="30%"
+            height="30%">
+		<div style="position:absolute;right:1%;top:1%">
+			<input type="button" value="Close [X]" onclick="O$('popupWindowForDataStatus').hide();"/>
+		</div>
+		<div style="overflow:auto;padding:.5em;">
+			<h3>#{msg.popupValidValues}:</h3>
+			<ul>
+				<li>#{siteProperties.dataStatusPendingCode} - #{msg.popupPending}</li>
+				<li>#{siteProperties.dataStatusValidCode} - #{msg.popupValid}</li>
+				<li>#{siteProperties.dataStatusVoidCode} - #{msg.popupVoid}</li>
+				<li>#{siteProperties.dataStatusWarningCode} - #{msg.popupWarning}</li>
+				<li>#{siteProperties.dataStatusClosedCode} - #{msg.popupClosed}</li>
+				<li>#{siteProperties.dataStatusFatalCode} - #{msg.popupFatal}</li>
+			</ul>
+	   	</div>
+	</o:popupLayer>	
+    </f:view>	
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<head>
+	</head>
+
+	<body>
+		<ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Location Hierarchy Details</ui:define>
+		
+			<ui:param name="crud" value="#{locationHierarchyCrud}" />
+				
+			<ui:define name="listing">
+				<ui:include src="list.xhtml" />
+			</ui:define>
+			<ui:define name="display">
+			
+			<h:outputText value="#{navController.breadcrumbTrail}" />
+			
+			<h1>#{msg.locationHierarchyDetail}</h1>
+				<h:form>
+		            <h:panelGrid columns="2">   
+		            	<h:outputText value="#{msg.locationHierarchyId}:"/>
+		                <h:outputText value="#{locationHierarchyCrud.item.extId}" />
+		                <h:outputText value="#{msg.locationHierarchyParentLevel}:"/>
+		                <h:outputText value="#{locationHierarchyCrud.item.level.name}"/>
+		                <h:outputText value="#{msg.locationHierarchyParentName}:"/>
+		                <h:outputText value="#{locationHierarchyCrud.item.parent}" converter="#{locationHierarchyExtIdConverter}" />
+		               	<h:outputText value="#{msg.locationHierarchyChildName}:"/>
+		                <h:outputText value="#{locationHierarchyCrud.item.name}" />			   
+		             </h:panelGrid>
+		            <br />
+		            <h:commandButton action="#{locationHierarchyCrud.editSetup}" value="#{msg.lblEdit}" rendered="#{flowScope == null}">
+			        	<f:setPropertyActionListener target="#{jsfService.itemId}" value="#{locationHierarchyCrud.item.uuid}" />
+			        </h:commandButton>
+	        	</h:form>
+			</ui:define>		
+		</ui:composition>
+	</body>
+</html>

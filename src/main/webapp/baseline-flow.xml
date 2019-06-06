@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <!-- This element is needed - it provides a flow scoped persistent context -->
+    <persistence-context />
+
+    <on-start>
+        <set name="flowScope.showNavMenu" value="true"></set>
+        <set name="flowScope.step" value="0"></set>
+        <evaluate expression="baselineFlowBean.clear()"></evaluate>
+    </on-start>
+
+    <view-state id="home" view="baseline/create.xhtml">
+        <on-entry>
+            <set name="flowScope.currentView" value="'home'"></set>
+            <evaluate expression="navController.setCurrentItem('Baseline')" />
+        </on-entry>
+        <transition on="setFWAndDate">
+            <evaluate expression="baselineFlowBean.determineValidDate(messageContext)" />
+            <evaluate expression="baselineFlowBean.setSgName('NOT SELECTED')" />
+            <evaluate expression="baselineFlowBean.setLocationName('NOT SELECTED')" />
+            <set name="flowScope.showListing" value="false"></set>
+            <set name="flowScope.showNavMenu" value="false"></set>
+            <set name="flowScope.updatingBaseline" value="true"></set>
+            <set name="flowScope.step" value="1"></set>
+        </transition>
+        <transition on="setLocation">
+            <evaluate expression="baselineFlowBean.determineValidLocation(messageContext)" />
+            <set name="flowScope.step" value="2"></set>
+        </transition>
+        <transition on="setSocialGroup">
+            <evaluate expression="baselineFlowBean.determineValidSocialGroup(messageContext)" />
+            <set name="flowScope.step" value="3"></set>
+        </transition>
+        <transition on="newLocation" to="location">
+            <evaluate expression="locationCrud.initFlow(true)" />
+        </transition>
+        <transition on="newSocialGroup" to="newIndividual">
+            <set name="flowScope.baselineAddSG" value="true"></set>
+            <evaluate expression="individualCrud.initFlow(true)" />
+        </transition>
+        <transition on="setIndividual">
+            <evaluate expression="baselineFlowBean.setSelectedIndividual(requestParameters.indivId)" />
+        </transition>
+        <transition on="addIndividual" to="newIndividual">
+            <set name="flowScope.baselineAddSG" value="false"></set>
+            <set name="flowScope.baselineAddIndiv" value="true"></set>
+            <evaluate expression="individualCrud.initFlow(true)" />
+        </transition>
+        <transition on="clearIndividual">
+            <evaluate expression="baselineFlowBean.setSelectedIndividual(null)" />
+        </transition>
+        <transition on="addMembership" to="newMembership">
+            <evaluate expression="baselineFlowBean.checkBean(messageContext)" />
+            <set name="flowScope.currentView" value="'newMembership'"></set>
+            <evaluate expression="membershipCrud.initFlow(true)" />
+        </transition>
+        <transition on="finish" to="resetForm" />
+    </view-state>
+
+    <view-state id="location" view="location/create.xhtml">
+        <on-entry>
+            <evaluate expression="locationCrud.getItem().setCollectedBy(baselineFlowBean.getCollectedBy())" />
+            <set name="flowScope.currentView" value="'location'"></set>
+            <evaluate expression="navController.addItemToTrail('Location Create')" />
+        </on-entry>
+        <transition on="createLocation" to="home">
+            <evaluate expression="locationCrud.commit(messageContext)" />
+            <set name="flowScope.step" value="2"></set>
+            <set name="baselineFlowBean.currentLocation" value="locationCrud.getItem()"></set>
+            <set name="baselineFlowBean.collectedBy" value="locationCrud.getItem().getCollectedBy()" />
+        </transition>
+        <transition on="location_detail" to="confirmFromLocation">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+            <set name="flowScope.uuid" value="requestParameters.itemId" />
+        </transition>
+        <transition on="location_edit" to="confirmFromLocation">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+            <set name="flowScope.uuid" value="requestParameters.itemId" />
+        </transition>
+        <transition on="cancel" to="home">
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <view-state id="confirmFromLocation" view="baseline/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="exit">
+            <evaluate expression="locationCrud.editByUuid(flowScope.uuid, messageContext)" />
+        </transition>
+    </view-state>
+
+    <view-state id="socialGroup" view="socialgroup/create.xhtml">
+        <on-entry>
+            <set name="flowScope.currentView" value="'socialGroup'"></set>
+            <set name="socialGroupCrud.getItem().collectedBy" value="baselineFlowBean.getCollectedBy()" />
+            <evaluate expression="navController.addItemToTrail('SocialGroup Create')" />
+        </on-entry>
+        <transition on="createSocialGroup" to="home">
+            <evaluate expression="individualService.generateId(individualCrud.getItem())" />
+            <evaluate expression="socialGroupService.createSocialGroup(socialGroupCrud.getItem(), socialGroupCrud.location)" />
+            <evaluate expression="socialGroupCrud.validateEntity(socialGroupCrud.getItem(), messageContext)" />
+            <evaluate
+                expression="baselineFlowBean.createSocialGroupAndIndividual(individualCrud.getItem(), socialGroupCrud.getItem(), messageContext)" />
+            <set name="baselineFlowBean.currentSocialGroup" value="socialGroupCrud.getItem()"></set>
+            <set name="flowScope.step" value="3"></set>
+            <evaluate expression="navController.removeLastCrumb()" />
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        <transition on="socialgroup_detail" to="confirmFromSocialGroup">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+            <set name="flowScope.uuid" value="requestParameters.itemId" />
+        </transition>
+        <transition on="socialgroup_edit" to="confirmFromSocialGroup">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+            <set name="flowScope.uuid" value="requestParameters.itemId" />
+        </transition>
+        <transition on="cancel" to="home">
+            <evaluate expression="navController.removeLastCrumb()" />
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <view-state id="confirmFromSocialGroup" view="baseline/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="exit">
+            <evaluate expression="socialGroupCrud.editByUuid(flowScope.uuid, messageContext)" />
+        </transition>
+    </view-state>
+
+    <view-state id="newIndividual" view="individual/create.xhtml">
+        <on-entry>
+            <set name="flowScope.currentView" value="'newIndividual'"></set>
+            <evaluate expression="individualIdGenerator.setLocation(baselineFlowBean.getCurrentLocation())" />
+            <set name="individualCrud.getItem().collectedBy" value="baselineFlowBean.getCollectedBy()" />
+            <evaluate expression="navController.addItemToTrail('Individual Create')" />
+        </on-entry>
+        <transition on="addPerson" to="socialGroup">
+            <evaluate expression="individualIdGenerator.setLocation(baselineFlowBean.getCurrentLocation())" />
+            <evaluate expression="socialGroupCrud.setLocation(baselineFlowBean.getCurrentLocation())" />
+            <evaluate expression="individualCrud.validateIndividual(messageContext)" />
+            <evaluate expression="individualCrud.validateEntity(individualCrud.getItem(), messageContext)" />
+            <evaluate expression="socialGroupCrud.initFlow(true)" />
+            <set name="socialGroupCrud.getItem().groupHead" value="individualCrud.getItem()" />
+            <set name="flowScope.updating" value="true" />
+        </transition>
+        <transition on="addMember" to="newMembershipForIndividual">
+            <evaluate expression="individualCrud.validateIndividual(messageContext)" />
+            <evaluate expression="individualCrud.validateEntity(individualCrud.getItem(), messageContext)" />
+            <evaluate expression="membershipCrud.initFlow(true)" />
+        </transition>
+        <transition on="cancel" to="home">
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <view-state id="newMembershipForIndividual" view="membership/create.xhtml">
+        <on-entry>
+            <set name="flowScope.currentView" value="'newMembershipForIndividual'"></set>
+            <evaluate expression="membershipCrud.getItem().setIndividual(individualCrud.getItem())" />
+            <evaluate expression="membershipCrud.getItem().setCollectedBy(baselineFlowBean.getCollectedBy())" />
+            <evaluate expression="membershipCrud.getItem().setSocialGroup(baselineFlowBean.getCurrentSocialGroup())" />
+            <evaluate expression="membershipCrud.getItem().setStartDate(baselineFlowBean.getConvertedEntryDate())" />
+            <evaluate expression="membershipCrud.getItem().setEndType(siteProperties.getNotApplicableCode())" />
+            <evaluate expression="navController.addItemToTrail('Membership Create')" />
+        </on-entry>
+        <transition on="createMembership" to="home">
+            <evaluate expression="membershipCrud.validateEntity(membershipCrud.getItem(), messageContext)" />
+            <evaluate
+                expression="baselineFlowBean.createResidencyAndMembership(individualCrud.getItem(), membershipCrud.getItem(), messageContext)" />
+            <evaluate expression="navController.removeLastCrumb()" />
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+        <transition on="cancel" to="home">
+            <evaluate expression="navController.removeLastCrumb()" />
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <view-state id="newMembership" view="membership/create.xhtml">
+        <on-entry>
+            <evaluate expression="membershipCrud.getItem().setIndividual(baselineFlowBean.getSelectedIndividual())" />
+            <evaluate expression="membershipCrud.getItem().setCollectedBy(baselineFlowBean.getCollectedBy())" />
+            <evaluate expression="membershipCrud.getItem().setSocialGroup(baselineFlowBean.getCurrentSocialGroup())" />
+            <evaluate expression="membershipCrud.getItem().setStartDate(baselineFlowBean.getConvertedEntryDate())" />
+            <evaluate expression="navController.addItemToTrail('Membership Create')" />
+        </on-entry>
+        <transition on="createMembership" to="home">
+            <evaluate expression="membershipCrud.commit(messageContext)" />
+        </transition>
+        <transition on="cancel" to="home">
+            <evaluate expression="navController.removeLastCrumb()" />
+        </transition>
+    </view-state>
+
+    <view-state id="confirm" view="baseline/confirm.xhtml">
+        <transition on="continue" to="${flowScope.currentView}" />
+        <transition on="cancel" to="directCancel" />
+    </view-state>
+
+    <decision-state id="directCancel">
+        <if test="flowScope.updatingBaseline" then="logout" else="exit" />
+    </decision-state>
+
+    <decision-state id="loggingOut">
+        <if test="flowScope.updatingBaseline" then="confirm" else="logout" />
+    </decision-state>
+
+    <end-state id="exit" view="externalRedirect:contextRelative:${facesNavigation.navigateTo}" />
+    <end-state id="logout" view="externalRedirect:contextRelative:logoutProcess" />
+    <end-state id="resetForm" />
+
+    <global-transitions>
+        <transition on="logoutLnk" to="loggingOut" />
+        <transition to="exit">
+            <evaluate expression="facesNavigation.setNavigateTo(currentEvent.id)" />
+        </transition>
+    </global-transitions>
+
+</flow>

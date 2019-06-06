@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <head>
+    </head>
+    
+	<body>
+    	<ui:composition template="/templates/default.xhtml">
+			<ui:define name="title">OpenHDS - Create Visit</ui:define>
+			
+		  		<div id="loading-div">
+		      		<img src="#{request.contextPath}/resources/images/ajax-loader.gif" alt="loading..."/> #{msg.working}
+		  		</div>
+		
+		  		<ui:param name="crud" value="#{visitCrud}" />
+			
+	      		<ui:param name="hideTabBar" value="#{flowScope != null}" />
+			
+          		<ui:define name="listing">
+              		<ui:include src="list.xhtml" />
+          		</ui:define>
+          	<ui:define name="display">
+            
+          	<style type="text/css">
+				.extensions {
+			    	border-collapse:collapse;
+				  	border-color:#888;
+				  	table-layout:fixed;
+			 	 }
+							
+			  	.extensions th {
+				  	background-color:#B9D264;
+				  	font-weight:bold;
+				  	font-size:.9em;
+				  	overflow:hidden;
+			  	}
+				
+			  	.extensions input {
+				  	width:100%;
+				 	 border:0;
+		      	}
+		  	</style>
+                    
+          	<h:outputText value="#{navController.breadcrumbTrail}" />
+           
+              	<h1><h:outputText value="#{msg.visitCreate}" /></h1>
+              	<h:messages id="errors" globalOnly="true" />
+              	<h:form id="form">
+                  	<h:panelGrid columns="4">
+                   
+                   	  	<c:if test="#{visitIdGenerator.generated == false}" >
+                   	   	  	<h:outputText value="#{msg.visitId}:" />
+                   		  	<h:outputText />
+                    	  	<h:inputText id="extId" value="#{visitCrud.item.extId}" converter="#{defaultConverter}" />
+					      	<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                   	  	</c:if>
+
+                      	<h:outputText value="#{msg.fieldWorkerId}:"/>
+                      	<h:outputText />
+                      	<h:inputText styleClass="collectedBy" autocomplete="off" id="fwId" value="#{visitCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
+                      	<h:message for="fwId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                      	<h:outputText value="#{msg.locationId}:"/>
+                      	<h:outputText />
+                      	<h:inputText styleClass="location" autocomplete="off" id="location" value="#{visitCrud.item.visitLocation}" converter="#{locationExtIdConverter}" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
+                      	<h:message for="location" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                      	<h:outputText value="#{msg.visitDate} (#{siteProperties.dateFormat})" />
+                      	<h:outputText />
+                      	<o:dateChooser id="visitDate" value="#{visitCrud.visitDate}" pattern="#{siteProperties.dateFormat}" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" /> 
+                      	<h:message for="visitDate" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					
+					  	<h:outputText value="#{msg.visitRoundNumber}:"/>
+                      	<h:outputText />
+                      	<h:inputText id="roundNum" value="#{visitCrud.item.roundNumber}" styleClass="handleChange" converter="#{defaultConverter}" required="true" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
+                      	<h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                      	
+                      	<h:outputText value="#{msg.visitRealVisit}:"/>
+						<img class="clickable" onclick="O$('popupWindowForRealVisit').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+						<h:inputText id="realVisit" value="#{visitCrud.item.realVisit}" converter="#{defaultConverter}" />
+						<h:message for="realVisit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+				
+                      <!--  <h:outputText value="#{msg.visitRealVisit}:"/>
+                      	<h:outputText />
+                      	<h:inputText id="realVisit" value="#{visitCrud.item.realVisit}" styleClass="handleChange" converter="#{defaultConverter}" required="true" disabled="#{visitCrud.extensionsInitialized and fn:length(visitCrud.item.extensions) > 0}" />
+                      	<h:message for="realVisit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>-->	
+                 	 </h:panelGrid>
+       
+             	  	<h:panelGroup rendered="#{fn:length(visitCrud.item.extensions) > 0}">
+	             	  	<h3>#{msg.visitExtensionTitle}</h3>
+	               	  	<h:panelGroup rendered="#{fn:length(visitCrud.visitExtensions) > 0}">
+	                  	  	<h4>#{msg.navBarVisit}</h4>		
+						  	<h:dataTable value="#{visitCrud.visitExtensions}" var="extension" >					
+							  	<h:column>
+			                      	<h:outputText id="extDate" value="#{extension.classExtension.name} (#{siteProperties.dateFormat}):" rendered="#{extension.classExtension.primType eq 'DATE'}" />
+			                      	<h:outputText id="extBool" value="#{extension.classExtension.name} #{msg.lblYesOrNo}" rendered="#{extension.classExtension.primType eq 'BOOLEAN'}" />
+			                      	<h:outputText id="extName" value="#{extension.classExtension.name}:" rendered="#{extension.classExtension.primType ne 'DATE' and extension.classExtension.primType ne 'BOOLEAN'}" />
+		                      	</h:column>	
+		                      	<h:column>
+		                      	  	<h:selectOneListbox value="#{extension.extensionValue}" size="1" id="extValueMultChoice" immediate="true" rendered="#{extension.classExtension.primType eq 'MULTIPLECHOICE'}" >
+		                		      	<f:selectItems value="#{extension.classExtension.jsfcrud_transform[jsfService.jsfcrud_method.getSelectItems].extensionAnswers}" />
+		            			  	</h:selectOneListbox>              		
+	                      	      	<h:inputText id="extValue" value="#{extension.extensionValue}" converter="#{defaultConverter}" rendered="#{extension.classExtension.primType ne 'MULTIPLECHOICE'}" required="true" />
+				              	</h:column>
+					      	</h:dataTable>		
+					  	</h:panelGroup>
+						
+					  	<h:panelGroup rendered="#{fn:length(visitCrud.locationExtensions) > 0}">
+	                  	<h4>#{msg.navBarLocation}</h4>		
+						  	<h:dataTable value="#{visitCrud.locationExtensions}" var="extension" >					
+							  	<h:column>
+			                     	 <h:outputText id="extDate" value="#{extension.classExtension.name} (#{siteProperties.dateFormat}):" rendered="#{extension.classExtension.primType eq 'DATE'}" />
+			                      	<h:outputText id="extBool" value="#{extension.classExtension.name} (#{siteProperties.yesResponse}/#{siteProperties.noResponse})" rendered="#{extension.classExtension.primType eq 'BOOLEAN'}" />    
+			                      	<h:outputText id="extName" value="#{extension.classExtension.name}:" rendered="#{extension.classExtension.primType ne 'DATE' and extension.classExtension.primType ne 'BOOLEAN'}" />
+		                     	 </h:column>	
+		                      	<h:column>
+		                      	   	<h:selectOneListbox value="#{extension.extensionValue}" size="1" id="extValueMultChoice" immediate="true" rendered="#{extension.classExtension.primType eq 'MULTIPLECHOICE'}" >
+		                			  	 <f:selectItems value="#{extension.classExtension.jsfcrud_transform[jsfService.jsfcrud_method.getSelectItems].extensionAnswers}" />
+		            			   	</h:selectOneListbox>		
+	                      		   	<h:inputText id="extValue" value="#{extension.extensionValue}" converter="#{defaultConverter}" rendered="#{extension.classExtension.primType ne 'MULTIPLECHOICE'}" required="true" />	
+				               	</h:column>
+						  	 </h:dataTable>		
+					   	</h:panelGroup>
+						
+					   	<h:panelGroup rendered="#{fn:length(visitCrud.individualExtensions) > 0}">
+	                       	<h4>#{msg.navBarIndividual}</h4>		
+	                       	<table width="50%" border="1" cellspacing="0" cellpadding="0" class="extensions">
+	                    	  	<tr>
+	                    		  	<th width="5%">#{msg.visitExtensionNumber}</th>
+								  	<th width="15%">#{msg.individualId}</th>
+								  	<th width="15%">#{msg.visitExtensionName}</th>
+							      	<th width="15%">#{msg.visitExtensionValue}</th>
+							  	</tr>
+							  	<c:forEach var="extension" items="#{visitCrud.individualExtensions}" varStatus="status" 
+										begin="0" end="#{fn:length(visitCrud.individualExtensions) - 1}" step="1">
+								 	 <tr>
+									  	<td style="text-align:center;">
+									     	 #{status.index lt 9 ? '0' : ''}#{status.index + 1}
+									  	</td>
+									  	<td><h:inputText value="#{extension.entityExtId}" styleClass="individual" autocomplete="off" converter="#{defaultConverter}" required="true" /></td>
+									  	<td style="text-align:center;">
+									      	<h:outputText value="#{extension.classExtension.name} (#{siteProperties.dateFormat})" rendered="#{extension.classExtension.primType eq 'DATE'}" />
+					                      	<h:outputText value="#{extension.classExtension.name} (#{siteProperties.yesResponse}/#{siteProperties.noResponse})" rendered="#{extension.classExtension.primType eq 'BOOLEAN'}" />
+					                      	<h:outputText value="#{extension.classExtension.name}" rendered="#{extension.classExtension.primType ne 'DATE' and extension.classExtension.primType ne 'BOOLEAN'}" />
+									  	</td>
+									  	<td style="text-align:center;">
+										   	<h:selectOneListbox value="#{extension.extensionValue}" size="1" immediate="true" rendered="#{extension.classExtension.primType eq 'MULTIPLECHOICE'}" >
+			                			       	<f:selectItems value="#{extension.classExtension.jsfcrud_transform[jsfService.jsfcrud_method.getSelectItems].extensionAnswers}" />
+			            				   	</h:selectOneListbox>		
+		                      		       	<h:inputText value="#{extension.extensionValue}" converter="#{defaultConverter}" rendered="#{extension.classExtension.primType ne 'MULTIPLECHOICE'}" required="true" />	
+								       	</td>
+							       	</tr>
+						       	</c:forEach>        	
+	                       	</table>
+	                      	<h:commandButton action="#{visitCrud.addIndividualExtension}" styleClass="createBtn" value="#{msg.visitExtensionAdd}" id="addExtensionIndiv" />
+	                       	<h:commandButton action="#{visitCrud.clearIndividualExtensions}" styleClass="createBtn" value="#{msg.visitExtensionClear}" id="clearExtensionIndiv" />
+					   	</h:panelGroup>
+						
+					   	<h:panelGroup rendered="#{fn:length(visitCrud.socialGroupExtensions) > 0}">
+	                       	<h4>#{msg.navBarSocialGroup}</h4>		
+	                       	<table width="50%" border="1" cellspacing="0" cellpadding="0" class="extensions">
+	                    	   	<tr>
+	                    		   	<th width="5%">#{msg.visitExtensionNumber}</th>
+								   	<th width="15%">#{msg.socialGroupId}</th>
+								   	<th width="15%">#{msg.visitExtensionName}</th>
+							       	<th width="15%">#{msg.visitExtensionValue}</th>
+							   	</tr>
+							   	<c:forEach var="extension" items="#{visitCrud.socialGroupExtensions}" varStatus="status" 
+										begin="0" end="#{fn:length(visitCrud.socialGroupExtensions) - 1}" step="1">
+								   	<tr>
+									   	<td style="text-align:center;">
+										   	#{status.index lt 9 ? '0' : ''}#{status.index + 1}
+									   	</td>
+									   	<td><h:inputText value="#{extension.entityExtId}" styleClass="socialGroup" autocomplete="off" converter="#{defaultConverter}" required="true" /></td>
+									   	<td style="text-align:center;">
+											<h:outputText value="#{extension.classExtension.name} (#{siteProperties.dateFormat})" rendered="#{extension.classExtension.primType eq 'DATE'}" />
+					                       	<h:outputText value="#{extension.classExtension.name} (#{siteProperties.yesResponse}/#{siteProperties.noResponse})" rendered="#{extension.classExtension.primType eq 'BOOLEAN'}" />
+					                       	<h:outputText value="#{extension.classExtension.name}" rendered="#{extension.classExtension.primType ne 'DATE' and extension.classExtension.primType ne 'BOOLEAN'}" />
+									   	</td>
+									   	<td style="text-align:center;">
+											<h:selectOneListbox value="#{extension.extensionValue}" size="1" immediate="true" rendered="#{extension.classExtension.primType eq 'MULTIPLECHOICE'}" >
+			                					<f:selectItems value="#{extension.classExtension.jsfcrud_transform[jsfService.jsfcrud_method.getSelectItems].extensionAnswers}" />
+			            					 </h:selectOneListbox>		
+		                      		       	<h:inputText value="#{extension.extensionValue}" converter="#{defaultConverter}" rendered="#{extension.classExtension.primType ne 'MULTIPLECHOICE'}" required="true" />	
+								       	</td>
+							       	</tr>
+						       	</c:forEach>        	
+	                       	</table>
+	                       	<h:commandButton action="#{visitCrud.addSocialGroupExtension}" styleClass="createBtn" value="#{msg.visitExtensionAdd}" id="addExtensionSG" />
+	                       	<h:commandButton action="#{visitCrud.clearSocialGroupExtensions}" styleClass="createBtn" value="#{msg.visitExtensionClear}" id="clearExtensionSG" />
+				       	</h:panelGroup>
+				   	</h:panelGroup>
+					             
+                   	<script>
+                   		document.getElementById('form:fwId').focus();
+ 						document.getElementById('form:extId').focus();
+ 				   	</script>
+                   	<br /><br />
+                   	<c:choose>
+                   		<c:when test="#{flowScope != null}">
+                        	<h:commandButton action="createVisit" id="createBtn" value="#{msg.lblCreate}" />
+                    	</c:when>
+                    	<c:otherwise>
+                        	<h:commandButton action="#{visitCrud.create}" value="#{msg.lblCreate}"/>
+                    	</c:otherwise>
+                   	</c:choose>
+                    <h:outputText value=" " />
+                   	<h:commandButton action="#{visitCrud.initializeExtensions}" value="#{msg.visitExtensionAdd}" rendered="#{fn:length(visitCrud.item.extensions) == 0}" />
+					<h:commandButton action="#{visitCrud.clearExtensions}" value="#{msg.lblClear}" rendered="#{fn:length(visitCrud.item.extensions) > 0}" />
+                   	<br />
+					<h:outputText rendered="#{fn:length(visitCrud.item.extensions) eq 0 and visitCrud.extensionsInitialized}" value="#{msg.visitExtensionsEmpty}" />
+            	</h:form>
+        	</ui:define>
+    	</ui:composition>
+	</body>
+</html>

@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core" xmlns:o="http://openfaces.org/" xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/templates/default.xhtml">
+    <ui:define name="title">OpenHDS - Tasks</ui:define>
+
+    <ui:define name="display">
+
+        <h:outputText value="#{navController.breadcrumbTrail}" />
+
+        <h1>Tasks</h1>
+        <h:messages id="errors" globalOnly="true" />
+        <h:form id="taskForm">
+            <h:outputText value="Generate Individual XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startIndividualTask}" value="Start Individual Task" />
+            <br />
+            <br />
+
+            <h:outputText value="Generate Location XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startLocationTask}" value="Start Location Task" />
+            <br />
+            <br />
+
+            <h:outputText value="Generate Relationship XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startRelationshipTask}" value="Start Relationship Task" />
+            <br />
+            <br />
+
+            <h:outputText value="Generate Social Group XML File" />
+            <br />
+            <h:commandButton action="#{taskBean.startSocialGroupTask}" value="Start Social Group Task" />
+            <br />
+            <br />
+
+            <h:outputText value="Generate Visit XML File" />
+            <br />
+            <h:outputText value="Round Number:" />
+            <br />
+            <h:inputText value="#{taskBean.roundNumber}" />
+            <br />
+            <h:commandButton action="#{taskBean.startVisitTask}" value="Start Visit Task" />
+        </h:form>
+
+        <br />
+        <br />
+
+        <h:dataTable var="task" value="#{taskBean.tasks}" styleClass="openhds-table">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Task Name" />
+                </f:facet>
+
+                <h:outputText value="#{task.taskName}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Total Items Processed" />
+                </f:facet>
+
+                <h:outputText value="#{task.totalCount}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Start Time Stamp" />
+                </f:facet>
+
+                <h:outputText value="#{task.taskStartDate}" converter="#{timestampConverter}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="End Time Stamp" />
+                </f:facet>
+
+                <h:outputText value="#{task.taskEndDate}" converter="#{timestampConverter}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="MD5 Hash" />
+                </f:facet>
+
+                <h:outputText value="#{task.md5Hash}" />
+            </h:column>
+        </h:dataTable>
+    </ui:define>
+</ui:composition>

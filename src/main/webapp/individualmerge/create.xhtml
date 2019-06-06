@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+     
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Individual Merge</ui:define>
+		
+			<ui:param name="hideTabBar" value="true" />
+		
+            <ui:define name="display">
+            
+        <h:outputText value="#{navController.breadcrumbTrail}" />
+            
+        <h1>#{msg.navBarMergeIndividual}</h1>
+        <h:messages globalOnly="true" />
+        <p>
+        	#{msg.mergeDescription}
+        </p>
+        <h:form id="form">
+            <h:panelGrid columns="3">
+                <h:outputText value="#{msg.mergePrimaryIndividualId}:"/>
+                <h:inputText styleClass="individual" autocomplete="off" id="indivId"  value="#{individualMergeCrud.item.primary}" converter="#{individualExtIdConverter}" />
+                <h:message for="indivId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                
+                <h:outputText value="#{msg.mergeTemporaryIndividualId}:"/>
+                <h:inputText styleClass="individual" autocomplete="off" id="indivToMerge" value="#{individualMergeCrud.item.toMergeFrom}" converter="#{individualExtIdConverter}" />
+                <h:message for="indivToMerge" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            </h:panelGrid>
+            <script>
+  				document.getElementById('form:indivId').focus();
+  			</script>
+
+            <br />
+            <br />
+            <strong>#{msg.mergeEvents}:</strong>
+            <br />
+            <h:selectBooleanCheckbox value="#{individualMergeCrud.item.mergeInMigrations}" />
+            #{msg.mergeEventInMigration}
+            <br />
+            <h:selectBooleanCheckbox value="#{individualMergeCrud.item.mergeMemberships}" />
+            #{msg.mergeMemberships}
+            <br />
+            <br />
+ 			<h:commandButton action="#{individualMergeCrud.create}" value="#{msg.mergeIndividuals}"/>
+        </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

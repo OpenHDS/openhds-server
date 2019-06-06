@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+			  xmlns:f="http://java.sun.com/jsf/core"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:form>
+        <div style="text-align:right;">
+            <div style="float:left;">
+                <h:commandButton immediate="true" action="#{formCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" />
+
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{formCrud}"/>
+				</ui:include>	
+        	</div>
+
+	        <!-- Search Widget -->
+	        <ui:include src="/search/searchBox.xhtml">
+	            <ui:param name="crud" value="#{formCrud}"/>
+	        </ui:include>
+		</div>
+        <div >
+            <h:outputText escape="false" value="#{msg.formEmpty}" rendered="#{formCrud.pager.totalCount == 0}" />
+            <h:panelGroup rendered="#{formCrud.pager.totalCount > 0}">
+                <h:dataTable value="#{formCrud.pagedItems}" var="item"
+                             columnClasses="center,center,center,width3" width="100%" >
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.formName}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.formName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.formActive}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.active}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.formGender}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.gender}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText escape="false" value=""/>
+                        </f:facet>
+                        <h:commandLink action="#{formCrud.detailSetup}">
+                            <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                            <f:param name="itemId" value="#{item.uuid}"/>
+                        </h:commandLink>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{formCrud.editSetup}">
+                            <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                            <f:param name="itemId" value="#{item.uuid}"/>
+                        </h:commandLink>
+		                <h:commandLink action="#{formCrud.delete}" onclick="return confirm('Are you sure you want to delete the extraform with name \'#{item.formName}\' ?')">
+		                    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+		                    <f:param name="itemId" value="#{item.uuid}"/>
+		                </h:commandLink>
+                        <h:outputText value=" "/>
+		                <h:commandLink action="#{formCrud.submissionSetup}">
+		                    <h:graphicImage title="submissions" style="border: 0;" value="/resources/icons/report.ico" width="32" height="32"/>
+		                    <f:param name="itemId" value="#{item.uuid}"/>
+		                </h:commandLink>
+                        <h:outputText value=" "/>                        
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+        </div>
+    </h:form>
+</ui:composition>

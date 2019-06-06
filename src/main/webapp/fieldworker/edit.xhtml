@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		 	<ui:define name="title">OpenHDS - Edit Field Worker</ui:define>
+		
+			<ui:param name="crud" value="#{fieldWorkerCrud}" />
+			
+            <ui:define name="listing">
+                <ui:include src="list.xhtml" />
+            </ui:define>
+            <ui:define name="display">
+            
+            	<h:outputText value="#{navController.breadcrumbTrail}" />
+            
+                <h1>#{msg.fieldWorkerEdit}</h1>
+                <h:messages id="errors" globalOnly="true" />
+                <h:form id="form">
+                   <h:panelGrid columns="3">
+                    
+                    	<h:outputText value="#{msg.fieldWorkerId}:" />
+	                    <h:inputText id="extId" value="#{fieldWorkerCrud.item.extId}" converter="#{defaultConverter}" disabled="true" />
+						<h:message for="extId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>  
+                    	                    
+                        <h:outputText value="#{msg.fieldWorkerFirstName}:"/>
+                        <h:inputText id="name" value="#{fieldWorkerCrud.item.firstName}" title="FieldWorker Name" converter="#{defaultConverter}" />
+                        <h:message for="name" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.fieldWorkerLastName}:"/>
+                        <h:inputText id="lastname" value="#{fieldWorkerCrud.item.lastName}" title="FieldWorker Surname" converter="#{defaultConverter}" />
+                        <h:message for="lastname" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                        
+						<h:outputText value="#{msg.fieldWorkerPassword}:" />
+						<h:inputSecret id="password" value="#{fieldWorkerCrud.item.password}" converter="#{defaultConverter}" />
+						<h:message for="password" errorClass="error"
+							errorStyle="color: red" infoStyle="color: green" />
+	
+						<h:outputText value="#{msg.fieldWorkerPasswordConfirm}:" />
+						<h:inputSecret id="confirmPassword" value="#{fieldWorkerCrud.item.confirmPassword}" converter="#{defaultConverter}" />
+						<h:message for="confirmPassword" errorClass="error"
+							errorStyle="color: red" infoStyle="color: green" />                      
+                    </h:panelGrid>
+                    <script>
+		            	document.getElementById('form:name').focus();
+		            	document.getElementById('form:extId').focus();
+		            </script>
+                    <br />
+                    <h:commandButton action="#{fieldWorkerCrud.edit}" value="#{msg.lblSave}">
+                        <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{fieldWorkerCrud.item.uuid}" />
+                    </h:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

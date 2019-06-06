@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<head>
+	</head>
+
+	<body>
+		<ui:composition template="/templates/default.xhtml">
+			<ui:define name="title">OpenHDS - Pregnancy Observation Details</ui:define>
+			
+			<ui:param name="crud" value="#{pregnancyObservationCrud}" />
+			
+		    <ui:define name="listing">
+		        <ui:include src="list.xhtml" />
+		    </ui:define>
+	
+			<ui:define name="display">
+			
+				<h:outputText value="#{navController.breadcrumbTrail}" />		
+			
+				<h1>#{msg.pregnancyObservationDetail}</h1>
+				<h:form>
+	
+					<h:outputText styleClass="error" value="#{pregnancyObservationCrud.item.statusMessage}" />
+					
+		            <h:panelGrid columns="3">
+		                <h:outputText value="#{msg.pregnancyObservationMotherId}:"/>
+		                <h:outputText />
+		                <h:outputText value="#{pregnancyObservationCrud.item.mother}" converter="#{individualExtIdConverter}" />
+		                
+		                <h:outputText value="#{msg.pregnancyObservationEDD}:"/>
+		                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+		                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />		                
+		                <h:outputText value="#{pregnancyObservationCrud.item.expectedDeliveryDate}" converter="#{calendarConverter}" />
+		                
+		                <h:outputText value="#{msg.pregnancyObservationRecordedDate}:"/>
+		                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                		<h:graphicImage id="n2" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />		                
+		                <h:outputText value="#{pregnancyObservationCrud.item.recordedDate}" converter="#{calendarConverter}" />
+		                
+		                <h:outputText value="#{msg.fieldWorkerId}:"/>
+		                <h:outputText />
+		                <h:outputText value="#{pregnancyObservationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+		                
+		                <h:outputText value="#{msg.visitId}:"/>
+						<h:outputText />
+		                <h:outputText value="#{pregnancyObservationCrud.item.visit}" converter="#{visitExtIdConverter}" />
+		             	
+		             	<h:outputText value="#{msg.dataStatus}:" />
+		             	<h:outputText />
+		             	<h:outputText value="#{pregnancyObservationCrud.item.status}" />
+		             	
+		             	<h:outputText value="#{msg.insertDate}:"/>
+			            <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                		<h:graphicImage id="n3" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />			            
+			            <h:outputText value="#{pregnancyObservationCrud.item.insertDate}" converter="#{calendarConverter}" />
+		             	
+		             	<h:outputText value="#{msg.insertBy}:"/>
+						<h:outputText />
+						<h:outputText value="#{pregnancyObservationCrud.item.insertBy.fullName}" />
+		
+						<h:outputText value="#{msg.dataStatus}:"/>
+				    	<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+						<h:outputText value="#{pregnancyObservationCrud.item.status}" />	
+		             </h:panelGrid>
+		            <br />
+		            <h:commandButton action="#{pregnancyObservationCrud.editSetup}" value="#{msg.lblEdit}">
+		                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{pregnancyObservationCrud.item.uuid}" />
+		            </h:commandButton>
+		            <h:outputText value=" " />
+		            <h:commandButton value="Cancel" immediate="true" action="cancel" rendered="#{flowScope.updating}" />
+	        	</h:form>
+			</ui:define>		
+		</ui:composition>
+	</body>
+</html>

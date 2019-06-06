@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:form>
+		<div style="text-align:right;">
+			<div style="float:left;">
+				<!-- <h:commandButton immediate="true" action="#{residencyCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" /> -->
+				
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{residencyCrud}"/>
+				</ui:include>		
+			</div>
+		</div>
+		
+		<!-- Search Widget -->	
+		<ui:include src="/search/searchBox.xhtml">
+		     <ui:param name="crud" value="#{residencyCrud}"/>
+		</ui:include>	
+                 <div>
+	            <h:outputText escape="false" value="#{msg.residencyEmpty}" rendered="#{residencyCrud.pager.totalCount == 0}" />
+	            <h:panelGroup rendered="#{residencyCrud.pager.totalCount > 0}">
+	                <h:dataTable value="#{residencyCrud.pagedItems}" var="item" 
+	                columnClasses="center,center,center,center,width3" width="100%"  >
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.individual.extId}"/>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.locationId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.location.extId}"/>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.residencyStartType}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.startType}" />
+	                    </h:column>
+						<h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.residencyEndType}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.endType}" />
+	                    </h:column>		                     
+	                    <h:column>
+	                        <f:facet name="header">
+	                            <h:outputText escape="false" value=""/>
+	                        </f:facet>
+	                        <h:outputLink value="#{request.contextPath}/amendment/residency/details/#{item.uuid}">
+                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                          	 </h:outputLink>
+                            <h:outputText value=" "/>
+                            <sec:ifAllGranted roles="DELETE_ENTITY">
+                                <h:commandLink action="#{residencyCrud.delete}">
+                                    <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                                    <f:param name="itemId" value="#{item.uuid}"/>
+                                </h:commandLink>
+                            </sec:ifAllGranted>
+	                    </h:column>
+	                </h:dataTable>
+	            </h:panelGroup>
+		</div>
+	</h:form>
+</ui:composition>

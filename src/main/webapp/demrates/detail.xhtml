@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head>
+</head>
+<body>
+	<ui:composition template="/templates/default.xhtml">
+	 	<ui:define name="title">OpenHDS - Demographic Rate Definition Details</ui:define>
+	
+		<ui:param name="crud" value="#{demRatesCrud}" />
+		
+		<ui:define name="listing">
+			<ui:include src="list.xhtml" />
+		</ui:define>
+		<ui:define name="display">
+		
+			<h:outputText value="#{navController.breadcrumbTrail}" />
+			<h1>#{msg.demRatesDetail}</h1>
+			<h:form>
+	           	<h:panelGrid columns="2">     
+		            <h:outputText value="#{msg.demRatesStartDate}:"/>
+					<h:panelGroup><h:outputText value="#{demRatesCrud.item.startDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" /></h:panelGroup>
+		            <h:outputText value="#{msg.demRatesEndDate}: "/>
+		            <h:panelGroup><h:outputText value="#{demRatesCrud.item.endDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" /></h:panelGroup>
+		           	<h:outputText value="#{msg.demRatesEventType}:"/>
+		            <h:outputText value="#{demRatesCrud.item.event}" />
+		            <h:outputText value="#{msg.demRatesDenominator}:"/>
+		            <h:outputText value="#{demRatesCrud.item.denominator}" />                      	   
+		        </h:panelGrid>
+		        <br />
+	            <h:commandButton action="#{demRatesCrud.editSetup}" value="#{msg.lblEdit}">
+	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{demRatesCrud.item.uuid}" />
+	            </h:commandButton>
+	            <h:commandButton action="#{demRatesCrud.redirectToReports}" value="#{msg.demRatesViewReport}">
+	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{demRatesCrud.item.uuid}" />
+	            </h:commandButton>       
+	        </h:form>
+		</ui:define>		
+	</ui:composition>
+  </body>
+</html>

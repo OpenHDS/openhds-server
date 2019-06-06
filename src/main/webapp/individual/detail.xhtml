@@ -1,0 +1,91 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:o="http://openfaces.org/"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+				
+	<ui:param name="crud" value="#{individualCrud}" />
+				
+	<ui:define name="listing">
+		<ui:include src="list.xhtml" />
+	</ui:define>
+	
+	<ui:define name="display">
+		
+		<h:outputText value="#{navController.breadcrumbTrail}" />	
+	
+		<ui:param name="crud" value="#{individualCrud}" />
+        <h1>#{msg.individualDetail}</h1>
+       
+        <h:form>
+        
+            <h:outputText styleClass="error" value="#{individualCrud.item.statusMessage}" />
+
+            <h:panelGrid columns="3">
+                <h:outputText value="#{msg.individualId}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.extId}" />
+                
+                <h:outputText value="#{msg.individualFirstName}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.firstName}" />
+                
+                <h:outputText value="#{msg.individualMiddleName}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.middleName}" />
+                
+                <h:outputText value="#{msg.individualLastName}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.lastName}" />
+                
+                <h:outputText value="#{msg.individualGender}:"/>
+	            <img class="clickable" onclick="O$('popupWindowForSex').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+	            <h:outputText value="#{individualCrud.item.gender}" />
+                                                     	   
+                <h:outputText value="#{msg.individualDob}:"/>
+                <h:outputText />
+                <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                <h:outputText value="#{individualCrud.item.dob}" converter="#{calendarConverter}" />
+                
+                <h:outputText value="#{msg.individualDobPartial}:"/>
+                <img class="clickable" onclick="O$('popupWindowForDobAspect').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+                <h:outputText value="#{individualCrud.item.dobAspect}" />
+                
+                <h:outputText value="#{msg.individualReligion}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.religion}" />
+                
+                <h:outputText value="#{msg.individualMotherId}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.mother}" converter="#{individualExtIdConverter}" />
+                
+                <h:outputText value="#{msg.individualFatherId}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.father}" converter="#{individualExtIdConverter}" />
+                
+                <h:outputText value="#{msg.fieldWorkerId}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
+                
+                <h:outputText value="#{msg.insertDate}:"/>
+                <h:outputText />
+                <h:outputText value="#{individualCrud.item.insertDate}" converter="#{calendarConverter}" />
+  				
+  				<h:outputText value="#{msg.insertBy}:"/>
+  				<h:outputText />
+				<h:outputText value="#{individualCrud.item.insertBy.fullName}" />
+				
+				<h:outputText value="#{msg.dataStatus}:"/>
+		    	<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+				<h:outputText value="#{individualCrud.item.status}" />	
+            </h:panelGrid>
+            <br />
+
+           <h:commandButton action="#{individualCrud.editSetup}" value="#{msg.lblEdit}">
+               <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{individualCrud.item.uuid}" />
+           </h:commandButton>
+        </h:form>
+	</ui:define>		
+</ui:composition>

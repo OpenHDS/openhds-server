@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+<body>
+	<ui:composition template="/templates/default.xhtml">
+		
+		<ui:param name="crud" value="#{socialGroupCrud}" />
+	
+		<ui:define name="listing">
+			<ui:include src="list.xhtml" />
+		</ui:define>
+		<ui:define name="display">
+		
+			<h:outputText value="#{navController.breadcrumbTrail}" />
+		
+	        <h1>#{msg.socialGroupDetail}</h1>
+	        <h:form>
+	        
+	            <h:outputText styleClass="error" value="#{socialGroupCrud.item.statusMessage}" />
+	                    
+	            <h:panelGrid columns="3">
+	                <h:outputText value="#{msg.socialGroupId}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{socialGroupCrud.item.extId}"/>
+	                
+	                <h:outputText value="#{msg.socialGroupName}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{socialGroupCrud.item.groupName}" />
+	                
+	                <h:outputText value="#{msg.socialGroupType}:"/>
+	                <img class="clickable" onclick="O$('popupWindowForSGType').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+	                <h:outputText value="#{socialGroupCrud.item.groupType}" />
+	                
+	                <h:outputText value="#{msg.socialGroupHead}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{socialGroupCrud.item.groupHead}" converter="#{individualExtIdConverter}" />
+	                
+	                <h:outputText value="#{msg.fieldWorkerId}:"/>
+	                <h:outputText />
+	                <h:outputText value="#{socialGroupCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}"/>
+	                
+	                <h:outputText value="#{msg.insertDate}:"/>
+	                <h:outputText rendered="#{!siteProperties.ethiopianCalendar}"/>
+	                <h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                <h:outputText value="#{socialGroupCrud.item.insertDate}" converter="#{calendarConverter}" />
+             		
+             		<h:outputText value="#{msg.insertBy}:"/>
+					<h:outputText />
+					<h:outputText value="#{socialGroupCrud.item.insertBy.fullName}" />
+					
+	            	<h:outputText value="#{msg.dataStatus}:"/>
+		    		<img class="clickable" onclick="O$('popupWindowForDataStatus').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+					<h:outputText value="#{socialGroupCrud.item.status}" />	
+	            </h:panelGrid>
+	            <br />
+	            
+		         <fieldset style="background-color:#DEEBB9;border:1px solid #BBB;padding:1em;">
+					<legend style="font-size:1.2em;">#{msg.socialGroupHouseholdCharacteristics}</legend>
+	            	<span id="specialStudySpan">#{msg.socialGroupLoadingHouseholdCharacteristics}</span>
+	            	<iframe id="specialStudyFrame" name="sgSpecialStudy" width="100%" height="400" style="visibility:hidden" />
+		         </fieldset>
+		         
+				<script src="#{request.contextPath}/resources/scripts/special-study-loader.js" />
+	         	<script>
+		        	loadSpecialStudy('#{siteProperties.specialStudyLocation}', "#{request.session.id}", 'socialgroup/#{socialGroupCrud.item.extId}/list');
+	         	</script>
+         
+         		<br />
+	            <h:commandButton action="#{socialGroupCrud.editSetup}" value="#{msg.lblEdit}"> 
+	                <f:setPropertyActionListener target="#{jsfService.itemId}" value="#{socialGroupCrud.item.uuid}" />
+	            </h:commandButton>
+                <h:outputText value=" " />
+                <h:commandButton value="#{msg.lblCancel}" immediate="true" action="cancel" rendered="#{flowScope != null}" />
+	        </h:form>
+		</ui:define>		
+	</ui:composition>
+  </body>
+</html>

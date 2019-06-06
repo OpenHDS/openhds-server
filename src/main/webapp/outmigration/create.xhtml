@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+<body>
+	<ui:composition template="/templates/default.xhtml">
+	 	<ui:define name="title">OpenHDS - Create Out-Migration</ui:define>
+	
+		<ui:param name="crud" value="#{outMigrationCrud}" />
+		
+		<ui:define name="listing">
+			<ui:include src="list.xhtml" />
+		</ui:define>
+		<ui:define name="display">
+		
+			<h:outputText value="#{navController.breadcrumbTrail}" />
+		
+	        <h1>#{msg.outmigrationCreate}</h1>
+	        <h:messages id="errors" globalOnly="true"/>
+	        <h:form id="form">
+	            <h:panelGrid columns="3">
+	            		<h:outputText value="#{msg.individualId}:"/>
+	               	 	<h:inputText styleClass="individual" autocomplete="off" id="indiv" value="#{outMigrationCrud.item.individual}" disabled="#{flowScope != null}" converter="#{individualExtIdConverter}" />
+	            		<h:message for="indiv" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+					<c:if test="#{!siteProperties.ethiopianCalendar}">
+                     	<h:outputText value="#{msg.outmigrationDate} (#{siteProperties.dateFormat})" />
+                        <o:dateChooser id="rec_date" value="#{outMigrationCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" />
+                        <h:message for="rec_date" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>
+					
+					<c:if test="#{siteProperties.ethiopianCalendar}">
+                     	<h:outputText value="#{msg.outmigrationDate} (dd/MM/yyyy)" />
+                     	<h:panelGroup>
+                        	<h:inputText id="rec_date_ethiopian" value="#{outMigrationCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy"/>&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        </h:panelGroup>
+                        <h:message for="rec_date_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+					</c:if>					
+
+                        <h:outputText value="#{msg.outmigrationDestination}:"/>
+                        <h:inputText id="origin" value="#{outMigrationCrud.item.destination}" converter="#{defaultConverter}"/>
+                        <h:message for="origin" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.outmigrationReason}:"/>
+                        <h:inputText id="reason" value="#{outMigrationCrud.item.reason}" converter="#{defaultConverter}"/>
+                        <h:message for="reason" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.fieldWorkerId}:"  />
+                        <h:inputText styleClass="collectedBy" autocomplete="off" id="collectedBy" disabled="#{flowScope != null}" value="#{outMigrationCrud.item.collectedBy}" converter="#{fieldWorkerExtIdConverter}" />
+                        <h:message for="collectedBy" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.visitId}:" />
+                        <h:inputText styleClass="visit" autocomplete="off" id="visit" disabled="#{flowScope != null}" value="#{outMigrationCrud.item.visit}" converter="#{visitExtIdConverter}" />
+                        <h:message for="visit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+                    </h:panelGrid>
+                    <script>	
+                    	document.getElementById('form:rec_date').focus();
+  						document.getElementById('form:indiv').focus();
+  					</script>
+                    <br />
+                    <h:commandButton action="#{outMigrationCrud.create}" value="#{msg.lblCreate}"/>
+                	<h:commandButton value="#{msg.lblCancel}" immediate="true" action="cancel" rendered="#{flowScope != null}"/>
+                </h:form>
+		</ui:define>
+	</ui:composition>
+  </body>
+</html>

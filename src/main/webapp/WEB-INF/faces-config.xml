@@ -1,0 +1,588 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler> 
+		<el-resolver>org.openhds.web.util.JsfCrudELResolver</el-resolver>
+		<el-resolver>org.openhds.web.util.ValueExtensionResolver</el-resolver>
+     	   <locale-config>
+     	        <default-locale>en</default-locale>
+				<supported-locale>am</supported-locale>
+     	        <supported-locale>fr</supported-locale>
+     	        <supported-locale>sw</supported-locale>
+     	        <supported-locale>pt</supported-locale>
+     	         <supported-locale>am</supported-locale>
+     	   </locale-config>
+	   <resource-bundle>
+		<base-name>message</base-name>
+		<var>msg</var>
+	   </resource-bundle>	
+	   <message-bundle>message</message-bundle>	
+	</application>
+	
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>adultvpm_create</from-outcome>
+			<to-view-id>/adultvpm/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>adultvpm_edit</from-outcome>
+			<to-view-id>/adultvpm/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demreports</from-outcome>
+			<to-view-id>/demographic.report</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demowelcome</from-outcome>
+			<to-view-id>/demowelcome.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>welcome</from-outcome>
+			<to-view-id>/welcome</to-view-id>
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>baseline</from-outcome>
+			<to-view-id>/baseline/baseline.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>baseline_flow</from-outcome>
+			<to-view-id>/baseline.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>death_list</from-outcome>
+			<to-view-id>/death/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>death_create</from-outcome>
+			<to-view-id>/death/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>attribute_create</from-outcome>
+			<to-view-id>/attribute/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>attribute_detail</from-outcome>
+			<to-view-id>/attribute/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>attribute_edit</from-outcome>
+			<to-view-id>/attribute/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>classextension_create</from-outcome>
+			<to-view-id>/extension/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>classextension_detail</from-outcome>
+			<to-view-id>/extension/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>entityattribute_create</from-outcome>
+			<to-view-id>/entityattribute/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>entityattribute_detail</from-outcome>
+			<to-view-id>/entityattribute/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+			<from-outcome>entityattribute_edit</from-outcome>
+			<to-view-id>/entityattribute/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>death_edit</from-outcome>
+			<to-view-id>/death/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deathForHOH_flow</from-outcome>
+			<to-view-id>/deathForHOH.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demrates_list</from-outcome>
+			<to-view-id>/demrates/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demrates_create</from-outcome>
+			<to-view-id>/demrates/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demrates_edit</from-outcome>
+			<to-view-id>/demrates/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>demrates_detail</from-outcome>
+			<to-view-id>/demrates/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dhisDocument_create</from-outcome>
+			<to-view-id>/dhis-document/create.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fieldworker_list</from-outcome>
+			<to-view-id>/fieldworker/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fieldworker_create</from-outcome>
+			<to-view-id>/fieldworker/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fieldworker_edit</from-outcome>
+			<to-view-id>/fieldworker/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>fieldworker_detail</from-outcome>
+			<to-view-id>/fieldworker/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+	    <navigation-case>
+			<from-outcome>form_create</from-outcome>
+			<to-view-id>/form/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>form_edit</from-outcome>
+			<to-view-id>/form/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>form_detail</from-outcome>
+			<to-view-id>/form/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>form_submissions</from-outcome>
+			<to-view-id>/form/submissions.faces</to-view-id>
+			<redirect />
+		</navigation-case>		
+		<navigation-case>
+			<from-outcome>generateDHISDoc</from-outcome>
+			<to-view-id>/webservice/dhisGenerator</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>generateStudyDoc</from-outcome>
+			<to-view-id>/webservice/ddiGenerator</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gettingStarted</from-outcome>
+			<to-view-id>/getting-started/index.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>individualHistory_flow</from-outcome>
+			<to-view-id>/individualHistory.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>individual_create</from-outcome>
+			<to-view-id>/individual/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>individual_edit</from-outcome>
+			<to-view-id>/individual/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>individualmerge_create</from-outcome>
+			<to-view-id>/individualmerge/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>inmigration_create</from-outcome>
+			<to-view-id>/migration/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>migration_create</from-outcome>
+			<to-view-id>/migration/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>inmigration_list</from-outcome>
+			<to-view-id>/migration/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>inmigration_edit</from-outcome>
+			<to-view-id>/migration/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>internal_inmigration</from-outcome>
+			<to-view-id>/migration/migration.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>internalWithNoId</from-outcome>
+			<to-view-id>/inmigration.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>external</from-outcome>
+			<to-view-id>/inmigration.flow?external=true</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>languageSelection</from-outcome>
+			<to-view-id>/languageSelection.faces</to-view-id>
+			<redirect />
+		</navigation-case>		
+		<navigation-case>
+			<from-outcome>location_list</from-outcome>
+			<to-view-id>/location/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>location_create</from-outcome>
+			<to-view-id>/location/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>location_edit</from-outcome>
+			<to-view-id>/location/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationhierarchy_list</from-outcome>
+			<to-view-id>/locationhierarchy/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationhierarchy_create</from-outcome>
+			<to-view-id>/locationhierarchy/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationhierarchy_edit</from-outcome>
+			<to-view-id>/locationhierarchy/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>locationhierarchy_detail</from-outcome>
+			<to-view-id>/locationhierarchy/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>logoutLnk</from-outcome>
+			<to-view-id>/logoutProcess</to-view-id>
+			<redirect />	
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>modifyHOH_flow</from-outcome>
+			<to-view-id>/modifyHOH.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>postneonatalvpm_create</from-outcome>
+			<to-view-id>/postneonatalvpm/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>postneonatalvpm_edit</from-outcome>
+			<to-view-id>/postneonatalvpm/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancyobservation_list</from-outcome>
+			<to-view-id>/pregnancyobservation/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancyobservation_create</from-outcome>
+			<to-view-id>/pregnancyobservation/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancyobservation_edit</from-outcome>
+			<to-view-id>/pregnancyobservation/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>membership_list</from-outcome>
+			<to-view-id>/membership/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>membership_create</from-outcome>
+			<to-view-id>/membership/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>membership_edit</from-outcome>
+			<to-view-id>/membership/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>neonatalvpm_create</from-outcome>
+			<to-view-id>/neonatalvpm/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>neonatalvpm_edit</from-outcome>
+			<to-view-id>/neonatalvpm/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>note_create</from-outcome>
+			<to-view-id>/note/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>note_edit</from-outcome>
+			<to-view-id>/note/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>note_list</from-outcome>
+			<to-view-id>/note/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>note_detail</from-outcome>
+			<to-view-id>/note/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>outmigration_list</from-outcome>
+			<to-view-id>/outmigration/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>outmigration_create</from-outcome>
+			<to-view-id>/outmigration/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>outmigration_edit</from-outcome>
+			<to-view-id>/outmigration/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancyoutcome_list</from-outcome>
+			<to-view-id>/pregnancy-outcome/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancy-outcome_flow</from-outcome>
+			<to-view-id>/pregnancy-outcome.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pregnancyoutcome_edit</from-outcome>
+			<to-view-id>/pregnancy-outcome/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>regIndivToSg_flow</from-outcome>
+			<to-view-id>/regIndivToSg.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relationship_list</from-outcome>
+			<to-view-id>/relationship/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relationship_create</from-outcome>
+			<to-view-id>/relationship/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relationship_edit</from-outcome>
+			<to-view-id>/relationship/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>residency_list</from-outcome>
+			<to-view-id>/residency/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>residency_create</from-outcome>
+			<to-view-id>/residency/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>residency_edit</from-outcome>
+			<to-view-id>/residency/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+            <from-outcome>residency_delete_failure</from-outcome>
+            <to-view-id>/residency/delete-failure.faces</to-view-id>
+            <redirect />
+        </navigation-case>
+		<navigation-case>
+			<from-outcome>role_list</from-outcome>
+			<to-view-id>/role/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>role_create</from-outcome>
+			<to-view-id>/role/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>role_edit</from-outcome>
+			<to-view-id>/role/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>role_detail</from-outcome>
+			<to-view-id>/role/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>role_assign</from-outcome>
+			<to-view-id>/role/assignroles.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>round_create</from-outcome>
+			<to-view-id>/round/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>round_list</from-outcome>
+			<to-view-id>/round/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>round_edit</from-outcome>
+			<to-view-id>/round/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>round_detail</from-outcome>
+			<to-view-id>/round/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>socialgroup_list</from-outcome>
+			<to-view-id>/socialgroup/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>socialgroup_create</from-outcome>
+			<to-view-id>/socialgroup/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>socialgroup_edit</from-outcome>
+			<to-view-id>/socialgroup/edit.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>studyDocument_create</from-outcome>
+			<to-view-id>/study-document/create.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+        <navigation-case>
+            <from-outcome>task</from-outcome>
+            <to-view-id>/task/index.faces</to-view-id>
+            <redirect />
+        </navigation-case>
+		<navigation-case>
+			<from-outcome>update_flow</from-outcome>
+			<to-view-id>/update.flow</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>vaccination_create</from-outcome>
+			<to-view-id>/vaccination/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>vaccination_edit</from-outcome>
+			<to-view-id>/vaccination/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>visit_list</from-outcome>
+			<to-view-id>/visit/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>visit_create</from-outcome>
+			<to-view-id>/visit/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>visit_edit</from-outcome>
+			<to-view-id>/visit/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>user_list</from-outcome>
+			<to-view-id>/user/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>user_create</from-outcome>
+			<to-view-id>/user/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>user_detail</from-outcome>
+			<to-view-id>/user/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>user_edit</from-outcome>
+			<to-view-id>/user/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>whitelist_list</from-outcome>
+			<to-view-id>/whitelist/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>whitelist_create</from-outcome>
+			<to-view-id>/whitelist/create.faces</to-view-id>
+			<redirect />
+		</navigation-case>	
+		<navigation-case>
+			<from-outcome>whitelist_detail</from-outcome>
+			<to-view-id>/whitelist/detail.faces</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>whitelist_edit</from-outcome>
+			<to-view-id>/whitelist/edit.faces</to-view-id>
+			<redirect />		
+		</navigation-case>	
+	</navigation-rule>
+</faces-config>

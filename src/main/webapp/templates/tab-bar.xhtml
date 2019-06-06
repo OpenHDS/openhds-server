@@ -1,0 +1,17 @@
+<ui:composition	xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core">
+				
+	<h:form rendered="#{crud != null}">
+		<h:commandLink styleClass="amendment-tab #{crud.showListing ? 'amendment-tab-selected' : 'amendment-tab-unselected'}" rendered="#{hideListing != true}" value="Listing" immediate="true">
+			<f:setPropertyActionListener target="#{crud.showListing}" value="true" /> 
+		</h:commandLink>
+		<!--  <h:commandLink styleClass="amendment-tab #{crud.showListing ? 'amendment-tab-unselected' : 'amendment-tab-selected'}" rendered="#{hideListing != true}" value="Form View" immediate="true">
+			<f:setPropertyActionListener target="#{crud.showListing}" value="false" /> 
+		</h:commandLink>-->
+		
+		<div style="background-color:#306331;height:.2em;width:100%;margin-bottom:.5em;" />
+	</h:form>
+</ui:composition>

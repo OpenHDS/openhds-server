@@ -1,0 +1,476 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="title">OpenHDS - History</ui:define>
+	
+	<ui:param name="hideTabBar" value="true" />
+	
+	<ui:define name="display">
+  <style>
+		.base-table {
+			border:0px solid #98BF21;
+			border-collapse:collapse;
+			border-color:#888;
+			table-layout:fixed;
+			margin-bottom:2em;
+		}
+		   		
+		.base-table th {
+		   	background-color:#B9D264;
+			font-weight:bold;
+			font-size:.9em;
+			overflow:hidden;
+		 }
+		   		
+		.base-table td {
+		   	padding:5px 5px 5px;
+		   	text-align:center;
+		 }
+		   		
+		.base-table a {
+		   	width:100%;
+			border:0;
+		 }
+		   		
+		 .base-table .alt {
+		   	background-color:#CCC;
+		 }
+		   		
+		.base-table .alt-col {
+			width:40%;
+		 }
+		 
+		.base-table-center {
+		   	margin:0 auto;
+		 }
+	</style>
+	
+    	<sec:ifNotGranted roles="VIEW_ENTITY">
+    		<h1>#{msg.accessDenied}</h1>
+    		<p>#{msg.accessDeniedException}</p>
+    	</sec:ifNotGranted>
+    	
+    	<sec:ifAllGranted roles="VIEW_ENTITY">
+    	
+    		<h:outputText value="#{navController.breadcrumbTrail}" />
+
+	        <h1><h:outputText value="#{msg.historyName}" /></h1>
+	        <h:messages id="errors" globalOnly="true" />
+	        <h:form id="form">
+	
+			<h:panelGrid columns="3" >
+		 		<h:outputText value="#{msg.individualId}:" />
+		       	<h:inputText styleClass="individual" autocomplete="off" id="indivId" value="#{individualHistoryBean.individualExtId}" converter="#{defaultConverter}" />
+				<h:message for="indivId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+		    </h:panelGrid>  
+		    <script>
+            	document.getElementById('form:indivId').focus();
+  			</script> 
+		    
+			<h:commandButton id="selectBtn" value="#{msg.lblSelect}" action="setIndividual" rendered="#{flowScope.step == 0}"/>
+			<h:commandButton id="resetBtn" value="#{msg.lblClear}" action="finish" rendered="#{flowScope.step > 0}" immediate="true"/>
+	        <br /><br />
+	        
+	        <div align="center">
+	        
+	        	<c:if test="${empty individualHistoryBean.individual and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.individualEmpty}" /><br /><br />
+		        </c:if>
+		        
+		        <h:panelGroup rendered="${not empty individualHistoryBean.individual}">
+		        	<table class="base-table">
+		        		<thead>
+			        		<tr>
+			        			<th colspan="5" scope="colgroup"><h:outputText value="#{msg.individualDetail}" /></th>
+			        		</tr>
+			        		<tr>
+			        			<th class="width1" scope="col"><h:outputText value="#{msg.individualId}" /></th>
+			        			<th class="width1" scope="col"><h:outputText value="#{msg.individualFirstName}" /></th>
+			        			<th class="width1" scope="col"><h:outputText value="#{msg.individualLastName}" /></th>
+			        			<th class="width1" scope="col"><h:outputText value="#{msg.individualDob}" /></th>
+			        			<th class="width3" scope="col"><h:outputText value="#{msg.individualGender}" /></th>
+			        		</tr>
+		        		</thead>
+		        		<tbody>
+			        		<tr>
+			        			<td class="alt-col"><h:outputText>#{individualHistoryBean.individual.extId}</h:outputText></td>
+			        			<td><h:outputText>#{individualHistoryBean.individual.firstName}</h:outputText></td>
+			        			<td><h:outputText>#{individualHistoryBean.individual.lastName}</h:outputText></td>
+			        			<td><h:outputText value="#{individualHistoryBean.individual.dob}"  converter="#{calendarConverter}" />&#160;<h:graphicImage id="n" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+			        			</td>
+			        			<td><h:outputText>#{individualHistoryBean.individual.gender}</h:outputText></td>
+			        		</tr>
+		        		</tbody>
+		        	</table>   	
+		        </h:panelGroup>
+		        	        
+		        <c:if test="#{fn:length(individualHistoryBean.memberships) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.membershipEmpty}" /><br /><br />
+		        </c:if>
+		                        
+	        	<h:panelGroup rendered="#{fn:length(individualHistoryBean.memberships) > 0}">
+		  			<h:dataTable value="#{individualHistoryBean.memberships}" var="membership"
+		  				styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">	
+		  			    <f:facet name="header">
+                            <h:outputText value="#{msg.historyMembership}" />
+                        </f:facet>
+			  			<h:column headerClass="width1">
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.socialGroupId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{membership.socialGroup.extId}" />
+                      	 </h:column>	
+			  			 <h:column headerClass="width1">
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.membershipRelationToHead}" />
+	                        </f:facet>
+	                        <h:outputText value="#{membership.bIsToA}" />
+                      	 </h:column>	
+		        		<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="memViewLink" value="#{request.contextPath}/amendment/membership/details/#{membership.uuid}" >
+		       					<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+	        		</h:dataTable>
+				</h:panelGroup>
+					
+				<c:if test="#{fn:length(individualHistoryBean.relationships) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.relationshipEmpty}" /><br /><br />
+		        </c:if>
+		                
+	        	<h:panelGroup rendered="#{fn:length(individualHistoryBean.relationships) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.relationships}" var="relationship"
+							styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+			  			<f:facet name="header">
+                            <h:outputText value="#{msg.historyRelationship}" />
+                        </f:facet>
+                        <h:column headerClass="width1">
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.relationshipIndividualA}" />
+	                        </f:facet>
+	                        <h:outputText value="#{relationship.individualA.extId}" />
+                      	 </h:column>	
+                         <h:column headerClass="width1">
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.relationshipIndividualB}" />
+	                        </f:facet>
+	                        <h:outputText value="#{relationship.individualB.extId}" />
+                      	 </h:column>	
+                    	 <h:column>
+                           	<f:facet name="header">
+                           		<h:panelGroup>
+                           			<h:outputText value="#{msg.navBarRelationship}" /> <br />
+                           			<img class="clickable" onclick="O$('popupWindowForRelationship').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+                           		</h:panelGroup>
+                               </f:facet>
+                           	<h:outputText value="#{relationship.aIsToB}" />
+                         </h:column>   
+						 <h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="relViewLink" value="#{request.contextPath}/amendment/relationship/details/#{relationship.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+	        		</h:dataTable>
+				</h:panelGroup>
+								
+				<c:if test="#{fn:length(individualHistoryBean.socialGroups) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.socialGroupEmpty}" /><br /><br />
+		        </c:if>
+		                
+	        	<h:panelGroup rendered="#{fn:length(individualHistoryBean.socialGroups) > 0}" >
+	        		<h:dataTable value="#{individualHistoryBean.socialGroups}" var="socialGroup" 
+	        			styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+		  				<f:facet name="header">
+                            <h:outputText value="#{msg.historySocialGroup}" />
+                        </f:facet>
+		  				<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.socialGroupId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{socialGroup.extId}" />
+                      	</h:column>	
+                      	<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.socialGroupName}" />
+	                        </f:facet>
+	                        <h:outputText value="#{socialGroup.groupName}" />
+                      	</h:column>	
+		  				<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.socialGroupHead}" />
+	                        </f:facet>
+	                        <h:outputText value="#{socialGroup.groupHead.extId}" />
+                      	</h:column>	
+		  				<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="socialGroupViewLink" value="#{request.contextPath}/amendment/socialgroup/details/#{socialGroup.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+	        		</h:dataTable>
+	        	</h:panelGroup>
+							
+				<c:if test="#{fn:length(individualHistoryBean.residencies) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.residencyEmpty}" /><br /><br />
+		        </c:if>
+		                
+	        	<h:panelGroup rendered="#{fn:length(individualHistoryBean.residencies) > 0}" >
+	        		<h:dataTable value="#{individualHistoryBean.residencies}" var="residency"
+	        			styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+				   		<f:facet name="header">
+                            <h:outputText value="#{msg.historyResidency}" />
+                        </f:facet>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{residency.individual.extId}" />
+                      	</h:column>	
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.locationId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{residency.location.extId}" />
+                      	</h:column>	
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.residencyStartDate}" />&#160;<h:graphicImage id="n2" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                            </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{residency.startDate}" converter="#{calendarConverter}" />
+                      	</h:column>	
+			 			<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink id="residencyViewLink" value="#{request.contextPath}/amendment/residency/details/#{residency.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+		        	</h:dataTable>
+				</h:panelGroup>
+				
+				<c:if test="#{fn:length(individualHistoryBean.inMigrations) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.inmigrationEmpty}" /><br /><br />
+		        </c:if>
+				
+				<h:panelGroup rendered="#{fn:length(individualHistoryBean.inMigrations) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.inMigrations}" var="inMigration" 
+						styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+			  			<f:facet name="header">
+                            <h:outputText value="#{msg.historyInMigration}" />
+                        </f:facet>
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{inMigration.individual.extId}" />
+                      	</h:column>	
+                      	<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.locationId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{inMigration.residency.location.extId}" />
+                      	</h:column>	
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.inmigrationDate}" />&#160;<h:graphicImage id="n3" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                            </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{inMigration.recordedDate}" converter="#{calendarConverter}" />
+                      	</h:column>
+			 			<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="inMigViewLink" value="#{request.contextPath}/amendment/inmigration/details/#{inMigration.uuid}" >
+	       						<f:param id="itemId" value="#{inMigration.uuid}" />
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+		        	</h:dataTable>
+				</h:panelGroup>
+				
+				<c:if test="#{fn:length(individualHistoryBean.outMigrations) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.outmigrationEmpty}" /><br /><br />
+		        </c:if>
+				
+				<h:panelGroup rendered="#{fn:length(individualHistoryBean.outMigrations) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.outMigrations}" var="outMigration" 
+						styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+						<f:facet name="header">
+                            <h:outputText value="#{msg.historyOutMigration}" />
+                        </f:facet>
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{outMigration.individual.extId}" />
+                      	</h:column>	
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{inMigration.residency.location.extId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{outMigration.residency.location.extId}" />
+                      	</h:column>	
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    		<h:panelGroup>
+	                            <h:outputText value="#{msg.outmigrationDate}" />&#160;<h:graphicImage id="n4" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                           	</h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{outMigration.recordedDate}" converter="#{calendarConverter}" />
+                      	</h:column>	
+			 			<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink id="outMigViewLink" value="#{request.contextPath}/amendment/outmigration/details/#{outMigration.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+	        		</h:dataTable>
+				</h:panelGroup>
+				
+				<c:if test="#{fn:length(individualHistoryBean.pregOutcomes) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.pregnancyOutcomeEmpty}" /><br /><br />
+		        </c:if>
+				
+				<h:panelGroup rendered="#{fn:length(individualHistoryBean.pregOutcomes) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.pregOutcomes}" var="pregOutcome"
+						styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+			  			<f:facet name="header">
+                            <h:outputText value="#{msg.historyPregnancyOutcome}" />
+                        </f:facet>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualMotherId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{pregOutcome.mother.extId}" />
+                      	</h:column>	
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualFatherId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{pregOutcome.father.extId}" />
+                      	</h:column>	
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.visitId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{pregOutcome.visit.extId}" />
+                      	</h:column>
+						<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    	<h:panelGroup>
+	                            <h:outputText value="#{msg.pregnancyOutcomeRecordedDate}" />
+							</h:panelGroup>	                            
+	                        </f:facet>
+	                        <h:outputText value="#{pregOutcome.outcomeDate}" converter="#{calendarConverter}" />&#160;<h:graphicImage id="n5" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                      	</h:column>
+			 			<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="pregOutcomeViewLink" value="#{request.contextPath}/amendment/pregnancy-outcome/details/#{pregOutcome.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+		        	</h:dataTable>
+				</h:panelGroup>
+				
+				<c:if test="#{fn:length(individualHistoryBean.pregObservs) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.pregnancyObservationEmpty}" /><br /><br />
+		        </c:if>
+				
+				<h:panelGroup rendered="#{fn:length(individualHistoryBean.pregObservs) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.pregObservs}" var="pregObserv"
+						styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+			  			<f:facet name="header">
+                            <h:outputText value="#{msg.historyPregnancyObservation}" />
+                        </f:facet>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualMotherId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{pregObserv.mother.extId}" />
+                      	</h:column>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    	<h:panelGroup>
+	                            <h:outputText value="#{msg.pregnancyObservationEDD}" />&#160;<h:graphicImage id="n6" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{pregObserv.expectedDeliveryDate}" converter="#{calendarConverter}" />
+                      	</h:column>
+						<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="pregObservViewLink" value="#{request.contextPath}/amendment/pregnancyobservation/details/#{pregObserv.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+		        	</h:dataTable>
+				</h:panelGroup>
+				
+				<c:if test="#{fn:length(individualHistoryBean.deaths) == 0 and flowScope.step > 0}" >
+		        	<h:outputText value="#{msg.deathEmpty}" /><br /><br />
+		        </c:if>
+				
+				<h:panelGroup rendered="#{fn:length(individualHistoryBean.deaths) > 0}" >
+					<h:dataTable value="#{individualHistoryBean.deaths}" var="death" 
+						styleClass="base-table" rowClasses=",alt" columnClasses="alt-col,">
+			  			<f:facet name="header">
+                            <h:outputText value="#{msg.historyDeath}" />
+                        </f:facet>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{death.individual.extId}" />
+                      	</h:column>
+			  			<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                            <h:outputText value="#{msg.visitId}" />
+	                        </f:facet>
+	                        <h:outputText value="#{death.visitDeath.extId}" />
+                      	</h:column>
+                      	<h:column headerClass="width1">
+	                    	<f:facet name="header">
+	                    	<h:panelGroup>
+	                            <h:outputText value="#{msg.deathDate}" />&#160;<h:graphicImage id="n7" style="border:0;width:24px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+	                        </h:panelGroup>
+	                        </f:facet>
+	                        <h:outputText value="#{death.deathDate}" converter="#{calendarConverter}" />
+                      	</h:column>
+						<h:column headerClass="width3">
+	                        <f:facet name="header">
+	                        	<h:outputText escape="false" value=""/>
+	                        </f:facet> 
+							<h:outputLink  id="deathViewLink" value="#{request.contextPath}/amendment/death/details/#{death.uuid}" >
+	       						<h:outputText value="#{msg.view}"/>   
+							</h:outputLink>
+						</h:column>
+	        		</h:dataTable>
+				</h:panelGroup>
+			</div>
+	        </h:form>
+        </sec:ifAllGranted>
+	</ui:define>
+</ui:composition>

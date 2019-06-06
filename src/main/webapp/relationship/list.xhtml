@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags">
+      <h:form>
+          <div style="text-align:right;">
+              <div style="float:left;">
+                  <!-- <h:commandButton immediate="true" action="#{relationshipCrud.createSetup}" value="#{msg.lblAddNew}" id="button1" /> -->
+                  
+				<!-- Paging -->	
+				<ui:include src="/snippets/paging.xhtml">
+				     <ui:param name="currentCrud" value="#{relationshipCrud}"/>
+				</ui:include>	
+              </div>
+          </div>
+          
+			<!-- Search Widget -->	
+			<ui:include src="/search/searchBox.xhtml">
+			     <ui:param name="crud" value="#{relationshipCrud}"/>
+			</ui:include>	                
+            
+            <div>
+				<c:if test="#{flowScope.updating == null}" >
+				   <h:outputText escape="false" value="#{msg.relationshipEmpty}" rendered="#{relationshipCrud.pager.totalCount == 0}" />
+                <h:panelGroup rendered="#{fn:length(relationshipCrud.pagedItems) > 0}">
+                    <h:dataTable value="#{relationshipCrud.pagedItems}" var="relationship"
+                                 width="100%" columnClasses="center,center,center,width3">
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipIndividualA}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.individualA}" converter="#{individualExtIdConverter}" />
+                        </h:column>
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipIndividualB}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.individualB}" converter="#{individualExtIdConverter}"/>
+                        </h:column>
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipType}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.aIsToB}" />
+                        </h:column>
+                        <h:column headerClass="width3">
+                            <f:facet name="header">
+                                <h:outputText escape="false" value=""/>
+                            </f:facet>
+                          	<h:outputLink value="#{request.contextPath}/amendment/relationship/details/#{relationship.uuid}">
+                              	<h:graphicImage style="border: 0;" title="details" value="/resources/icons/details.ico" />
+                          	 </h:outputLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{relationshipCrud.editSetup}">
+                                 <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                                <f:param name="itemId" value="#{relationship.uuid}"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{relationshipCrud.delete}">
+                                <h:graphicImage title="delete" style="border: 0;" value="/resources/icons/delete.ico"/>
+                                <f:param name="itemId" value="#{relationship.uuid}"/>
+                            </h:commandLink>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+              </c:if>
+              <c:if test="#{flowScope.updating != null}" >
+                <h:outputText escape="false" value="#{msg.relationshipEmpty}" rendered="#{fn:length(relationshipCrud.filteredPagedItems) == 0}" />
+	  	        <h:panelGroup rendered="#{fn:length(relationshipCrud.filteredPagedItems) > 0}">
+                    <h:dataTable value="#{relationshipCrud.filteredPagedItems}" var="relationship"
+                                 width="100%" columnClasses="center,center,center,width3">
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipIndividualA}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.individualA}" converter="#{individualExtIdConverter}" />
+                        </h:column>
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipIndividualB}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.individualB}" converter="#{individualExtIdConverter}"/>
+                        </h:column>
+                        <h:column headerClass="width1">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.relationshipType}" />
+                            </f:facet>
+                            <h:outputText value="#{relationship.aIsToB}" />
+                        </h:column>
+                        <h:column headerClass="width3">
+                            <f:facet name="header">
+                                <h:outputText escape="false" value=""/>
+                            </f:facet>
+                            <h:commandLink action="#{relationshipCrud.detailSetup}">
+                                <h:graphicImage title="view" style="border: 0;" value="/resources/icons/details.ico"/>
+                                <f:param name="itemId" value="#{relationship.uuid}"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <h:commandLink  action="#{relationshipCrud.editSetup}">
+                                <h:graphicImage title="edit" style="border: 0;" value="/resources/icons/edit.ico"/>
+                                <f:param name="itemId" value="#{relationship.uuid}"/>
+                            </h:commandLink>
+                            <h:outputText value=" "/>
+                            <sec:ifAllGranted roles="DELETE_ENTITY">
+                            h
+                            </sec:ifAllGranted>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+              </c:if>          
+            </div>
+        </h:form>
+    </ui:composition>

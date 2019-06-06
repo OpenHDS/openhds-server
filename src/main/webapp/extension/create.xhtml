@@ -1,0 +1,76 @@
+<ui:composition template="/templates/default.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:param name="crud" value="#{extensionCrud}" />
+	
+	<ui:param name="hideTabBar" value="#{flowScope != null}" />
+	
+	<ui:define name="listing">
+		<ui:include src="list.xhtml" />
+	</ui:define>
+	
+	<ui:define name="display">
+	
+		<h:outputText value="#{navController.breadcrumbTrail}" />	
+	
+	    <h1>#{msg.extensionCreate}</h1>
+	    <h:messages id="errors" globalOnly="true" />
+	    <h:form id="form">
+	        <table width="100%">
+	            <tr>
+	                <td>
+	                    <h:panelGrid columns="3">
+
+	                        <h:outputText value="#{msg.extensionEntityName}"/>
+	                        <h:selectOneListbox value="#{extensionCrud.item.entityClass}" size="1" id="entityClass" >
+		                		<f:selectItems value="#{extensionCrud.entityTypes}"/>
+		            		</h:selectOneListbox>       
+	                        <h:message for="entityClass" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+	                        <h:outputText value="#{msg.extensionName}"/>
+	                        <h:inputText id="extensionName" value="#{extensionCrud.item.name}" converter="#{defaultConverter}" />
+	                        <h:message for="extensionName" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	
+	                        <h:outputText value="#{msg.extensionType}"/>
+	                        <h:selectOneListbox value="#{extensionCrud.item.primType}" size="1" id="extensionType" valueChangeListener="#{extensionCrud.processValueChange}" onchange="submit();" immediate="true" >
+		                		<f:selectItems value="#{extensionCrud.primTypes}" />
+		            		</h:selectOneListbox>
+	                        <h:message for="extensionType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+            
+	                    	<h:outputText value="#{msg.visitRoundNumber}"/>
+                        	<h:inputText id="roundNum" value="#{extensionCrud.item.roundNumber}" converter="#{defaultConverter}" />
+                        	<h:message for="roundNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+	                    	<h:outputText value="#{msg.extensionDescription}"/>
+	                        <h:inputTextarea id="extensionDesc" value="#{extensionCrud.item.description}" converter="#{defaultConverter}" />
+	                        <h:message for="extensionDesc" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>           
+	                    </h:panelGrid>
+	                    
+	                    <br />
+	                    <h:panelGrid columns="3" rendered="#{extensionCrud.multipleChoice}" >
+	                    	<h:outputText value="#{msg.extensionAcceptableAnswers}:" />
+	                        <h:outputText id="extensionAnswersList" value="#{extensionCrud.answerList}" converter="#{defaultConverter}" />
+	                        <h:message for="extensionAnswersList" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>   
+	                        
+	                        <h:outputText value="#{msg.extensionAnswer}:" />
+	                        <h:inputText id="extensionAnswers" value="#{extensionCrud.answer}" converter="#{defaultConverter}" />
+	                        <h:message for="extensionAnswers" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>    
+	                        
+	                        <h:commandButton action="#{extensionCrud.addAnswer}" value="#{msg.lblAdd}" />
+	                        <h:commandButton action="#{extensionCrud.clearAnswer}" value="#{msg.lblClear}"  />
+	                    </h:panelGrid>
+	                </td>
+	           	</tr>
+	        </table>
+	        <script>document.getElementById('form:entityClass').focus();</script> 
+	        <br />
+	        
+	        <h:commandButton action="#{extensionCrud.create}" value="#{msg.lblCreate}" onclick="submit();" />
+	    </h:form>
+	</ui:define>
+</ui:composition>

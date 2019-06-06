@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <head>
+    </head>
+    <body>
+        <ui:composition template="/templates/default.xhtml">
+		    <ui:define name="title">OpenHDS - Create Pregnancy Outcome</ui:define>
+		
+			<ui:param name="crud" value="#{pregnancyOutcomeCrud}" />
+			
+			<ui:define name="listing">
+				<ui:include src="list.xhtml" />
+			</ui:define>
+
+            <ui:define name="display">
+           	<style>
+				.base-table {
+					border:0px solid #98BF21;
+					border-collapse:collapse;
+					border-color:#888;
+					table-layout:fixed;
+				}
+				   		
+				.base-table th {
+				   	background-color:#B9D264;
+					font-weight:bold;
+					font-size:.9em;
+					overflow:hidden;
+				 }
+				   		
+				.base-table td {
+				   	padding:5px 5px 5px;
+				   	text-align:center;
+				 }
+				   		
+				.base-table a {
+				   	width:100%;
+					border:0;
+				 }
+				   		
+				 .base-table .alt {
+				   	background-color:#CCC;
+				 }
+				   		
+				.base-table .alt-col {
+					width:40%;
+				 }
+				 
+				.base-table-center {
+				   	margin:0 auto;
+				 }
+			</style>
+         		
+         		<h:outputText value="#{navController.breadcrumbTrail}" />
+         		
+                <h1>#{msg.pregnancyOutcomeCreate}</h1>
+               <h:messages id="error" globalOnly="true" />
+                <h:form id="pregnancyOutcomeForm">
+                    <h:panelGrid columns="4">
+                        <h:outputText value="#{msg.individualMotherId}:"/>
+                        <h:outputText />
+                        <h:inputText styleClass="individual" autocomplete="off" id="motherExtId" disabled="#{flowScope.updating or fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" value="#{pregnancyOutcomeCrud.item.mother}" converter="#{individualExtIdConverter}" />
+                        <h:message for="motherExtId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.individualFatherId} (Use #{siteProperties.unknownIdentifier} for Unknown)"/>
+                        <h:outputText />
+                        <h:inputText styleClass="individual" autocomplete="off" id="fatherExtId" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" value="#{pregnancyOutcomeCrud.item.father}" converter="#{individualExtIdConverter}" />
+                        <h:message for="fatherExtId" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+	                  	<h:outputText value="#{msg.visitId}:"/>
+	                  	<h:outputText />
+	                  	<h:inputText styleClass="visit" autocomplete="off" id="visit" disabled="#{flowScope.updating or fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" value="#{pregnancyOutcomeCrud.item.visit}" converter="#{visitExtIdConverter}" />
+	           			<h:message for="visit" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+	                    <h:outputText value="#{msg.pregnancyOutcomeType}:"/>
+	                    <img class="clickable" onclick="O$('popupWindowForPregOutcome').showCentered();" src="#{request.contextPath}/resources/images/question.png" />
+	                    <h:inputText id="pregType" value="#{pregnancyOutcomeCrud.selectedType}" converter="#{pregnancyTypeCodeConverter}" />
+	                    <h:message for="pregType" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+	                    
+                        <h:outputText value="#{msg.pregnancyOutcomeRecordedDate} (#{siteProperties.dateFormat})" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <h:outputText rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <o:dateChooser id="date" value="#{pregnancyOutcomeCrud.recordedDate}" pattern="#{siteProperties.dateFormat}" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        <h:message for="date" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{!siteProperties.ethiopianCalendar}" />
+                        
+                        <h:outputText value="#{msg.pregnancyOutcomeRecordedDate} (dd/MM/yyyy)" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:graphicImage id="n" style="border:0;width:32px" value="/resources/images/ethiopia.gif" title="Ethiopia" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:inputText id="date_ethiopian" value="#{pregnancyOutcomeCrud.recordedDate}" converter="#{dateConverter}" converterMessage="dd/MM/yyyy" disabled="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" rendered="#{siteProperties.ethiopianCalendar}" />
+                        <h:message for="date_ethiopian" errorClass="error" errorStyle="color: red" infoStyle="color: green" rendered="#{siteProperties.ethiopianCalendar}" />  
+
+						<h:outputText value="#{msg.fieldWorkerId}:"/>
+                        <h:outputText />
+                        <h:inputText styleClass="collectedBy" autocomplete="off" id="fieldWorker" disabled="#{flowScope.updating or fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" value="#{pregnancyOutcomeCrud.item.collectedBy}" title = "#{msg.tipFWExtId}" converter="#{fieldWorkerExtIdConverter}"/>
+                        <h:message for="fieldWorker" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+
+                        <h:outputText value="#{msg.pregnancyOutcomeTotalOutcomes}:"/>
+                        <h:outputText />
+                        <h:inputText id="everBorn" disabled="true" value="#{pregnancyOutcomeCrud.item.childEverBorn}" converter="#{defaultConverter}" />
+                        <h:message for="everBorn" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 
+                        <h:outputText value="#{msg.pregnancyOutcomeTotalLiveBirths}:"/>
+                        <h:outputText />
+                        <h:inputText id="liveBirthNum" disabled="true" value="#{pregnancyOutcomeCrud.item.numberOfLiveBirths}" converter="#{defaultConverter}" />
+                        <h:message for="liveBirthNum" errorClass="error" errorStyle="color: red" infoStyle="color: green"/>
+ 
+					</h:panelGrid>
+					<script>
+  						document.getElementById('pregnancyOutcomeForm:fatherExtId').focus();
+  						document.getElementById('pregnancyOutcomeForm:motherExtId').focus();
+  					</script>
+  					<h:dataTable value="#{pregnancyOutcomeCrud.item.outcomes}" rendered="#{fn:length(pregnancyOutcomeCrud.item.outcomes) > 0}" var="item"
+  							styleClass="base-table" rowClasses=",alt" columnClasses=",alt-col" width="30%">
+               			<h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.pregnancyOutcomeType}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.type}"/>
+	                    </h:column>
+               			<h:column>
+	                        <f:facet name="header">
+	                            <h:outputText value="#{msg.individualId}"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.child == null ? '' : item.child.extId}"/>
+	                    </h:column>
+                   	</h:dataTable>
+                    <br />
+
+                   	<br /> 
+                    <h:commandButton value="#{msg.pregnancyOutcomeAddOutcome}" disabled="false" action="addOutcome" />
+                    <h:commandButton value="#{msg.lblCreate}" action="#{pregnancyOutcomeCrud.create}" />
+                    <h:commandButton value="#{msg.lblClear}" immediate="true" action="reset" />
+                    <h:commandButton value="#{msg.lblCancel}" rendered="#{flowScope.updating != null}" immediate="true" action="cancel" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

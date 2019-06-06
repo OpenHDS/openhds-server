@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	<f:view locale="#{localeBean.locale}">
+    <head>
+    	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/resources/css/login.css"/>
+    	<title>OpenHDS</title>
+    </head>
+    
+    <body> 	
+  		<div class="loginField" align="center">
+
+  	  		<div><img alt="" src="#{request.contextPath}/resources/images/logo-login.png"></img></div>
+  			<div style="margin-top:2%">
+				<form name="logoutForm">
+					<table>
+						<tr align="center">
+							<td><h:outputText value="${msg.logoutSuccess}" /></td>
+							
+						</tr>
+						<tr align="center">
+							<td><a href="#{request.contextPath}/login.faces">Continue</a></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+	  </div>	
+	</body>
+	</f:view>
+</html>
