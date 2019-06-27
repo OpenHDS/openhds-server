@@ -136,8 +136,8 @@ import org.springframework.core.io.Resource;
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Configuration
 @ComponentScan(basePackages= {"org.openhds.web", "org.openhds.converter"})
-public class WebApplicationContext {
-	Logger logger = LoggerFactory.getLogger(WebApplicationContext.class);
+public class WebConfig {
+	Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
 	@Autowired
 	private Environment env;

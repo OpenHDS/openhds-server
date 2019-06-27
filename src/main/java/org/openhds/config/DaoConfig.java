@@ -59,9 +59,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@Import({DomainApplicationContext.class} )
+@Import({DomainConfig.class} )
 @PropertySource({"classpath:database.properties"})
-public class DaoApplicationContext {
+public class DaoConfig {
 
 	@Autowired
 	private Environment env;

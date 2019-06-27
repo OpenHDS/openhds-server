@@ -1,7 +1,6 @@
 package org.openhds.config;
 
 
-import org.openhds.constraint.AppContextAware;
 import org.openhds.service.JsfService;
 import org.openhds.web.beans.DatabaseConfigBean;
 import org.springframework.beans.factory.annotation.Value;

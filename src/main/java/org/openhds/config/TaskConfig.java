@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 @EnableAsync()
 @ComponentScan(basePackages= {"org.openhds.task"})
-public class TaskApplicationContext {
+public class TaskConfig {
 	@Bean
 	public Executor taskExecutor() {
 		ThreadPoolTaskExecutor task = new ThreadPoolTaskExecutor();

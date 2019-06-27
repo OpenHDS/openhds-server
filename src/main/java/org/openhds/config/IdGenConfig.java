@@ -22,7 +22,7 @@ import com.google.common.base.Preconditions;
 @Configuration
 @PropertySource({"classpath:site-config.properties"})
 @ComponentScan(basePackages= {"org.openhds.idgeneration"})
-public class IdGenerationConfiguration {
+public class IdGenConfig {
 	@Autowired
 	Environment env;
 

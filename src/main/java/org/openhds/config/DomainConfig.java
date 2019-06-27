@@ -17,7 +17,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 @Configuration
 @ComponentScan(basePackages = "org.openhds.domain")
-public class DomainApplicationContext {
+public class DomainConfig {
 	@Bean
 	public Jaxb2Marshaller jaxb2Marshaller()
 	{

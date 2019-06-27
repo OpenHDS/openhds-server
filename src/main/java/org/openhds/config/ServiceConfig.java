@@ -22,9 +22,9 @@ import org.springframework.context.annotation.Import;
 
 
 @Configuration
-@Import({DomainApplicationContext.class,  DaoApplicationContext.class})
+@Import({DomainConfig.class,  DaoConfig.class})
 @ComponentScan(basePackages= {"org.openhds.service"})
-public class ServiceApplicationContext {
+public class ServiceConfig {
 	
 	
 	@Bean
@@ -156,16 +156,12 @@ public class ServiceApplicationContext {
 		return new SettingsServiceImpl(siteProperties, asyncTask, formService, fieldworkerService);
 	}
 	
-	@Bean
-	public SitePropertiesService siteProperties() {
-		return new SitePropertiesServiceImpl();
-	}
 	
 	@Bean
 	public SiteConfigService siteConfigService() {
 		return new SiteConfigServiceImpl();
 	}
-	
+	  
 	@Bean
 	public SocialGroupService socialGroupService(GenericDao dao, IndividualService individualService, EntityService entityService, 
 			SocialGroupGenerator sgGenerator) {
