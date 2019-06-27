@@ -16,7 +16,7 @@ public class MembershipStartTypeCodeConverter implements Converter {
 	String marriageValue;
 	String enumerationValue;
 	
-	MembershipStartTypeCodeConverter(SitePropertiesService siteProperties) {
+	public MembershipStartTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		birthValue = siteProperties.getBirthCode();
 		inmigrationValue = siteProperties.getInmigrationCode();

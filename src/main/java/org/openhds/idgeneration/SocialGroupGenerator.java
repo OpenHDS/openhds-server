@@ -158,8 +158,6 @@ public class SocialGroupGenerator extends Generator<SocialGroup> {
 	}
 	
 	@Override
-	@Autowired
-	@Value("${openhds.sgIdUseGenerator}")
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}

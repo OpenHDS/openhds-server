@@ -16,7 +16,7 @@ public class MembershipEndTypeCodeConverter implements Converter {
 	String notApplicableValue;
 	String deathOfHOHValue;
 	
-	MembershipEndTypeCodeConverter(SitePropertiesService siteProperties) {
+	public MembershipEndTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		deathValue = siteProperties.getDeathCode();
 		outmigrationValue = siteProperties.getOutmigrationCode();

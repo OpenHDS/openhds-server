@@ -162,8 +162,6 @@ public class IndividualGenerator extends Generator<Individual> {
 	}
 
 	@Override
-	@Autowired
-	@Value("${openhds.individualIdUseGenerator}")
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}

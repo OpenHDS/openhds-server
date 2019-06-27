@@ -3,7 +3,7 @@ package org.openhds.service.refactor.impl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.openhds.exception.ConstraintViolations;
 import org.openhds.idgeneration.FieldWorkerGenerator;
-import org.openhds.service.refactor.FieldWorkerService;
+import org.openhds.service.refactor.FieldWorkerCrudService;
 import org.openhds.service.refactor.crudhelper.EntityCrudHelper;
 import org.openhds.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
-public class FieldWorkerServiceImpl implements FieldWorkerService {
+public class FieldWorkerCrudServiceImpl implements FieldWorkerCrudService {
 	@Autowired
 	@Qualifier("FieldWorkerCrudHelper")
 	private EntityCrudHelper<FieldWorker> fieldWorkerCrudHelper;

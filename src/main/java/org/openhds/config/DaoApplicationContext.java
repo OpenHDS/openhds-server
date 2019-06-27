@@ -5,15 +5,45 @@ import java.util.Properties;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.openhds.dao.Dao;
+import org.openhds.dao.GenericDao;
+import org.openhds.dao.UserDao;
 import org.openhds.dao.finder.Advisor;
 import org.openhds.dao.finder.AnnotationNamingStrategy;
 import org.openhds.dao.finder.SimpleArgumentTypeFactory;
 import org.openhds.dao.impl.BaseDaoImpl;
 import org.openhds.dao.impl.FieldWorkerDaoImpl;
+import org.openhds.dao.impl.GenericDaoImpl;
 import org.openhds.dao.impl.IndividualDaoImpl;
 import org.openhds.dao.impl.LocationHierarchyDaoImpl;
 import org.openhds.dao.impl.RoleDaoImpl;
+import org.openhds.domain.AdultVPM;
 import org.openhds.domain.AsyncTask;
+import org.openhds.domain.ClassExtension;
+import org.openhds.domain.Death;
+import org.openhds.domain.DemRates;
+import org.openhds.domain.FieldWorker;
+import org.openhds.domain.Form;
+import org.openhds.domain.InMigration;
+import org.openhds.domain.Individual;
+import org.openhds.domain.Location;
+import org.openhds.domain.LocationHierarchy;
+import org.openhds.domain.LocationHierarchyLevel;
+import org.openhds.domain.Membership;
+import org.openhds.domain.NeoNatalVPM;
+import org.openhds.domain.Note;
+import org.openhds.domain.OutMigration;
+import org.openhds.domain.PostNeoNatalVPM;
+import org.openhds.domain.PregnancyObservation;
+import org.openhds.domain.PregnancyOutcome;
+import org.openhds.domain.Relationship;
+import org.openhds.domain.Residency;
+import org.openhds.domain.Role;
+import org.openhds.domain.Round;
+import org.openhds.domain.SocialGroup;
+import org.openhds.domain.User;
+import org.openhds.domain.Vaccination;
+import org.openhds.domain.Visit;
+import org.openhds.domain.Whitelist;
 import org.openhds.service.SitePropertiesService;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,13 +167,14 @@ public class DaoApplicationContext {
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
+	
 
 	@Bean
-	public Dao openhdsUserDao(SessionFactory sessionFactory,
+	public Dao<User, String> openhdsUserDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.User.class);
+		BaseDaoImpl<User, String> baseDao = new BaseDaoImpl<User, String>(User.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -152,11 +183,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao adultVPMDao(SessionFactory sessionFactory,
+	public Dao<AdultVPM, String> adultVPMDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.AdultVPM.class);
+		BaseDaoImpl<AdultVPM, String> baseDao = new BaseDaoImpl<AdultVPM, String>(AdultVPM.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -165,11 +196,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao deathDao(SessionFactory sessionFactory,
+	public Dao<Death, String> deathDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Death.class);
+		BaseDaoImpl<Death, String> baseDao = new BaseDaoImpl<Death, String>(Death.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -178,11 +209,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao demRatesDao(SessionFactory sessionFactory,
+	public Dao<DemRates, String> demRatesDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.DemRates.class);
+		BaseDaoImpl<DemRates, String> baseDao = new BaseDaoImpl<DemRates, String>(DemRates.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -191,11 +222,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao extensionDao(SessionFactory sessionFactory,
+	public Dao<ClassExtension, String> extensionDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.ClassExtension.class);
+		BaseDaoImpl<ClassExtension, String> baseDao = new BaseDaoImpl<ClassExtension, String>(ClassExtension.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -204,12 +235,12 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao fieldWorkerDao(SessionFactory sessionFactory,
+	public Dao<FieldWorker, String> fieldWorkerDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory,
 			SitePropertiesService properties) 
 					throws ClassNotFoundException {
 
-		FieldWorkerDaoImpl fwDao = new FieldWorkerDaoImpl(org.openhds.domain.FieldWorker.class);
+		FieldWorkerDaoImpl fwDao = new FieldWorkerDaoImpl(FieldWorker.class);
 		fwDao.setSessionFactory(sessionFactory);
 		fwDao.setNamingStrategy(namingStrategy);
 		fwDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -218,11 +249,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao formDao(SessionFactory sessionFactory,
+	public Dao<Form, String> formDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Form.class);
+		BaseDaoImpl<Form, String> baseDao = new BaseDaoImpl<Form, String>(Form.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -231,12 +262,12 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao individualDao(SessionFactory sessionFactory,
+	public Dao<Individual, String> individualDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory,
 			SitePropertiesService properties) 
 					throws ClassNotFoundException {
 
-		IndividualDaoImpl indDao = new IndividualDaoImpl(org.openhds.domain.Individual.class);
+		IndividualDaoImpl indDao = new IndividualDaoImpl(Individual.class);
 		indDao.setSessionFactory(sessionFactory);
 		indDao.setNamingStrategy(namingStrategy);
 		indDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -245,11 +276,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao inMigrationDao(SessionFactory sessionFactory,
+	public Dao<InMigration, String> inMigrationDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.InMigration.class);
+		BaseDaoImpl<InMigration, String> baseDao = new BaseDaoImpl<InMigration, String>(InMigration.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -258,11 +289,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao locationDao(SessionFactory sessionFactory,
+	public Dao<Location,String> locationDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Location.class);
+		BaseDaoImpl<Location, String> baseDao = new BaseDaoImpl<Location, String>(Location.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -271,11 +302,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao locationHierarchyDao(SessionFactory sessionFactory,
+	public Dao<LocationHierarchy, String> locationHierarchyDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		LocationHierarchyDaoImpl lhDao = new LocationHierarchyDaoImpl(org.openhds.domain.LocationHierarchy.class);
+		LocationHierarchyDaoImpl lhDao = new LocationHierarchyDaoImpl(LocationHierarchy.class);
 		lhDao.setSessionFactory(sessionFactory);
 		lhDao.setNamingStrategy(namingStrategy);
 		lhDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -284,11 +315,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao locationHierarchyLevelDao(SessionFactory sessionFactory,
+	public Dao<LocationHierarchyLevel, String> locationHierarchyLevelDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.LocationHierarchyLevel.class);
+		BaseDaoImpl<LocationHierarchyLevel, String> baseDao = new BaseDaoImpl<LocationHierarchyLevel, String>(LocationHierarchyLevel.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -297,11 +328,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao membershipDao(SessionFactory sessionFactory,
+	public Dao<Membership, String> membershipDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Membership.class);
+		BaseDaoImpl<Membership, String> baseDao = new BaseDaoImpl<Membership, String>(Membership.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -310,11 +341,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao neoNatalVPMDao(SessionFactory sessionFactory,
+	public Dao<NeoNatalVPM, String> neoNatalVPMDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.NeoNatalVPM.class);
+		BaseDaoImpl<NeoNatalVPM, String> baseDao = new BaseDaoImpl<NeoNatalVPM, String>(NeoNatalVPM.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -323,11 +354,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao noteDao(SessionFactory sessionFactory,
+	public Dao<Note, String> noteDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Note.class);
+		BaseDaoImpl<Note, String> baseDao = new BaseDaoImpl<Note, String>(Note.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -336,11 +367,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao outMigrationDao(SessionFactory sessionFactory,
+	public Dao<OutMigration, String> outMigrationDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.OutMigration.class);
+		BaseDaoImpl<OutMigration, String> baseDao = new BaseDaoImpl<OutMigration, String>(OutMigration.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -349,11 +380,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao postNeoNatalVPMDao(SessionFactory sessionFactory,
+	public Dao<PostNeoNatalVPM, String> postNeoNatalVPMDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.PostNeoNatalVPM.class);
+		BaseDaoImpl<PostNeoNatalVPM, String> baseDao = new BaseDaoImpl<PostNeoNatalVPM, String>(PostNeoNatalVPM.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -362,11 +393,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao pregnancyDao(SessionFactory sessionFactory,
+	public Dao<PregnancyOutcome, String> pregnancyDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.PregnancyOutcome.class);
+		BaseDaoImpl<PregnancyOutcome, String>baseDao = new BaseDaoImpl<PregnancyOutcome, String>(PregnancyOutcome.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -375,11 +406,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao pregnancyObservationDao(SessionFactory sessionFactory,
+	public Dao<PregnancyObservation, String> pregnancyObservationDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.PregnancyObservation.class);
+		BaseDaoImpl<PregnancyObservation, String> baseDao = new BaseDaoImpl<PregnancyObservation, String>(PregnancyObservation.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -388,11 +419,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao relationshipDao(SessionFactory sessionFactory,
+	public Dao<Relationship, String> relationshipDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Relationship.class);
+		BaseDaoImpl<Relationship, String> baseDao = new BaseDaoImpl<Relationship, String>(Relationship.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -401,11 +432,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao residencyDao(SessionFactory sessionFactory,
+	public Dao<Residency, String> residencyDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Residency.class);
+		BaseDaoImpl<Residency, String> baseDao = new BaseDaoImpl<Residency, String>(Residency.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -414,11 +445,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao roleDao(SessionFactory sessionFactory,
+	public Dao<Role, String> roleDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		RoleDaoImpl roleDao = new RoleDaoImpl(org.openhds.domain.Role.class);
+		RoleDaoImpl roleDao = new RoleDaoImpl(Role.class);
 		roleDao.setSessionFactory(sessionFactory);
 		roleDao.setNamingStrategy(namingStrategy);
 		roleDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -427,11 +458,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao roundDao(SessionFactory sessionFactory,
+	public Dao<Round, String> roundDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Round.class);
+		BaseDaoImpl<Round, String> baseDao = new BaseDaoImpl<Round, String>(Round.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -440,11 +471,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao socialGroupDao(SessionFactory sessionFactory,
+	public Dao<SocialGroup, String> socialGroupDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.SocialGroup.class);
+		BaseDaoImpl<SocialGroup, String> baseDao = new BaseDaoImpl<SocialGroup, String>(SocialGroup.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -457,7 +488,7 @@ public class DaoApplicationContext {
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl<AsyncTask, String> baseDao = new BaseDaoImpl<AsyncTask, String>(org.openhds.domain.AsyncTask.class);
+		BaseDaoImpl<AsyncTask, String> baseDao = new BaseDaoImpl<AsyncTask, String>(AsyncTask.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -466,11 +497,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao vaccinationDao(SessionFactory sessionFactory,
+	public Dao<Vaccination, String> vaccinationDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Vaccination.class);
+		BaseDaoImpl<Vaccination, String> baseDao = new BaseDaoImpl<Vaccination, String>(Vaccination.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -479,11 +510,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao visitDao(SessionFactory sessionFactory,
+	public Dao<Visit, String> visitDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Visit.class);
+		BaseDaoImpl<Visit, String> baseDao = new BaseDaoImpl<Visit, String>(Visit.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);
@@ -492,11 +523,11 @@ public class DaoApplicationContext {
 	}
 
 	@Bean
-	public Dao whitelistDao(SessionFactory sessionFactory,
+	public Dao<Whitelist, String> whitelistDao(SessionFactory sessionFactory,
 			AnnotationNamingStrategy namingStrategy, SimpleArgumentTypeFactory argumentTypeFactory) 
 					throws ClassNotFoundException {
 
-		BaseDaoImpl baseDao = new BaseDaoImpl(org.openhds.domain.Whitelist.class);
+		BaseDaoImpl<Whitelist, String> baseDao = new BaseDaoImpl<Whitelist, String>(org.openhds.domain.Whitelist.class);
 		baseDao.setSessionFactory(sessionFactory);
 		baseDao.setNamingStrategy(namingStrategy);
 		baseDao.setArgumentTypeFactory(argumentTypeFactory);

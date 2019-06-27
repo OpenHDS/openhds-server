@@ -14,7 +14,7 @@ public class DateValidator extends AppContextAware {
 	
 	SitePropertiesService properties;
 	
-	DateValidator() {
+	public DateValidator() {
 		properties = (SitePropertiesService)context.getBean("siteProperties");
 	}
 

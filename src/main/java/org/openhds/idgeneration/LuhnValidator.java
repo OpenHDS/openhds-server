@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
-
+ 
 /**
  * The Luhn mod N algorithm generates a check character within the same range 
  * of valid characters as the input string. For example, if the algorithm is 

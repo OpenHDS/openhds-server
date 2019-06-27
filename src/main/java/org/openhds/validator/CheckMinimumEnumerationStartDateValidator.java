@@ -28,7 +28,7 @@ public class CheckMinimumEnumerationStartDateValidator extends AppContextAware {
 	SitePropertiesService properties;
 	CalendarUtil calendarUtil;
 	
-	CheckMinimumEnumerationStartDateValidator() {
+	public CheckMinimumEnumerationStartDateValidator() {
 		calendarUtil = (CalendarUtil)context.getBean("calendarUtil");
 		properties = (SitePropertiesService)context.getBean("siteProperties");
 	}

@@ -89,8 +89,6 @@ public class FieldWorkerGenerator extends Generator<FieldWorker> {
 	}
 	
 	@Override
-	@Autowired
-	@Value("${openhds.fwIdUseGenerator}")
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}

@@ -130,8 +130,6 @@ public class VisitGenerator extends Generator<Visit> {
 	}
 
 	@Override
-	@Autowired
-	@Value("${openhds.visitIdUseGenerator}")
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}

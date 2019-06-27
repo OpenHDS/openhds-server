@@ -2,14 +2,14 @@ package org.openhds.web.crud.impl;
 
 import org.openhds.exception.AuthorizationException;
 import org.openhds.exception.ConstraintViolations;
-import org.openhds.service.refactor.FieldWorkerService;
+import org.openhds.service.refactor.FieldWorkerCrudService;
 import org.openhds.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
 
 	@Autowired
-	private FieldWorkerService fieldWorkerService;
+	private FieldWorkerCrudService fieldWorkerCrudService;
 
 	public FieldWorkerCrudImpl(Class<FieldWorker> entityClass) {
         super(entityClass);
@@ -32,9 +32,9 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	try {
     		//fieldWorkerService.evaluateFieldWorker(entityItem);
     	 // service.makeTheHash()
-    		fieldWorkerService.generateId(entityItem);
-    		fieldWorkerService.generatePasswordHash(entityItem);
-    		fieldWorkerService.isEligibleForCreation(entityItem, new ConstraintViolations());
+    		fieldWorkerCrudService.generateId(entityItem);
+    		fieldWorkerCrudService.generatePasswordHash(entityItem);
+    		fieldWorkerCrudService.isEligibleForCreation(entityItem, new ConstraintViolations());
 	        return super.create();
     	}
     	catch(ConstraintViolations e) {
@@ -51,7 +51,7 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	try {
     		//Only try to update password if at least one of the password fields is filled. Otherwise we'll just update name
     		if(entityItem.getPassword().trim().length() > 0 || entityItem.getConfirmPassword().trim().length() > 0){
-    			fieldWorkerService.generatePasswordHash(entityItem);
+    			fieldWorkerCrudService.generatePasswordHash(entityItem);
     		}
 	        return super.edit();
     	}
@@ -63,12 +63,12 @@ public class FieldWorkerCrudImpl extends EntityCrudImpl<FieldWorker, String> {
     	return null;
     }    
     
-	public FieldWorkerService getFieldWorkerService() {
-		return fieldWorkerService;
+	public FieldWorkerCrudService getFieldWorkerService() {
+		return fieldWorkerCrudService;
 	}
 
-	public void setFieldWorkerService(FieldWorkerService fieldWorkerService) {
-		this.fieldWorkerService = fieldWorkerService;
+	public void setFieldWorkerService(FieldWorkerCrudService fieldWorkerService) {
+		this.fieldWorkerCrudService = fieldWorkerService;
 	}
 }
 

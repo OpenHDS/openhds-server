@@ -15,7 +15,7 @@ public class ResidencyStartTypeCodeConverter implements Converter {
 	String birthValue;
 	String enumerationValue;
 	
-	ResidencyStartTypeCodeConverter(SitePropertiesService siteProperties) {
+	public ResidencyStartTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		inmigrationValue = siteProperties.getInmigrationCode();
 		birthValue = siteProperties.getBirthCode();

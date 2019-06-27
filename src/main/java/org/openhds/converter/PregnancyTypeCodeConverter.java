@@ -16,7 +16,7 @@ public class PregnancyTypeCodeConverter implements Converter {
 	String miscarriageValue;
 	String abortionValue;
 	
-	PregnancyTypeCodeConverter(SitePropertiesService siteProperties) {
+	public PregnancyTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		liveBirthValue = siteProperties.getLiveBirthCode();
 		stillBirthValue = siteProperties.getStillBirthCode();

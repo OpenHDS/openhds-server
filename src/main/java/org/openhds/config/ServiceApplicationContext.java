@@ -12,6 +12,8 @@ import org.openhds.idgeneration.IndividualGenerator;
 import org.openhds.idgeneration.SocialGroupGenerator;
 import org.openhds.service.*;
 import org.openhds.service.impl.*;
+import org.openhds.service.refactor.FieldWorkerCrudService;
+import org.openhds.service.refactor.impl.FieldWorkerCrudServiceImpl;
 import org.openhds.util.CalendarUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -71,6 +73,11 @@ public class ServiceApplicationContext {
 	}
 	
 	@Bean
+	public FieldWorkerCrudService fieldWorkerCrudService(IdSchemeResource idSchemeResource) {
+		return new FieldWorkerCrudServiceImpl();
+	}
+	
+	@Bean
 	public HeadOfHouseholdService headOfHouseholdService() {
 		return new HeadOfHouseholdServiceImpl();
 	}
@@ -87,7 +94,7 @@ public class ServiceApplicationContext {
 	}
 	
 	@Bean
-	public InMigrationService inmigrationService(ResidencyService residencyService, EntityService entityService, IndividualService individualService,
+	public InMigrationService inMigrationService(ResidencyService residencyService, EntityService entityService, IndividualService individualService,
 			GenericDao dao, SitePropertiesService siteProperties) {
 		return new InMigrationServiceImpl(residencyService, entityService, individualService, dao, siteProperties);
 	}
@@ -134,7 +141,7 @@ public class ServiceApplicationContext {
 	}
 	
 	@Bean
-	public RoleService roleServie(RoleDao roleDao, GenericDao genericDao, EntityService entityService) {
+	public RoleService roleService(RoleDao roleDao, GenericDao genericDao, EntityService entityService) {
 		return new RoleServiceImpl(roleDao, genericDao, entityService);
 	}
 	
@@ -149,6 +156,10 @@ public class ServiceApplicationContext {
 		return new SettingsServiceImpl(siteProperties, asyncTask, formService, fieldworkerService);
 	}
 	
+	@Bean
+	public SitePropertiesService siteProperties() {
+		return new SitePropertiesServiceImpl();
+	}
 	
 	@Bean
 	public SiteConfigService siteConfigService() {

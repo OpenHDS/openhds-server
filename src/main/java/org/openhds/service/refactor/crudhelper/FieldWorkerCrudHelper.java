@@ -1,7 +1,7 @@
 package org.openhds.service.refactor.crudhelper;
 
 import org.openhds.exception.ConstraintViolations;
-import org.openhds.service.refactor.FieldWorkerService;
+import org.openhds.service.refactor.FieldWorkerCrudService;
 import org.openhds.domain.FieldWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.List;
 public class FieldWorkerCrudHelper extends
 		AbstractEntityCrudHelperImpl<FieldWorker> {
 	@Autowired
-	FieldWorkerService fieldWorkerService;
+	FieldWorkerCrudService fieldWorkerService;
 
 	@Override
 	protected void preCreateSanityChecks(FieldWorker fieldWorker)

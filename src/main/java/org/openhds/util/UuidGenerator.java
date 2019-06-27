@@ -9,6 +9,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.UUIDHexGenerator;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
+import org.springframework.stereotype.Component;
 
 public class UuidGenerator extends UUIDHexGenerator{
 	private String entityName;

@@ -16,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 @Configuration
-@Order(1)
 @ComponentScan(basePackages = "org.openhds.domain")
 public class DomainApplicationContext {
 	@Bean
@@ -82,10 +81,5 @@ public class DomainApplicationContext {
 	public ValueConstraintService valueContraintService() 
 	{
 		return new ValueConstraintServiceImpl();
-	}
-	
-	@Bean
-	public SitePropertiesService sitePropertiesService() {
-		return new SitePropertiesServiceImpl();
 	}
 }

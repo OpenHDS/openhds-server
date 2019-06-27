@@ -126,8 +126,6 @@ public class LocationGenerator extends Generator<Location> {
 	}
 
 	@Override
-	@Autowired
-	@Value("${openhds.locationIdUseGenerator}")
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
 	}

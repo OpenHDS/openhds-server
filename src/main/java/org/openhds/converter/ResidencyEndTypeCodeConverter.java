@@ -14,7 +14,7 @@ public class ResidencyEndTypeCodeConverter implements Converter {
 	String outmigrationValue;
 	String deathValue;
 	
-	ResidencyEndTypeCodeConverter(SitePropertiesService siteProperties) {
+	public ResidencyEndTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		outmigrationValue = siteProperties.getOutmigrationCode();
 		deathValue = siteProperties.getDeathCode();

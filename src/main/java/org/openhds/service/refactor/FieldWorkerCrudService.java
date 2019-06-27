@@ -3,7 +3,7 @@ package org.openhds.service.refactor;
 import org.openhds.exception.ConstraintViolations;
 import org.openhds.domain.FieldWorker;
 
-public interface FieldWorkerService extends EntityService<FieldWorker> {
+public interface FieldWorkerCrudService extends EntityService<FieldWorker> {
 	public void generatePasswordHash(FieldWorker fieldWorker)
 			throws ConstraintViolations;
 

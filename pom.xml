@@ -18,6 +18,8 @@
 	<properties>
 		<openhdsVersion>${project.version}</openhdsVersion>
 		<java.version>1.8</java.version>
+		<demo.login.credentials />
+		
 	</properties>
 
 	<dependencies>
@@ -33,6 +35,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -205,7 +209,22 @@
 
 	</dependencies>
 
+	 <profiles>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <property>
+                    <name>demo</name>
+                </property>
+            </activation>
+            <properties>
+                <demo.login.credentials>To login, user name:admin password:test</demo.login.credentials>
+            </properties>
+        </profile>
+    </profiles>
 	<build>
+	    <finalName>openhds</finalName>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

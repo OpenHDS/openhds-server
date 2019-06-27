@@ -17,7 +17,7 @@ public class MaritalStatusEndTypeCodeConverter implements Converter {
 	String divorceSeparation;
 
 	
-	MaritalStatusEndTypeCodeConverter(SitePropertiesService siteProperties) {
+	public MaritalStatusEndTypeCodeConverter(SitePropertiesService siteProperties) {
 		this.siteProperties = siteProperties;
 		deathValue = siteProperties.getDeathCode();
 		outmigrationValue = siteProperties.getOutmigrationCode();
