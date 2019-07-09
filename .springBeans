@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.2.201712210913-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/reporter-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/autocomplete-servlet.xml</config>
+		<config>java:org.openhds.OpenhdsServerApplication</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

@@ -16,11 +16,11 @@ import org.springframework.webflow.core.collection.AttributeMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.definition.FlowDefinition;
 import org.springframework.webflow.execution.FlowExecutionException;
-import org.springframework.webflow.execution.FlowExecutionListenerAdapter;
+import org.springframework.webflow.execution.FlowExecutionListener;
 import org.springframework.webflow.execution.FlowSession;
 import org.springframework.webflow.execution.RequestContext;
  
-public class Hibernate4FlowExecutionListener extends FlowExecutionListenerAdapter {
+public abstract  class Hibernate4FlowExecutionListener implements FlowExecutionListener {
      
     /**
      * The name of the attribute the flow {@link Session persistence context} is indexed under.
@@ -129,7 +129,8 @@ public class Hibernate4FlowExecutionListener extends FlowExecutionListenerAdapte
         return ((!flowSession.isRoot()) && isPersistenceContext(flowSession.getParent().getDefinition()));
     }
  
-    private Session createSession(RequestContext context) {
+    @SuppressWarnings("deprecation")
+	private Session createSession(RequestContext context) {
         Session session = (entityInterceptor != null ? sessionFactory.withOptions().interceptor(entityInterceptor).openSession():
             sessionFactory.openSession());
         session.setFlushMode(FlushMode.MANUAL);
