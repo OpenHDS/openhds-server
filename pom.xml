@@ -65,7 +65,7 @@
 		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
 		<org.springframework.security.version>5.2.1.RELEASE</org.springframework.security.version>
 		<org.hibernate.core.version>4.2.14.Final</org.hibernate.core.version>
-		<org.hibernate.validator.version>4.3.1.Final</org.hibernate.validator.version>
+		<org.hibernate.validator.version>5.3.5.Final</org.hibernate.validator.version>
 		<hibernate.validationMode>javax.persistence.validation.mode=NONE</hibernate.validationMode>
 		<slf4j.version>1.7.9</slf4j.version>
 	</properties>
