@@ -14,7 +14,7 @@
     <name>OpenHDS Web Application</name>
 
     <properties>
-        <org.springframework.swf.version>2.0.9.RELEASE</org.springframework.swf.version>
+        <org.springframework.swf.version>2.4.6.RELEASE</org.springframework.swf.version>
         <demo.login.credentials />
     </properties>
 
